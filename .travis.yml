@@ -3,3 +3,6 @@ compiler:
   - gcc
 install:
   - sudo apt-get install check
+script:
+  - gcc main.c a.o
+  - ./a.o
