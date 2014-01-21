@@ -9,6 +9,12 @@
 #include <string.h>
 #include "../../include/bit_array.h"
 
+//method declarations
+char_mapping* construct_mapping(const char* alphabet, unsigned int length);
+char* determine_alphabet(const char* string);
+void quick_sort(char* string, unsigned int size);
+
+
 char_mapping* map_alphabet(const char* string) {
 	char* alphabet;
 
@@ -97,10 +103,6 @@ char* determine_alphabet(const char* string) {
 	return alphabet;
 }
 
-void quick_sort(char* string, unsigned int size) {
-	quicksort(string, 0, size - 1);
-}
-
 void swap(char* arr, int i, int j) {
     char temp = arr[j];
     arr[j] = arr[i];
@@ -135,4 +137,8 @@ void quicksort(char* arr, int a, int b) {
     else {
         quicksort(arr, a + 1, b);
     }
+}
+
+void quick_sort(char* string, unsigned int size) {
+	quicksort(string, 0, size - 1);
 }
