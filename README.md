@@ -22,6 +22,8 @@ Project Structure:
 	\os\     --> OS (platform dependent) files (uch as makefiles, package building
         	      scripts..)
 	\res\    --> resources required for compilation but not source files (icons, etc.)
+	\tests\  --> tests for source-files
+	\tests\module1\ --> tests for individual modules
 	\MAKEFILE --> makefile script for building the project
 	\README   --> introductory document (might refer to doc\README)
 	\INSTALL  --> Installation document (might refer to doc\INSTALL)
