@@ -5,5 +5,5 @@ install:
   - sudo apt-get install check
 script:
   - gcc -o src/main.o src/main.c
-  - gcc -o tests/array/check_bit_array.o tests/array/check_bit_array.c
+  - gcc -std=c99 -o check_bit_array.o check_bit_array.c ../../src/main.c ../../src/array/bit_array.c
   - ./main.o
