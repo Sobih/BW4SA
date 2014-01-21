@@ -32,12 +32,16 @@ char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	char_mapping* mapping;
 	unsigned int bit_value = 1;
 
-	if ((mapping = calloc(length, sizeof(char_mapping))) == 0)
+	if ((mapping = calloc(length + 1, sizeof(char_mapping))) == 0)
 		//allocation failed, return NULL
 		return 0;
 
+	//add starting value that defines length of array
+	mapping[0].bit_value = length;
+	mapping[0].character = 0;
+
 	//create mapping
-	for (int i = 0; i < length; ++i) {
+	for (int i = 1; i <= length; ++i) {
 		mapping[i].character = alphabet[i];
 		mapping[i].bit_value = bit_value;
 
