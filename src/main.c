@@ -22,14 +22,17 @@ int main(void) {
 
 	//printf("%d\n", lcp("NA", "NANA", 3, 5));
 
-    char *args[] =
+    /*char *args[] =
     {
         "this", "is", "a", "test", "of", "quicksort", "with", "strings"
     };
 
     srand((unsigned)time(NULL));
     quicksort(args, sizeof(args)/sizeof(*args));
-    print_list(args, sizeof(args)/sizeof(*args));
+    print_list(args, sizeof(args)/sizeof(*args));*/
+	char *array[] = {"banana", "anana", "nana", "ana", "na", "a"};
+
+	printf("%d\n", compare_pairs(array, 6));
 
 	return 0;
 }

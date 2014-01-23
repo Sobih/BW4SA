@@ -8,14 +8,8 @@
 #ifndef COUNT_SUBSTRINGS_H_
 #define COUNT_SUBSTRINGS_H_
 
-int count_substrings(char* string, int string_length);
+count_substrings(char* string, int string_length);
 
 int lcp(char* string1, char* string2,  int s1_length, int s2_length);
-
-void swap_strings(char **a, char **b);
-
-void quicksort(char *strings[], int len);
-
-int compare_pairs(char *strings[], int len);
 
 #endif /* COUNT_SUBSTRINGS_H_ */
