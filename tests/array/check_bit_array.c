@@ -59,13 +59,24 @@ START_TEST (test_faulty_string_mapping) {
 END_TEST
 
 START_TEST (test_long_string_mapping) {
+	printf("Allocating string...\n");
+
 	char* string = calloc(1000, sizeof(char));
 
+	printf("Opening file...\n");
+
 	FILE* file = fopen("../../res/long_string.txt", "r");
+
+	if (file == 0)
+		printf("File = NULL\n");
+
+	printf("Reading string...\n");
 
 	while(fgets(string + strlen(string) - 1, 1000, file) != NULL) {}
 
 	fclose(file);
+
+	printf("Mapping alphabet...\n");
 
 	char_mapping* mapping = map_alphabet(string);
 
