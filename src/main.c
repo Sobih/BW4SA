@@ -20,7 +20,7 @@ int main(void) {
 
 	fclose(f);
 
-	bwt("test.txt");
+	//bwt("test.txt");
 
 	return 0;
 }
