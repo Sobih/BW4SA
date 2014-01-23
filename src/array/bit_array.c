@@ -10,29 +10,44 @@
 #include <string.h>
 #include "../../include/bit_array.h"
 
-//method declarations
-char_mapping* construct_mapping(const char* alphabet, unsigned int length);
-char* determine_alphabet(const char* string);
-void quick_sort(char* string, unsigned int size);
+void swap(char* arr, int i, int j) {
+    char temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+}
 
+void quicksort(char* arr, int a, int b) {
+    if (a >= b)
+        return;
 
-char_mapping* map_alphabet(const char* string) {
-	char* alphabet;
+    char key = arr[a];
+    int i = a + 1, j = b;
 
-	if ((alphabet = determine_alphabet(string)) == 0)
-		//return null if alphabet couldn't be determined
-		return 0;
+    while (i < j) {
+        while (i < j && arr[j] >= key)
+            --j;
 
-	//sort constructed alphabet into lexicographic order
-	unsigned int length = strlen(alphabet);
-	quick_sort(alphabet, length);
+        while (i < j && arr[i] <= key)
+            ++i;
 
-	char_mapping* mapping = construct_mapping(alphabet, length);
+        if (i < j)
+            swap(arr, i, j);
+    }
 
-	//delete alphabet
-	free(alphabet);
+    if (arr[a] > arr[i]) {
+        swap(arr, a, i);
+        quicksort(arr, a, i - 1);
+        quicksort(arr, i + 1, b);
+    }
 
-	return mapping;
+    // there is no left-hand-side
+    else {
+        quicksort(arr, a + 1, b);
+    }
+}
+
+void quick_sort(char* string, unsigned int size) {
+	quicksort(string, 0, size - 1);
 }
 
 char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
@@ -111,42 +126,25 @@ char* determine_alphabet(const char* string) {
 	return alphabet;
 }
 
-void swap(char* arr, int i, int j) {
-    char temp = arr[j];
-    arr[j] = arr[i];
-    arr[i] = temp;
-}
+char_mapping* map_alphabet(const char* string) {
+	//string not initialized, return NULL
+	if (string == 0)
+		return 0;
 
-void quicksort(char* arr, int a, int b) {
-    if (a >= b)
-        return;
+	char* alphabet;
 
-    char key = arr[a];
-    int i = a + 1, j = b;
+	if ((alphabet = determine_alphabet(string)) == 0)
+		//return null if alphabet couldn't be determined
+		return 0;
 
-    while (i < j) {
-        while (i < j && arr[j] >= key)
-            --j;
+	//sort constructed alphabet into lexicographic order
+	unsigned int length = strlen(alphabet);
+	quick_sort(alphabet, length);
 
-        while (i < j && arr[i] <= key)
-            ++i;
+	char_mapping* mapping = construct_mapping(alphabet, length);
 
-        if (i < j)
-            swap(arr, i, j);
-    }
+	//delete alphabet
+	free(alphabet);
 
-    if (arr[a] > arr[i]) {
-        swap(arr, a, i);
-        quicksort(arr, a, i - 1);
-        quicksort(arr, i + 1, b);
-    }
-
-    // there is no left-hand-side
-    else {
-        quicksort(arr, a + 1, b);
-    }
-}
-
-void quick_sort(char* string, unsigned int size) {
-	quicksort(string, 0, size - 1);
+	return mapping;
 }
