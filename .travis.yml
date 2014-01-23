@@ -5,4 +5,4 @@ install:
   - sudo apt-get install check
 script:
   - gcc src/*.c -o src/main.o -I libs/DBWT/
-  - .src/main.o
+  - ./src/main.o
