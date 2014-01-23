@@ -13,14 +13,14 @@ int main(void) {
 	printf("HELLO, WORLD!");
 	FILE *f;
 	char c[50];
-	if (!(f = fopen("test.txt", "a"))) {
+	if (!(f = fopen("test.txt", "w+"))) {
 		return 1;
 	}
-	fgets(c, 50, "abracadabra");
-	fputs(c, f);
+	fputs("abracadabra",f);
+
 	fclose(f);
 
-	//bwt("test.txt");
+	bwt("test.txt");
 
 	return 0;
 }
