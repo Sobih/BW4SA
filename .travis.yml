@@ -4,5 +4,5 @@ compiler:
 install:
   - sudo apt-get install check
 script:
-  - gcc -std=c99 -o src/array/bit_array.o src/main.c src/array/bit_array.c
+  - gcc -std=c99 -o src/array/bit_array.o src/main.c src/array/bit_array.c tests/array/check_bit_array.c
   - ./src/array/bit_array.o
