@@ -61,7 +61,7 @@ END_TEST
 START_TEST (test_long_string_mapping) {
 	char* string = calloc(1000, sizeof(char));
 
-	FILE* file = fopen("../res/long_string.txt", "r");
+	FILE* file = fopen("../../res/long_string.txt", "r");
 
 	while(fgets(string + strlen(string) - 1, 1000, file) != NULL) {}
 
