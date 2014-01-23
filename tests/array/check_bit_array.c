@@ -59,6 +59,10 @@ START_TEST (test_faulty_string_mapping) {
 END_TEST
 
 START_TEST (test_long_string_mapping) {
+
+	char* string = "HasSDUwqaBiUSRiduwIUHGFIUAGHouLKrJVNlkaslkBVlPkvLJHYbAliwyr947hgfrLQGIflhigaASflkuBAlv7v3liuIoHAkuhflhbbvlLIUae7dslf7g9LKUAsylfIjfliga5ASflkuBAlv7v3liuIHAkuWhflhbbJvlLIFUae7dslf7g9LKUAsylflv17v3liuIHAwkuhflhbbvlLIUae7dslf7g9LKUAsylifasSDwqaiUSiduwIUHGFIUQAGHoVuLKeJVNlkasklkBgVlkvqLJHYAovliwyr9Z47hgf0rLQGIflGiQgaASflkuBAlv7v3liuIIHAkuhflhbbvlLIUae7dslf7g9LKUAsylfasDuAfSd6MwadAsgfGSAgSAgnse3c3gAdEgGDOKafHf9N7m6a9o7bfULHnofay8NogOIYbvoi8yfd9loYAB9plfp2ASydMDx87yAGFgitumUHAliugd7liuhgNAJ3DsLKudjhgliu8ylPiulOiugyliazduH9GLIAKudHGLiqXTYSdnC4";
+
+	/*
 	printf("Allocating string...\n");
 
 	char* string = calloc(1000, sizeof(char));
@@ -76,7 +80,7 @@ START_TEST (test_long_string_mapping) {
 
 	fclose(file);
 
-	printf("Mapping alphabet...\n");
+	printf("Mapping alphabet...\n");*/
 
 	char_mapping* mapping = map_alphabet(string);
 
