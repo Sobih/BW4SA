@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int count_substrings(char* string, int string_length){
 	char **substrings = calloc(100, string_length-1);
@@ -27,3 +28,53 @@ int count_substrings(char* string, int string_length){
 	free(substrings);
 	return count;
 }
+/** longest common prefix
+ * @return how long is the lcp */
+int lcp(char *string1, char *string2, int s1_length, int s2_length) {
+	int i, string_length, lcp_length = 0;
+
+	string_length = s1_length < s2_length ? s1_length : s2_length;
+
+	for (i = 0; i < string_length; i++) {
+
+		if (string1[i] == string2[i]) {
+			lcp_length++;
+		} else break;
+	}
+
+	return lcp_length;
+}
+
+
+void swap_strings(char **a, char **b) {
+	char *tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+/* reference: http://stackoverflow.com/questions/19612152/quicksort-string-array-in-c*/
+void quicksort(char *strings[], int len) {
+	int i, pivot = 0;
+
+	if (len <= 1) return;
+
+	// swap a randomly selected value to the last node
+	swap_strings(strings+((int)rand() % len), strings+len-1);
+
+	for (i = 0; i < len-1; i++) {
+		if (strcmp(strings[i], strings[len-1]) < 0) {
+			swap_strings(strings+i, strings+pivot++);
+		}
+	}
+
+	swap_strings(strings+pivot, strings+len-1);
+
+	quicksort(strings, pivot++);
+	quicksort(strings+pivot, len-pivot);
+}
+
+
+
+
+
+
