@@ -18,3 +18,7 @@ START_TEST (test_alphabet_mapping) {
 		sprintf("%c\t%d\n", mapping[i].character, mapping[i].bit_value);
 }
 END_TEST
+
+int main() {
+	return 0;
+}
