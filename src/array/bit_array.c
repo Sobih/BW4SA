@@ -5,6 +5,7 @@
  *      Author: Max Sandberg
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../../include/bit_array.h"
@@ -47,9 +48,9 @@ char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	mapping[0].character = 0;
 
 	//create mapping
-	for (int i = 1; i <= length; ++i) {
-		mapping[i].character = alphabet[i];
-		mapping[i].bit_value = bit_value;
+	for (int i = 0; i < length; ++i) {
+		mapping[i + 1].character = alphabet[i];
+		mapping[i + 1].bit_value = bit_value;
 
 		bit_value++;
 	}
@@ -65,28 +66,35 @@ char* determine_alphabet(const char* string) {
 	if ((alphabet = calloc(chars_left, sizeof(char))) == 0)
 		return 0;
 
+	int exists;
+
 	for (int i = 0; i < size; ++i) {
+		exists = 0;
+
 		for (int j = 0; j < alphabet_size; ++j) {
 			//break if character already in alphabet
-			if (strncmp(string + i, alphabet + j, 1) == 0)
+			if (strncmp(string + i, alphabet + j, 1) == 0) {
+				exists = 1;
 				break;
-
-			if (j == alphabet_size - 1) {
-
-				if (chars_left == 0) {
-					//expand alphabet array
-					chars_left = 10;
-
-					if ((alphabet = realloc(alphabet, alphabet_size + chars_left)) == 0)
-						//realloc failed, return NULL
-						return 0;
-				}
-
-				//add to alphabet
-				chars_left--;
-				alphabet[alphabet_size] = *(string + i);
-				alphabet_size++;
 			}
+		}
+
+		//character doesn't exist in alphabet, insert it
+		if (!exists) {
+
+			if (chars_left == 0) {
+				//expand alphabet array
+				chars_left = 10;
+
+				if ((alphabet = realloc(alphabet, alphabet_size + chars_left)) == 0)
+					//realloc failed, return NULL
+					return 0;
+			}
+
+			//add to alphabet
+			chars_left--;
+			alphabet[alphabet_size] = *(string + i);
+			alphabet_size++;
 		}
 	}
 
