@@ -1,8 +1,9 @@
-/*
- * bit_array.c
- *
- *  Created on: 21.1.2014
- *      Author: Max Sandberg
+/**
+ * @file	bit_array.c
+ * @brief	Implementation of the bit array.
+ * @see		bit_array.h
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include <stdio.h>
@@ -10,8 +11,15 @@
 #include <string.h>
 #include "../../include/bit_array.h"
 
-
-
+/**
+ * @brief	Constructs the mapping of the alphabet.
+ * @param	alphabet	The alphabet used by the string, ordered lexicographically.
+ * @param	length		Length of the alphabet-array.
+ * @return				A mapped alphabet.
+ * @see		bit_array.h#map_alphabet
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	char_mapping* mapping;
 	unsigned int bit_value = 1;
@@ -35,6 +43,14 @@ char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	return mapping;
 }
 
+/**
+ * @brief	Determines the alphabet used by the string.
+ * @param	string	The string from which the alphabet should be deduced.
+ * @return			The alphabet used by the string, ordered lexicographically.
+ * @see		bit_array.h#map_alphabet
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 char* determine_alphabet(const char* string) {
 	int chars_left = 10, alphabet_size = 0;
 	unsigned int size = strlen(string);
