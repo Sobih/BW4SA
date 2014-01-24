@@ -5,22 +5,13 @@
  *      Author: lvapaaka
  */
 
-#include "dbwt.h"
-#include <stdio.h>
-#include <string.h>
+#include "s_to_bwt.h"
 
 int main(void) {
-	printf("HELLO, WORLD!");
-	FILE *f;
-	char c[50];
-	if (!(f = fopen("test.txt", "w+"))) {
-		return 1;
-	}
-	fputs("abracadabra",f);
+	printf("HELLO, WORLD!\n");
 
-	fclose(f);
-
-	//bwt("test.txt");
+	printf(s_to_BWT("abracadabra"));
+	printf("\n");
 
 	return 0;
 }
