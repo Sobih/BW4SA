@@ -1,10 +1,13 @@
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
 
 #define MAX_ALPHABET_SIZE 20
-
+/**
+*@brief finds first index of given char from a string
+**/
 int get_index(const char* string,const char c)
 {
 	int i;
@@ -16,6 +19,9 @@ int get_index(const char* string,const char c)
 	return -1;
 }
 
+/**
+*@brief returns string of all characters in words alphabet, ordered alphabetically
+**/
 char* get_alphabet(const char* string)
 {
 
