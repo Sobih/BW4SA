@@ -88,7 +88,24 @@ int compare_pairs(char *strings[], int len) {
 	return count;
 }
 
-void
+char **create_suffixes(char *string) {
+	char **suffixes, *substr;
+	int i, j;
+
+	suffixes = calloc(strlen(string), sizeof(char));
+
+	for (i = 0; i < strlen(string); i++) {
+		substr = "";
+		for (j = i; j < strlen(string); j++) {
+			substr += string[j];
+
+		}
+		suffixes[i] = substr;
+	}
+
+	return **suffixes;
+
+}
 
 
 
