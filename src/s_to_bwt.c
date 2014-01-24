@@ -24,6 +24,9 @@ char* get_BWT_from_result_file_as_string(){
 	fgets(c,100,f);
 	fclose(f);
 
+	remove("output.bw");
+	remove("output.lst");
+
 	return c;
 }
 
@@ -40,14 +43,10 @@ void generate_result_file_from_string(char *input) {
 	fclose(f);
 
 	bwt("input.txt");
+
+	remove("input.txt");
 }
 
-/**
- * Performs Burrows-Wheeler transform on the given string.
- *
- * @param string the string on which the Burrows-Wheeler transform is applied to.
- * @return the BWT of the string
- */
 char* s_to_BWT(char *string) {
 	generate_result_file_from_string(string);
 	string = get_BWT_from_result_file_as_string();
