@@ -40,9 +40,9 @@ void generate_result_file_from_string(char *input) {
 char* s_to_BWT(char *string) {
 	generate_result_file_from_string(string);
 
-	char *result = get_BWT_from_result_file_as_string();
+	string = get_BWT_from_result_file_as_string();
 
-	return result;
+	return string;
 }
 
 
