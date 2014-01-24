@@ -10,7 +10,6 @@
 int main(void) {
 	printf("HELLO, WORLD!\n");
 
-
 	char *c = calloc(100,sizeof(char));
 
 	c = "gttccacccaaccaaaccaaacccccccccccccccc";
