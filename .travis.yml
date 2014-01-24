@@ -4,5 +4,5 @@ compiler:
 install:
   - sudo apt-get install check
 script:
-  - gcc -o main.o main.c
-  - ./main.o
+  - gcc -o src/main.o src/*.c
+  - ./src/main.o
