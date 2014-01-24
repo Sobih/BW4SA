@@ -5,7 +5,7 @@
 
 #define MAX_ALPHABET_SIZE 20
 
-int get_index(char* string, char c)
+int get_index(const char* string,const char c)
 {
 	int i;
 	for(i=0;i<strlen(string);i++){
@@ -16,7 +16,7 @@ int get_index(char* string, char c)
 	return -1;
 }
 
-char* get_alphabet(char* string)
+char* get_alphabet(const char* string)
 {
 
 	int i;
@@ -37,7 +37,7 @@ char* get_alphabet(char* string)
 
 
 
-int* create_c_array(char* string)
+int* create_c_array(const char* string)
 {
 	int i;
 	char* alphabet = get_alphabet(string);

@@ -1,7 +1,7 @@
 
 
-int get_index(char* alphabet, char c);
+int get_index(const char* alphabet, const char c);
 
-char* get_alphabet(char* s);
+char* get_alphabet(const char* s);
 
-int* create_c_array(char* s);
+int* create_c_array(const char* s);
