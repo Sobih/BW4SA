@@ -10,45 +10,7 @@
 #include <string.h>
 #include "../../include/bit_array.h"
 
-void swap(char* arr, int i, int j) {
-    char temp = arr[j];
-    arr[j] = arr[i];
-    arr[i] = temp;
-}
 
-void quicksort(char* arr, int a, int b) {
-    if (a >= b)
-        return;
-
-    char key = arr[a];
-    int i = a + 1, j = b;
-
-    while (i < j) {
-        while (i < j && arr[j] >= key)
-            --j;
-
-        while (i < j && arr[i] <= key)
-            ++i;
-
-        if (i < j)
-            swap(arr, i, j);
-    }
-
-    if (arr[a] > arr[i]) {
-        swap(arr, a, i);
-        quicksort(arr, a, i - 1);
-        quicksort(arr, i + 1, b);
-    }
-
-    // there is no left-hand-side
-    else {
-        quicksort(arr, a + 1, b);
-    }
-}
-
-void quick_sort(char* string, unsigned int size) {
-	quicksort(string, 0, size - 1);
-}
 
 char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	char_mapping* mapping;
