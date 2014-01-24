@@ -1,8 +1,9 @@
-/*
- * utils.c
- *
- *  Created on: 24.1.2014
- *      Author: Max Sandberg
+/**
+ * @file	utils.c
+ * @brief	Implementation of the utility-algorithms.
+ * @see		utils.h
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include <string.h>
@@ -10,6 +11,19 @@
 #include <stdio.h>
 #include "../include/utils.h"
 
+/**
+ * @brief	Simple swap-function.
+ *
+ * Swaps the position of two entries in an array.
+ *
+ * @param	arr			Pointer to the array is to be manipulated.
+ * @param	entry_size	Size of the entries that are to be swapped.
+ * @param	i			Index of the first entry.
+ * @param	j			Index of the second entry.
+ * @see		utils.h#quick_sort
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void swap(void* arr, unsigned int entry_size, int i, int j) {
 	void* tmp = malloc(entry_size);
 
@@ -20,6 +34,16 @@ void swap(void* arr, unsigned int entry_size, int i, int j) {
     free(tmp);
 }
 
+/**
+ * @brief	The implementation of the quicksort-algorithm.
+ * @param	arr			Pointer to the array that is to be sorted.
+ * @param	entry_size	Size of the individual entries in the array.
+ * @param	a			Index to the first entry to be sorted.
+ * @param	b			Index to the last entry to be sorted.
+ * @see		utils.h#quick_sort
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void quicksort(void* arr, unsigned int entry_size, unsigned int a,
 		unsigned int b) {
 
