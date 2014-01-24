@@ -1,10 +1,15 @@
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "utils.h"
 
-int get_index(char* alphabet, char c)
+#define MAX_ALPHABET_SIZE 20
+
+int get_index(char* string, char c)
 {
 	int i;
-	for(i=0;i<strlen(alphabet);i++){
-		if(c == *(alphabet+i)){
+	for(i=0;i<strlen(string);i++){
+		if(c == *(string+i)){
 			return i;
 		}
 	}
@@ -13,30 +18,39 @@ int get_index(char* alphabet, char c)
 
 char* get_alphabet(char* string)
 {
-	//to be implemented :D
+
 	int i;
+	char* alphabet = calloc(MAX_ALPHABET_SIZE, sizeof(char));
+	alphabet[0] = '\0';
+	int alphabet_index = 0;
 	
 	for(i=0;i<strlen(string);i++){
-		
+		if(get_index(alphabet, string[i]) == -1){
+			alphabet[alphabet_index+1] = alphabet[alphabet_index];
+			alphabet[alphabet_index] = string[i];
+			alphabet_index++;
+		}
 	}
-	char* alphabet = "$ABCDR";
+	quick_sort(alphabet, strlen(alphabet), sizeof(char));
 	return alphabet;
 }
 
-int * create_c_array(char* string)
+
+
+int* create_c_array(char* string)
 {
 	int i;
 	char* alphabet = get_alphabet(string);
-	int* carray = calloc(strlen(alphabet), sizeof(int));
+	int* c_array = calloc(strlen(alphabet), sizeof(int));
 	
 	for(i=0;i<strlen(string);i++){
 		int index = get_index(alphabet, string[i]);
-		carray[index] += 1;
+		c_array[index] += 1;
 	}
 	for(i=0;i<strlen(alphabet)-1;i++){
-		carray[i+1] = carray[i+1] + carray[i];
+		c_array[i+1] = c_array[i+1] + c_array[i];
 	}
 	
-	return carray;
+	return c_array;
 }
 
