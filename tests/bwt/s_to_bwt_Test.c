@@ -5,7 +5,7 @@
  *      Author: lvapaaka
  */
 
-#include "../../src/s_to_bwt.h"
+#include "../../src/bwt/s_to_bwt.h"
 #include <check.h>
 
 START_TEST(test_abracadabra_bwt)

@@ -4,8 +4,8 @@ compiler:
 install:
   - sudo apt-get install check
 script:
-  - gcc src/*.c libs/DBWT/*.c -o src/main.o -I libs/DBWT/
+  - gcc src/main.c src/bwt/*.c libs/DBWT/*.c -o src/main.o -I libs/DBWT/ -I src/bwt
   - ./src/main.o
-  - cd tests/
+  - cd tests/bwt
   - make build
   - cd ..
