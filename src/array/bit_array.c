@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../../include/bit_array.h"
+#include "../../include/utils.h"
 
 /**
  * @brief	Constructs the mapping of the alphabet.
