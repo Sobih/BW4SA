@@ -6,6 +6,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 #include "../include/utils.h"
 
 void swap(void* arr, unsigned int entry_size, int i, int j) {
