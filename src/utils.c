@@ -52,6 +52,9 @@ void quicksort(void* arr, unsigned int entry_size, unsigned int a,
 }
 
 void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size) {
+	if (arr == 0 || arr_size == 0 || entry_size == 0)
+		return;
+
 	quicksort(arr, entry_size, 0, arr_size - 1);
 }
 
