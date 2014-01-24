@@ -5,12 +5,12 @@
  *      Author: lvapaaka
  */
 
-void print_list(char *args[], int len)
+/*void print_list(char *args[], int len)
 {
     int i=0;
     for (;i<len;++i)
         puts(args[i]);
-}
+}*/
 
 #include "count_substrings.h"
 #include <stdio.h>
@@ -30,9 +30,9 @@ int main(void) {
     srand((unsigned)time(NULL));
     quicksort(args, sizeof(args)/sizeof(*args));
     print_list(args, sizeof(args)/sizeof(*args));*/
-	char *array[] = {"banana", "anana", "nana", "ana", "na", "a"};
 
-	printf("%d\n", compare_pairs(array, 6));
+
+	printf("%d\n", distinct_substrings("BANANA"));
 
 	return 0;
 }

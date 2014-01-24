@@ -53,7 +53,7 @@ void swap_strings(char **a, char **b) {
 }
 
 /* reference: http://stackoverflow.com/questions/19612152/quicksort-string-array-in-c*/
-void quicksort(char *strings[], int len) {
+void quicksort(char **strings, int len) {
 	int i, pivot = 0;
 
 	if (len <= 1) return;
@@ -77,8 +77,6 @@ int compare_pairs(char *strings[], int len) {
 	int i, count = 1;
 	char *a, *b;
 
-	quicksort(strings, len);
-
 	for (i = 1; i < len; i++) {
 		a = strings[i-1];
 		b = strings[i];
@@ -92,7 +90,7 @@ char **create_suffixes(char *string) {
 	char **suffixes, *substr;
 	int i, j;
 
-	suffixes = calloc(strlen(string), sizeof(char));
+	suffixes = calloc(strlen(string), sizeof(char)*strlen(string));
 
 	for (i = 0; i < strlen(string); i++) {
 		substr = "";
@@ -103,11 +101,21 @@ char **create_suffixes(char *string) {
 		suffixes[i] = substr;
 	}
 
-	return **suffixes;
-
+	return suffixes;
 }
 
+int distinct_substrings(char *string) {
+	int res;
 
+	char **suffixes = create_suffixes(string);
+	quicksort(suffixes, strlen(string));
+	res = compare_pairs(suffixes, strlen(string));
+
+	// gives error
+	free(suffixes);
+
+	return res;
+}
 
 
 
