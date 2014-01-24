@@ -6,3 +6,6 @@ install:
 script:
   - gcc src/*.c libs/DBWT/*.c -o src/main.o -I libs/DBWT/
   - ./src/main.o
+  - cd tests/
+  - make build
+  - cd ..
