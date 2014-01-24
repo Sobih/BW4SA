@@ -47,7 +47,7 @@ char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 /**
  * @brief	Determines the alphabet used by the string.
  * @param	string	The string from which the alphabet should be deduced.
- * @return			The alphabet used by the string, ordered lexicographically.
+ * @return			The alphabet used by the string.
  * @see		bit_array.h#map_alphabet
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
@@ -118,7 +118,7 @@ char_mapping* map_alphabet(const char* string) {
 
 	//sort constructed alphabet into lexicographic order
 	unsigned int length = strlen(alphabet);
-	quick_sort(alphabet, length);
+	quick_sort(alphabet, length, sizeof(char));
 
 	char_mapping* mapping = construct_mapping(alphabet, length);
 
