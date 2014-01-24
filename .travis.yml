@@ -1,0 +1,8 @@
+language: c
+compiler:
+  - gcc
+install:
+  - sudo apt-get install check
+script:
+  - gcc -o src/main.o src/*.c
+  - ./src/main.o
