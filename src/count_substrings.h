@@ -18,7 +18,7 @@ void quicksort(char *strings[], int len);
 
 int compare_pairs(char *strings[], int len);
 
-void create_suffixes(char *string);
+char **create_suffixes(char *string);
 
 int distinct_substrings(char *string);
 

@@ -5,15 +5,19 @@
  *      Author: lvapaaka
  */
 
-/*void print_list(char *args[], int len)
+#include "count_substrings.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+void print_list(char **args, int len)
 {
     int i=0;
     for (;i<len;++i)
         puts(args[i]);
-}*/
 
-#include "count_substrings.h"
-#include <stdio.h>
+}
+
+
 
 int main(void) {
 	/*printf("HELLO, WORLD! \n");*/
@@ -29,7 +33,17 @@ int main(void) {
 
     srand((unsigned)time(NULL));
     quicksort(args, sizeof(args)/sizeof(*args));
-    print_list(args, sizeof(args)/sizeof(*args));*/
+	*/
+	//char **args = create_suffixes("ABRACADABRA");
+	
+	/*int i, j;
+	for (i = 0; i < 6; i++) {
+		for (j = 0; j < sizeof(args[i]); j++) {
+			printf("%c", args[i][j]);
+		}
+		printf("\n");
+	}*/
+    //print_list(args, 11);
 
 
 	printf("%d\n", distinct_substrings("BANANA"));

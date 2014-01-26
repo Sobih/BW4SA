@@ -87,18 +87,14 @@ int compare_pairs(char *strings[], int len) {
 }
 
 char **create_suffixes(char *string) {
-	char **suffixes, *substr;
-	int i, j;
+	int len = strlen(string);	
+	char **suffixes;
+	int i;	
 
-	suffixes = calloc(strlen(string), sizeof(char)*strlen(string));
+	suffixes = calloc(len+1, len+1);
 
-	for (i = 0; i < strlen(string); i++) {
-		substr = "";
-		for (j = i; j < strlen(string); j++) {
-			substr += string[j];
-
-		}
-		suffixes[i] = substr;
+	for (i = 0; i < len; i++) {
+		suffixes[i] = &(string[i]);
 	}
 
 	return suffixes;
@@ -111,7 +107,6 @@ int distinct_substrings(char *string) {
 	quicksort(suffixes, strlen(string));
 	res = compare_pairs(suffixes, strlen(string));
 
-	// gives error
 	free(suffixes);
 
 	return res;
