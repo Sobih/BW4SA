@@ -2,7 +2,7 @@
  * count_substrings.c
  *
  *  Created on: 21.1.2014
- *      Author: lvapaaka & & pklehtol
+ *      Author: lvapaaka & pklehtol
  */
 
 #include <stdlib.h>
@@ -30,9 +30,10 @@ int count_substrings(char* string, int string_length){
 }
 /** longest common prefix
  * @return how long is the lcp */
-int lcp(char *string1, char *string2, int s1_length, int s2_length) {
+int lcp(char *string1, char *string2) {
 	int i, string_length, lcp_length = 0;
-
+	int s1_length = strlen(string1);
+	int s2_length = strlen(string2);
 	string_length = s1_length < s2_length ? s1_length : s2_length;
 
 	for (i = 0; i < string_length; i++) {
@@ -74,13 +75,13 @@ void quicksort(char **strings, int len) {
 }
 
 int compare_pairs(char *strings[], int len) {
-	int i, count = 1;
+	int i, count = strlen(strings[0]);
 	char *a, *b;
 
 	for (i = 1; i < len; i++) {
 		a = strings[i-1];
 		b = strings[i];
-		count += strlen(b) - lcp(a, b, strlen(a), strlen(b));
+		count += strlen(b) - lcp(a, b);
 	}
 
 	return count;

@@ -20,7 +20,6 @@ void print_list(char **args, int len)
 
 
 int main(void) {
-	/*printf("HELLO, WORLD! \n");*/
 
 	/*printf("%d",count_substrings("abracadabra",11));*/
 
@@ -36,17 +35,10 @@ int main(void) {
 	*/
 	//char **args = create_suffixes("ABRACADABRA");
 	
-	/*int i, j;
-	for (i = 0; i < 6; i++) {
-		for (j = 0; j < sizeof(args[i]); j++) {
-			printf("%c", args[i][j]);
-		}
-		printf("\n");
-	}*/
     //print_list(args, 11);
 
 
-	printf("%d\n", distinct_substrings("BANANA"));
+	printf("%d\n", distinct_substrings("ABCD"));
 
 	return 0;
 }
