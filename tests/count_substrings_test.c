@@ -9,24 +9,41 @@
  START_TEST (lcp_test)
  {
 
-	ck_assert_int_eq(lcp("ANA", "ANANA", 3, 5), 3);
-	ck_assert_int_eq(lcp("ANA", "BANANA", 3, 6), 0);
+	ck_assert_int_eq(lcp("ANA", "ANANA"), 3);
+	ck_assert_int_eq(lcp("ANA", "BANANA"), 0);
  }
  END_TEST
 
 START_TEST (lcp_test2)
 {
-	ck_assert_int_eq(lcp("MISSISSIPPI", "MISSISS", 11, 7), 7);
+	ck_assert_int_eq(lcp("MISSISSIPPI", "MISSISS"), 7);
 
 }
 END_TEST
 
-START_TEST (swap_test)
+START_TEST (suffixes_test)
 {
-	
-	
+	char *ans[] = {"BANANA", "ANANA", "NANA", "ANA", "NA", "A"};
+	int i;
+	char **suffixes = create_suffixes("BANANA");
+	for (i = 0; i < 6; i++) {
+		ck_assert_str_eq(ans[i], suffixes[i]);
+	}	
 }
 END_TEST
+
+START_TEST (suffixes_test2)
+{
+	char *ans[] = {"AAAA", "AAA", "AA", "A"};
+	int i; 
+	char **suffixes = create_suffixes("AAAA");
+	for (i = 0; i < 4; i++) {
+		ck_assert_str_eq(ans[i], suffixes[i]);
+	}
+}
+END_TEST
+
+
  
 Suite *
 count_suite (void)
@@ -37,7 +54,8 @@ count_suite (void)
   TCase *tc_core = tcase_create ("Core");
   tcase_add_test (tc_core, lcp_test);
   tcase_add_test (tc_core, lcp_test2);
-  tcase_add_test (tc_core, swap_test);
+  tcase_add_test(tc_core, suffixes_test);
+  tcase_add_test(tc_core, suffixes_test2);
   suite_add_tcase (s, tc_core);
 
   return s;

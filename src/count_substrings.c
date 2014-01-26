@@ -5,6 +5,7 @@
  *      Author: lvapaaka & pklehtol
  */
 
+//#include "utils.c"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

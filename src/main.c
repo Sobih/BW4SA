@@ -38,7 +38,7 @@ int main(void) {
     //print_list(args, 11);
 
 
-	printf("%d\n", distinct_substrings("ABCD"));
+	printf("%d\n", distinct_substrings("ABRACADABRA"));
 
 	return 0;
 }
