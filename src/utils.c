@@ -82,14 +82,32 @@ void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size) {
 	quicksort(arr, entry_size, 0, arr_size - 1);
 }
 
-
-// muista päivittää utils.h!
+/**
+ * @brief	Simple swap-function.
+ *
+ * Swaps the position of two strings in an array.
+ *
+ * @param	a, b	pointers to pointers of strings to be swapped
+ * @see		utils.h#string_quick_sort
+ * @author	Paula Lehtola
+ * @bug		No known bugs.
+ */
 
 void string_swap(char **a, char **b) {
 	char *tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
+
+/**
+ * @brief	quicksort for an array of strings
+ * @param	strings 	array of pointers of strings
+ * @param	a	index of the first entry to be sorted
+ * @param	b	index of the last entry to be sorted
+ * @see		utils.h#quick_sort
+ * @author	Paula Lehtola
+ * @bug		No known bugs.
+ */
 
 void string_quicksort(char **strings, unsigned int a, unsigned int b) {
 	if (a >= b)

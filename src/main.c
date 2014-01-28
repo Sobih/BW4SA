@@ -7,7 +7,7 @@
  */
 
 #include "distinct_substrings.h"
-#include "utils.c"
+#include "../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,12 +27,14 @@ int main(void) {
 
     char *args[] =
     {
-        "this", "is", "a", "test", "of", "quicksort", "with", "strings"
+        //"this", "is", "a", "test", "of", "quicksort", "with", "strings"
+		 "aa",  "baa", "aba", "a",
     };
 
-    //srand((unsigned)time(NULL));
-    string_quick_sort(args, 8);
-    print_list(args, sizeof(args)/sizeof(*args));
+    string_quick_sort(args, 4);
+    print_list(args, sizeof(args)/sizeof(*args)); 
+
+	
 
 	return 0;
 }
