@@ -1,6 +1,6 @@
 
 
-#include "../../src/backward-search/c-array.h"
+#include "c-array.h"
 #include <check.h>
 #include <stdio.h>
 
