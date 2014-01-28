@@ -1,3 +1,4 @@
+
 /*
  * main.c
  *
@@ -5,7 +6,7 @@
  *      Author: lvapaaka
  */
 
-#include "count_substrings.h"
+#include "distinct_substrings.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -20,6 +21,7 @@ void print_list(char **args, int len)
 
 
 int main(void) {
+<<<<<<< HEAD
 
 	/*printf("%d",count_substrings("abracadabra",11));*/
 
@@ -40,5 +42,7 @@ int main(void) {
 
 	printf("%d\n", distinct_substrings("ABRACADABRA"));
 
+=======
+>>>>>>> 5981a63c53198d607567bddbcc1ddf45d3afac33
 	return 0;
 }
