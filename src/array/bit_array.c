@@ -23,7 +23,7 @@
  */
 char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	char_mapping* mapping;
-	unsigned int bit_value = 1;
+	unsigned int bit_value = 0;
 
 	if ((mapping = calloc(length + 1, sizeof(char_mapping))) == 0)
 		//allocation failed, return NULL
