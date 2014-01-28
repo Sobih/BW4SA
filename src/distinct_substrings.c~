@@ -41,14 +41,14 @@ int lcp(char *string1, char *string2) {
 	return lcp_length;
 }
 
-/*void swap_strings(char **a, char **b) {
+void swap_strings(char **a, char **b) {
 	char *tmp = *a;
 	*a = *b;
 	*b = tmp;
-}*/
+}
 
 /* reference: http://stackoverflow.com/questions/19612152/quicksort-string-array-in-c*/
-/*void string_quicksort(char **strings, int len) {
+void string_quicksort(char **strings, int len) {
 	int i, pivot = 0;
 
 	if (len <= 1) return;
@@ -66,7 +66,7 @@ int lcp(char *string1, char *string2) {
 
 	string_quicksort(strings, pivot++);
 	string_quicksort(strings+pivot, len-pivot);
-}*/
+}
 
 /**
  * @brief 	creates an array with a pointer to every suffix of a string
@@ -127,7 +127,7 @@ int distinct_substrings(char *string) {
 	int len = strlen(string);
 	char **suffixes = create_suffixes(string);
 	//quick_sort(suffixes, length, sizeof(char*));
-	string_quick_sort(suffixes, len);
+	string_quicksort(suffixes, len);
 	res = compare_pairs(suffixes, len);
 
 	free(suffixes);

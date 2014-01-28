@@ -7,6 +7,7 @@
  */
 
 #include "distinct_substrings.h"
+#include "utils.c"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -21,28 +22,17 @@ void print_list(char **args, int len)
 
 
 int main(void) {
-<<<<<<< HEAD
 
-	/*printf("%d",count_substrings("abracadabra",11));*/
+	//printf("%d\n", distinct_substrings("BANANA"));
 
-	//printf("%d\n", lcp("NA", "NANA", 3, 5));
-
-    /*char *args[] =
+    char const *args[] =
     {
         "this", "is", "a", "test", "of", "quicksort", "with", "strings"
     };
 
-    srand((unsigned)time(NULL));
-    quicksort(args, sizeof(args)/sizeof(*args));
-	*/
-	//char **args = create_suffixes("ABRACADABRA");
-	
-    //print_list(args, 11);
+    //srand((unsigned)time(NULL));
+    string_quick_sort(args, 8);
+    print_list(args, sizeof(args)/sizeof(*args));
 
-
-	printf("%d\n", distinct_substrings("ABRACADABRA"));
-
-=======
->>>>>>> 5981a63c53198d607567bddbcc1ddf45d3afac33
 	return 0;
 }

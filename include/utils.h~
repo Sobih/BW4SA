@@ -27,6 +27,6 @@
  */
 void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size);
 
-void string_quick_sort(char **strings, unsigned int arr_size);
+void string_quick_sort(char **strings, unsigned int arr_size)
 
 #endif /* UTILS_H_ */

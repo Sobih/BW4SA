@@ -95,7 +95,7 @@ void string_quicksort(char **strings, unsigned int a, unsigned int b) {
 	if (a >= b)
 		return;
 
-	const char *key = strings[a];
+	char *key = strings[a];
 	int i = a+1, j = b;
 
 	while (i < j) {
