@@ -5,10 +5,10 @@
  *      Author: lvapaaka
  */
 
-#ifndef COUNT_SUBSTRINGS_H_
-#define COUNT_SUBSTRINGS_H_
+#ifndef DISTINCT_SUBSTRINGS_H_
+#define DISTINCT_SUBSTRINGS_H_
 
-int count_substrings(char* string, int string_length);
+
 
 int lcp(char* string1, char* string2);
 
@@ -22,4 +22,4 @@ char **create_suffixes(char *string);
 
 int distinct_substrings(char *string);
 
-#endif /* COUNT_SUBSTRINGS_H_ */
+#endif /* DISTINCT_SUBSTRINGS_H_ */
