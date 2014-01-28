@@ -6,8 +6,6 @@
  *      Author: lvapaaka
  */
 
-#include "s_to_bwt.h"
-
 int main(void) {
 	return 0;
 }
