@@ -130,17 +130,62 @@ char_mapping* map_alphabet(const char* string) {
 	return mapping;
 }
 
-void map_to_int(char_mapping* char_and_bit, int* target, int place, int alphabet_length) {
-	unsigned int bits_per_char = ceil(log10(alphabet_length) / log10(2));
+char_mapping* find_char_mapping(char_mapping* start, char c) {
+	for (int i = 1; i < start->bit_value; ++i)
+		if (start[i].character == c)
+			return (start + i);
 
-	//too many bits needed to map char or char doesn't fit in current int
-	if (bits_per_char > 32 || bits_per_char * place > 32)
-		return;
+	//none found
+	return 0;
+}
 
+void map_to_int(unsigned int bit_value, int* target, int place, unsigned int bits_per_char) {
 	unsigned int clear_mask = ~ ((bits_per_char * bits_per_char - 1) << place);
-	unsigned int mark_mask = (char_and_bit->bit_value) << place;
+	unsigned int mark_mask = bit_value << place;
 
 	//clear bits at correct location and mark new bits
 	*target &= clear_mask;
 	*target |= mark_mask;
+}
+
+unsigned int* map_string_to_int(const char* string, char_mapping* alphabet) {
+	int* char_array = calloc(10, sizeof(int));
+	int chars_left = 10, array_size = 0;
+	unsigned int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
+	int chars_in_int = floor(bits_per_char / sizeof(int));
+	int string_index = 0, string_length = strlen(string);
+
+	//too many bits needed to map char or char doesn't fit in current int
+	if (bits_per_char > 32)
+		return 0;
+
+	for (int i = 0; string_index < string_length; ++i) {
+		//lack of space, extend array
+		if (chars_left <= 0) {
+			chars_left = 10;
+			char_array = realloc(char_array, sizeof(int) * (array_size + chars_left));
+		}
+
+		char_array[i] = 0;
+
+		//map as many characters as possible into current array location
+		for (int j = 0; j < chars_in_int && string_index < string_length; ++j) {
+			//map current char into current array location
+			map_to_int(find_char_mapping(alphabet, string[string_index])->bit_value, (char_array + i),
+					j, bits_per_char);
+
+			string_index++;
+		}
+
+		array_size++;
+		chars_left--;
+	}
+
+	//add nullptr to the end to indicate end of array
+	if (chars_left <= 0)
+		char_array = realloc(char_array, sizeof(int) * (array_size + 1));
+
+	char_array[array_size] = 0;
+
+	return char_array;
 }
