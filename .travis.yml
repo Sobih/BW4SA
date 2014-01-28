@@ -6,11 +6,9 @@ install:
 script:
   - gcc -o src/main.o src/*.c
   - ./src/main.o
-  - cd tests/backward-search/
-  - make build
-  - cd ..
-  - cd ..
+  - chmod a+x os/c_array_tests.sh
   - chmod a+x os/array_tests.sh
   - chmod a+x os/utils_tests.sh
+  - ./os/c_array_tests.sh
   - ./os/array_tests.sh
   - ./os/utils_tests.sh
