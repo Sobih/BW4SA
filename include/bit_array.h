@@ -42,4 +42,6 @@ typedef struct {
  */
 char_mapping* map_alphabet(const char* string);
 
+unsigned int* map_string_to_int(const char* string, char_mapping* alphabet);
+
 #endif /* BIT_ARRAY_H_ */
