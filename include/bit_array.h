@@ -42,7 +42,7 @@ typedef struct {
  */
 char_mapping* map_alphabet(const char* string);
 
-unsigned int* map_string_to_int(const char* string, char_mapping* alphabet);
+unsigned int* map_string_to_int_array(const char* string, char_mapping* alphabet);
 
 char* map_int_array_to_string(const unsigned int* char_array, char_mapping* alphabet);
 

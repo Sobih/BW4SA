@@ -157,7 +157,7 @@ void map_to_int(unsigned int bit_value, int* target, int place, unsigned int bit
 	*target |= mark_mask;
 }
 
-unsigned int* map_string_to_int(const char* string, char_mapping* alphabet) {
+unsigned int* map_string_to_int_array(const char* string, char_mapping* alphabet) {
 	int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
 	int chars_in_int = floor(bits_per_char / sizeof(int));
 	int string_index = 0, string_length = strlen(string);
@@ -188,7 +188,7 @@ unsigned int* map_string_to_int(const char* string, char_mapping* alphabet) {
 	return char_array;
 }
 
-char* map_int_to_string(const unsigned int* char_array, char_mapping* alphabet) {
+char* map_int_array_to_string(const unsigned int* char_array, char_mapping* alphabet) {
 	int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
 	int chars_in_int = floor(bits_per_char / sizeof(int)), array_size = 0;
 
