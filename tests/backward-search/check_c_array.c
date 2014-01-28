@@ -35,7 +35,7 @@ END_TEST
 
 START_TEST(test_carray_simple)
 {
-	const int correct_array[] = {1, 6, 8, 9, 10, 12};
+	const int correct_array[] = {1, 6, 8, 9, 10, -1};
 	char* string = "ABRACADABRA$";
 	int i;
 	int* carray = create_c_array(string);
@@ -47,7 +47,7 @@ END_TEST
 
 START_TEST(test_carray_simple2)
 {
-	int correct_array[] = {1,3,4,6,10, 11};
+	int correct_array[] = {1,3,4,6,10, -1};
 	char* string = "hattivatti$";
 	int i;
 	int* carray = create_c_array(string);

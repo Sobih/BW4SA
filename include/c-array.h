@@ -6,8 +6,10 @@
  * 
  * @param string from the C-array will be generated
  *
- * @return array C which contains starting indexes of each distinct character
+ * @return array C which contains starting indexes of each distinct character. last index of the array is -1, to indicate end of the array.
  *
  * @author Topi Paavilainen
+ *
+ * @bug no known bugs
  */
 int* create_c_array(const char* string);

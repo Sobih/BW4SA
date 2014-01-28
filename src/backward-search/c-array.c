@@ -20,7 +20,7 @@ int get_index(const char* string,const char c)
 }
 
 /**
-*@brief returns string of all characters in words alphabet, ordered alphabetically
+*@brief returns string of all characters in alphabet of the given word, ordered alphabetically
 **/
 char* get_alphabet(const char* string)
 {
@@ -56,6 +56,10 @@ int* create_c_array(const char* string)
 	for(i=0;i<strlen(alphabet)-1;i++){
 		c_array[i+1] = c_array[i+1] + c_array[i];
 	}
+	//set the last index of c-array to -1, to indicate end of an array. 
+	c_array[strlen(alphabet)-1] = -1;
+	
+	free(alphabet);
 	
 	return c_array;
 }
