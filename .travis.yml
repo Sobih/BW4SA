@@ -8,5 +8,7 @@ script:
   - ./src/main.o
   - chmod a+x os/array_tests.sh
   - chmod a+x os/utils_tests.sh
+  - chmod a+x os/s_to_bwt_tests.sh
   - ./os/array_tests.sh
   - ./os/utils_tests.sh
+  - ./os/s_to_bwt_tests.sh
