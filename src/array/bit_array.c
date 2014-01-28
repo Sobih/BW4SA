@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <limits.h>
 #include "../../include/bit_array.h"
 #include "../../include/utils.h"
 
@@ -126,4 +128,19 @@ char_mapping* map_alphabet(const char* string) {
 	free(alphabet);
 
 	return mapping;
+}
+
+void map_to_int(char_mapping* char_and_bit, int* target, int place, int alphabet_length) {
+	unsigned int bits_per_char = ceil(log10(alphabet_length) / log10(2));
+
+	//too many bits needed to map char or char doesn't fit in current int
+	if (bits_per_char > 32 || bits_per_char * place > 32)
+		return;
+
+	unsigned int clear_mask = ~ ((bits_per_char * bits_per_char - 1) << place);
+	unsigned int mark_mask = (char_and_bit->bit_value) << place;
+
+	//clear bits at correct location and mark new bits
+	*target &= clear_mask;
+	*target |= mark_mask;
 }
