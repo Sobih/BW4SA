@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../../include/c_array.h"
 #include "../../include/utils.h"
 
 #define MAX_ALPHABET_SIZE 20
@@ -41,8 +42,6 @@ char* get_alphabet(const char* string)
 	return alphabet;
 }
 
-
-
 int* create_c_array(const char* string)
 {
 	int i;
@@ -56,8 +55,11 @@ int* create_c_array(const char* string)
 	for(i=0;i<strlen(alphabet)-1;i++){
 		c_array[i+1] = c_array[i+1] + c_array[i];
 	}
-	//set the last index of c-array to -1, to indicate end of an array. 
-	c_array[strlen(alphabet)-1] = -1;
+	
+	for(i=strlen(alphabet); i>0;i--){
+		c_array[i] = c_array[i-1];
+	}
+	c_array[0] = 0;
 	
 	free(alphabet);
 	
