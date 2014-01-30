@@ -27,6 +27,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int* mapped_string;
+	char_mapping* alphabet;
 	unsigned int length;
 } bit_string;
 
