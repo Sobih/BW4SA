@@ -25,6 +25,11 @@ typedef struct {
 	unsigned int bit_value;
 } char_mapping;
 
+typedef struct {
+	unsigned int* mapped_string;
+	unsigned int length;
+} bit_string;
+
 /**
  * @brief	Maps characters to bit values used for compression.
  *
