@@ -181,6 +181,15 @@ bit_string* map_string_to_bit_string(const char* string, const char_mapping* alp
 	if (string == 0 || alphabet == 0)
 		return 0;
 
+	//string length == 0
+	if (strlen(string) == 0) {
+		bit_string* ret = calloc(1, sizeof(bit_string));
+		ret->length = 0;
+		ret->alphabet = (char_mapping*) alphabet;
+		ret->mapped_string = 0;
+		return ret;
+	}
+
 	int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
 	int chars_in_int = floor((sizeof(int) * 8) / bits_per_char);
 	int string_index = 0, string_length = strlen(string);
@@ -223,6 +232,13 @@ char* map_bit_string_to_string(const bit_string* bit_string) {
 	if (bit_string == 0)
 		return 0;
 
+	//length == 0
+	if (bit_string->length == 0) {
+		char* ret = calloc(1, sizeof(char));
+		ret[0] = 0;
+		return ret;
+	}
+
 	int bits_per_char = ceil(log10(bit_string->alphabet[0].bit_value) / log10(2));
 	int chars_in_int = floor((sizeof(int) * 8) / bits_per_char);
 	int string_length = chars_in_int * bit_string->length + 1;
@@ -236,6 +252,8 @@ char* map_bit_string_to_string(const bit_string* bit_string) {
 
 	for (int i = 0; i < bits_per_char; ++i)
 		mask = (mask << 1) + 1;
+
+	unsigned int orig_mask = mask;
 
 	for (int i = 0; i < bit_string->length; ++i) {
 		current_substr = bit_string->mapped_string[i];
@@ -252,10 +270,12 @@ char* map_bit_string_to_string(const bit_string* bit_string) {
 			mask = mask << bits_per_char;
 			string_index++;
 		}
+
+		mask = orig_mask;
 	}
 
 	//append NULL to end of string
-	string[string_length - 1] = 0;
+	string[string_index] = 0;
 
 	return string;
 }
