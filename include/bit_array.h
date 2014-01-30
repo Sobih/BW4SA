@@ -48,8 +48,8 @@ typedef struct {
  */
 char_mapping* map_alphabet(const char* string);
 
-unsigned int* map_string_to_int_array(const char* string, char_mapping* alphabet);
+bit_string* map_string_to_bit_string(const char* string, const char_mapping* alphabet);
 
-char* map_int_array_to_string(const unsigned int* char_array, char_mapping* alphabet);
+char* map_bit_string_to_string(const bit_string* bit_string);
 
 #endif /* BIT_ARRAY_H_ */
