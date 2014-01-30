@@ -11,4 +11,3 @@ script:
   - ./os/array_tests.sh
   - ./os/utils_tests.sh
   - ./os/s_to_bwt_tests.sh
-  - ./os/distinct_substrings_tests.sh
