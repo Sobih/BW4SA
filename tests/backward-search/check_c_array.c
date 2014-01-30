@@ -1,7 +1,9 @@
 
 
-#include "c-array.h"
+#include "c_array.h"
 #include <check.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 START_TEST(test_get_index)
@@ -27,7 +29,16 @@ START_TEST(test_create_alphabet2)
 {
 	const char* correct_alphabet = "almost";
 	char* returned = get_alphabet("mmlloooooosssaassoslsaatstststalala");
-	int i;
+	ck_assert_str_eq(correct_alphabet, returned);
+	
+	
+}
+END_TEST
+
+START_TEST(test_get_alphabet3)
+{
+	const char* correct_alphabet = "$abcdr";
+	char* returned = get_alphabet("abracadabra$");
 	ck_assert_str_eq(correct_alphabet, returned);
 	
 }
@@ -35,7 +46,7 @@ END_TEST
 
 START_TEST(test_carray_simple)
 {
-	const int correct_array[] = {1, 6, 8, 9, 10, -1};
+	const int correct_array[] = {0,1, 6, 8, 9, 10};
 	char* string = "ABRACADABRA$";
 	int i;
 	int* carray = create_c_array(string);
@@ -47,7 +58,7 @@ END_TEST
 
 START_TEST(test_carray_simple2)
 {
-	int correct_array[] = {1,3,4,6,10, -1};
+	int correct_array[] = {0,1,3,4,6,10};
 	char* string = "hattivatti$";
 	int i;
 	int* carray = create_c_array(string);
@@ -58,12 +69,15 @@ START_TEST(test_carray_simple2)
 }
 END_TEST
 
+
 TCase * create_carray_test_case(void){
 	TCase * tc_carray = tcase_create("carray_test");
 	tcase_add_test(tc_carray, test_get_index);
 	tcase_add_test(tc_carray, test_create_alphabet);
+	tcase_add_test(tc_carray, test_create_alphabet2);
 	tcase_add_test(tc_carray, test_carray_simple);
 	tcase_add_test(tc_carray, test_carray_simple2);
+	tcase_add_test(tc_carray, test_get_alphabet3);
 	
 	return tc_carray;
 }
