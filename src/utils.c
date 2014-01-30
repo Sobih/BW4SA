@@ -82,3 +82,14 @@ void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size) {
 	quicksort(arr, entry_size, 0, arr_size - 1);
 }
 
+void print_bits(unsigned int mask) {
+	unsigned int size = sizeof(unsigned int);
+	unsigned int max_pow = 1 << (size * 8 - 1);
+
+	for (int i = 0; i < size * 8; ++i) {
+		// print last bit and shift left.
+	    printf("%u", mask & max_pow ? 1 : 0);
+	    mask = mask << 1;
+	}
+}
+

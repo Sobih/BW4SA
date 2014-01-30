@@ -27,4 +27,14 @@
  */
 void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size);
 
+/**
+ * @brief	A small function that prints the bits of an unsigned
+ * 			int.
+ * @param	mask		The unsigned integer whose bit value will
+ * 						be printed.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_bits(unsigned int mask);
+
 #endif /* UTILS_H_ */
