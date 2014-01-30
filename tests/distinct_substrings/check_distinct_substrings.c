@@ -4,8 +4,8 @@
 //@@ -1,18 +1,38 @@
  #include <stdlib.h>
  #include <check.h>
- #include "../include/utils.h"
- #include "../src/distinct_substrings.h"
+ #include "../../include/utils.h"
+ #include "../../src/distinct_substrings.h"
  
 START_TEST (lcp_test)
 {
@@ -76,6 +76,13 @@ START_TEST (distinct_substrings_test2)
 }
 END_TEST
 
+START_TEST (distinct_substrings_test3)
+{
+	ck_assert_int_eq(distinct_substrings("ABRAKADABRA"), 54);
+
+
+}
+END_TEST
 
 Suite *count_suite (void)
 {
@@ -91,6 +98,7 @@ Suite *count_suite (void)
   tcase_add_test(tc_core, compare_pairs_test2);
   tcase_add_test(tc_core, distinct_substrings_test);
   tcase_add_test(tc_core, distinct_substrings_test2);
+  tcase_add_test(tc_core, distinct_substrings_test3);
   suite_add_tcase (s, tc_core);
 
   return s;

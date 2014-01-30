@@ -103,7 +103,7 @@ END_TEST
 START_TEST (test_string_quicksort3) 
 {
 	char *array[] = {"testing", "if", "a", "quicksort", "can", "sort", "this"};
-	char *sorted[] = {"a", "can", "if", "quicksort", "sort", "testing", "this"};
+	char *sorted[] = {"a", "can", "aa", "aaa"};
 	string_quick_sort(array, 7);
 	int i;
 	for (i = 0; i < 7; i++) {
