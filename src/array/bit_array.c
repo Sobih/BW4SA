@@ -14,6 +14,8 @@
 #include "../../include/bit_array.h"
 #include "../../include/utils.h"
 
+#define		END		UINT_MAX
+
 /**
  * @brief	Constructs the mapping of the alphabet.
  * @param	alphabet	The alphabet used by the string, ordered lexicographically.
@@ -25,7 +27,7 @@
  */
 char_mapping* construct_mapping(const char* alphabet, unsigned int length) {
 	char_mapping* mapping;
-	unsigned int bit_value = 0;
+	unsigned int bit_value = 1;
 
 	if ((mapping = calloc(length + 1, sizeof(char_mapping))) == 0)
 		//allocation failed, return NULL
@@ -130,90 +132,113 @@ char_mapping* map_alphabet(const char* string) {
 	return mapping;
 }
 
-char_mapping* find_by_char(char_mapping* start, char c) {
-	for (int i = 1; i < start->bit_value; ++i)
+int find_by_char(const char_mapping* start, char c) {
+	for (int i = 1; i <= start->bit_value; ++i)
 		if (start[i].character == c)
-			return (start + i);
+			return i;
 
 	//none found
-	return 0;
+	return -1;
 }
 
-char_mapping* find_by_bit_value(char_mapping* start, unsigned int bit_value) {
-	for (int i = 1; i < start->bit_value; ++i)
+int find_by_bit_value(const char_mapping* start, unsigned int bit_value) {
+	for (int i = 1; i <= start->bit_value; ++i)
 		if (start[i].bit_value == bit_value)
-			return (start + i);
+			return i;
 
 	//none found
-	return 0;
+	return -1;
 }
 
-void map_to_int(unsigned int bit_value, int* target, int place, unsigned int bits_per_char) {
-	unsigned int clear_mask = ~ ((bits_per_char * bits_per_char - 1) << place);
-	unsigned int mark_mask = bit_value << place;
+void print_bits(unsigned int mask) {
+	unsigned int size = sizeof(unsigned int);
+	unsigned int max_pow = 1 << (size * 8 - 1);
+
+	for (int i = 0; i < size * 8; ++i) {
+		// print last bit and shift left.
+	    printf("%u", mask & max_pow ? 1 : 0);
+	    mask = mask << 1;
+	}
+}
+
+void map_to_int(unsigned int bit_value, unsigned int* target, int place, unsigned int bits_per_char) {
+	unsigned int clear_mask = 0;
+
+	for (int i = 0; i < bits_per_char; ++i)
+		clear_mask = (clear_mask << 1) + 1;
+
+	clear_mask = ~ (clear_mask << (place * bits_per_char));
+
+	unsigned int mark_mask = bit_value << (place * bits_per_char);
 
 	//clear bits at correct location and mark new bits
 	*target &= clear_mask;
 	*target |= mark_mask;
 }
 
-unsigned int* map_string_to_int_array(const char* string, char_mapping* alphabet) {
+bit_string* map_string_to_bit_string(const char* string, const char_mapping* alphabet) {
 	int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
-	int chars_in_int = floor(bits_per_char / sizeof(int));
+	int chars_in_int = floor((sizeof(int) * 8) / bits_per_char);
 	int string_index = 0, string_length = strlen(string);
-	int array_size = chars_in_int * string_length + 1;
+	int array_size = ceil((float)string_length / (float)chars_in_int);
 
 	//too many bits needed to map char
 	if (bits_per_char > 32)
 		return 0;
 
 	unsigned int* char_array = calloc(array_size, sizeof(int));
+	int alphabet_index;
 
 	for (int i = 0; string_index < string_length; ++i) {
 		char_array[i] = 0;
 
 		//map as many characters as possible into current array location
 		for (int j = 0; j < chars_in_int && string_index < string_length; ++j) {
+			alphabet_index = find_by_char(alphabet, string[string_index]);
+
 			//map current char into current array location
-			map_to_int(find_by_char(alphabet, string[string_index])->bit_value, (char_array + i),
-					j, bits_per_char);
+			map_to_int(alphabet[alphabet_index].bit_value, (char_array + i), j,
+					bits_per_char);
 
 			string_index++;
 		}
 	}
 
-	//add NULL to the end to indicate end of array
-	char_array[array_size - 1] = NULL;
+	//create a bit_string struct to store the results
+	bit_string* ret = calloc(1, sizeof(bit_string));
 
-	return char_array;
+	ret->alphabet = (char_mapping*) alphabet;
+	ret->length = array_size;
+	ret->mapped_string = char_array;
+
+	return ret;
 }
 
-char* map_int_array_to_string(const unsigned int* char_array, char_mapping* alphabet) {
-	int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
-	int chars_in_int = floor(bits_per_char / sizeof(int)), array_size = 0;
-
-	//count length of array
-	while (1) {
-		if (char_array[array_size] == NULL)
-			break;
-
-		array_size++;
-	}
-
-	int string_length = chars_in_int * array_size + 1;
+char* map_bit_string_to_string(const bit_string* bit_string) {
+	int bits_per_char = ceil(log10(bit_string->alphabet[0].bit_value) / log10(2));
+	int chars_in_int = floor((sizeof(int) * 8) / bits_per_char);
+	int string_length = chars_in_int * bit_string->length + 1;
 	char* string = calloc(string_length, sizeof(char));
 
 	unsigned int current_substr, current_char;
-	unsigned int mask = bits_per_char * bits_per_char - 1;
-	int string_index = 0;
+	int string_index = 0, alphabet_index;
 
-	for (int i = 0; i < array_size; ++i) {
-		current_substr = char_array[i];
+	//create mask to mark the current substring
+	unsigned int mask = 0;
+
+	for (int i = 0; i < bits_per_char; ++i)
+		mask = (mask << 1) + 1;
+
+	for (int i = 0; i < bit_string->length; ++i) {
+		current_substr = bit_string->mapped_string[i];
 
 		//decode all chars from current int
 		for (int j = 0; j < chars_in_int; ++j) {
 			current_char = (current_substr & mask) >> (bits_per_char * j);
-			string[string_index] = find_by_bit_value(alphabet, current_char)->character;
+			alphabet_index = find_by_bit_value(bit_string->alphabet, current_char);
+
+			if (alphabet_index != -1)
+				string[string_index] = bit_string->alphabet[alphabet_index].character;
 
 			//update mask to take next int
 			mask = mask << bits_per_char;
