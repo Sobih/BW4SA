@@ -9,7 +9,7 @@
 /**
 *@brief finds first index of given char from a string
 **/
-int get_index(const char* string,const char c)
+int get_index(const char* string, const char c)
 {
 	int i;
 	for(i=0;i<strlen(string);i++){

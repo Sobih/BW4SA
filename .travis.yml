@@ -10,3 +10,4 @@ script:
   - ./os/utils_tests.sh
   - ./os/s_to_bwt_tests.sh
   - ./os/distinct_substrings_tests.sh
+  - ./os/backward_search_tests.sh
