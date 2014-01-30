@@ -37,4 +37,16 @@ void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size);
  */
 void print_bits(unsigned int mask);
 
+/**
+ * @brief	quicksort for an array of strings
+ * @param	strings 	array of pointers of strings
+ * @param	a	index of the first entry to be sorted
+ * @param	b	index of the last entry to be sorted
+ * @see		utils.h#quick_sort
+ * @author	Paula Lehtola
+ * @bug		No known bugs.
+ */
+
+void string_quick_sort(char **strings, unsigned int arr_size);
+
 #endif /* UTILS_H_ */

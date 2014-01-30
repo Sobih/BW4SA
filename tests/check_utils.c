@@ -2,7 +2,7 @@
  * check_utils.c
  *
  *  Created on: 24.1.2014
- *      Author: Max Sandberg
+ *      Author: Max Sandberg & Paula Lehtola
  */
 
 #include <check.h>
@@ -74,6 +74,46 @@ START_TEST (test_large_array) {
 }
 END_TEST
 
+START_TEST (test_string_quicksort) 
+{
+	char *array[] = {"aa",  "baa", "aba", "a"};
+	char *sorted[] = {"a", "aa", "aba", "baa"};
+	string_quick_sort(array, 4);
+	int i;
+	for (i = 0; i < 4; i++) {
+		ck_assert_str_eq(array[i], sorted[i]);
+	}
+	
+}
+END_TEST	
+
+START_TEST (test_string_quicksort2) 
+{
+	char *array[] = {"aaa",  "aa", "a", "a"};
+	char *sorted[] = {"a", "a", "aa", "aaa"};
+	string_quick_sort(array, 4);
+	int i;
+	for (i = 0; i < 4; i++) {
+		ck_assert_str_eq(array[i], sorted[i]);
+	}
+	
+}
+END_TEST
+
+START_TEST (test_string_quicksort3) 
+{
+	char *array[] = {"testing", "if", "a", "quicksort", "can", "sort", "this"};
+	char *sorted[] = {"a", "can", "if", "quicksort", "sort", "testing", "this"};
+	string_quick_sort(array, 7);
+	int i;
+	for (i = 0; i < 7; i++) {
+		ck_assert_str_eq(array[i], sorted[i]);
+	}
+	
+}
+END_TEST
+
+
 Suite* array_suite(void) {
 	Suite* suite = suite_create("Utils");
 
@@ -81,6 +121,9 @@ Suite* array_suite(void) {
 	tcase_add_test (tc_alphabet_mapping, test_quicksort);
 	tcase_add_test (tc_alphabet_mapping, test_faulty_array);
 	tcase_add_test (tc_alphabet_mapping, test_large_array);
+	tcase_add_test (tc_alphabet_mapping, test_string_quicksort);
+	tcase_add_test (tc_alphabet_mapping, test_string_quicksort2);
+	tcase_add_test (tc_alphabet_mapping, test_string_quicksort3);
 	suite_add_tcase (suite, tc_alphabet_mapping);
 
 	return suite;
@@ -90,7 +133,7 @@ int main() {
 	int number_failed;
 	Suite* suite = array_suite();
 	SRunner* suite_runner = srunner_create(suite);
-	srunner_run_all(suite_runner, CK_NORMAL);
+	srunner_run_all(suite_runner, CK_VERBOSE);
 	number_failed = srunner_ntests_failed(suite_runner);
 	srunner_free(suite_runner);
 
