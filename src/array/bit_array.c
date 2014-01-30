@@ -132,6 +132,17 @@ char_mapping* map_alphabet(const char* string) {
 	return mapping;
 }
 
+/**
+ * @brief	Finds an entry in a mapped alphabet using a char.
+ * @param	start		The beginning of the alphabet.
+ * @param	c			The letter which is to be found in the
+ * 						alphabet.
+ * @return	Returns the index of the character in the alphabet or
+ * 			-1 if it can't be found.
+ * @see		#find_by_bit_value
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 int find_by_char(const char_mapping* start, char c) {
 	for (int i = 1; i <= start->bit_value; ++i)
 		if (start[i].character == c)
@@ -141,6 +152,17 @@ int find_by_char(const char_mapping* start, char c) {
 	return -1;
 }
 
+/**
+ * @brief	Finds an entry in a mapped alphabet using a bit value.
+ * @param	start		The beginning of the alphabet.
+ * @param	bit_value	The mapped bit value for which an entry should
+ * 						be found.
+ * @return	Returns the index of the mapped bit value in the alphabet
+ * 			or -1 if it can't be found.
+ * @see		#find_by_char
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 int find_by_bit_value(const char_mapping* start, unsigned int bit_value) {
 	for (int i = 1; i <= start->bit_value; ++i)
 		if (start[i].bit_value == bit_value)
@@ -150,6 +172,19 @@ int find_by_bit_value(const char_mapping* start, unsigned int bit_value) {
 	return -1;
 }
 
+/**
+ * @brief	Maps a character to the specified position inside an
+ * 			unsigned 32-bit integer.
+ * @param	bit_value		The bit value of the character, determined
+ * 							by the alphabet.
+ * @param	target			The target 32-bit integer where the char
+ * 							mapping should be inserted.
+ * @param	place			The placement inside the integer.
+ * @param	bits_per_char	The amount of bits used per character.
+ * @see		#map_string_to_bit_string
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void map_to_int(unsigned int bit_value, unsigned int* target, int place, unsigned int bits_per_char) {
 	unsigned int clear_mask = 0;
 
