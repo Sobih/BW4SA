@@ -150,17 +150,6 @@ int find_by_bit_value(const char_mapping* start, unsigned int bit_value) {
 	return -1;
 }
 
-void print_bits(unsigned int mask) {
-	unsigned int size = sizeof(unsigned int);
-	unsigned int max_pow = 1 << (size * 8 - 1);
-
-	for (int i = 0; i < size * 8; ++i) {
-		// print last bit and shift left.
-	    printf("%u", mask & max_pow ? 1 : 0);
-	    mask = mask << 1;
-	}
-}
-
 void map_to_int(unsigned int bit_value, unsigned int* target, int place, unsigned int bits_per_char) {
 	unsigned int clear_mask = 0;
 
