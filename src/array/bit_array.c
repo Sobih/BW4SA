@@ -177,6 +177,10 @@ void map_to_int(unsigned int bit_value, unsigned int* target, int place, unsigne
 }
 
 bit_string* map_string_to_bit_string(const char* string, const char_mapping* alphabet) {
+	//parameters not initialized
+	if (string == 0 || alphabet == 0)
+		return 0;
+
 	int bits_per_char = ceil(log10(alphabet[0].bit_value) / log10(2));
 	int chars_in_int = floor((sizeof(int) * 8) / bits_per_char);
 	int string_index = 0, string_length = strlen(string);
@@ -215,6 +219,10 @@ bit_string* map_string_to_bit_string(const char* string, const char_mapping* alp
 }
 
 char* map_bit_string_to_string(const bit_string* bit_string) {
+	//parameter not initialized
+	if (bit_string == 0)
+		return 0;
+
 	int bits_per_char = ceil(log10(bit_string->alphabet[0].bit_value) / log10(2));
 	int chars_in_int = floor((sizeof(int) * 8) / bits_per_char);
 	int string_length = chars_in_int * bit_string->length + 1;
