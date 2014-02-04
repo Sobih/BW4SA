@@ -116,6 +116,12 @@ void free_subtree(struct wavelet_node* node) {
 	if (node == NULL)
 		return;
 
+	//set parent's connection to this node to NULL
+	if (node->parent->children[0] == node)
+		node->parent->children[0] = NULL;
+	else if (node->parent->children[1] == node)
+		node->parent->children[1] = NULL;
+
 	//free bitvector and string first
 	free(node->bit_vector);
 	free(node->string);
