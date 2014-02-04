@@ -121,8 +121,8 @@ void free_subtree(struct wavelet_node* node) {
 	free(node->string);
 
 	//recursively call children
-	free_wavelet_tree(node->children);
-	free_wavelet_tree(node->children + 1);
+	free_subtree(node->children);
+	free_subtree(node->children + 1);
 
 	//free entire struct
 	free(node);
