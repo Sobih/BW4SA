@@ -22,7 +22,7 @@ wavelet_node* init_node(struct wavelet_node* node, const char* parent_string, co
 }
 
 unsigned int* create_bit_vector(const char* string, const char* alphabet) {
-	//TODO: Implement this once a bit vector representation has been determined
+	//TODO: Implement this once a bitvector-representation has been determined
 	return NULL;
 }
 
@@ -51,12 +51,12 @@ char* determine_substring(const char* string, const char* alphabet, unsigned int
 
 	//add null-marker
 	if (chars_left == 0)
-		//expand alphabet array
+		//expand array
 		if ((substring = realloc(substring, size + 1)) == 0)
 			//realloc failed, return NULL
 			return 0;
 
-	//add to alphabet
+	//add to substring
 	substring[size] = 0;
 
 	return substring;
@@ -81,12 +81,12 @@ wavelet_node* create_children(struct wavelet_node* node) {
 
 	//alphabet small enough = no children
 	else
-		node->children = NULL;
+		node->children = 0;
 
 	return node;
 }
 
-wavelet_node* create_wavelet_tree(char* string) {
+wavelet_node* create_wavelet_tree(const char* string) {
 	//allocate the root node
 	struct wavelet_node* root = calloc(1, sizeof(wavelet_node));
 

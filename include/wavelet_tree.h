@@ -17,6 +17,6 @@ struct wavelet_node {
 	struct wavelet_node* children;
 } wavelet_node;
 
-wavelet_node* create_wavelet_tree(char* string);
+wavelet_node* create_wavelet_tree(const char* string);
 
 #endif /* WAVELET_TREE_H_ */
