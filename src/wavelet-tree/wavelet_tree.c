@@ -101,3 +101,29 @@ wavelet_node* create_wavelet_tree(const char* string) {
 
 	return root;
 }
+
+void free_wavelet_tree(struct wavelet_node* node) {
+	if (node == NULL)
+		return;
+
+	//free alphabet, since it only has one allocation throughout the tree
+	free(node->alphabet);
+
+	free_subtree(node);
+}
+
+void free_subtree(struct wavelet_node* node) {
+	if (node == NULL)
+		return;
+
+	//free bitvector and string first
+	free(node->bit_vector);
+	free(node->string);
+
+	//recursively call children
+	free_wavelet_tree(node->children);
+	free_wavelet_tree(node->children + 1);
+
+	//free entire struct
+	free(node);
+}

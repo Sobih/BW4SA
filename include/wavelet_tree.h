@@ -19,4 +19,8 @@ struct wavelet_node {
 
 wavelet_node* create_wavelet_tree(const char* string);
 
+void free_wavelet_tree(struct wavelet_node* node);
+
+void free_subtree(struct wavelet_node* node);
+
 #endif /* WAVELET_TREE_H_ */
