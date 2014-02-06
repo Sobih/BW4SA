@@ -7,7 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "iterate/rbwt.c"
+#include <string.h>
+#include "../include/rbwt.h"
+#include "bwt/s_to_bwt.h"
 
 void print(char *string)
 {
@@ -17,14 +19,13 @@ void print(char *string)
 		printf("%c", string[i]);
 	}
 	printf("\n");
-
-
 }
 
 
 int main(void) {
 
-	char *s = reverse_string("kissa");
+	//char *s = reverse_string("MISSISSIPPI");
+	char *s = reverse_bwt("ABRACADABRA$");
 	print(s);
 
 	return 0;
