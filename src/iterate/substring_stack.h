@@ -6,6 +6,8 @@
 /**
 * @brief simple stack data structure for substring structs. Can hold any amount of data, array size is automatically doubled is memory gets full
 * @author Topi Paavilainen
+*
+* @bug no known bugs
 **/
 typedef struct substring_stack_struct
 {

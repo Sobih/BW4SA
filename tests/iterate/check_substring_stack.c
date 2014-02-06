@@ -83,7 +83,7 @@ END_TEST
 START_TEST(heavy_pushnpop3)
 {
 	substring_stack* stack = create_stack(27);
-	int n = 1500;
+	int n = 139;
 	int i, k, j;
 	substring** arr = create_n_substrs(n);
 	for(i=0;i<n;i++){
