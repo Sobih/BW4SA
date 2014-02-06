@@ -78,7 +78,7 @@ struct bit_vec* unmark_bit_vector_bit(struct bit_vec* vector, unsigned int pos) 
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-int is_bit_marked(struct bit_vec* vector, unsigned int pos) {
+int is_bit_marked(const struct bit_vec* vector, unsigned int pos) {
 	unsigned int i = pos / 32;
 
 	if (i > vector->length)
@@ -103,10 +103,11 @@ int is_bit_marked(struct bit_vec* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 unsigned int rank_query(const struct bit_vec* vector, unsigned int pos) {
+	struct bit_vec* vec = (struct bit_vec*) vector;
 	unsigned int count = 0;
 
-	for (int i = 0; i < (vector->length * 32); ++i)
-		if (vector->is_bit_marked(vector, i))
+	for (int i = 0; i < (vec->length * 32); ++i)
+		if (vec->is_bit_marked(vec, i))
 			count++;
 
 	return count;

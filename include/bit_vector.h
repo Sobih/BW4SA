@@ -26,7 +26,7 @@ struct bit_vec {
 
 	struct bit_vec* (*mark_bit) (struct bit_vec* vector, unsigned int pos);
 	struct bit_vec* (*unmark_bit) (struct bit_vec* vector, unsigned int pos);
-	int (*is_bit_marked) (struct bit_vec* vector, unsigned int pos);
+	int (*is_bit_marked) (const struct bit_vec* vector, unsigned int pos);
 	unsigned int (*rank) (const struct bit_vec* vector, unsigned int pos);
 } bit_vector;
 
