@@ -89,6 +89,29 @@ int is_bit_marked(struct bit_vec* vector, unsigned int pos) {
 	return (vector->vector[i] & correct_val) == correct_val ? 1 : 0;
 }
 
+/**
+ * @brief	A simple rank-implementation.
+ *
+ * This function returns the number of marked bits in the vector up
+ * to and including the position pos.
+ *
+ * @param	vector		The vector that bits are going to be calculated
+ * 						for.
+ * @param	pos			The position after which the count should stop.
+ * @return	The number of marked bits up to and including pos.
+ * @author	Max Sandberg (REXiator)
+ * @bugs	No known bugs.
+ */
+unsigned int rank_query(const struct bit_vec* vector, unsigned int pos) {
+	unsigned int count = 0;
+
+	for (int i = 0; i < (vector->length * 32); ++i)
+		if (vector->is_bit_marked(vector, i))
+			count++;
+
+	return count;
+}
+
 struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	if (vector == 0 || nbits == 0)
 		return 0;
@@ -98,6 +121,7 @@ struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	vector->mark_bit = &mark_bit_vector_bit;
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
+	vector->rank = &rank_query;
 
 	//init vector to all zeros
 	if ((vector->vector = calloc(vector->length, sizeof(unsigned int))) == 0)
