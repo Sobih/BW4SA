@@ -11,72 +11,94 @@
 #include "../../include/utils.h"
 #include "../../include/wavelet_tree.h"
 
-wavelet_node* init_node(struct wavelet_node* node, const char* parent_string, const char* alphabet,
+wavelet_node* init_node(struct wavelet_node* node, const char* string, const char* alphabet,
 		unsigned int alphabet_length) {
 	node->alphabet = (char*) alphabet;
 	node->alphabet_length = alphabet_length;
-	node->string = determine_substring(parent_string, node->alphabet, node->alphabet_length);
-	node->bit_vector = create_bit_vector(node->string, node->alphabet);
+	node->string = (char*) string;
+	node->vector = create_bit_vector(node->string, node->alphabet, node->alphabet_length / 2);
 
 	return node;
 }
 
-unsigned int* create_bit_vector(const char* string, const char* alphabet) {
-	//TODO: Implement this once a bitvector-representation has been determined
-	return NULL;
+bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned int alphabet_length) {
+	struct bit_vec* vector = calloc(1, sizeof(bit_vector));
+	unsigned int length = strlen(string);
+
+	//init bit vector
+	if ((vector = init_bit_vector(vector, length)) == 0)
+		return 0;
+
+	//mark all chars that are in alphabet
+	for (int i = 0; i < length; ++i)
+		//binary search on alphabet for current char, and if found, mark bit at
+		//same location in vector as current char in string
+		if (binary_search(alphabet, string[i], 0, alphabet_length, sizeof(char)) > 0)
+			vector->mark_bit(vector, i);
+
+	return vector;
 }
 
-char* determine_substring(const char* string, const char* alphabet, unsigned int alphabet_size) {
-	int size = 0, chars_left = 10;
-	char* substring = calloc(chars_left, sizeof(char));
+char** determine_substrings(const struct wavelet_node* parent) {
+	struct bit_vec* vector = parent->vector;
+	unsigned int num_bits = vector->length * 32;
 
-	for (int i = 0; i < strlen(string); ++i)
-		//if current character in string can be found in alphabet, append to substring
-		if (binary_search(alphabet, string + i, 0, alphabet_size, sizeof(char)) >= 0) {
+	char** string_arr = calloc(2, sizeof(char*));
 
-			if (chars_left == 0) {
-				//expand array
-				chars_left = 10;
+	//determine length of substrings
+	unsigned int left = vector->rank(vector, num_bits) + 1;
+	unsigned int right = num_bits - left + 1;
 
-				if ((substring = realloc(substring, size + chars_left)) == 0)
-					//realloc failed, return NULL
-					return 0;
-			}
+	//allocate substrings
+	string_arr[0] = calloc(left, sizeof(char));
+	string_arr[1] = calloc(right, sizeof(char));
 
-			//add to substring
-			chars_left--;
-			substring[size] = *(string + i);
-			size++;
+	left = 0; right = 0;
+
+	//create substrings
+	for (int i = 0; i < num_bits; ++i) {
+		//marked bit = append to first substring
+		if (vector->is_bit_marked(vector, i)) {
+			string_arr[0][left] = parent->string[left];
+			left++;
 		}
+		//unmarked bit = append to second substring
+		else {
+			string_arr[1][right] = parent->string[right];
+			right++;
+		}
+	}
 
-	//add null-marker
-	if (chars_left == 0)
-		//expand array
-		if ((substring = realloc(substring, size + 1)) == 0)
-			//realloc failed, return NULL
-			return 0;
+	//append null-markers to end of both substrings
+	string_arr[0][left] = 0;
+	string_arr[1][right] = 0;
 
-	//add to substring
-	substring[size] = 0;
-
-	return substring;
+	return string_arr;
 }
 
 wavelet_node* create_children(struct wavelet_node* node) {
 	//alphabet can still be split
 	if (node->alphabet_length > 2) {
+		//allocate children
 		node->children = calloc(2, sizeof(wavelet_node));
 		struct wavelet_node* left_child = node->children[0], right_child = node->children[1];
-		unsigned int left_length = ceil(node->alphabet_length / 2),
+
+		//determine length of alphabet for both children
+		unsigned int left_length = node->alphabet_length / 2,
 				right_length = node->alphabet_length - left_length;
 
+		//determine substrings for children
+		char** substrings = determine_substrings(node);
+
 		//recursively create children of left child
-		left_child = init_node(left_child, node->string, node->alphabet, left_length);
+		left_child = init_node(left_child, substrings[0], node->alphabet, left_length);
 		create_children(left_child);
 
 		//recursively create children of right child
-		right_child = init_node(right_child, node->string, node->alphabet + left_length, right_length);
+		right_child = init_node(right_child, substrings[1], node->alphabet + left_length, right_length);
 		create_children(right_child);
+
+		free(substrings);
 	}
 
 	//alphabet small enough = no children
@@ -123,7 +145,7 @@ void free_subtree(struct wavelet_node* node) {
 		node->parent->children[1] = NULL;
 
 	//free bitvector and string first
-	free(node->bit_vector);
+	free(node->vector);
 	free(node->string);
 
 	//recursively call children

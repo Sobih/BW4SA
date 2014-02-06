@@ -8,9 +8,11 @@
 #ifndef WAVELET_TREE_H_
 #define WAVELET_TREE_H_
 
+#include "bit_vector.h"
+
 struct wavelet_node {
 	char* string;
-	unsigned int* bit_vector;	//TODO: MODIFY THIS!!!!!!!!!!!
+	struct bit_vec* vector;
 	char* alphabet;
 	unsigned int alphabet_length;
 	struct wavelet_node* parent;
