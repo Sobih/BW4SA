@@ -47,5 +47,10 @@ void double_size(substring_stack* stack)
 		new_array[i] = old_array[i];
 	}
 	stack->array = new_array;
+	stack->array_size = old_size*2;
+	
 	free(old_array);
 }
+
+
+

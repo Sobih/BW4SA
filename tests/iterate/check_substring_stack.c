@@ -57,11 +57,44 @@ START_TEST(heavy_pushnpop)
 	for(i=n-1, j= 0; i>=0; i--, j++){
 		fail_unless(arr[i] == pop(stack));
 	}
+	
 }
 END_TEST
 
 START_TEST(heavy_pushnpop2)
 {
+	substring_stack* stack = create_stack(3);
+	int n = 200;
+	int i, k, j;
+	substring** arr = create_n_substrs(n);
+	for(i=0;i<n;i++){
+	
+		for(j=0;j<=i;j++){
+			push(stack, arr[j]);
+		}
+		for(k=i;k>=0;k--){
+			fail_unless(arr[k] == pop(stack));
+		}
+	}
+	
+}
+END_TEST
+
+START_TEST(heavy_pushnpop3)
+{
+	substring_stack* stack = create_stack(27);
+	int n = 1500;
+	int i, k, j;
+	substring** arr = create_n_substrs(n);
+	for(i=0;i<n;i++){
+	
+		for(j=0;j<=i;j++){
+			push(stack, arr[j]);
+		}
+		for(k=i;k>=0;k--){
+			fail_unless(arr[k] == pop(stack));
+		}
+	}
 	
 }
 END_TEST
@@ -69,7 +102,7 @@ END_TEST
 START_TEST(even_more_heavier_pushnpop)
 {
 	substring_stack* stack = create_stack(1);
-	int n = 52;
+	int n = 700;
 	substring** arr = create_n_substrs(n);
 	int i;
 	for(i=0; i<n; i++){
@@ -85,6 +118,8 @@ END_TEST
 TCase * create_heavy_stack_test_case(void){
 	TCase * tc_stack = tcase_create("heavy_stack_test");
 	tcase_add_test(tc_stack, even_more_heavier_pushnpop);
+	tcase_add_test(tc_stack, heavy_pushnpop2);
+	tcase_add_test(tc_stack, heavy_pushnpop3);
 	return tc_stack;
 }
 
