@@ -27,21 +27,21 @@ START_TEST(test_hattivatti_bwt)
 START_TEST(test_lol_bwt)
 	{
 		char* input = "lol";
-		char* expected_BWT = "lol";
+		char* expected_BWT = "lo$l";
 		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
 	}END_TEST
 
 START_TEST(test_hei_bwt)
 	{
 		char* input = "hei";
-		char* expected_BWT = "ihe";
+		char* expected_BWT = "ih$e";
 		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
 	}END_TEST
 
 START_TEST(test_a_bwt)
 	{
 		char* input = "a";
-		char* expected_BWT = "a";
+		char* expected_BWT = "a$";
 		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
 	}END_TEST
 

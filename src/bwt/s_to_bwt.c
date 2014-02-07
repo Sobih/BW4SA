@@ -10,17 +10,14 @@
 #include <string.h>
 
 uchar* s_to_BWT(uchar *string) {
-	unsigned int * _primary_idx;
+	unsigned int * _last;
 	unsigned int last;
 	long n = strlen(string);
 	uchar *d = calloc(n + 2, sizeof(uchar));
 	d = dbwt_bwt(string, n, &last, 0);
 	d[last] = '$';
 	d[n + 1] = 0;
-	//(*_primary_idx) = last;
+	//(*_last) = last;
 	return d;
-//	generate_result_file_from_string(string);
-//	string = get_BWT_from_result_file_as_string();
-//	return string;
 }
 
