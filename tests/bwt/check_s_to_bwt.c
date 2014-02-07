@@ -19,8 +19,8 @@ START_TEST(test_abracadabra_bwt)
 
 START_TEST(test_hattivatti_bwt)
 	{
-		uchar* input = "hattivatti";
-		uchar* expected_BWT = "ivh$ttttaai";
+		char* input = "hattivatti";
+		char* expected_BWT = "ivh$ttttaai";
 		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
 	}END_TEST
 

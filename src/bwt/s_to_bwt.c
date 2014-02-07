@@ -17,7 +17,7 @@ uchar* s_to_BWT(uchar *string) {
 	d = dbwt_bwt(string, n, &last, 0);
 	d[last] = '$';
 	d[n + 1] = 0;
-	(*_primary_idx) = last;
+	//(*_primary_idx) = last;
 	return d;
 //	generate_result_file_from_string(string);
 //	string = get_BWT_from_result_file_as_string();
