@@ -1,4 +1,3 @@
-
 /*
  * main.c
  *
@@ -7,28 +6,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "dbwt.h"
+#include "s_to_bwt.h"
 
 int main(void) {
-	uchar *c = calloc(100, sizeof(uchar));
-	c = "abracadabraaaaaaaaa";
-	long n = strlen(c);
 
-	printf("%li\n",n);
+	unsigned char *c = "vaakapallo";
 
-	unsigned int *last = &c + 500;
+	unsigned char *d = calloc(strlen(c) + 1, sizeof(unsigned char));
+	d = s_to_BWT(c);
 
-	printf("%d\n", last);
-
-	uchar *d = calloc(100,sizeof(uchar));
-
-	d = dbwt_bwt(c,n,last,0);
-
-	printf("%s\n%s\n", c,d);
-
-	printf("%d\n", last);
-
-	free(d);
+	printf("%s\n", d);
 
 	return 0;
 }
