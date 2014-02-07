@@ -5,4 +5,5 @@ install:
   - sudo apt-get install check
 script:
   - chmod a+x os/*
-  - for s in os/*;do [ -x $s ] && $s || : ;done
+  - chmod a+x runtests.sh
+  - ./runtests.sh
