@@ -11,6 +11,9 @@ typedef struct substring_struct
 	int length;
 } substring;
 
+/**
+* @brief creates vector runs from given string WORK IN PROGRESS
+**/
 bit_vector* create_runs_vector(char* string);
 
 #endif

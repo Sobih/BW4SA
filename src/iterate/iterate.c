@@ -1,5 +1,5 @@
-#include "../../include/iterate.h"
 #include "../../include/bit_vector.h"
+#include "../../include/iterate.h"
 #include <stdlib.h>
 #include <string.h>
 
