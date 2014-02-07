@@ -5,10 +5,4 @@ install:
   - sudo apt-get install check
 script:
   - chmod a+x os/*
-  - ./os/c_array_tests.sh
-  - ./os/array_tests.sh
-  - ./os/utils_tests.sh
-  - ./os/s_to_bwt_tests.sh
-  - ./os/distinct_substrings_tests.sh
-  - ./os/backward_search_tests.sh
-  - ./os/substring_stack_tests.sh
+  - for s in os/*;do [ -x $s ] && $s || : ;done

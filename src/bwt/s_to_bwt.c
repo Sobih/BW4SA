@@ -6,7 +6,7 @@
  */
 
 #include "dbwt.h"
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 uchar* s_to_BWT(uchar *string) {

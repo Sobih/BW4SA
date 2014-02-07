@@ -7,65 +7,60 @@
 
 #include "../../src/bwt/s_to_bwt.h"
 #include <check.h>
+#include <stdlib.h>
 
 START_TEST(test_abracadabra_bwt)
 	{
 		uchar* input = "abracadabra";
 		uchar* expected_BWT = "ard$rcaaaabb";
-		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		uchar* result = malloc((strlen(input) + 1) * sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
-		free(result);
 	}END_TEST
 
 START_TEST(test_hattivatti_bwt)
 	{
 		uchar* input = "hattivatti";
 		uchar* expected_BWT = "ivh$ttttaai";
-		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		uchar* result = malloc((strlen(input) + 1) * sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
-		free(result);
 	}END_TEST
 
 START_TEST(test_lol_bwt)
 	{
 		uchar* input = "lol";
 		uchar* expected_BWT = "lo$l";
-		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		uchar* result = malloc((strlen(input) + 1) * sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
-		free(result);
 	}END_TEST
 
 START_TEST(test_hei_bwt)
 	{
 		uchar* input = "hei";
 		uchar* expected_BWT = "ih$e";
-		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		uchar* result = malloc((strlen(input) + 1) * sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
-		free(result);
 	}END_TEST
 
 START_TEST(test_a_bwt)
 	{
 		uchar* input = "a";
 		uchar* expected_BWT = "a$";
-		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		uchar* result = malloc((strlen(input) + 1) * sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
-		free(result);
 	}END_TEST
 
 START_TEST(test_laatikko_bwt)
 	{
 		uchar* input = "laatikko";
 		uchar* expected_BWT = "olatik$ka";
-		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		uchar* result = malloc((strlen(input) + 1) * sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
-		free(result);
 	}END_TEST
 
 TCase * create_carray_test_case(void) {
