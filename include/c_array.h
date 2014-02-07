@@ -13,3 +13,5 @@
  * @bug no known bugs
  */
 int* create_c_array(const char* string);
+
+char* get_alphabet(const char* string);
