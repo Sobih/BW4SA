@@ -156,3 +156,83 @@ void string_quick_sort(char **strings, unsigned int arr_size) {
 
 }
 
+/**
+ * @brief	Determines the alphabet used by a string.
+ * @param	string	The string from which the alphabet should be deduced.
+ * @return			The alphabet used by the string.
+ * @see		bit_array.h#map_alphabet
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+char* determine_alphabet(const char* string) {
+	int chars_left = 10, alphabet_size = 0;
+	unsigned int size = strlen(string);
+	char* alphabet;
+
+	if ((alphabet = calloc(chars_left, sizeof(char))) == 0)
+		return 0;
+
+	int exists;
+
+	for (int i = 0; i < size; ++i) {
+		exists = 0;
+
+		for (int j = 0; j < alphabet_size; ++j) {
+			//break if character already in alphabet
+			if (strncmp(string + i, alphabet + j, 1) == 0) {
+				exists = 1;
+				break;
+			}
+		}
+
+		//character doesn't exist in alphabet, insert it
+		if (!exists) {
+
+			if (chars_left == 0) {
+				//expand alphabet array
+				chars_left = 10;
+
+				if ((alphabet = realloc(alphabet, alphabet_size + chars_left)) == 0)
+					//realloc failed, return NULL
+					return 0;
+			}
+
+			//add to alphabet
+			chars_left--;
+			alphabet[alphabet_size] = *(string + i);
+			alphabet_size++;
+		}
+	}
+
+	//add null-marker
+	if (chars_left == 0)
+		//expand alphabet array
+		if ((alphabet = realloc(alphabet, alphabet_size + 1)) == 0)
+			//realloc failed, return NULL
+			return 0;
+
+	//add to alphabet
+	alphabet[alphabet_size] = 0;
+
+	return alphabet;
+}
+
+int binary_search(const void* arr, const void* key, unsigned int min, unsigned int max,
+		unsigned int entry_size) {
+
+	//(sub)set empty
+	if (max <= min)
+		return -1;
+
+	int mid = min + ((max - min) / 2), comparison = memcmp(arr + mid, key, entry_size);
+
+	//key is in lower subset
+	if (comparison > 0)
+		return binary_search(arr, key, min, mid - 1, entry_size);
+
+	//key is in upper subset
+	if (comparison < 0)
+		return binary_search(arr, key, mid + 1, max, entry_size);
+
+	return mid;
+}
