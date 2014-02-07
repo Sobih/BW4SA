@@ -130,12 +130,13 @@ unsigned int rank_query(const struct bit_vec* vector, unsigned int pos) {
 unsigned int rank_query_interval(const struct bit_vec* vector, unsigned int start, unsigned int end) {
 	unsigned int count = 0;
 	
-	for (int i = start; i <= end; i++){
-		if (vector->is_bit_marked(vector, i)) count ++;
-		if (i >= vector->length*32) break;
-	}
-	return count;
+	if (start > vector->length * 32 || end > vector->length * 32 || start >= end)
+		return 0;
 
+	for (int i = start; i <= end; i++)
+		if (vector->is_bit_marked(vector, i)) count ++;
+
+	return count;
 }
 	
 
