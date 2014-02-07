@@ -4,6 +4,8 @@
    This software may be used freely for any purpose.
    No warranty is given regarding the quality of this software.
 */
+#ifndef dbwt_utils_h
+#define dbwt_utils_h
 #ifndef uchar
 typedef unsigned char uchar;
 #endif
@@ -45,13 +47,13 @@ typedef dword pb;
 #define PBS (sizeof(pb)*8)
 #define D (1<<logD)
 
-void *mymalloc(size_t n);
-void *myrealloc(void *ptr, size_t new, size_t old);
-void myfree(void *p, size_t s);
-void report_mem(char *s);
-extern size_t cur_alloc, max_alloc;
+void * dbwt_mymalloc(size_t n);
+void * dbwt_myrealloc(void *ptr, size_t new, size_t old);
+void  dbwt_myfree(void *p, size_t s);
+void dbwt_report_mem(char *s);
+extern size_t dbwt_cur_alloc, dbwt_max_alloc;
 
-unsigned int getbits(unsigned short *B, unsigned long i, int d);
+unsigned int dbwt_getbits(unsigned short *B, unsigned long i, int d);
 
 typedef struct {
   ulong n;
@@ -59,14 +61,15 @@ typedef struct {
   pb *b;
 } packed_array;
 
-int blog(ulong x);
-packed_array *allocate_packed_array(ulong n, int w);
-void free_packed_array(packed_array *p);
-ulong pa_get(packed_array *p, ulong i);
-void pa_set(packed_array *p, ulong i, long x);
+int dbwt_blog(ulong x);
+packed_array * dbwt_allocate_packed_array(ulong n, int w);
+void dbwt_free_packed_array(packed_array *p);
+ulong dbwt_pa_get(packed_array *p, ulong i);
+void dbwt_pa_set(packed_array *p, ulong i, long x);
 
-pb *allocate_vector(ulong n);
-int getbit(pb *B, ulong i);
-int setbit(pb *B, ulong i,int x);
-dword getbits(pb *B, ulong i, int d);
-int setbits(pb *B, ulong i, int d, ulong x);
+pb * dbwt_allocate_vector(ulong n);
+int dbwt_getbit(pb *B, ulong i);
+int dbwt_setbit(pb *B, ulong i,int x);
+dword dbwt_getbits(pb *B, ulong i, int d);
+int dbwt_setbits(pb *B, ulong i, int d, ulong x);
+#endif

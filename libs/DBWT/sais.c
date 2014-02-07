@@ -23,9 +23,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
+#include <stdio.h>
 #include <stdlib.h>
-#include "utils.h"
+#include "dbwt_utils.h"
 
 static unsigned int get2(unsigned short *B, unsigned long i, int d)
 {
@@ -33,7 +33,7 @@ static unsigned int get2(unsigned short *B, unsigned long i, int d)
 
   b = B + (i>>4)*d;
   i = (i % 16)*d;
-  return (unsigned int)getbits(b,i,d);
+  return (unsigned int) dbwt_getbits(b,i,d);
 }
 
 //#define chr(i) (cs == sizeof(int) ? ((const int *)T)[i]:((const unsigned char *)T)[i])
@@ -93,18 +93,18 @@ induceSA(const unsigned char *T, int *SA, int *C, int *B, int n, int k, int cs) 
    use a working space (excluding T and SA) of at most 2n+O(1) for a constant alphabet */
 //static
 int
-sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs) {
+dbwt_sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs) {
   int *C, *B, *RA;
   int i, j, c, m, p, q, plen, qlen, name;
   int c0, c1;
   int diff;
 
-  printf("sais n=%d k=%d\n",n,k);
+//  printf("sais n=%d k=%d\n",n,k);
 
   /* stage 1: reduce the problem by at least 1/2
      sort all the S-substrings */
   if(k <= fs) { C = SA + n; B = (k <= (fs - k)) ? C + k : C; }
-  else if((C = B = (int *)mymalloc(k * sizeof(int))) == NULL) { return -2; }
+  else if((C = B = (int *) dbwt_mymalloc(k * sizeof(int))) == NULL) { return -2; }
   getCounts(T, C, n, k, cs); getBuckets(C, B, k, 1); /* find ends of buckets */
   for(i = 0; i < n; ++i) { SA[i] = 0; }
   for(i = n - 2, c = 0, c1 = chr(n - 1); 0 <= i; --i, c1 = c0) {
@@ -113,7 +113,7 @@ sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs) {
   }
   //printf("induceSA n=%d\n",n);
   induceSA(T, SA, C, B, n, k, cs);
-  if(fs < k) { myfree(C,k * sizeof(int)); }
+  if(fs < k) { dbwt_myfree(C,k * sizeof(int)); }
 
   //printf("compacting\n");
   /* compact all the sorted substrings into the first m items of SA
@@ -150,7 +150,7 @@ sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs) {
     for(i = n - 1, j = m - 1; m <= i; --i) {
       if(SA[i] != 0) { RA[j--] = SA[i] - 1; }
     }
-    if(sais_main((unsigned char *)RA, SA, fs + n - m * 2, m, name, sizeof(int)) != 0) { return -2; }
+    if(dbwt_sais_main((unsigned char *)RA, SA, fs + n - m * 2, m, name, sizeof(int)) != 0) { return -2; }
     for(i = n - 2, j = m - 1, c = 0, c1 = chr(n - 1); 0 <= i; --i, c1 = c0) {
       if((c0 = chr(i)) < (c1 + c)) { c = 1; }
       else if(c != 0) { RA[j--] = i + 1, c = 0; } /* get p1 */
@@ -160,7 +160,7 @@ sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs) {
 
   /* stage 3: induce the result for the original problem */
   if(k <= fs) { C = SA + n; B = (k <= (fs - k)) ? C + k : C; }
-  else if((C = B = (int *)mymalloc(k * sizeof(int))) == NULL) { return -2; }
+  else if((C = B = (int *) dbwt_mymalloc(k * sizeof(int))) == NULL) { return -2; }
   /* put all left-most S characters into their buckets */
   getCounts(T, C, n, k, cs); getBuckets(C, B, k, 1); /* find ends of buckets */
   for(i = m; i < n; ++i) { SA[i] = 0; } /* init SA[m..n-1] */
@@ -168,23 +168,23 @@ sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs) {
     j = SA[i], SA[i] = 0;
     SA[--B[chr(j)]] = j;
   }
-  printf("induceSA n=%d\n",n);
+//  printf("induceSA n=%d\n",n);
   induceSA(T, SA, C, B, n, k, cs);
-  if(fs < k) { myfree(C,k * sizeof(int)); }
+  if(fs < k) { dbwt_myfree(C,k * sizeof(int)); }
 
   return 0;
 }
 
 int
-sais(const unsigned char *T, int *SA, int n) {
+dbwt_sais(const unsigned char *T, int *SA, int n) {
   if((T == NULL) || (SA == NULL) || (n < 0)) { return -1; }
   if(n <= 1) { if(n == 1) { SA[0] = 0; } return 0; }
-  return sais_main(T, SA, 0, n, 256, sizeof(unsigned char));
+  return dbwt_sais_main(T, SA, 0, n, 256, sizeof(unsigned char));
 }
 
 int
-sais_int(const int *T, int *SA, int n, int k) {
+dbwt_sais_int(const int *T, int *SA, int n, int k) {
   if((T == NULL) || (SA == NULL) || (n < 0) || (k <= 0)) { return -1; }
   if(n <= 1) { if(n == 1) { SA[0] = 0; } return 0; }
-  return sais_main((const unsigned char *)T, SA, 0, n, k, sizeof(int));
+  return dbwt_sais_main((const unsigned char *)T, SA, 0, n, k, sizeof(int));
 }
