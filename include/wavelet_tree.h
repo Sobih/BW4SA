@@ -16,10 +16,10 @@ struct wavelet_node {
 	char* alphabet;
 	unsigned int alphabet_length;
 	struct wavelet_node* parent;
-	struct wavelet_node* children;
+	struct wavelet_node** children;
 } wavelet_node;
 
-wavelet_node* create_wavelet_tree(const char* string);
+struct wavelet_node* create_wavelet_tree(const char* string);
 
 void free_wavelet_tree(struct wavelet_node* node);
 
