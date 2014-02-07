@@ -221,10 +221,10 @@ int binary_search(const void* arr, const void* key, unsigned int min, unsigned i
 		unsigned int entry_size) {
 
 	//(sub)set empty
-	if (max <= min)
+	if (max < min)
 		return -1;
 
-	int mid = min + ((max - min) / 2), comparison = memcmp(arr + mid, key, entry_size);
+	int mid = min + ((max - min) / 2), comparison = memcmp(arr + (mid * entry_size), key, entry_size);
 
 	//key is in lower subset
 	if (comparison > 0)
