@@ -237,7 +237,7 @@ START_TEST(test_rank_interval2) {
 	ck_assert_int_eq(2, vec->rank_interval(vec, 27, 28));
 	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 89));
 	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 93));
-	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 1020));
+	ck_assert_int_eq(0, vec->rank_interval(vec, 28, 1020));
 }
 END_TEST
 
