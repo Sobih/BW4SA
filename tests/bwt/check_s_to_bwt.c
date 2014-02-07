@@ -15,41 +15,57 @@ START_TEST(test_abracadabra_bwt)
 		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
 		result = s_to_BWT(input);
 		ck_assert_str_eq(result, expected_BWT);
+		free(result);
 	}END_TEST
 
 START_TEST(test_hattivatti_bwt)
 	{
-		char* input = "hattivatti";
-		char* expected_BWT = "ivh$ttttaai";
-		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
+		uchar* input = "hattivatti";
+		uchar* expected_BWT = "ivh$ttttaai";
+		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		result = s_to_BWT(input);
+		ck_assert_str_eq(result, expected_BWT);
+		free(result);
 	}END_TEST
 
 START_TEST(test_lol_bwt)
 	{
-		char* input = "lol";
-		char* expected_BWT = "lo$l";
-		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
+		uchar* input = "lol";
+		uchar* expected_BWT = "lo$l";
+		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		result = s_to_BWT(input);
+		ck_assert_str_eq(result, expected_BWT);
+		free(result);
 	}END_TEST
 
 START_TEST(test_hei_bwt)
 	{
-		char* input = "hei";
-		char* expected_BWT = "ih$e";
-		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
+		uchar* input = "hei";
+		uchar* expected_BWT = "ih$e";
+		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		result = s_to_BWT(input);
+		ck_assert_str_eq(result, expected_BWT);
+		free(result);
 	}END_TEST
 
 START_TEST(test_a_bwt)
 	{
-		char* input = "a";
-		char* expected_BWT = "a$";
-		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
+		uchar* input = "a";
+		uchar* expected_BWT = "a$";
+		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		result = s_to_BWT(input);
+		ck_assert_str_eq(result, expected_BWT);
+		free(result);
 	}END_TEST
 
 START_TEST(test_laatikko_bwt)
 	{
-		char* input = "laatikko";
-		char* expected_BWT = "olatik$ka";
-		ck_assert_str_eq(s_to_BWT(input), expected_BWT);
+		uchar* input = "laatikko";
+		uchar* expected_BWT = "olatik$ka";
+		uchar* result = calloc(strlen(input) + 1, sizeof(unsigned char));
+		result = s_to_BWT(input);
+		ck_assert_str_eq(result, expected_BWT);
+		free(result);
 	}END_TEST
 
 TCase * create_carray_test_case(void) {
