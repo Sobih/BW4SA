@@ -20,7 +20,13 @@ END_TEST
 
 START_TEST (reverse_bwt_test) 
 {
-	ck_assert_str_eq(reverse_bwt("ABRACADABRA$"), "ABDBC$RRAAAA");	
+	ck_assert_str_eq(reverse_bwt("ABRACADABRA"), "ABDBC$RRAAAA");	
+}
+END_TEST
+
+START_TEST (reverse_bwt_test2) 
+{
+	ck_assert_str_eq(reverse_bwt("HATTIVATTI"), "HTTAV$TTIIA");	
 }
 END_TEST
 
@@ -32,6 +38,8 @@ Suite *count_suite (void)
   	TCase *tc_core = tcase_create ("Core");
   	tcase_add_test (tc_core, reverse_test);
   	tcase_add_test (tc_core, reverse_test2);
+	tcase_add_test (tc_core, reverse_bwt_test);
+	tcase_add_test (tc_core, reverse_bwt_test2);
 
   	suite_add_tcase (s, tc_core);
 
