@@ -6,9 +6,9 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include "utils.h"
+#include "dbwt_utils.h"
 
-int blog(ulong x)
+int dbwt_blog(ulong x)
 {
 int l;
   l = -1;
@@ -19,8 +19,8 @@ int l;
   return l;
 }
 
-size_t cur_alloc=0, max_alloc=0;
-void *mymalloc(size_t n)
+size_t dbwt_cur_alloc=0, dbwt_max_alloc=0;
+void * dbwt_mymalloc(size_t n)
 {
   void *p;
 
@@ -29,20 +29,20 @@ void *mymalloc(size_t n)
     printf("malloc failed.\n");
     exit(1);
   }
-  cur_alloc += n;
-  if (cur_alloc > max_alloc) {
-    max_alloc = cur_alloc;
+  dbwt_cur_alloc += n;
+  if (dbwt_cur_alloc > dbwt_max_alloc) {
+    dbwt_max_alloc = dbwt_cur_alloc;
     //printf("allocated %ld\n",max_alloc);
   }
 
   if (n == 0) {
     printf("warning: 0 bytes allocated p=%p\n",p);
   }
-
+//  printf("alloc_pointer is %p with size %lu\n",p,(long unsigned int )n);
   return p;
 }
 
-void *myrealloc(void *ptr, size_t new, size_t old)
+void *dbwt_myrealloc(void *ptr, size_t new, size_t old)
 {
   void *p;
 
@@ -51,29 +51,33 @@ void *myrealloc(void *ptr, size_t new, size_t old)
     printf("realloc failed. ptr=%p new=%d old=%d\n",ptr,new,old);
     exit(1);
   }
-  cur_alloc += new - old;
-  if (cur_alloc > max_alloc) {
-    max_alloc = cur_alloc;
+  dbwt_cur_alloc += new - old;
+  if (dbwt_cur_alloc > dbwt_max_alloc) {
+    dbwt_max_alloc = dbwt_cur_alloc;
     //printf("allocated %ld\n",max_alloc);
   }
-
+//  printf("free alloc_pointer %p with size %lu\n",ptr,(long unsigned int )old);
+//  printf("alloc_pointer is %p with size %lu\n",p,(long unsigned int )new);
   return p;
 }
 
-void report_mem(char *s)
+void dbwt_report_mem(char *s)
 {
   puts(s);
-  printf("allocated total %lu   max %lu\n",cur_alloc,max_alloc);
+  printf("allocated total %lu   max %lu\n", 
+	(unsigned long) dbwt_cur_alloc,(unsigned long) dbwt_max_alloc);
 }
 
 
-void myfree(void *p, size_t s)
+void dbwt_myfree(void *p, size_t s)
 {
   free(p);
-  cur_alloc -= s;
+  dbwt_cur_alloc -= s;
+//  printf("free alloc_pointer %p with size %lu\n",p,(long unsigned int )s);
+
 }
 
-int setbit(pb *B, ulong i,int x)
+int dbwt_setbit(pb *B, ulong i,int x)
 {
   ulong j,l;
 
@@ -88,17 +92,17 @@ int setbit(pb *B, ulong i,int x)
   return x;
 }
 
-int setbits0(pb *B, ulong i, int d, ulong x)
+int dbwt_setbits0(pb *B, ulong i, int d, ulong x)
 {
   ulong j;
 
   for (j=0; j<d; j++) {
-    setbit(B,i+j,(x>>(d-j-1))&1);
+    dbwt_setbit(B,i+j,(x>>(d-j-1))&1);
   }
   return x;
 }
 
-int getbit(pb *B, ulong i)
+int dbwt_getbit(pb *B, ulong i)
 {
   ulong j,l;
 
@@ -110,7 +114,7 @@ int getbit(pb *B, ulong i)
 }
 
 #if 1
-dword getbits(pb *B, ulong i, int d)
+dword dbwt_getbits(pb *B, ulong i, int d)
 {
   qword x,z;
 
@@ -135,27 +139,24 @@ dword getbits(pb *B, ulong i, int d)
   return x;
 }
 #else
-dword getbits(pb *B, ulong i, int d)
+dword dbwt_getbits(pb *B, ulong i, int d)
 {
   dword j,x;
 
   x = 0;
   for (j=0; j<d; j++) {
     x <<= 1;
-    x += getbit(B,i+j);
+    x += dbwt_getbit(B,i+j);
   }
   return x;
 }
 #endif
 
-int setbits(pb *B, ulong i, int d, ulong x)
+int dbwt_setbits(pb *B, ulong i, int d, ulong x)
 {
-  ulong j;
   ulong y,m;
   int d2;
-  ulong ii,xx;
-  int dd;
-  pb *BB;
+
 
   //  BB = B;  ii = i;  dd = d;  xx = x;
 
@@ -184,18 +185,18 @@ int setbits(pb *B, ulong i, int d, ulong x)
   return x;
 }
 
-pb *allocate_vector(ulong n)
+pb * dbwt_allocate_vector(ulong n)
 {
   ulong i,x;
   pb *b;
 
   x = (n+PBS-1)/PBS;
-  b = mymalloc(x*sizeof(pb));
+  b = dbwt_mymalloc(x*sizeof(pb));
   for (i=0; i<x; i++) b[i] = 0;
   return b;
 }
 
-packed_array *allocate_packed_array(ulong n, int w)
+packed_array * dbwt_allocate_packed_array(ulong n, int w)
 {
   ulong i,x;
   packed_array *p;
@@ -204,23 +205,26 @@ packed_array *allocate_packed_array(ulong n, int w)
     printf("warning: w=%d\n",w);
   }
 
-  p = mymalloc(sizeof(packed_array));
+  p = dbwt_mymalloc(sizeof(packed_array));
   p->n = n;  p->w = w;
-  x = (n / PBS)*w + ((n % PBS)*w + PBS-1) / PBS;
-  p->b = mymalloc(x*sizeof(pb));
+  x = (n / PBS)*w + ((n % PBS)*w + PBS-1) / PBS+1;
+//  x= (n * w + PBS - 1) / PBS;
+  p->b = dbwt_mymalloc(x*sizeof(pb));
   for (i=0; i<x; i++) p->b[i] = 0;
   return p;
 }
 
-void free_packed_array(packed_array *p)
+void dbwt_free_packed_array(packed_array *p)
 {
   ulong x;
-  x = (p->n/PBS+1) * p->w;
-  myfree(p->b,x*sizeof(pb));
-  myfree(p,sizeof(packed_array));
+//  x = (p->n/PBS+1) * p->w;
+  x = (p->n / PBS)*p->w + ((p->n % PBS)*p->w + PBS-1) / PBS+1;
+//  x= (p->n * p->w + PBS - 1) / PBS;
+  dbwt_myfree(p->b,x*sizeof(pb));
+  dbwt_myfree(p,sizeof(packed_array));
 }
 
-ulong pa_get(packed_array *p, ulong i)
+ulong dbwt_pa_get(packed_array *p, ulong i)
 {
   int w;
   pb *b;
@@ -229,10 +233,10 @@ ulong pa_get(packed_array *p, ulong i)
   b = p->b + (i>>logD)*w;
   i = (i % D)*w;
 
-  return (ulong)getbits(b,i,p->w);
+  return (ulong) dbwt_getbits(b,i,p->w);
 }
 
-void pa_set(packed_array *p, ulong i, long x)
+void dbwt_pa_set(packed_array *p, ulong i, long x)
 {
   int w;
   pb *b;
@@ -248,6 +252,6 @@ void pa_set(packed_array *p, ulong i, long x)
   b = p->b + (i>>logD)*w;
   i = (i % D)*w;
 
-  setbits(b,i,p->w,x);
+  dbwt_setbits(b,i,p->w,x);
 }
 
