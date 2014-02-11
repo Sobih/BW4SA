@@ -24,4 +24,19 @@ typedef struct substring_struct
 **/
 bit_vector* create_runs_vector(char* string);
 
+/**
+* @brief function that determines if given interval in given reverse-bwt is right-maximal or not.
+*
+* @param runs bit_vector runs
+*
+* @param interval interval to be searched
+*
+* @return 1 if given interval is right-maximal, 0 if not. If interval is not correct function returns 0
+*
+* @author Topi Paavilainen
+*
+* @bug no known bugs
+**/
+int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
+
 #endif

@@ -1,10 +1,9 @@
 #include "../../include/bit_vector.h"
 #include "../../include/iterate.h"
 #include "../../include/rbwt.h"
+#include "../../include/backward_search.h"
 #include <stdlib.h>
 #include <string.h>
-
-char* to_rbwt(char* string);
 
 bit_vector* create_runs_vector(char* string)
 {
@@ -21,4 +20,13 @@ bit_vector* create_runs_vector(char* string)
 	return runs;
 }
 
-
+int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval)
+{
+	if(interval->i >= interval->j) return 0;
+	
+	if(runs->rank_interval(runs, (interval->i)+1, interval->j) > 0)
+	{
+		return 1;
+	}
+	else return 0;
+}
