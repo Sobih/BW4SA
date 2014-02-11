@@ -12,7 +12,15 @@ typedef struct substring_struct
 } substring;
 
 /**
-* @brief creates vector runs from given string WORK IN PROGRESS
+* @brief creates vector runs from given string
+*
+* @param string string the reverse bwt is created from
+*
+* @return pointer to reverse bwt
+*
+* @author Topi Paavilainen
+*
+* @bug no known bugs
 **/
 bit_vector* create_runs_vector(char* string);
 

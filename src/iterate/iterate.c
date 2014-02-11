@@ -1,5 +1,6 @@
 #include "../../include/bit_vector.h"
 #include "../../include/iterate.h"
+#include "../../include/rbwt.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -7,7 +8,7 @@ char* to_rbwt(char* string);
 
 bit_vector* create_runs_vector(char* string)
 {
-	char* rbwt = to_rbwt(string);
+	char* rbwt = reverse_bwt(string);
 	bit_vector* runs = malloc(sizeof(bit_vector));
 	init_bit_vector(runs, strlen(rbwt));
 	
@@ -19,8 +20,5 @@ bit_vector* create_runs_vector(char* string)
 	}
 	return runs;
 }
-char* to_rbwt(char* string)
-{
-	return "abdbc$rraaaa";
-}
+
 
