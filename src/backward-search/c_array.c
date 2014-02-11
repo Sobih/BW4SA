@@ -13,9 +13,12 @@ int get_index(const char* string, const char c)
 {
 	int i;
 	for(i=0;i<strlen(string);i++){
-		if(c == *(string+i)){
+		printf("gettind index. i: %d \n",i);
+		if(c == string[i]){
+			printf("returning %d \n", i);
 			return i;
 		}
+		printf("loop cycle done. i:%d\n",i);
 	}
 	return -1;
 }
@@ -25,20 +28,30 @@ int get_index(const char* string, const char c)
 **/
 char* get_alphabet(const char* string)
 {
-
+	printf("starting c alphabet\n");
 	int i;
 	char* alphabet = calloc(MAX_ALPHABET_SIZE, sizeof(char));
 	alphabet[0] = '\0';
 	int alphabet_index = 0;
 	
-	for(i=0;i<strlen(string);i++){
+	printf("starting loop \n");
+
+	int length = strlen(string);
+	for(i=0;i<length;i++){
+		printf("index i: %d and alphabet_index: %d \n", i,alphabet_index);
 		if(get_index(alphabet, string[i]) == -1){
+			printf("Moving letter by one \n");
 			alphabet[alphabet_index+1] = alphabet[alphabet_index];
+			printf("adding letter to alphabet \n");
 			alphabet[alphabet_index] = string[i];
+			printf("incrementing index \n");
 			alphabet_index++;
+			printf("alphabet index is: %d \n", alphabet_index);
 		}
 	}
+	printf("finished loop");
 	quick_sort(alphabet, strlen(alphabet), sizeof(char));
+	printf("returning alphabet\n");
 	return alphabet;
 }
 

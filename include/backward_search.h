@@ -23,6 +23,10 @@ typedef struct interval
 **/
 Interval* backward_search(const char* bwt, const char* string);
 
+
+Interval* backward_search_interval(const char* bwt, Interval* interval, char c);
+
+
 /**
  * @brief Counts the number of occurrences of the given character in the given string before the given index.
  *

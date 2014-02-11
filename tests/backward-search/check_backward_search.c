@@ -8,6 +8,7 @@
 #include "../../include/backward_search.h"
 #include <check.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 START_TEST(test_count_zero_letters)
 {
@@ -78,6 +79,20 @@ START_TEST(test_search_different_word)
 }
 END_TEST
 
+START_TEST(test_interval_search)
+{
+	printf("Starting interval test \n");
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 1;
+	interval->j = 5;
+	printf("dhgkjhdfgkjhdgfkjhdsgfkhdsglkjhfdg \n");
+	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'r');
+	ck_assert_int_eq(10, result->i);
+    ck_assert_int_eq(11, result->j);
+
+}
+END_TEST
+
 TCase * create_rank_test_case(void){
 	TCase * tc_rank = tcase_create("rank_test");
 	tcase_add_test(tc_rank, test_count_zero_letters);
@@ -98,13 +113,26 @@ TCase * create_backward_search_test_case(void){
 	return tc_backward_search;
 }
 
+TCase * create_backward_search_interval_test_case(void){
+	TCase * tc_backward_search_interval = tcase_create("backward_search_interval_test");
+	tcase_add_test(tc_backward_search_interval, test_interval_search);
+	//tcase_add_test(tc_backward_search, test_search_simple2);
+	//tcase_add_test(tc_backward_search, test_search_simple3);
+	//tcase_add_test(tc_backward_search, test_search_when_not_found);
+	//tcase_add_test(tc_backward_search, test_search_different_word);
+
+	return tc_backward_search_interval;
+}
+
 Suite * test_suite(void)
 {
 	Suite *s = suite_create("testi");
 	TCase *tc_backward_search = create_backward_search_test_case();
 	TCase *tc_rank = create_rank_test_case();
+	TCase *tc_backward_search_interval = create_backward_search_interval_test_case();
 	suite_add_tcase(s, tc_backward_search);
 	suite_add_tcase(s, tc_rank);
+	suite_add_tcase(s, tc_backward_search_interval);
 	return s;
 }
 

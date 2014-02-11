@@ -1,4 +1,5 @@
 
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "../../include/c_array.h"
@@ -44,6 +45,27 @@ Interval* backward_search(const char* bwt, const char* string)
 	new_interval->i = i;
 	new_interval->j = j;
 	return new_interval;		
+}
+
+Interval* backward_search_interval(const char* bwt, Interval* interval, char c){
+	printf("creating c array\n");
+	int* c_array = create_c_array(bwt);
+	printf("determining alphabet\n");
+	char* alphabet = get_alphabet(bwt);
+	printf("alphabet done \n");
+	int i = interval->i;
+	int j = interval->j;
+	printf("Starting get_char_index");
+	i = get_char_index(c_array, alphabet, c)+rank(i, c, bwt);
+	j = get_char_index(c_array, alphabet, c)+rank(j+1, c, bwt)-1;
+	if(i > j){
+		printf("not found");
+		return NULL;
+	}
+	Interval* new_interval = malloc(sizeof(Interval));
+	new_interval->i = i;
+	new_interval->j = j;
+	return new_interval;
 }
 
 int get_char_index(int* c_array, char* alphabet, char c)
