@@ -214,6 +214,33 @@ START_TEST (test_rank) {
 }
 END_TEST
 
+START_TEST(test_rank_interval1) {
+	struct bit_vec* vec = malloc(sizeof(struct bit_vec));
+	init_bit_vector(vec, 10);
+	vec->mark_bit(vec, 2);
+	vec->mark_bit(vec, 4);
+	ck_assert_int_eq(2, vec->rank_interval(vec, 2, 4));
+	ck_assert_int_eq(1, vec->rank_interval(vec, 3, 7));
+	ck_assert_int_eq(2, vec->rank_interval(vec, 0, 9));
+}
+END_TEST
+
+START_TEST(test_rank_interval2) {
+	struct bit_vec* vec = malloc(sizeof(struct bit_vec));
+	init_bit_vector(vec, 100);
+	vec->mark_bit(vec, 27);
+	vec->mark_bit(vec, 89);
+	vec->mark_bit(vec, 56);
+	vec->mark_bit(vec, 28);
+	ck_assert_int_eq(4, vec->rank_interval(vec, 0, 99));
+	ck_assert_int_eq(0, vec->rank_interval(vec, 16, 26));
+	ck_assert_int_eq(2, vec->rank_interval(vec, 27, 28));
+	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 89));
+	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 93));
+	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 1020));
+}
+END_TEST
+
 Suite* array_suite(void) {
 	Suite* suite = suite_create("Array");
 
@@ -224,6 +251,8 @@ Suite* array_suite(void) {
 	tcase_add_test (tc_bit_vector, test_bit_unmarking);
 	tcase_add_test (tc_bit_vector, test_mark_checking);
 	tcase_add_test (tc_bit_vector, test_rank);
+	tcase_add_test (tc_bit_vector, test_rank_interval1);
+	tcase_add_test (tc_bit_vector, test_rank_interval2);
 	suite_add_tcase (suite, tc_bit_vector);
 
 	return suite;

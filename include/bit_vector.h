@@ -20,7 +20,7 @@
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-struct bit_vec {
+typedef struct bit_vec {
 	unsigned int* vector;
 	unsigned int length;
 
@@ -28,6 +28,7 @@ struct bit_vec {
 	struct bit_vec* (*unmark_bit) (struct bit_vec* vector, unsigned int pos);
 	int (*is_bit_marked) (const struct bit_vec* vector, unsigned int pos);
 	unsigned int (*rank) (const struct bit_vec* vector, unsigned int pos);
+	unsigned int (*rank_interval) (const struct bit_vec* vector, unsigned int start, unsigned int end);
 } bit_vector;
 
 /**

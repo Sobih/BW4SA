@@ -113,6 +113,32 @@ unsigned int rank_query(const struct bit_vec* vector, unsigned int pos) {
 	return count;
 }
 
+/**
+ * @brief	A rank query for given interval.
+ *
+ * This function returns number of flagged bits in bits from start to end
+ * (including start and end bits)
+ *
+ * @param	vector		The vector that bits are going to be calculated
+ * 						for.
+ * @param	start		The position where count starts from.
+ * @param	end			The position where count ends.
+ * @return	The number of marked bits from (and including) start to (and including) end.
+ * @author	Topi Paavilainen
+ * @bugs	No known bugs.
+ */
+unsigned int rank_query_interval(const struct bit_vec* vector, unsigned int start, unsigned int end) {
+	unsigned int count = 0;
+	
+	for (int i = start; i <= end; i++){
+		if (vector->is_bit_marked(vector, i)) count ++;
+		if (i >= vector->length*32) break;
+	}
+	return count;
+
+}
+	
+
 struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	if (vector == 0 || nbits == 0)
 		return 0;
@@ -123,6 +149,7 @@ struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
 	vector->rank = &rank_query;
+	vector->rank_interval = &rank_query_interval;
 
 	//init vector to all zeros
 	if ((vector->vector = calloc(vector->length, sizeof(unsigned int))) == 0)

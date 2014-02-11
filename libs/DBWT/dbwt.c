@@ -4,13 +4,12 @@
    This software may be used freely for any purpose.
    No warranty is given regarding the quality of this software.
 */
-#ifndef DBWT_C_
-#define DBWT_C_
 #include <stdio.h>
 #include <stdlib.h>
 //#include "mman.h"
-#include "utils.h"
-#include "queue.h"
+#include "dbwt_utils.h"
+#include "dbwt_queue.h"
+#include "dbwt.h"
 
 #define HSIZ 67777
 //#define HSIZ 375559
@@ -27,11 +26,11 @@ htbl *h1;
 
 static long collision;
 
-htbl *init_hashtable(void)
+static htbl *init_hashtable(void)
 {
   htbl *t;
   int i;
-  t = (htbl *)mymalloc(sizeof(htbl));
+  t = (htbl *) dbwt_mymalloc(sizeof(htbl));
   if (t == NULL) {
     printf("init_hashtable: malloc (1) failed.\n");
     exit(1);
@@ -46,7 +45,7 @@ htbl *init_hashtable(void)
   return t;
 }
 
-int hfunc(int m, uchar *p)
+static int hfunc(int m, uchar *p)
 {
   ulong x;
   int i;
@@ -61,7 +60,7 @@ int hfunc(int m, uchar *p)
   return x;
 }
 
-ulong getpointer(uchar *p, int k)
+static ulong getpointer(uchar *p, int k)
 {
   ulong x;
   int i;
@@ -74,7 +73,7 @@ ulong getpointer(uchar *p, int k)
   return x;
 }
 
-void setpointer(uchar *p, ulong x, int k)
+static void setpointer(uchar *p, ulong x, int k)
 {
   int i;
 
@@ -86,7 +85,7 @@ void setpointer(uchar *p, ulong x, int k)
 
 }
 
-void setlen(uchar **p, ulong x)
+static void setlen(uchar **p, ulong x)
 {
   uchar *q,c;
   int i,w;
@@ -127,7 +126,7 @@ ulong getlen(uchar **p)
   return x;
 }
 
-int lenlen(ulong x)
+static int lenlen(ulong x)
 {
   int w;
 
@@ -145,7 +144,7 @@ int lenlen(ulong x)
 // if length==CONT, the following 4 bytes are the pointer to next element
 // if length==0, end of list
 
-int insert_string(htbl *t, int m, uchar *p)
+static int insert_string(htbl *t, int m, uchar *p)
 {
   int i,l,l2;
   int h;
@@ -197,7 +196,7 @@ int insert_string(htbl *t, int m, uchar *p)
   }
 
   if (m+lenlen(m)+1+w >= t->rest[h]-10) { // +1 stands for the space to store len
-    r2 = (uchar *)myrealloc(buf, t->bufsiz + HBSIZ + m+lenlen(m)+1+w, t->bufsiz);
+    r2 = (uchar *) dbwt_myrealloc(buf, t->bufsiz + HBSIZ + m+lenlen(m)+1+w, t->bufsiz);
     if (r2 != buf) {
 //      printf("buf has moved from %p to %p\n", buf, r2);
       t->buf = buf = r2;
@@ -228,7 +227,7 @@ int insert_string(htbl *t, int m, uchar *p)
   return 1; // new string
 }
 
-int getname(htbl *t, int m, uchar *p)
+static int getname(htbl *t, int m, uchar *p)
 {
   int i,l,l2;
   int h;
@@ -285,7 +284,7 @@ int getname(htbl *t, int m, uchar *p)
 
 #define gc(i) (T[i])
 
-int LMS_compare(const void *p1, const void *p2)
+static int LMS_compare(const void *p1, const void *p2)
 {
   int c1,c2;
   int l1,l2;
@@ -305,8 +304,8 @@ int LMS_compare(const void *p1, const void *p2)
   if (l2 == 0) return -1;
   return c1 - c2;
 }
-
-void printlstr(uchar *p)
+/*
+static void printlstr(uchar *p)
 {
   int i,l;
   l = getlen(&p);
@@ -314,31 +313,31 @@ void printlstr(uchar *p)
   //for (i=0; i<l; i++) printf("%02x ",p[i]);
   for (i=0; i<l-1; i++) printf("%c",p[i+1]);
 }
+*/
+static uchar *min_ptr, *max_ptr;
 
-uchar *min_ptr, *max_ptr;
-
-uchar **sort_LMS(int n, htbl *h)
+static uchar **sort_LMS(int n, htbl *h)
 {
   uchar **s, *r, *q;
   int p;
   int i,j,l,m;
 
-  s = (uchar **)mymalloc((n+2) * sizeof(*s));
-  report_mem("allocate S* ptr");
-  // s ï¿½ï¿½ S*-substring ï¿½Ö‚Ìƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½ï¿½Kï¿½ï¿½ï¿½Èï¿½ï¿½Ô‚É•ï¿½ï¿½×‚ï¿½ï¿½ï¿½ï¿½ï¿½
-  // s[0] ï¿½Í•ï¿½ï¿½ï¿½ï¿½ï¿½æ“ªï¿½ï¿½substringï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½é‚½ï¿½ß‚ÅCS* ï¿½Å‚Í‚È‚ï¿½
-  // s[1] ï¿½ï¿½ï¿½ï¿½ s[n-1] ï¿½É‚ï¿½ S* ï¿½ï¿½ï¿½ï¿½ï¿½
-  // s[n] ï¿½É‚ï¿½ $ ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Û‚É‚Í“ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½)
+  s = (uchar **) dbwt_mymalloc((n+2) * sizeof(*s));
+//  dbwt_report_mem("allocate S* ptr");
+  // s ‚Í S*-substring ‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ“K“–‚È‡”Ô‚É•À‚×‚½‚à‚Ì
+  // s[0] ‚Í•¶š—ñæ“ª‚Ìsubstring‚ğŠi”[‚·‚é‚½‚ß‚ÅCS* ‚Å‚Í‚È‚¢
+  // s[1] ‚©‚ç s[n-1] ‚É‚Í S* ‚ª“ü‚é
+  // s[n] ‚É‚Í $ ‚ğ“ü‚ê‚é (ÀÛ‚É‚Í“ü‚Á‚Ä‚¢‚È‚¢)
   
   j = 1; // j=0 is for the head string
   for (i = 0; i < HSIZ; i++) {
     p = h->head[i];
     while (p != 0) {
-  // r ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½][ï¿½Ô•ï¿½][ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½][name] ï¿½ï¿½ï¿½ï¿½ï¿½
-  // ï¿½ï¿½ï¿½ï¿½ï¿½ñ’·‚Í‰Â•Ï’ï¿½ï¿½ï¿½ï¿½ï¿½
-  // ï¿½Ô•ï¿½ï¿½ï¿½1ï¿½oï¿½Cï¿½gï¿½Dï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìæ“ªï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å‚«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-  // (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìæ“ªï¿½ï¿½TYPE_Sï¿½È‚Ì‚ï¿½ 0xff ï¿½É‚È‚é‚±ï¿½Æ‚Í‚È‚ï¿½)
-  // nameï¿½ï¿½4ï¿½oï¿½Cï¿½g
+  // r ‚©‚ç‚Ìƒƒ‚ƒŠ‚É‚Í [•¶š—ñ’·][”Ô•º][•¶š—ñ][name] ‚ª“ü‚é
+  // •¶š—ñ’·‚Í‰Â•Ï’·•„†
+  // ”Ô•º‚Í1ƒoƒCƒgD•¶š—ñ‚Ìæ“ª‚Ì•¶š‚æ‚è‚à‘å‚«‚¢•¶š
+  // (•¶š—ñ‚Ìæ“ª‚ÍTYPE_S‚È‚Ì‚Å 0xff ‚É‚È‚é‚±‚Æ‚Í‚È‚¢)
+  // name‚Í4ƒoƒCƒg
       r = &h->buf[p];
       q = r;
       l = getlen(&r);
@@ -369,20 +368,18 @@ uchar **sort_LMS(int n, htbl *h)
     q += l;
     setpointer(q,(ulong)i,sizeof(int));
   }
-  // ï¿½\ï¿½[ï¿½gï¿½ï¿½ÍCS* ï¿½ï¿½ 1 ï¿½ï¿½ï¿½ï¿½ n-1 ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½
-  // $ ï¿½ï¿½ 0 ï¿½É‚ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½Å‚Í‘ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½)
+  // ƒ\[ƒgŒã‚ÍCS* ‚É 1 ‚©‚ç n-1 ‚Ì”š‚ª‚Â‚­
+  // $ ‚Í 0 ‚É‚·‚é (‚±‚±‚Å‚Í‘ã“ü‚µ‚Ä‚¢‚È‚¢)
 
   return s;
 }
 
 #define SIGMA (256+1)
 
-int sais_main(const unsigned char *T, int *SA, int fs, int n, int k, int cs);
 
-void bwt(char *fname)
+
+uchar * dbwt_bwt(uchar * T,long n,unsigned int *_last,unsigned int free_text)
 {
-  uchar *T;
-  long n;
   long i,j;
   int t,tt;
   long p,q;
@@ -394,24 +391,26 @@ void bwt(char *fname)
   uchar *lastptr;
 
   uchar **S;
-  long C[SIGMA+2]; // ï¿½ï¿½ï¿½ï¿½ c ï¿½ï¿½ï¿½ï¿½nï¿½Ü‚ï¿½S*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½
-  long M[SIGMA+2]; // ï¿½ï¿½ï¿½ï¿½ c ï¿½Ì•pï¿½x (c ï¿½ï¿½ -1 ï¿½ï¿½ï¿½ï¿½ SIGMA-1)
-  long NL[SIGMA+2]; // TYPE_Lï¿½Ì•ï¿½ï¿½ï¿½ c ï¿½Ìï¿½
+  long C[SIGMA+2]; // •¶š c ‚©‚çn‚Ü‚éS*•¶š—ñ‚Ì”
+  long M[SIGMA+2]; // •¶š c ‚Ì•p“x (c ‚Í -1 ‚©‚ç SIGMA-1)
+  long NL[SIGMA+2]; // TYPE_L‚Ì•¶š c ‚Ì”
   long M2[SIGMA+2], M3[SIGMA+2];
   long C2[SIGMA+2], cc;
 
-  queue *Q[3][SIGMA+2];
+  dbwt_queue *Q[3][SIGMA+2];
 
   uint *sa; // uint??
+  long sa_size;
   uchar *bw;
   packed_array *T2;
   uchar *bwp_base;
   int bwp_w;
-  FILE *fp;
+//  FILE *fp;
 //  MMAP *map;
 
 ///////////////////////////////////////////////
-// ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì“Ç‚İï¿½ï¿½ï¿½
+// ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+/*
 #if 1
   fp = fopen(fname,"rb");
   if (fp == NULL) {
@@ -437,84 +436,84 @@ void bwt(char *fname)
   map = mymmap(fname);
   n = map->len;
   T = map->addr;
-#endif
+#endif */
 ///////////////////////////////////////////////
 
   h1 = init_hashtable();
 
-  s1 = 0; // S*ï¿½Ìï¿½
-  m1 = 0; // S*ï¿½Ì’ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½v
-  n1 = 0; // ï¿½ï¿½ï¿½Ìƒï¿½ï¿½xï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ (S*ï¿½Ìï¿½)
+  s1 = 0; // S*‚Ì”
+  m1 = 0; // S*‚Ì’·‚³‚Ì‡Œv
+  n1 = 0; // Ÿ‚ÌƒŒƒxƒ‹‚Ì•¶š—ñ’· (S*‚Ì”)
 
   for (i=0; i<=SIGMA+1; i++) {
     C[i] = C2[i] = 0;
     M[i] = M2[i] = 0;
-    NL[i] = 0; // TYPE_L ï¿½Ìï¿½
+    NL[i] = 0; // TYPE_L ‚Ì”
   }
 
-  // C[c] : c ï¿½Ånï¿½Ü‚ï¿½S*
-  // M[c]: c ï¿½Ìï¿½
+  // C[c] : c ‚Ån‚Ü‚éS*
+  // M[c]: c ‚Ì”
 
 
 //////////////////////////
-// T[n] = $ ï¿½ï¿½1ï¿½Â‚ï¿½S*-string
+// T[n] = $ ‚ª1‚Â‚ÌS*-string
   t = TYPE_S; // i = n;
-  M[(-1)+1]++; // ï¿½ï¿½ï¿½ï¿½ï¿½Ì•pï¿½x
+  M[(-1)+1]++; // •¶š‚Ì•p“x
 
 //////////////////////////
-// T[n-1] ï¿½Í•Kï¿½ï¿½TYPE_L
-  tt = t; // 1ï¿½Â‘Oï¿½ï¿½TYPE
+// T[n-1] ‚Í•K‚¸TYPE_L
+  tt = t; // 1‚Â‘O‚ÌTYPE
   i = n-1;
   t = TYPE_L;
   M[gc(i)+1]++;
-  NL[gc(i)+1]++; // TYPE_Lï¿½Ì•ï¿½ï¿½ï¿½ï¿½Ì•pï¿½x
+  NL[gc(i)+1]++; // TYPE_L‚Ì•¶š‚Ì•p“x
 
 //////////////////////////
-// T[p..q] = T[n..n] ï¿½ï¿½ S*-string
+// T[p..q] = T[n..n] ‚ª S*-string
   p = i+1;
   q = p;
-  C[(-1)+1]++; // T[p] = $ ï¿½ï¿½ï¿½ï¿½nï¿½Ü‚ï¿½S*ï¿½Ìï¿½
-  s1++; // S*ï¿½Ìï¿½Ş‚Ìï¿½
-  m1 += 1; // S*ï¿½Ì’ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½v
-  n1++; // ï¿½ï¿½ï¿½Ìƒï¿½ï¿½xï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ (S*ï¿½Ìï¿½)
+  C[(-1)+1]++; // T[p] = $ ‚©‚çn‚Ü‚éS*‚Ì”
+  s1++; // S*‚Ìí—Ş‚Ì”
+  m1 += 1; // S*‚Ì’·‚³‚Ì‡Œv
+  n1++; // Ÿ‚ÌƒŒƒxƒ‹‚Ì•¶š—ñ’· (S*‚Ì”)
   tt = t;
 
   for (i=n-2; i>=0; i--) {
-    if (i % (1<<20) == 0) {
+/*    if (i % (1<<20) == 0) {
       printf("%ld \r",i>>20);
       fflush(stdout);
-    }
+    }*/
     M[gc(i)+1]++;
     if (gc(i) < gc(i+1)) { // TYPE_S
       t = TYPE_S;
     } else if (gc(i) > gc(i+1)) { // TYPE_L
-      if (tt == TYPE_S) { // ï¿½ï¿½ï¿½Oï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½TYPE_Sï¿½È‚ï¿½ï¿½ S* T[i+1..q] ï¿½ï¿½ï¿½ï¿½ï¿½
+      if (tt == TYPE_S) { // ’¼‘O‚Ì•¶š‚ªTYPE_S‚È‚ç‚Î S* T[i+1..q] ‚ğì‚é
         p = i+1;
         C[gc(p)+1]++;
-        if (insert_string(h1,q-p+1,&T[p])) { // T[p..q] ï¿½ï¿½}ï¿½ï¿½
-          s1++; // ï¿½Vï¿½ï¿½ï¿½ï¿½S*ï¿½È‚ï¿½Îï¿½Ş‚Ìï¿½ï¿½ğ‘‚â‚·
-          m1 += q-p+1; // S*ï¿½Ì’ï¿½ï¿½ï¿½ï¿½ğ‘«‚ï¿½
+        if (insert_string(h1,q-p+1,&T[p])) { // T[p..q] ‚ğ‘}“ü
+          s1++; // V‚µ‚¢S*‚È‚ç‚Îí—Ş‚Ì”‚ğ‘‚â‚·
+          m1 += q-p+1; // S*‚Ì’·‚³‚ğ‘«‚·
         }
         n1++;
         q = p;
       }
-      t = TYPE_L; // T[i] ï¿½ï¿½TYPE_L
+      t = TYPE_L; // T[i] ‚ÍTYPE_L
       NL[gc(i)+1]++;
-    } else { // TYPEï¿½Í‘Oï¿½Ì•ï¿½ï¿½ï¿½ï¿½Æ“ï¿½ï¿½ï¿½
+    } else { // TYPE‚Í‘O‚Ì•¶š‚Æ“¯‚¶
       if (t == TYPE_L) NL[gc(i)+1]++;
     }
     tt = t;
   }
-  printf("n=%ld n1=%ld\n",n,n1);
-  printf("s1=%ld m1=%ld\n",s1,m1);
+//  printf("n=%ld n1=%ld\n",n,n1);
+//  printf("s1=%ld m1=%ld\n",s1,m1);
   //printf("space for level 1 %ld bytes\n",n1/8*blog(s1)+m1);
-  printf("collision1 %ld\n",collision);
+//  printf("collision1 %ld\n",collision);
 
-  report_mem("compute S*");
+//  dbwt_report_mem("compute S*");
 
-  { // T[0..p] ï¿½ï¿½ S* ï¿½Å‚Í‚È‚ï¿½ï¿½ï¿½BWï¿½ÏŠï¿½ï¿½É‚Í•Kï¿½vï¿½È‚Ì‚Å•Û‘ï¿½
+  { // T[0..p] ‚Í S* ‚Å‚Í‚È‚¢‚ªBW•ÏŠ·‚É‚Í•K—v‚È‚Ì‚Å•Û‘¶
     uchar *r;
-    r = myrealloc(h1->buf, h1->bufsiz + p+1+1+lenlen(p+1) + 4, h1->bufsiz);
+    r = dbwt_myrealloc(h1->buf, h1->bufsiz + p+1+1+lenlen(p+1) + 4, h1->bufsiz);
     if (r != h1->buf) {
 //      printf("buf has moved from %p to %p\n", h1->buf, r);
       h1->buf = r;
@@ -527,12 +526,12 @@ void bwt(char *fname)
     S[s1] = r;
     setlen(&r,p+1);
     *r++ = T[0]+1; // sentinel
-    lastptr = r; // T[0] ï¿½Ö‚Ìƒ|ï¿½Cï¿½ï¿½ï¿½^
-    for (i=0; i<p+1; i++) *r++ = T[i]; // ï¿½æ“ªï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ T[0..p]
+    lastptr = r; // T[0] ‚Ö‚Ìƒ|ƒCƒ“ƒ^
+    for (i=0; i<p+1; i++) *r++ = T[i]; // æ“ª‚Ì•¶š—ñ T[0..p]
 
     S[0] = r;
     setlen(&r,1);
-    *r = 0; // ï¿½ÅŒï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ T[n..n]ï¿½Dï¿½{ï¿½ï¿½ï¿½ï¿½ -1
+    *r = 0; // ÅŒã‚Ì•¶š—ñ T[n..n]D–{“–‚Í -1
   }
 
   min_ptr = max_ptr = S[0];
@@ -541,108 +540,115 @@ void bwt(char *fname)
     if (S[i] > max_ptr) max_ptr = S[i];
   } 
 
-  T2 = allocate_packed_array(n1+1,blog(s1+2)+1);
-  report_mem("create new string T2");
+  T2 = dbwt_allocate_packed_array(n1+1,dbwt_blog(s1+2)+1);
+//  dbwt_report_mem("create new string T2");
 
 //////////////////////////
-// T[n] = $ ï¿½ï¿½1ï¿½Â‚ï¿½S*-string
+// T[n] = $ ‚ª1‚Â‚ÌS*-string
   t = TYPE_S; // i = n;
   tt = t;
   q = n;
   j = n1;
 
 //////////////////////////
-// T[n-1] ï¿½Í•Kï¿½ï¿½TYPE_L
+// T[n-1] ‚Í•K‚¸TYPE_L
   i = n-1;
   t = TYPE_L;
   p = i+1;
-  pa_set(T2,j--,0); // T2[n1] = 0 ($ï¿½ï¿½name)
+  dbwt_pa_set(T2,j--,0); // T2[n1] = 0 ($‚Ìname)
 
   q = p;
   tt = t;
 
   for (i=n-2; i>=0; i--) {
-    if (i % (1<<20) == 0) {
-      printf("%ld \r",i>>20);
-      fflush(stdout);
-    }
+//    if (i % (1<<20) == 0) {
+  //    printf("%ld \r",i>>20);
+//      fflush(stdout);
+  //  }
     if (gc(i) < gc(i+1)) {
       t = TYPE_S;
     } else if (gc(i) > gc(i+1)) {
       if (tt == TYPE_S) {
         p = i+1;
-        pa_set(T2,j--,getname(h1,q-p+1,&T[p])); // T[p..q] ï¿½ï¿½nameï¿½ï¿½ T2 ï¿½Éï¿½ï¿½ï¿½
+        dbwt_pa_set(T2,j--,getname(h1,q-p+1,&T[p])); // T[p..q] ‚Ìname‚ğ T2 ‚É‘‚­
         q = p;
       }
       t = TYPE_L;
     }
     tt = t;
   }
-  pa_set(T2,0,s1); // T2[0] = s1 (Tï¿½Ìæ“ªï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½name)
+  dbwt_pa_set(T2,0,s1); // T2[0] = s1 (T‚Ìæ“ª‚Ì•¶š—ñ‚Ìname)
 
 #if 1
-  myfree(T,(n+1)*sizeof(uchar));
-  report_mem("free T");
+  if(free_text)
+    free(T);
+/* {
+    dbwt_myfree(T,(n+1)*sizeof(uchar));
+    dbwt_report_mem("free T");
+  };*/
 #else
   mymunmap(map);
 #endif
 
-  sa = (uint *)mymalloc((n1+1)*sizeof(*sa));
-  report_mem("allocate sa");
+  sa_size=(n1+1)*sizeof(*sa);
+  sa = (uint *) dbwt_mymalloc(sa_size);
+//  dbwt_report_mem("allocate sa");
 ////////////////////////////////////
-// T2[1..n1] ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ÌÚ”ï¿½ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½ï¿½ì¬
-  printf("sorting level-1 suffixes using IS...\n");
-  sais_main(T2->b, sa, 0, n1, s1+1, -T2->w);
+// T2[1..n1] ‚Ì•¶š—ñ‚ÌÚ”ö«”z—ñ‚ğì¬
+//  printf("sorting level-1 suffixes using IS...\n");
+  dbwt_sais_main((const unsigned char *) T2->b, (int *)sa, 0, n1, s1+1, -T2->w);
+
   for (i=0; i<n1; i++) {
-    sa[i]++; // sa[i] ï¿½ï¿½ 1 ï¿½ï¿½ï¿½ï¿½ s1
+    sa[i]++; // sa[i] ‚Í 1 ‚©‚ç s1
   }
-  printf("done\n");
+//  printf("done\n");
 ////////////////////////////////////
 
   bwp_base = min_ptr-1;
-  bwp_w = blog(max_ptr - min_ptr + 2)+1;
+  bwp_w = dbwt_blog(max_ptr - min_ptr + 2)+1;
 
   for (i=0; i<n1; i++) {
     int l;
     uchar *q;
     p = sa[i];
-    q = S[pa_get(T2,p-1)]; // bw[i] = T2[sa[i]-1] ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½
+    q = S[dbwt_pa_get(T2,p-1)]; // bw[i] = T2[sa[i]-1] ‚Ì•¶š—ñ
     l = getlen(&q);
     q += 1; // for sentinel
-    q += l-1; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌÅŒï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½ (ï¿½ï¿½ë‚©ï¿½ï¿½BWï¿½Éï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+    q += l-1; // •¶š—ñ‚ÌÅŒã‚Ì•¶š‚ğw‚· (Œã‚ë‚©‚çBW‚É‘‚¢‚Ä‚¢‚­‚©‚ç)
 
     sa[i] = q - bwp_base;
   }
-  free_packed_array(T2);
-  report_mem("free T2");
+  dbwt_free_packed_array(T2);
+//  dbwt_report_mem("free T2");
 
   for (i=0; i<=SIGMA; i++) {
-    Q[TYPE_LMS][i] = init_queue(bwp_w);
-    Q[TYPE_L][i] = init_queue(bwp_w);
-    Q[TYPE_S][i] = init_queue(bwp_w);
+    Q[TYPE_LMS][i] = dbwt_init_queue(bwp_w);
+    Q[TYPE_L][i] = dbwt_init_queue(bwp_w);
+    Q[TYPE_S][i] = dbwt_init_queue(bwp_w);
   }
 
-  j = n1+1; // sa ï¿½ÌƒTï¿½Cï¿½Y
+  j = n1+1; // sa ‚ÌƒTƒCƒY
   for (i=n1-1; i>=0; i--) {
     uchar *q;
-    uint *sa2;
+//    uint *sa2;
     q = sa[i] + bwp_base;
     if (i == 0) {
       c = -1;
     } else {
       c = q[0];
     }
-    enqueue_l(Q[TYPE_LMS][c+1], q-bwp_base);
+    dbwt_enqueue_l(Q[TYPE_LMS][c+1], q-bwp_base);
     if (i % 1024 == 0) {
-      sa2 = sa;
-      sa = myrealloc(sa,i*sizeof(*sa),j*sizeof(*sa));
+//      sa2 = sa;
+      sa_size=i*sizeof(*sa);
+      sa = dbwt_myrealloc(sa,sa_size,j*sizeof(*sa));
       //if (sa != sa2) printf("sa = %p\n",sa);
       j = i;
     }
   }
-  report_mem("allocate queue");
+//  dbwt_report_mem("allocate queue");
 
-  bw = (uchar *)mymalloc(n+1);
+  bw = (uchar *) dbwt_mymalloc(n+1);
     
   cc = 0;
   for (i=0; i<=SIGMA; i++) {
@@ -650,34 +656,34 @@ void bwt(char *fname)
     cc += M[i];
   }
 
-  report_mem("allocate tmp");
+//  dbwt_report_mem("allocate tmp");
     
-  printf("induced-sorting-L n=%ld\n",n);
+//  printf("induced-sorting-L n=%ld\n",n);
 
-  // C2 ï¿½ï¿½ TYPE_S ï¿½oï¿½Pï¿½bï¿½gï¿½Ìæ“ª
+  // C2 ‚Í TYPE_S ƒoƒPƒbƒg‚Ìæ“ª
   for (i=0; i<=SIGMA; i++) C2[i] = M2[i] + NL[i];
 
-  // ï¿½gï¿½ï¿½ï¿½zï¿½ï¿½
-  // M2: ï¿½Rï¿½sï¿½[ï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½X, ï¿½ï¿½ï¿½ï¿½lï¿½Íƒoï¿½Pï¿½bï¿½gï¿½Ìæ“ª
-  // C2: bw ï¿½ï¿½ï¿½êï¿½Iï¿½ÉŠiï¿½[ï¿½ï¿½ï¿½ï¿½Xï¿½^ï¿½bï¿½Nï¿½ÌƒAï¿½hï¿½ï¿½ï¿½X, ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½Sï¿½oï¿½Pï¿½bï¿½gï¿½ÌˆÊ’u
-  // M3: ï¿½oï¿½Pï¿½bï¿½gï¿½ÌˆÊ’u (ï¿½Ï‰ï¿½ï¿½ï¿½ï¿½È‚ï¿½)
+  // g‚¤”z—ñ
+  // M2: ƒRƒs[æ‚ÌƒAƒhƒŒƒX, ‰Šú’l‚ÍƒoƒPƒbƒg‚Ìæ“ª
+  // C2: bw ‚ğˆê“I‚ÉŠi”[‚·‚éƒXƒ^ƒbƒN‚ÌƒAƒhƒŒƒX, ‰Šú’l‚ÍSƒoƒPƒbƒg‚ÌˆÊ’u
+  // M3: ƒoƒPƒbƒg‚ÌˆÊ’u (•Ï‰»‚µ‚È‚¢)
     
   {
     ////////////////////////////////////////////
-    // $ ï¿½Ìƒoï¿½Pï¿½bï¿½gï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ (1ï¿½Â‚ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½
-    // q ï¿½ï¿½S*ï¿½ÌÅŒï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½
+    // $ ‚ÌƒoƒPƒbƒg‚Ì•¶š—ñ (1‚Â‚¾‚¯) ‚ğæ‚èo‚·
+    // q ‚ÍS*‚ÌÅŒã‚Ì•¶š‚ğw‚·
     // c2 = q[0] = $ (-1)
-    // c1 = q[-1] ï¿½ï¿½BWï¿½ÏŠï¿½ï¿½Ì•ï¿½ï¿½ï¿½
-    // c1 ï¿½Ìƒoï¿½Pï¿½bï¿½gï¿½ï¿½ q-1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // c1 = q[-1] ‚ªBW•ÏŠ·‚Ì•¶š
+    // c1 ‚ÌƒoƒPƒbƒg‚É q-1 ‚ğ‘‚­
     uchar *q;
     int c1,c2;
     i = 0;
-    q = bwp_base + dequeue(Q[TYPE_LMS][i]);
+    q = bwp_base + dbwt_dequeue(Q[TYPE_LMS][i]);
     c1 = q[-1];  c2 = -1;
     bw[0] = c1;
-    enqueue(Q[TYPE_L][c1+1],(q-1)-bwp_base);
+    dbwt_enqueue(Q[TYPE_L][c1+1],(q-1)-bwp_base);
     bw[M2[c1+1]++] = q[-2];
-    bw[C2[c2+1]++] = c1; // ï¿½êï¿½Iï¿½ÉŠiï¿½[
+    bw[C2[c2+1]++] = c1; // ˆê“I‚ÉŠi”[
   }
 
   for (c = 1; c <= SIGMA; c++) {
@@ -685,25 +691,25 @@ void bwt(char *fname)
     int c1;
     long m;
     int t;
-    printf("%d \r",c);
-    fflush(stdout);
-    for (t=1; t<=2; t++) { // TYPE_L ï¿½ï¿½ TYPE_LMS ï¿½ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½
-      m = M3[c]; // Lï¿½oï¿½Pï¿½bï¿½gï¿½Ìæ“ª
-      if (t == TYPE_LMS) m += M[c] - C[c]; // LMSï¿½oï¿½Pï¿½bï¿½gï¿½Ìæ“ª
-      while (!emptyqueue(Q[t][c])) {
-        q = bwp_base + dequeue(Q[t][c]);
-        if (q == lastptr) { // T[0] ï¿½È‚ï¿½ÎCï¿½ï¿½ï¿½Ì‘Oï¿½ï¿½ $ ï¿½È‚Ì‚Å‚ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lastï¿½ÉŠiï¿½[
+//    printf("%d \r",c);
+//    fflush(stdout);
+    for (t=1; t<=2; t++) { // TYPE_L ‚Æ TYPE_LMS ‚ğ‡‚Éˆ—
+      m = M3[c]; // LƒoƒPƒbƒg‚Ìæ“ª
+      if (t == TYPE_LMS) m += M[c] - C[c]; // LMSƒoƒPƒbƒg‚Ìæ“ª
+      while (!dbwt_emptyqueue(Q[t][c])) {
+        q = bwp_base + dbwt_dequeue(Q[t][c]);
+        if (q == lastptr) { // T[0] ‚È‚ç‚ÎC‚»‚Ì‘O‚Í $ ‚È‚Ì‚Å‚»‚Ì«‘‡‚ğlast‚ÉŠi”[
           last = m;
         } else {
           c1 = q[-1];  // c2 = q[0]; // c2+1 = c
           if (c1 >= (c-1)) { // TYPE_L
-            enqueue(Q[TYPE_L][c1+1], (q-1)-bwp_base);
+            dbwt_enqueue(Q[TYPE_L][c1+1], (q-1)-bwp_base);
             bw[M2[c1+1]++] = q[-2];
             if (t == TYPE_LMS) {
-              bw[C2[c]++] = c1; // ï¿½êï¿½Iï¿½ÉŠiï¿½[
+              bw[C2[c]++] = c1; // ˆê“I‚ÉŠi”[
             }
           } else {
-            enqueue_l(Q[TYPE_S][c], (q)-bwp_base);
+            dbwt_enqueue_l(Q[TYPE_S][c], (q)-bwp_base);
           }
         }
         m++;
@@ -712,21 +718,21 @@ void bwt(char *fname)
   }
 
   for (c=0; c<=SIGMA; c++) {
-    free_queue(Q[TYPE_LMS][c]);
-    free_queue(Q[TYPE_L][c]);
+    dbwt_free_queue(Q[TYPE_LMS][c]);
+    dbwt_free_queue(Q[TYPE_L][c]);
   }
     
   for (c=0; c<=SIGMA; c++) {
-    Q[TYPE_L][c] = init_queue(bwp_w);
+    Q[TYPE_L][c] = dbwt_init_queue(bwp_w);
   }
     
-  report_mem("allocate queue");
+//  dbwt_report_mem("allocate queue");
     
-  printf("induced-sorting-S n=%ld\n",n);
+//  printf("induced-sorting-S n=%ld\n",n);
 
-  // ï¿½gï¿½ï¿½ï¿½zï¿½ï¿½: M2, C2
-  // M2: ï¿½Rï¿½sï¿½[ï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½X, ï¿½ï¿½ï¿½ï¿½lï¿½Íƒoï¿½Pï¿½bï¿½gï¿½ÌÅŒï¿½
-  // C2: bw ï¿½ï¿½ï¿½êï¿½Iï¿½ÉŠiï¿½[ï¿½ï¿½ï¿½ï¿½Xï¿½^ï¿½bï¿½Nï¿½ÌƒAï¿½hï¿½ï¿½ï¿½X, ï¿½ï¿½ï¿½ï¿½lï¿½Í‘Oï¿½Ì‘ï¿½ï¿½ï¿½
+  // g‚¤”z—ñ: M2, C2
+  // M2: ƒRƒs[æ‚ÌƒAƒhƒŒƒX, ‰Šú’l‚ÍƒoƒPƒbƒg‚ÌÅŒã
+  // C2: bw ‚ğˆê“I‚ÉŠi”[‚·‚éƒXƒ^ƒbƒN‚ÌƒAƒhƒŒƒX, ‰Šú’l‚Í‘O‚Ì‘±‚«
 
   M2[0] = 0;  for (c=1; c<=SIGMA; c++) M2[c] = M2[c-1] + M[c];
 
@@ -734,14 +740,14 @@ void bwt(char *fname)
     uchar *q;
     int c1,c0;
     int t;
-    printf("%d \r",c);
-    fflush(stdout);
-    for (t = 1; t >= 0; t--) { // TYPE_L, TYPE_S ï¿½Ìï¿½ï¿½Éï¿½ï¿½ï¿½
-      while (!emptyqueue(Q[t][c])) {
-        q = bwp_base + dequeue(Q[t][c]);
+//    printf("%d \r",c);
+//    fflush(stdout);
+    for (t = 1; t >= 0; t--) { // TYPE_L, TYPE_S ‚Ì‡‚Éˆ—
+      while (!dbwt_emptyqueue(Q[t][c])) {
+        q = bwp_base + dbwt_dequeue(Q[t][c]);
         c1 = q[-1];  // c2 = q[0]; // c2+1 = c
         if (c1 <= (c-1)) { // TYPE_S
-          enqueue(Q[TYPE_L][c1+1],(q-1) - bwp_base); // ï¿½ï¿½ï¿½ï¿½Ì‚Íï¿½ï¿½ L
+          dbwt_enqueue(Q[TYPE_L][c1+1],(q-1) - bwp_base); // “ü‚ê‚é‚Ì‚Íí‚É L
           if (q-1 == lastptr) {
             last = M2[c1+1]--;
           } else {
@@ -753,7 +759,7 @@ void bwt(char *fname)
     }
   }
 
-  printf("writing...\n");
+/*  printf("writing...\n");
   fp = fopen("output.bw","wb");
   if (fp == NULL) {
     printf("fopen\n");
@@ -794,13 +800,34 @@ void bwt(char *fname)
     exit(1);
   }
   fprintf(fp,"%lu",last);
-  fclose(fp);
+  fclose(fp);*/
   
 
-  report_mem("done");
-  printf("%.2f bpc\n",(double)max_alloc/n);
+ // dbwt_report_mem("done");
+//  printf("%.2f bpc\n",(double) dbwt_max_alloc/n);
   //printf("end");  getchar();
-
+  for (c=0; c<=SIGMA; c++) {
+    dbwt_free_queue(Q[TYPE_L][c]);
+    dbwt_free_queue(Q[TYPE_S][c]);
+  }
+  dbwt_myfree(S,(s1+2)*sizeof(*S));
+  dbwt_myfree(sa,sa_size);
+//  myfree(bw,n+1);
+  dbwt_myfree(h1->buf,h1->bufsiz);
+  dbwt_myfree(h1,sizeof(htbl));
+  (*_last)=last;
+//  dbwt_report_mem("Freed all memory");
+  return bw;
 }
+/*
+#if 1
+int main(int argc, char *argv[])
+{
 
-#endif
+  printf("sizeof(uchar *)=%ld sizeof(uint)=%ld sizeof(ulong)=%ld\n",sizeof(uchar *),sizeof(uint),sizeof(ulong));
+
+  bwt(argv[1]);
+  
+  return 0;
+}
+#endif*/
