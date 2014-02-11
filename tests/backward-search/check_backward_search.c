@@ -89,7 +89,6 @@ START_TEST(test_interval_search)
 	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'r');
 	ck_assert_int_eq(10, result->i);
     ck_assert_int_eq(11, result->j);
-
 }
 END_TEST
 

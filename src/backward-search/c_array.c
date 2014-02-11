@@ -13,12 +13,12 @@ int get_index(const char* string, const char c)
 {
 	int i;
 	for(i=0;i<strlen(string);i++){
-		printf("gettind index. i: %d \n",i);
+		//printf("gettind index. i: %d \n",i);
 		if(c == string[i]){
 			printf("returning %d \n", i);
 			return i;
 		}
-		printf("loop cycle done. i:%d\n",i);
+		//printf("loop cycle done. i:%d\n",i);
 	}
 	return -1;
 }
@@ -38,7 +38,7 @@ char* get_alphabet(const char* string)
 
 	int length = strlen(string);
 	for(i=0;i<length;i++){
-		printf("index i: %d and alphabet_index: %d \n", i,alphabet_index);
+		//printf("index i: %d and alphabet_index: %d \n", i,alphabet_index);
 		if(get_index(alphabet, string[i]) == -1){
 			printf("Moving letter by one \n");
 			alphabet[alphabet_index+1] = alphabet[alphabet_index];
