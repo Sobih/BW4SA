@@ -144,6 +144,9 @@ struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	if (vector == 0)
 		return 0;
 
+	if (nbits == 0)
+		nbits++;
+
 	//init variables
 	vector->length = (nbits + 31) / 32;
 	vector->mark_bit = &mark_bit_vector_bit;
