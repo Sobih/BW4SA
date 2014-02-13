@@ -13,6 +13,11 @@
 #include "../../include/wavelet_tree.h"
 
 void print_bit_vector(struct bit_vec* vector) {
+	if (vector == 0) {
+		printf("(NULL)\n");
+		return;
+	}
+
 	for (int i = 0; i < vector->length; ++i) {
 		printf("\t%u, ", vector->vector[i]);
 		print_bits(vector->vector[i]);
@@ -167,6 +172,9 @@ struct wavelet_node* create_children(struct wavelet_node* node) {
 }
 
 struct wavelet_node* create_wavelet_tree(const char* string) {
+	if (string == 0)
+		return 0;
+
 	//allocate the root node
 	struct wavelet_node* root = calloc(1, sizeof(wavelet_node));
 
