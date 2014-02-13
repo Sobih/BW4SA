@@ -13,7 +13,7 @@ int get_index(const char* string, const char c)
 {
 	int i;
 	for(i=0;i<strlen(string);i++){
-		if(c == *(string+i)){
+		if(c == string[i]){
 			return i;
 		}
 	}
@@ -25,13 +25,13 @@ int get_index(const char* string, const char c)
 **/
 char* get_alphabet(const char* string)
 {
-
 	int i;
 	char* alphabet = calloc(MAX_ALPHABET_SIZE, sizeof(char));
 	alphabet[0] = '\0';
 	int alphabet_index = 0;
 	
-	for(i=0;i<strlen(string);i++){
+	int length = strlen(string);
+	for(i=0;i<length;i++){
 		if(get_index(alphabet, string[i]) == -1){
 			alphabet[alphabet_index+1] = alphabet[alphabet_index];
 			alphabet[alphabet_index] = string[i];
@@ -56,7 +56,7 @@ int* create_c_array(const char* string)
 		c_array[i+1] = c_array[i+1] + c_array[i];
 	}
 	
-	for(i=strlen(alphabet); i>0;i--){
+	for(i=strlen(alphabet)-1; i>0;i--){
 		c_array[i] = c_array[i-1];
 	}
 	c_array[0] = 0;
