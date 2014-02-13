@@ -141,7 +141,7 @@ unsigned int rank_query_interval(const struct bit_vec* vector, unsigned int star
 	
 
 struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
-	if (vector == 0 || nbits == 0)
+	if (vector == 0)
 		return 0;
 
 	//init variables
