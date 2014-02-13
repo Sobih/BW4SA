@@ -43,8 +43,15 @@ unsigned int wavelet_rank_query(const struct wavelet_node* node, char c, unsigne
 	if (index >= node->vector->length * 32)
 		index = node->vector->length * 32;
 
+	printf("Current index: %u\n", index);
+
+	printf("Alphabet length: %u\n", node->alphabet_length);
+	printf("Alphabet: %s\n", node->alphabet);
+
 	//find index of c in alphabet
 	int i = binary_search(node->alphabet, &c, 0, node->alphabet_length - 1, sizeof(char));
+
+	printf("Result of binary search: %u\n", i);
 
 	if (i < 0 || i > node->alphabet_length)
 		return UINT_MAX;
@@ -52,15 +59,20 @@ unsigned int wavelet_rank_query(const struct wavelet_node* node, char c, unsigne
 	unsigned int rank = node->vector->rank(node->vector, index);
 	int child = 1;
 
-	//c is in top half of alphabet = 0 = inverse rank
-	if (i > node->alphabet_length / 2) {
-		rank = node->vector->length * 32 - rank;
+	//c is in bottom half of alphabet = 0 = inverse rank
+	if (i < node->alphabet_length / 2) {
+		rank = node->vector->length * 32 - rank - node->vector->filler_bits;
 		child = 0;
 	}
 
+	printf("Rank result: %u\n", rank);
+	printf("Left child? %s\n", child == 1 ? "true" : "false");
+
 	//query a child, or return rank if leaf node
-	if (node->children[child] != 0)
+	if (node->children[child] != 0) {
+		printf("Not leaf, recursing...\n");
 		rank = node->rank(node->children[child], c, rank);
+	}
 
 	return rank;
 }
