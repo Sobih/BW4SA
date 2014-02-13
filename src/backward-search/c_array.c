@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "../../include/c_array.h"
 #include "../../include/utils.h"
+#include "../../include/backward_search.h"
 
 #define MAX_ALPHABET_SIZE 20
 /**
@@ -64,5 +65,30 @@ int* create_c_array(const char* string)
 	free(alphabet);
 	
 	return c_array;
+}
+
+char* create_string_from_interval(const Interval* interval, char* string);
+
+int* create_c_array_interval(const Interval* interval, char* bwt)
+{
+	char* substr = create_string_from_interval(interval, bwt);
+	return create_c_array(substr);
+}
+
+char* create_alphabet_interval(const Interval* interval, char* bwt)
+{
+	char* substr = create_string_from_interval(interval, bwt);
+	return get_alphabet(substr);
+}
+
+char* create_string_from_interval(const Interval* interval, char* string)
+{
+	int length = interval->j - interval->i + 1;
+	char* substr = malloc(sizeof(char)*length +1);
+	for(int k = 0; k<length; k++){
+		substr[k] = string[interval->i+k];
+	}
+	substr[length] = '\0';
+	return substr;
 }
 
