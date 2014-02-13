@@ -69,7 +69,7 @@ int* create_c_array(const char* string)
 		c_array[i+1] = c_array[i+1] + c_array[i];
 	}
 	
-	for(i=strlen(alphabet); i>0;i--){
+	for(i=strlen(alphabet)-1; i>0;i--){
 		c_array[i] = c_array[i-1];
 	}
 	c_array[0] = 0;
