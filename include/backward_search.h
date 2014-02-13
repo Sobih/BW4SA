@@ -23,8 +23,19 @@ typedef struct interval
 **/
 Interval* backward_search(const char* bwt, const char* string);
 
-
-Interval* backward_search_interval(const char* bwt, Interval* interval, char c);
+/**
+ * @brief finds the interval of a given letter in an interval.
+ *
+ * @param bwt of the string
+ *
+ * @param interval to be searched
+ *
+ * @param left extension character
+ *
+ * @return interval of searched left extension
+ *
+ */
+Interval* backward_search_interval(const char* bwt, Interval* interval, const char c);
 
 
 /**

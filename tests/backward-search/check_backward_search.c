@@ -79,16 +79,58 @@ START_TEST(test_search_different_word)
 }
 END_TEST
 
-START_TEST(test_interval_search)
+START_TEST(test_interval_search_ra)
 {
-	printf("Starting interval test \n");
 	Interval* interval = malloc(sizeof(Interval));
 	interval->i = 1;
 	interval->j = 5;
-	printf("dhgkjhdfgkjhdgfkjhdsgfkhdsglkjhfdg \n");
 	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'r');
 	ck_assert_int_eq(10, result->i);
     ck_assert_int_eq(11, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_da)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 1;
+	interval->j = 5;
+	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'd');
+	ck_assert_int_eq(9, result->i);
+    ck_assert_int_eq(9, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_bra)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 10;
+	interval->j = 11;
+	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'b');
+	ck_assert_int_eq(6, result->i);
+    ck_assert_int_eq(7, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_tt)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 6;
+	interval->j = 9;
+	Interval* result = backward_search_interval("ivh$ttttaai", interval, 't');
+	ck_assert_int_eq(8, result->i);
+    ck_assert_int_eq(9, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_ha)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 1;
+	interval->j = 2;
+	Interval* result = backward_search_interval("ivh$ttttaai", interval, 'h');
+	ck_assert_int_eq(3, result->i);
+    ck_assert_int_eq(3, result->j);
 }
 END_TEST
 
@@ -114,11 +156,11 @@ TCase * create_backward_search_test_case(void){
 
 TCase * create_backward_search_interval_test_case(void){
 	TCase * tc_backward_search_interval = tcase_create("backward_search_interval_test");
-	tcase_add_test(tc_backward_search_interval, test_interval_search);
-	//tcase_add_test(tc_backward_search, test_search_simple2);
-	//tcase_add_test(tc_backward_search, test_search_simple3);
-	//tcase_add_test(tc_backward_search, test_search_when_not_found);
-	//tcase_add_test(tc_backward_search, test_search_different_word);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_ra);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_da);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_bra);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_tt);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_ha);
 
 	return tc_backward_search_interval;
 }
