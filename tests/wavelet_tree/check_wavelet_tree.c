@@ -53,18 +53,12 @@ START_TEST (test_create_wavelet_tree) {
 	struct wavelet_node* root = create_wavelet_tree(string), *child;
 	unsigned int correct_bits;
 
-	printf("Root\n");
-	print_node_asd(root);
-
 	//assert root internals
 	correct_bits = 42;
 	assert_node_internals(root, string, alphabet, 3, 1, &correct_bits);
 	ck_assert(root->parent == 0);
 	ck_assert(root->children[0] != 0);
 	ck_assert(root->children[1] != 0);
-
-	printf("Left child\n");
-	print_node_asd(root->children[0]);
 
 	//assert left child internals
 	string = "aaa";
@@ -74,9 +68,6 @@ START_TEST (test_create_wavelet_tree) {
 	ck_assert(child->children[0] == 0);
 	ck_assert(child->children[1] == 0);
 	ck_assert(child->parent == root);
-
-	printf("Right child\n");
-	print_node_asd(root->children[1]);
 
 	//assert right child internals
 	string = "bnn";
@@ -90,11 +81,36 @@ START_TEST (test_create_wavelet_tree) {
 }
 END_TEST
 
+START_TEST (test_faulty_parameters) {
+	//empty string
+	char* string = "";
+	struct wavelet_node* root = create_wavelet_tree(string);
+	unsigned int correct_bits;
+
+	printf("Root\n");
+	print_node_asd(root);
+
+	//assert root internals
+	correct_bits = 0;
+	assert_node_internals(root, string, string, 0, 1, &correct_bits);
+	ck_assert(root->parent == 0);
+	ck_assert(root->children[0] == 0);
+	ck_assert(root->children[1] == 0);
+
+	//null pointer
+	string = 0;
+	root = create_wavelet_tree(string);
+
+	ck_assert(root == 0);
+}
+END_TEST
+
 Suite* array_suite(void) {
 	Suite* suite = suite_create("Array");
 
 	TCase* tc_wavelet_tree = tcase_create("Wavelet Tree");
 	tcase_add_test (tc_wavelet_tree, test_create_wavelet_tree);
+	tcase_add_test (tc_wavelet_tree, test_faulty_parameters);
 	suite_add_tcase (suite, tc_wavelet_tree);
 
 	return suite;
