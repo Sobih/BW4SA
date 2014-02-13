@@ -79,12 +79,25 @@ void iterate(const char* string){
 				free(reverse);
 			}
 		}
+		free(alphabet);
+		free(c_array);
 	}
 }
 
 Interval* update_reverse_interval(Interval* interval, const char* alphabet, const int* c_array, const char c){
 	Interval* updated = malloc(sizeof(Interval));
+	int i = interval->i;
+	int j = interval->j;
 
+	int index_in_c = get_char_index(c_array, alphabet, c);
+
+	updated->i = i + c_array[index_in_c];
+
+	if(index_in_c == strlen(alphabet) - 1){
+		updated->j = j;
+	} else {
+		updated->j = c_array[index_in_c + 1] - 1;
+	}
 
 	return updated;
 }
