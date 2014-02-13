@@ -25,8 +25,6 @@ int rank(const int index, const char c, const char* string){
 	return count;
 }
 
-int get_char_index(int* c_array, char* alphabet, char c);
-
 Interval* backward_search(const char* bwt, const char* string)
 {
 	int i = 0;
@@ -61,16 +59,5 @@ Interval* backward_search_interval(const char* bwt, Interval* interval, const ch
 	new_interval->i = i;
 	new_interval->j = j;
 	return new_interval;
-}
-
-int get_char_index(int* c_array, char* alphabet, char c)
-{
-	int i;
-	for(i=0;i<strlen(alphabet);i++){
-		if(alphabet[i] == c){
-			return c_array[i];
-		}
-	}
-	return -1;
 }
 	

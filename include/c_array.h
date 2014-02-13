@@ -15,3 +15,9 @@
 int* create_c_array(const char* string);
 
 char* get_alphabet(const char* string);
+
+int* create_c_array_interval(const Interval* interval, char* bwt);
+
+char* create_alphabet_interval(const Interval* interval, char* bwt);
+
+int get_char_index(int* c_array, char* alphabet, char c);

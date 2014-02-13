@@ -92,3 +92,14 @@ char* create_string_from_interval(const Interval* interval, char* string)
 	return substr;
 }
 
+int get_char_index(int* c_array, char* alphabet, char c)
+{
+	int i;
+	for(i=0;i<strlen(alphabet);i++){
+		if(alphabet[i] == c){
+			return c_array[i];
+		}
+	}
+	return -1;
+}
+

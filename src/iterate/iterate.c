@@ -2,6 +2,7 @@
 #include "../../include/iterate.h"
 #include "../../include/rbwt.h"
 #include "../../include/backward_search.h"
+#include "../../include/c_array.h"
 #include "../bwt/s_to_bwt.h"
 #include "substring_stack.h"
 #include <stdlib.h>
@@ -60,20 +61,30 @@ void iterate(const char* string){
 			break;
 		}
 		// Determine characters that precede the interval
-		int charcount = 5; //placeholder
-		char c = 'a'; // placeholder
+		char* alphabet = create_alphabet_interval(substring->normal,bwt);
+		int* c_array = create_c_array_interval(substring->normal,bwt);
+
 		int i;
-		for(i = 0; i < charcount;i++){
-			Interval* normal = backward_search_interval(bwt,substring->normal,c);
-			Interval* reverse;
-			// Interval* reverse = update_reverse_interval(substring.reverse);
+		for(i = 0; i < strlen(alphabet);i++){
+			Interval* normal = backward_search_interval(bwt,substring->normal,alphabet[i]);
+			Interval* reverse = update_reverse_interval(substring->reverse, alphabet, c_array, alphabet[i]);
 			if(is_reserve_interval_right_maximal(runs, reverse)) {
 				new_substring = malloc(sizeof(substring));
 				new_substring.normal = normal;
 				new_substring.reverse = reverse;
 				// callback function pointers
 				push(stack,new_substring);
+			} else {
+				free(normal);
+				free(reverse);
 			}
 		}
 	}
+}
+
+Interval* update_reverse_interval(Interval* interval, const char* alphabet, const int* c_array, const char c){
+	Interval* updated = malloc(sizeof(Interval));
+
+
+	return updated;
 }
