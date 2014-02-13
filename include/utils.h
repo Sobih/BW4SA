@@ -49,4 +49,11 @@ void print_bits(unsigned int mask);
 
 void string_quick_sort(char **strings, unsigned int arr_size);
 
+char* determine_alphabet(const char* string);
+
+int binary_search(const void* arr, const void* key, unsigned int min, unsigned int max,
+		unsigned int entry_size);
+
+
+
 #endif /* UTILS_H_ */
