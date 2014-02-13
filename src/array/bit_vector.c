@@ -139,7 +139,6 @@ unsigned int rank_query_interval(const struct bit_vec* vector, unsigned int star
 	return count;
 }
 	
-
 struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	if (vector == 0)
 		return 0;
@@ -149,6 +148,7 @@ struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 
 	//init variables
 	vector->length = (nbits + 31) / 32;
+	vector->filler_bits = vector->length * 32 - nbits;
 	vector->mark_bit = &mark_bit_vector_bit;
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
