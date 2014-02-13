@@ -9,6 +9,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
+#include <limits.h>
 #include "../../include/utils.h"
 #include "../../include/wavelet_tree.h"
 
@@ -36,6 +37,32 @@ void print_node(struct wavelet_node* node) {
 	printf("\tString: %s\n", node->string);
 	printf("\tAlphabet: %s\n", node->alphabet);
 	printf("\tAlphabet length: %u\n", node->alphabet_length);
+}
+
+unsigned int wavelet_rank_query(const struct wavelet_node* node, char c, unsigned int index) {
+	if (index >= node->vector->length * 32)
+		index = node->vector->length * 32;
+
+	//find index of c in alphabet
+	int i = binary_search(node->alphabet, &c, 0, node->alphabet_length - 1, sizeof(char));
+
+	if (i < 0 || i > node->alphabet_length)
+		return UINT_MAX;
+
+	unsigned int rank = node->vector->rank(node->vector, index);
+	int child = 1;
+
+	//c is in top half of alphabet = 0 = inverse rank
+	if (i > node->alphabet_length / 2) {
+		rank = node->vector->length * 32 - rank;
+		child = 0;
+	}
+
+	//query a child, or return rank if leaf node
+	if (node->children[child] != 0)
+		rank = node->rank(node->children[child], c, rank);
+
+	return rank;
 }
 
 struct bit_vec* create_bit_vector(const char* string, const char* alphabet, unsigned int alphabet_length) {
@@ -71,6 +98,7 @@ struct wavelet_node* init_node(struct wavelet_node* node, const char* string, co
 	node->vector = 0;
 	node->parent = parent;
 	node->children = calloc(2, sizeof(struct wavelet_node*));
+	node->rank = &wavelet_rank_query;
 
 	return node;
 }
