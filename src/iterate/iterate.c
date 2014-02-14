@@ -86,6 +86,15 @@ void iterate(char* string, void (*callback) (substring* substr))
 	}
 }
 
+/**
+ * Updates the interval in the BWT of the reverse of the string
+ * @param reverse-BWT interval of the mother node
+ * @param updated BWT interval in this node
+ * @param alphabet in the interval
+ * @param array C of the interval
+ * @param extension character
+ * @return a new updated Interval struct in the BWT of the reverse of the string
+ */
 Interval* update_reverse_interval(Interval* interval, Interval* normal, const char* alphabet, const int* c_array, const char c){
 	Interval* updated = malloc(sizeof(Interval));
 	int i = interval->i;
@@ -105,6 +114,14 @@ Interval* update_reverse_interval(Interval* interval, Interval* normal, const ch
 	return updated;
 }
 
+/**
+ * @brief Creates a substring struct from interval and length.
+ * @param interval in normal BWT
+ * @param interval in the BWT of the reverse of the string
+ * @param length of substring
+ *
+ * @return pointer to a new substring struct
+ */
 substring* create_substring(Interval* normal, Interval* reverse, int length)
 {
 	substring* new_substring = malloc(sizeof(substring));

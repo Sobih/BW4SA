@@ -39,6 +39,11 @@ bit_vector* create_runs_vector(char* string);
 **/
 int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
 
+/**
+ * @brief Iterate goes through all right maximals in the given string and calls the callback-function on each of them.
+ * @param string base string to be iterated on
+ * @param address of the callback function
+ */
 void iterate(char* string, void (*callback) (substring* substr));
 
 #endif
