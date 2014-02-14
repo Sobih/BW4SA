@@ -1,5 +1,7 @@
+#ifndef C_ARRAY_H_
+#define C_ARRAY_H_
 
-
+#include "backward_search.h"
 /**
  * @brief Generates array C of given string. This is still a rather slow version of algorithm, but
  * with small alphabets this should not be a problem.
@@ -57,4 +59,6 @@ int* create_c_array_interval(const Interval* interval, char* bwt);
  */
 char* create_alphabet_interval(const Interval* interval, char* bwt);
 
+int get_char_index(const int* c_array, const char* alphabet, const char c);
 
+#endif

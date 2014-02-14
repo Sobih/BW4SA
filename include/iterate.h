@@ -14,9 +14,9 @@ typedef struct substring_struct
 /**
 * @brief creates vector runs from given string
 *
-* @param string string the reverse bwt is created from
+* @param string normal string (rbwt is generated from it)
 *
-* @return pointer to reverse bwt
+* @return pointer to runs vector
 *
 * @author Topi Paavilainen
 *
@@ -38,5 +38,12 @@ bit_vector* create_runs_vector(char* string);
 * @bug no known bugs
 **/
 int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
+
+/**
+ * @brief Iterate goes through all right maximals in the given string and calls the callback-function on each of them.
+ * @param string base string to be iterated on
+ * @param address of the callback function
+ */
+void iterate(char* string, void (*callback) (substring* substr));
 
 #endif
