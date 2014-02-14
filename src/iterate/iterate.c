@@ -34,25 +34,21 @@ int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval)
 	else return 0;
 }
 
-Interval* update_reverse_interval(Interval* interval, const char* alphabet, const int* c_array, const char c);
+Interval* update_reverse_interval(Interval* interval, Interval* normal, const char* alphabet, const int* c_array, const char c);
 
-void iterate(char* string){
+substring* create_substring(Interval* normal, Interval* reverse, int length);
+
+void iterate(char* string, void (*callback) (substring* substr))
+{
 	unsigned char* bwt = s_to_BWT(string);
 	bit_vector* runs = create_runs_vector(string);
-
 	substring_stack* stack = create_stack(10);
-	substring* start = malloc(sizeof(substring));
-
-	Interval* start_normal = malloc(sizeof(Interval));
-	start_normal->i = 0;
-	start_normal->j = strlen(bwt) - 1;
-
-	Interval* start_reverse = malloc(sizeof(Interval));
-	start_reverse->i = 0;
-	start_reverse->j = strlen(bwt) - 1;
-
-	start->normal = start_normal;
-	start->reverse = start_reverse;
+	
+	//Initialize first intervals. In the start both intervals are the whole bwt
+	Interval* normal = &((Interval) {.i = 0, .j = strlen(bwt)-1});
+	Interval* reverse = &((Interval) {.i = 0, .j = strlen(bwt)-1});
+	//create starting substring
+	substring* start = create_substring(normal, reverse, 0);
 
 	push(stack,start);
 	substring* new_substring;
@@ -60,35 +56,25 @@ void iterate(char* string){
 
 	while(1){
 		substring = pop(stack);
-		if(substring == NULL){
-			break;
-		}
-
-		if(substring->normal->i == substring->normal->j){
-			continue;
-		}
+		
+		if(substring == NULL) break;
+		
+		//if size of the interval is 1, it cannot be a right-maximal string
+		if(substring->normal->i == substring->normal->j) continue;
 
 		// Determine characters that precede the interval
 		char* alphabet = create_alphabet_interval(substring->normal,bwt);
 		int* c_array = create_c_array_interval(substring->normal,bwt);
 
-
-		printf("substring i: %d \n", substring->normal->i);
-		printf("substring j: %d \n", substring->normal->j);
-//		printf("bwt is %s\n", bwt);
-//		printf("alphabet size is %d", strlen(alphabet));
-
 		int i;
 		for(i = 0; i < strlen(alphabet);i++){
-//			printf("i is %d\n",i);
+		
 			Interval* normal = backward_search_interval(bwt,substring->normal,alphabet[i]);
-			Interval* reverse = update_reverse_interval(substring->reverse, alphabet, c_array, alphabet[i]);
+			Interval* reverse = update_reverse_interval(substring->reverse, normal, alphabet, c_array, alphabet[i]);
 			if(is_reverse_interval_right_maximal(runs, reverse)) {
-				new_substring = malloc(sizeof(substring));
-				new_substring->normal = normal;
-				new_substring->reverse = reverse;
-				printf("pushing new substring to stack i is now %d\n", i);
+				new_substring = create_substring(normal, reverse, substring->length+1);
 				// callback function pointers
+				callback(new_substring);
 				push(stack,new_substring);
 			} else {
 				free(normal);
@@ -100,7 +86,7 @@ void iterate(char* string){
 	}
 }
 
-Interval* update_reverse_interval(Interval* interval, const char* alphabet, const int* c_array, const char c){
+Interval* update_reverse_interval(Interval* interval, Interval* normal, const char* alphabet, const int* c_array, const char c){
 	Interval* updated = malloc(sizeof(Interval));
 	int i = interval->i;
 	int j = interval->j;
@@ -108,12 +94,23 @@ Interval* update_reverse_interval(Interval* interval, const char* alphabet, cons
 	int index_in_c = get_char_index(c_array, alphabet, c);
 
 	updated->i = i + c_array[index_in_c];
-
-	if(index_in_c == strlen(alphabet) - 1){
+	
+	updated->j = updated->i + (normal->j-normal->i);
+	/**if(index_in_c == strlen(alphabet) - 1){
 		updated->j = j;
 	} else {
 		updated->j = c_array[index_in_c + 1] - 1;
-	}
+	}**/
 
 	return updated;
 }
+
+substring* create_substring(Interval* normal, Interval* reverse, int length)
+{
+	substring* new_substring = malloc(sizeof(substring));
+	new_substring->normal = normal;
+	new_substring->reverse = reverse;
+	new_substring->length = length;
+	return new_substring;
+}
+
