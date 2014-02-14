@@ -39,4 +39,6 @@ bit_vector* create_runs_vector(char* string);
 **/
 int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
 
+void iterate(char* string);
+
 #endif

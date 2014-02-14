@@ -34,18 +34,20 @@ int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval)
 	else return 0;
 }
 
-void iterate(const char* string){
-	unsigned char* bwt = s_to_bwt(string);
+Interval* update_reverse_interval(Interval* interval, const char* alphabet, const int* c_array, const char c);
+
+void iterate(char* string){
+	unsigned char* bwt = s_to_BWT(string);
 	bit_vector* runs = create_runs_vector(string);
 
 	substring_stack* stack = create_stack(10);
 	substring* start = malloc(sizeof(substring));
 
-	Interval* start_normal = malloc(Interval);
+	Interval* start_normal = malloc(sizeof(Interval));
 	start_normal->i = 0;
 	start_normal->j = strlen(bwt) - 1;
 
-	Interval* start_reverse = malloc(Interval);
+	Interval* start_reverse = malloc(sizeof(Interval));
 	start_reverse->i = 0;
 	start_reverse->j = strlen(bwt) - 1;
 
@@ -53,8 +55,9 @@ void iterate(const char* string){
 	start->reverse = start_reverse;
 
 	push(stack,start);
+	substring* new_substring;
+	substring* substring;
 
-	substring* substring,new_substring;
 	while(1){
 		substring = pop(stack);
 		if(substring == NULL){
@@ -68,10 +71,10 @@ void iterate(const char* string){
 		for(i = 0; i < strlen(alphabet);i++){
 			Interval* normal = backward_search_interval(bwt,substring->normal,alphabet[i]);
 			Interval* reverse = update_reverse_interval(substring->reverse, alphabet, c_array, alphabet[i]);
-			if(is_reserve_interval_right_maximal(runs, reverse)) {
+			if(is_reverse_interval_right_maximal(runs, reverse)) {
 				new_substring = malloc(sizeof(substring));
-				new_substring.normal = normal;
-				new_substring.reverse = reverse;
+				new_substring->normal = normal;
+				new_substring->reverse = reverse;
 				// callback function pointers
 				push(stack,new_substring);
 			} else {
