@@ -63,18 +63,31 @@ void iterate(char* string){
 		if(substring == NULL){
 			break;
 		}
+
+		if(substring->normal->i == substring->normal->j){
+			continue;
+		}
+
 		// Determine characters that precede the interval
 		char* alphabet = create_alphabet_interval(substring->normal,bwt);
 		int* c_array = create_c_array_interval(substring->normal,bwt);
 
+
+		printf("substring i: %d \n", substring->normal->i);
+		printf("substring j: %d \n", substring->normal->j);
+//		printf("bwt is %s\n", bwt);
+//		printf("alphabet size is %d", strlen(alphabet));
+
 		int i;
 		for(i = 0; i < strlen(alphabet);i++){
+//			printf("i is %d\n",i);
 			Interval* normal = backward_search_interval(bwt,substring->normal,alphabet[i]);
 			Interval* reverse = update_reverse_interval(substring->reverse, alphabet, c_array, alphabet[i]);
 			if(is_reverse_interval_right_maximal(runs, reverse)) {
 				new_substring = malloc(sizeof(substring));
 				new_substring->normal = normal;
 				new_substring->reverse = reverse;
+				printf("pushing new substring to stack i is now %d\n", i);
 				// callback function pointers
 				push(stack,new_substring);
 			} else {

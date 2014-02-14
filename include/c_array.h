@@ -1,6 +1,7 @@
 #ifndef C_ARRAY_H_
 #define C_ARRAY_H_
 
+#include "backward_search.h"
 /**
  * @brief Generates array C of given string. This is still a rather slow version of algorithm, but
  * with small alphabets this should not be a problem.
