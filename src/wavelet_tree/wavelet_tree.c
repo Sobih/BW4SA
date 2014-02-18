@@ -40,13 +40,16 @@ void print_node(struct wavelet_node* node) {
 }
 
 unsigned int wavelet_rank_query(const struct wavelet_node* node, char c, unsigned int index) {
-	if (index >= node->vector->length * 32)
-		index = node->vector->length * 32;
+	if (index >= node->vector->length * 32 - node->vector->filler_bits)
+		index = node->vector->length * 32 - node->vector->filler_bits;
 
 	printf("Current index: %u\n", index);
-
-	printf("Alphabet length: %u\n", node->alphabet_length);
 	printf("Alphabet: %s\n", node->alphabet);
+	printf("Alphabet length: %u\n", node->alphabet_length);
+	printf("String: %s\n", node->string);
+	printf("Bit vector:\n");
+	print_bit_vector(node->vector);
+	printf("Filler bits: %d\n", node->vector->filler_bits);
 
 	//find index of c in alphabet
 	int i = binary_search(node->alphabet, &c, 0, node->alphabet_length - 1, sizeof(char));
@@ -59,7 +62,7 @@ unsigned int wavelet_rank_query(const struct wavelet_node* node, char c, unsigne
 	unsigned int rank = node->vector->rank(node->vector, index);
 	int child = 1;
 
-	//c is in bottom half of alphabet = 0 = inverse rank
+	//c is in top half of alphabet = 0 = inverse rank
 	if (i < node->alphabet_length / 2) {
 		rank = node->vector->length * 32 - rank - node->vector->filler_bits;
 		child = 0;
