@@ -39,7 +39,7 @@ void print_node(struct wavelet_node* node) {
 	printf("\tAlphabet length: %u\n", node->alphabet_length);
 }
 
-unsigned int wavelet_rank_query(const struct wavelet_node* node, char c, unsigned int index) {
+int wavelet_rank_query(const struct wavelet_node* node, char c, unsigned int index) {
 	if (index >= node->vector->length * 32 - node->vector->filler_bits)
 		index = node->vector->length * 32 - node->vector->filler_bits;
 
