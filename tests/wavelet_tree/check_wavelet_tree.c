@@ -16,27 +16,6 @@
 #include "../../include/wavelet_tree.h"
 #include "../../include/bit_vector.h"
 
-void print_bit_vector_asd(struct bit_vec* vector) {
-	for (int i = 0; i < vector->length; ++i) {
-		printf("\t%u, ", vector->vector[i]);
-		print_bits(vector->vector[i]);
-		printf("\n");
-	}
-
-	printf("\n");
-}
-
-void print_node_asd(struct wavelet_node* node) {
-	printf("\tBit vector:\n");
-	if (node->vector != 0)
-		print_bit_vector_asd(node->vector);
-	else
-		printf("\t(NULL)\n");
-	printf("\tString: %s\n", node->string);
-	printf("\tAlphabet: %s\n", node->alphabet);
-	printf("\tAlphabet length: %u\n", node->alphabet_length);
-}
-
 void assert_node_internals(struct wavelet_node* node, const char* string, const char* alphabet,
 		unsigned int alphabet_length, unsigned int vec_length, unsigned int* correct_bits) {
 
@@ -88,9 +67,6 @@ START_TEST (test_faulty_parameters) {
 	struct wavelet_node* root = create_wavelet_tree(string);
 	unsigned int correct_bits;
 
-	printf("Root\n");
-	print_node_asd(root);
-
 	//assert root internals
 	correct_bits = 0;
 	assert_node_internals(root, string, string, 0, 1, &correct_bits);
@@ -110,9 +86,14 @@ START_TEST (test_rank_query) {
 	char* string = "banana";
 	struct wavelet_node* root = create_wavelet_tree(string);
 
-	unsigned int rank = root->rank(root, 'a', UINT_MAX);
-
+	int rank = root->rank(root, 'a', INT_MAX);
 	ck_assert(rank == 3);
+
+	rank = root->rank(root, 'b', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'n', INT_MAX);
+	ck_assert(rank == 2);
 }
 END_TEST
 
@@ -120,21 +101,129 @@ START_TEST (test_rank_query_long_string) {
 	char* string = "LAsufhaliILUAShfauishfiuLIUASifuhasvgjbeaukfaAJLsyufluABsasfohASfliiuuBwLIUASFb8239LIUbf787glBAfAuiosdfhliUAFl789aASIFOy9ASfbilAfs98YL7gLify3bliafl98SAYFAAUKSFtifSAbAFYbKUASY8tfsakuyBfkuaYBASF7tk8asGYKJFsbKUAYSF87TASKufygskbjhKJysfa8g";
 	struct wavelet_node* root = create_wavelet_tree(string);
 
-	unsigned int rank = root->rank(root, 'a', UINT_MAX);
+	int rank = root->rank(root, '2', INT_MAX);
+	ck_assert(rank == 1);
 
+	rank = root->rank(root, '3', INT_MAX);
+	ck_assert(rank == 2);
+
+	rank = root->rank(root, '7', INT_MAX);
+	ck_assert(rank == 6);
+
+	rank = root->rank(root, '8', INT_MAX);
+	ck_assert(rank == 9);
+
+	rank = root->rank(root, '9', INT_MAX);
+	ck_assert(rank == 5);
+
+	rank = root->rank(root, 'A', INT_MAX);
+	ck_assert(rank == 22);
+
+	rank = root->rank(root, 'B', INT_MAX);
+	ck_assert(rank == 5);
+
+	rank = root->rank(root, 'F', INT_MAX);
+	ck_assert(rank == 9);
+
+	rank = root->rank(root, 'G', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'I', INT_MAX);
+	ck_assert(rank == 5);
+
+	rank = root->rank(root, 'J', INT_MAX);
+	ck_assert(rank == 3);
+
+	rank = root->rank(root, 'K', INT_MAX);
+	ck_assert(rank == 6);
+
+	rank = root->rank(root, 'L', INT_MAX);
+	ck_assert(rank == 8);
+
+	rank = root->rank(root, 'O', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'S', INT_MAX);
+	ck_assert(rank == 13);
+
+	rank = root->rank(root, 'T', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'U', INT_MAX);
+	ck_assert(rank == 8);
+
+	rank = root->rank(root, 'Y', INT_MAX);
+	ck_assert(rank == 7);
+
+	rank = root->rank(root, 'a', INT_MAX);
 	ck_assert(rank == 12);
+
+	rank = root->rank(root, 'b', INT_MAX);
+	ck_assert(rank == 9);
+
+	rank = root->rank(root, 'd', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'e', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'f', INT_MAX);
+	ck_assert(rank == 20);
+
+	rank = root->rank(root, 'g', INT_MAX);
+	ck_assert(rank == 5);
+
+	rank = root->rank(root, 'h', INT_MAX);
+	ck_assert(rank == 7);
+
+	rank = root->rank(root, 'i', INT_MAX);
+	ck_assert(rank == 12);
+
+	rank = root->rank(root, 'j', INT_MAX);
+	ck_assert(rank == 2);
+
+	rank = root->rank(root, 'k', INT_MAX);
+	ck_assert(rank == 5);
+
+	rank = root->rank(root, 'l', INT_MAX);
+	ck_assert(rank == 9);
+
+	rank = root->rank(root, 'o', INT_MAX);
+	ck_assert(rank == 2);
+
+	rank = root->rank(root, 's', INT_MAX);
+	ck_assert(rank == 13);
+
+	rank = root->rank(root, 't', INT_MAX);
+	ck_assert(rank == 3);
+
+	rank = root->rank(root, 'u', INT_MAX);
+	ck_assert(rank == 13);
+
+	rank = root->rank(root, 'v', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'w', INT_MAX);
+	ck_assert(rank == 1);
+
+	rank = root->rank(root, 'y', INT_MAX);
+	ck_assert(rank == 6);
 }
 END_TEST
 
 Suite* array_suite(void) {
-	Suite* suite = suite_create("Array");
+	Suite* suite = suite_create("Wavelet Suite");
 
 	TCase* tc_wavelet_tree = tcase_create("Wavelet Tree");
 	tcase_add_test (tc_wavelet_tree, test_create_wavelet_tree);
 	tcase_add_test (tc_wavelet_tree, test_faulty_parameters);
-	tcase_add_test (tc_wavelet_tree, test_rank_query);
-	tcase_add_test (tc_wavelet_tree, test_rank_query_long_string);
+
+	TCase* tc_wavelet_rank = tcase_create("Wavelet Rank Query");
+	tcase_add_test (tc_wavelet_rank, test_rank_query);
+	tcase_add_test (tc_wavelet_rank, test_rank_query_long_string);
+
 	suite_add_tcase (suite, tc_wavelet_tree);
+	suite_add_tcase (suite, tc_wavelet_rank);
 
 	return suite;
 }
