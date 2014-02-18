@@ -8,6 +8,7 @@
 #include "../../include/backward_search.h"
 #include <check.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 START_TEST(test_count_zero_letters)
 {
@@ -78,6 +79,61 @@ START_TEST(test_search_different_word)
 }
 END_TEST
 
+START_TEST(test_interval_search_ra)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 1;
+	interval->j = 5;
+	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'r');
+	ck_assert_int_eq(10, result->i);
+    ck_assert_int_eq(11, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_da)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 1;
+	interval->j = 5;
+	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'd');
+	ck_assert_int_eq(9, result->i);
+    ck_assert_int_eq(9, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_bra)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 10;
+	interval->j = 11;
+	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'b');
+	ck_assert_int_eq(6, result->i);
+    ck_assert_int_eq(7, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_tt)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 6;
+	interval->j = 9;
+	Interval* result = backward_search_interval("ivh$ttttaai", interval, 't');
+	ck_assert_int_eq(8, result->i);
+    ck_assert_int_eq(9, result->j);
+}
+END_TEST
+
+START_TEST(test_interval_search_ha)
+{
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 1;
+	interval->j = 2;
+	Interval* result = backward_search_interval("ivh$ttttaai", interval, 'h');
+	ck_assert_int_eq(3, result->i);
+    ck_assert_int_eq(3, result->j);
+}
+END_TEST
+
 TCase * create_rank_test_case(void){
 	TCase * tc_rank = tcase_create("rank_test");
 	tcase_add_test(tc_rank, test_count_zero_letters);
@@ -98,13 +154,26 @@ TCase * create_backward_search_test_case(void){
 	return tc_backward_search;
 }
 
+TCase * create_backward_search_interval_test_case(void){
+	TCase * tc_backward_search_interval = tcase_create("backward_search_interval_test");
+	tcase_add_test(tc_backward_search_interval, test_interval_search_ra);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_da);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_bra);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_tt);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_ha);
+
+	return tc_backward_search_interval;
+}
+
 Suite * test_suite(void)
 {
 	Suite *s = suite_create("testi");
 	TCase *tc_backward_search = create_backward_search_test_case();
 	TCase *tc_rank = create_rank_test_case();
+	TCase *tc_backward_search_interval = create_backward_search_interval_test_case();
 	suite_add_tcase(s, tc_backward_search);
 	suite_add_tcase(s, tc_rank);
+	suite_add_tcase(s, tc_backward_search_interval);
 	return s;
 }
 

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "../../include/backward_search.h";
 
 START_TEST(test_get_index)
 {
@@ -69,6 +70,61 @@ START_TEST(test_carray_simple2)
 }
 END_TEST
 
+START_TEST(carray_interval1)
+{
+	char* string = "aasdjfsbdhablsdaksdakjsdaksjdbiuephq";
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 0;
+	interval->j = 5;
+	int correct[] = {0,2,3,4,5};
+	int* c_arr = create_c_array_interval(interval, string);
+	for(int i=0; i< 5; i++){
+		ck_assert_int_eq(correct[i], c_arr[i]);
+	}
+}
+END_TEST
+
+START_TEST(carray_interval2)
+{
+	char* string = "aggcaggaatttacagcaagacagcgacgacattat";
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 7;
+	interval->j = 13;
+	int correct[] = {0,3,4};
+	int* c_arr = create_c_array_interval(interval, string);
+	for(int i=0; i< 4; i++){
+		ck_assert_int_eq(correct[i], c_arr[i]);
+	}
+}
+END_TEST
+
+START_TEST(alphabet_interval1)
+{
+	char* string = "abracadabra";
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 4;
+	interval->j = 6;
+	char* correct = "acd";
+	char* alphabet = create_alphabet_interval(interval, string);
+	ck_assert_str_eq(correct, alphabet);
+		
+	
+}
+END_TEST
+
+START_TEST(alphabet_interval2)
+{
+	char* string = "dsdasdasdasdppkkklklkljjljpkkpkp";
+	Interval* interval = malloc(sizeof(Interval));
+	interval->i = 10;
+	interval->j = 14;
+	char* correct = "dkps";
+	char* alphabet = create_alphabet_interval(interval, string);
+	ck_assert_str_eq(correct, alphabet);
+		
+	
+}
+END_TEST
 
 TCase * create_carray_test_case(void){
 	TCase * tc_carray = tcase_create("carray_test");
@@ -78,13 +134,16 @@ TCase * create_carray_test_case(void){
 	tcase_add_test(tc_carray, test_carray_simple);
 	tcase_add_test(tc_carray, test_carray_simple2);
 	tcase_add_test(tc_carray, test_get_alphabet3);
-	
+	tcase_add_test(tc_carray, carray_interval2);
+	tcase_add_test(tc_carray, carray_interval1);
+	tcase_add_test(tc_carray, alphabet_interval1);
+	tcase_add_test(tc_carray, alphabet_interval2);
 	return tc_carray;
 }
 
 Suite * test_suite(void)
 {
-	Suite *s = suite_create("testi");
+	Suite *s = suite_create("c-array");
 	TCase *tc_carray = create_carray_test_case();
 	suite_add_tcase(s, tc_carray);
 	

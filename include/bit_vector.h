@@ -20,7 +20,7 @@
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-struct bit_vec {
+typedef struct bit_vec {
 	unsigned int* vector;
 	unsigned int length;
 	unsigned int filler_bits;
