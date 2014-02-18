@@ -11,6 +11,7 @@
 #include <check.h>
 #include <math.h>
 #include <stdio.h>
+#include <limits.h>
 #include "../../include/utils.h"
 #include "../../include/wavelet_tree.h"
 #include "../../include/bit_vector.h"
@@ -105,12 +106,34 @@ START_TEST (test_faulty_parameters) {
 }
 END_TEST
 
+START_TEST (test_rank_query) {
+	char* string = "banana";
+	struct wavelet_node* root = create_wavelet_tree(string);
+
+	unsigned int rank = root->rank(root, 'a', UINT_MAX);
+
+	ck_assert(rank == 3);
+}
+END_TEST
+
+START_TEST (test_rank_query_long_string) {
+	char* string = "LAsufhaliILUAShfauishfiuLIUASifuhasvgjbeaukfaAJLsyufluABsasfohASfliiuuBwLIUASFb8239LIUbf787glBAfAuiosdfhliUAFl789aASIFOy9ASfbilAfs98YL7gLify3bliafl98SAYFAAUKSFtifSAbAFYbKUASY8tfsakuyBfkuaYBASF7tk8asGYKJFsbKUAYSF87TASKufygskbjhKJysfa8g";
+	struct wavelet_node* root = create_wavelet_tree(string);
+
+	unsigned int rank = root->rank(root, 'a', UINT_MAX);
+
+	ck_assert(rank == 12);
+}
+END_TEST
+
 Suite* array_suite(void) {
 	Suite* suite = suite_create("Array");
 
 	TCase* tc_wavelet_tree = tcase_create("Wavelet Tree");
 	tcase_add_test (tc_wavelet_tree, test_create_wavelet_tree);
 	tcase_add_test (tc_wavelet_tree, test_faulty_parameters);
+	tcase_add_test (tc_wavelet_tree, test_rank_query);
+	tcase_add_test (tc_wavelet_tree, test_rank_query_long_string);
 	suite_add_tcase (suite, tc_wavelet_tree);
 
 	return suite;
