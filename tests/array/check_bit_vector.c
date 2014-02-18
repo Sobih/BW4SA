@@ -247,7 +247,7 @@ START_TEST(test_rank_interval2) {
 END_TEST
 
 Suite* array_suite(void) {
-	Suite* suite = suite_create("Array");
+	Suite* suite = suite_create("Bit Vector Suite");
 
 	TCase* tc_bit_vector = tcase_create("Bit Vector");
 	tcase_add_test (tc_bit_vector, test_create_bit_vector);
@@ -267,7 +267,7 @@ int main (void) {
 	int number_failed;
 	Suite* suite = array_suite();
 	SRunner* suite_runner = srunner_create(suite);
-	srunner_run_all(suite_runner, CK_NORMAL);
+	srunner_run_all(suite_runner, CK_VERBOSE);
 	number_failed = srunner_ntests_failed(suite_runner);
 	srunner_free(suite_runner);
 
