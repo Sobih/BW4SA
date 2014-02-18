@@ -18,7 +18,7 @@ struct wavelet_node {
 	struct wavelet_node* parent;
 	struct wavelet_node** children;
 
-	int (*rank) (const struct wavelet_node* node, char c, unsigned int index);
+	int (*rank) (const struct wavelet_node* node, char c, int index);
 } wavelet_node;
 
 struct wavelet_node* create_wavelet_tree(const char* string);
