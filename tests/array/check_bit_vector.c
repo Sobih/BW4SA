@@ -37,6 +37,7 @@ START_TEST (test_create_bit_vector) {
 	ck_assert(vector->length == length);
 	ck_assert(vector->mark_bit != 0);
 	ck_assert(vector->unmark_bit != 0);
+	ck_assert(vector->filler_bits == length * 32 - 430);
 
 	//check internal vector
 	ck_assert(vector->vector != 0);
@@ -55,8 +56,12 @@ START_TEST (test_create_faulty_vector) {
 	//allocate vector, checking for null
 	ck_assert((vector = calloc(1, sizeof(bit_vector))) != 0);
 
-	//init vector, hoping for null
-	ck_assert(init_bit_vector(vector, length) == 0);
+	//init vector, hoping for empty bit vector
+	init_bit_vector(vector, length);
+
+	ck_assert(vector->length == 1);
+	ck_assert(vector->filler_bits = 32);
+	ck_assert(vector->vector[0] == 0);
 
 	//try and init null, hoping for null
 	ck_assert(init_bit_vector(0, length) == 0);
