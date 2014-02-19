@@ -237,7 +237,7 @@ int binary_search(const void* arr, const void* key, unsigned int min, unsigned i
 
 void print_bit_vector(bit_vector* vector) {
 	if (vector == 0) {
-		printf("(NULL)\n");
+		printf("\t(NULL)\n");
 		return;
 	}
 
@@ -247,7 +247,7 @@ void print_bit_vector(bit_vector* vector) {
 		printf("\n");
 	}
 
-	printf("\n");
+	printf("\tFiller bits: %u\n", vector->filler_bits);
 }
 
 void print_wavelet_node(wavelet_node* node) {
@@ -283,6 +283,7 @@ void print_wavelet_tree(wavelet_node* node) {
 
 		for (int i = 0; i < counter; ++i) {
 			print_wavelet_node(node_list[i]);
+			printf("\n");
 
 			//not leaf, add children for next round
 			if (node_list[i]->children[0] != 0) {
