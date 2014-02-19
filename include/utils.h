@@ -83,6 +83,14 @@ int binary_search(const void* arr, const void* key, unsigned int min, unsigned i
 		unsigned int entry_size);
 
 /**
+ * @brief	Prints the bits of an unsigned int.
+ * @param	mask	The unsigned int whose bits are to be printed.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_bits(unsigned int mask);
+
+/**
  * @brief	A simple function that prints a bit vector and its' contents to
  * 			stdout.
  * @param	vector		The bit vector that is to be printed.
