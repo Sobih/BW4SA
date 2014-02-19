@@ -1,8 +1,8 @@
-/*
- * wavelet_tree.c
- *
- *  Created on: 4.2.2014
- *      Author: Max Sandberg
+/**
+ * @file	wavelet_tree.c
+ * @brief	Implementation of the wavelet tree-structure.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include <stdlib.h>
@@ -13,33 +13,27 @@
 #include "../../include/utils.h"
 #include "../../include/wavelet_tree.h"
 
-void print_bit_vector(struct bit_vec* vector) {
-	if (vector == 0) {
-		printf("(NULL)\n");
-		return;
-	}
-
-	for (int i = 0; i < vector->length; ++i) {
-		printf("\t%u, ", vector->vector[i]);
-		print_bits(vector->vector[i]);
-		printf("\n");
-	}
-
-	printf("\n");
-}
-
-void print_node(struct wavelet_node* node) {
-	printf("\tBit vector:\n");
-	if (node->vector != 0)
-		print_bit_vector(node->vector);
-	else
-		printf("\t(NULL)\n");
-	printf("\tString: %s\n", node->string);
-	printf("\tAlphabet: %s\n", node->alphabet);
-	printf("\tAlphabet length: %u\n", node->alphabet_length);
-}
-
-int wavelet_rank_query(const struct wavelet_node* node, char c, int index) {
+/**
+ * @brief	The implementation for the rank query on a wavelet tree.
+ *
+ * The rank query on a wavelet tree works by recursively doing a rank
+ * function on a child of the current node based on if the character
+ * has been encoded as a 0 or a 1 in the current node. If <code>index</code>
+ * is larger than the size of the bit vector, the rank operation will
+ * be done for the entire length of the vector.
+ *
+ * @param	node	The node on which the rank query is to be started.
+ * @param	c		The character for which the rank is to be found.
+ * @param	index	The index up to which the rank query is going to
+ * 					be made inside the bit vector.
+ * @return			Returns the number of occurrences of character
+ * 					<code>c</code> in a string up to <code>index</code>.
+ * @see		bit_vector.c#rank_query
+ * @see		bit_vector.c#rank_query_interval
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+int wavelet_rank_query(const wavelet_node* node, char c, int index) {
 	if (index < 0)
 		return 0;
 
@@ -64,8 +58,29 @@ int wavelet_rank_query(const struct wavelet_node* node, char c, int index) {
 	return rank;
 }
 
-struct bit_vec* create_bit_vector(const char* string, const char* alphabet, unsigned int alphabet_length) {
-	struct bit_vec* vector = calloc(1, sizeof(struct bit_vec));
+/**
+ * @brief	Constructs a bit vector based on the alphabet of the node.
+ *
+ * This algorithm creates a bit vector with every character in the alphabet
+ * of the node marked as a 1 inside the bit vector and all other characters
+ * marked as 0.
+ *
+ * @param	string			The string for which a bit vector is created.
+ * @param	alphabet		The alphabet used by the string.
+ * @param	alphabet_length	The length of the alphabet used by the string.
+ * @return					Returns an initialized bit vector based on the
+ * 							string and alphabet supplied as parameters, or
+ * 							NULL if either string is uninitialized or the
+ * 							vector couldn't be initialized.
+ * @see		bit_vector.h
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned int alphabet_length) {
+	if (string == 0 || alphabet == 0)
+		return 0;
+
+	bit_vector* vector = calloc(1, sizeof(bit_vector));
 	unsigned int length = strlen(string);
 
 	//init bit vector
@@ -85,21 +100,45 @@ struct bit_vec* create_bit_vector(const char* string, const char* alphabet, unsi
 	return vector;
 }
 
-struct wavelet_node* init_node(struct wavelet_node* node, const char* string, const char* alphabet,
-		unsigned int alphabet_length, struct wavelet_node* parent) {
+/**
+ * @brief	A simple function for initializing the values in a wavelet node.
+ * @param	node			The node that is to be initialized.
+ * @param	string			The string used by the node.
+ * @param	alphabet		Half of the alphabet used by the string of the node.
+ * @param	alphabet_length	Length of the alphabet.
+ * @param 	parent			The parent node of the node to be initialized.
+ * @return					An initialized wavelet node.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+wavelet_node* init_node(wavelet_node* node, const char* string, const char* alphabet,
+		unsigned int alphabet_length, wavelet_node* parent) {
 	node->alphabet = (char*) alphabet;
 	node->alphabet_length = alphabet_length;
 	node->string = (char*) string;
 	node->vector = 0;
 	node->parent = parent;
-	node->children = calloc(2, sizeof(struct wavelet_node*));
+	node->children = calloc(2, sizeof(wavelet_node*));
 	node->rank = &wavelet_rank_query;
 
 	return node;
 }
 
-char** determine_substrings(const struct wavelet_node* parent) {
-	struct bit_vec* vector = parent->vector;
+/**
+ * @brief	Splits a string into two substrings.
+ *
+ * This algorithm splits a string into two substrings by taking all the
+ * 0-marked characters in the bit vector of the parent and putting them in
+ * one string and the 1-marked characters into another string.
+ *
+ * @param	parent	The parent node from which a new set of substrings
+ * 					should be determined.
+ * @return			An array of the two constructed substrings.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+char** determine_substrings(const wavelet_node* parent) {
+	bit_vector* vector = parent->vector;
 	unsigned int num_bits = strlen(parent->string);
 
 	char** string_arr = calloc(2, sizeof(char*));
@@ -135,7 +174,22 @@ char** determine_substrings(const struct wavelet_node* parent) {
 	return string_arr;
 }
 
-struct wavelet_node* create_children(struct wavelet_node* node) {
+/**
+ * @brief	Recursively creates children for a node.
+ *
+ * This algorithm populates the wavelet tree. It takes an initialized
+ * node as parameter for which it creates a bit vector and any possible
+ * children. If children are created, it will recursively call itself
+ * for the children. Otherwise it will return the node supplied as
+ * parameter.
+ *
+ * @param	node	The node for which a bit vector and children is
+ * 					to be created.
+ * @return			The initialized node with possible children created.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+wavelet_node* create_children(wavelet_node* node) {
 	//determine bitvector of node
 	unsigned int left_length = node->alphabet_length / 2;
 	node->vector = create_bit_vector(node->string, node->alphabet, left_length > 0 ? left_length : 1);
@@ -143,9 +197,9 @@ struct wavelet_node* create_children(struct wavelet_node* node) {
 	//alphabet can still be split
 	if (node->alphabet_length > 2) {
 		//allocate children
-		struct wavelet_node* children = calloc(2, sizeof(struct wavelet_node));
-		struct wavelet_node* left_child = &children[0];
-		struct wavelet_node* right_child = &children[1];
+		wavelet_node* children = calloc(2, sizeof(wavelet_node));
+		wavelet_node* left_child = &children[0];
+		wavelet_node* right_child = &children[1];
 
 		//determine length of alphabet for both children
 		unsigned int right_length = node->alphabet_length - left_length;
@@ -175,12 +229,12 @@ struct wavelet_node* create_children(struct wavelet_node* node) {
 	return node;
 }
 
-struct wavelet_node* create_wavelet_tree(const char* string) {
+wavelet_node* create_wavelet_tree(const char* string) {
 	if (string == 0)
 		return 0;
 
 	//allocate the root node
-	struct wavelet_node* root = calloc(1, sizeof(wavelet_node));
+	wavelet_node* root = calloc(1, sizeof(wavelet_node));
 
 	//determine the alphabet and its length
 	char* alphabet = determine_alphabet(string);
@@ -194,7 +248,7 @@ struct wavelet_node* create_wavelet_tree(const char* string) {
 	return root;
 }
 
-void free_wavelet_tree(struct wavelet_node* node) {
+void free_wavelet_tree(wavelet_node* node) {
 	if (node == NULL)
 		return;
 
@@ -204,7 +258,7 @@ void free_wavelet_tree(struct wavelet_node* node) {
 	free_subtree(node);
 }
 
-void free_subtree(struct wavelet_node* node) {
+void free_subtree(wavelet_node* node) {
 	if (node == NULL)
 		return;
 
