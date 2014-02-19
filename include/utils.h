@@ -12,6 +12,9 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+struct wavelet_node;
+struct bit_vec;
+
 /**
  * @brief	Standard generic quicksort-implementation.
  *
