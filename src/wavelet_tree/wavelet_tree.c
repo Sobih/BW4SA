@@ -67,7 +67,7 @@ int wavelet_rank_query(const wavelet_node* node, char c, int index) {
  * @bug		No known bugs.
  */
 char wavelet_char_at(const wavelet_node* node, int index) {
-	if (index < 0)
+	if (index < 0 || node == 0)
 		return 0;
 
 	int vec_length = node->vector->length * 32 - node->vector->filler_bits;
@@ -75,13 +75,14 @@ char wavelet_char_at(const wavelet_node* node, int index) {
 	if (index > vec_length)
 		index = vec_length;
 
-	int child = node->vector->is_bit_marked(node->vector, index) == 0 ? 0 : 1;
-	int rank = node->vector->rank(node->vector, INT_MAX);
-
 	//node isn't leaf
 	if (node->children[0] != 0) {
+		int child = node->vector->is_bit_marked(node->vector, index) == 0 ? 1 : 0;
+		int rank = node->vector->rank(node->vector, index);
+
 		//subtract wrongly marked bits from index and recurse
-		index -= child == 0 ? vec_length - rank : rank;
+		index -= child == 0 ? index - rank : rank;
+
 		return node->char_at(node->children[child], index);
 	}
 
@@ -89,7 +90,7 @@ char wavelet_char_at(const wavelet_node* node, int index) {
 	if (node->alphabet_length == 1)
 		return node->alphabet[0];
 
-	return node->vector->is_bit_marked(node->vector, index) == 0 ? node->alphabet[0] : node->alphabet[1];
+	return node->vector->is_bit_marked(node->vector, index) == 0 ? node->alphabet[1] : node->alphabet[0];
 }
 
 /**
