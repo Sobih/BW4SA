@@ -37,7 +37,7 @@ int wavelet_rank_query(const wavelet_node* node, char c, int index) {
 	if (index < 0)
 		return 0;
 
-	if (index >= node->vector->length * 32 - node->vector->filler_bits)
+	if (index > node->vector->length * 32 - node->vector->filler_bits)
 		index = node->vector->length * 32 - node->vector->filler_bits;
 
 	//determine rank
@@ -56,6 +56,65 @@ int wavelet_rank_query(const wavelet_node* node, char c, int index) {
 		rank = node->rank(node->children[child], c, rank);
 
 	return rank;
+}
+
+/**
+ * @brief	Returns the character at a certain index inside a wavelet tree.
+ * @param	node	The root of the (sub)tree that is to be searched.
+ * @param	index	The index of the character that is to be identified.
+ * @return			The found character at the location.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+char wavelet_char_at(const wavelet_node* node, int index) {
+	if (index < 0)
+		return 0;
+
+	int vec_length = node->vector->length * 32 - node->vector->filler_bits;
+
+	if (index > vec_length)
+		index = vec_length;
+
+	int child = node->vector->is_bit_marked(node->vector, index) == 0 ? 0 : 1;
+	int rank = node->vector->rank(node->vector, INT_MAX);
+
+	//node isn't leaf
+	if (node->children[0] != 0) {
+		//subtract wrongly marked bits from index and recurse
+		index -= child == 0 ? vec_length - rank : rank;
+		return node->char_at(node->children[child], index);
+	}
+
+	//alphabet length = 1
+	if (node->alphabet_length == 1)
+		return node->alphabet[0];
+
+	return node->vector->is_bit_marked(node->vector, index) == 0 ? node->alphabet[0] : node->alphabet[1];
+}
+
+/**
+ * @brief	A simple function for initializing the values in a wavelet node.
+ * @param	node			The node that is to be initialized.
+ * @param	string			The string used by the node.
+ * @param	alphabet		Half of the alphabet used by the string of the node.
+ * @param	alphabet_length	Length of the alphabet.
+ * @param 	parent			The parent node of the node to be initialized.
+ * @return					An initialized wavelet node.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+wavelet_node* init_node(wavelet_node* node, const char* string, const char* alphabet,
+		unsigned int alphabet_length, wavelet_node* parent) {
+	node->alphabet = (char*) alphabet;
+	node->alphabet_length = alphabet_length;
+	node->string = (char*) string;
+	node->vector = 0;
+	node->parent = parent;
+	node->children = calloc(2, sizeof(wavelet_node*));
+	node->rank = &wavelet_rank_query;
+	node->char_at = &wavelet_char_at;
+
+	return node;
 }
 
 /**
@@ -98,30 +157,6 @@ bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned
 	}
 
 	return vector;
-}
-
-/**
- * @brief	A simple function for initializing the values in a wavelet node.
- * @param	node			The node that is to be initialized.
- * @param	string			The string used by the node.
- * @param	alphabet		Half of the alphabet used by the string of the node.
- * @param	alphabet_length	Length of the alphabet.
- * @param 	parent			The parent node of the node to be initialized.
- * @return					An initialized wavelet node.
- * @author	Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-wavelet_node* init_node(wavelet_node* node, const char* string, const char* alphabet,
-		unsigned int alphabet_length, wavelet_node* parent) {
-	node->alphabet = (char*) alphabet;
-	node->alphabet_length = alphabet_length;
-	node->string = (char*) string;
-	node->vector = 0;
-	node->parent = parent;
-	node->children = calloc(2, sizeof(wavelet_node*));
-	node->rank = &wavelet_rank_query;
-
-	return node;
 }
 
 /**

@@ -35,10 +35,11 @@ typedef struct wavelet_node {
 	struct bit_vec* vector;
 	char* alphabet;
 	unsigned int alphabet_length;
-	struct wavelet_node* parent;
-	struct wavelet_node** children;
+	wavelet_node* parent;
+	wavelet_node** children;
 
-	int (*rank) (const struct wavelet_node* node, char c, int index);
+	int (*rank) (const wavelet_node* node, char c, int index);
+	char (*char_at) (const wavelet_node* node, int index);
 } wavelet_node;
 
 /**
