@@ -6,11 +6,8 @@
  * @bug		No known bugs
  */
 
-
-#include "../../include/backward_search.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#ifndef BWT_TO_S_H_
+#define BWT_TO_S_H_
 
 /**
  * @brief A function to convert a BWT of a string back to an original string.
@@ -24,21 +21,7 @@
  * @bug				No known bugs
  */
 
-char* bwt_to_s(char* bwt) 
-{
-	long n = strlen(bwt)-1;
-	char* string = calloc(n, sizeof(char));
-	int k;	
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 0;
-	interval->j = 0;
+char* bwt_to_s(char* bwt); 
 
-	for (k = 1; k <= n; k++) {
-		string[n-k] = bwt[interval->i];
-		interval = backward_search_interval(bwt, interval, string[n-k]);
-	}
-	free(interval);
 
-	return string;
-
-}
+#endif /* BWT_TO_S_H_ */
