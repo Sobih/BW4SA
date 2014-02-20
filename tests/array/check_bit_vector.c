@@ -37,6 +37,7 @@ START_TEST (test_create_bit_vector) {
 	ck_assert(vector->length == length);
 	ck_assert(vector->mark_bit != 0);
 	ck_assert(vector->unmark_bit != 0);
+	ck_assert(vector->filler_bits == length * 32 - 430);
 
 	//check internal vector
 	ck_assert(vector->vector != 0);
@@ -55,8 +56,12 @@ START_TEST (test_create_faulty_vector) {
 	//allocate vector, checking for null
 	ck_assert((vector = calloc(1, sizeof(bit_vector))) != 0);
 
-	//init vector, hoping for null
-	ck_assert(init_bit_vector(vector, length) == 0);
+	//init vector, hoping for empty bit vector
+	init_bit_vector(vector, length);
+
+	ck_assert(vector->length == 1);
+	ck_assert(vector->filler_bits = 32);
+	ck_assert(vector->vector[0] == 0);
 
 	//try and init null, hoping for null
 	ck_assert(init_bit_vector(0, length) == 0);
@@ -237,12 +242,12 @@ START_TEST(test_rank_interval2) {
 	ck_assert_int_eq(2, vec->rank_interval(vec, 27, 28));
 	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 89));
 	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 93));
-	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 1020));
+	ck_assert_int_eq(0, vec->rank_interval(vec, 28, 1020));
 }
 END_TEST
 
 Suite* array_suite(void) {
-	Suite* suite = suite_create("Array");
+	Suite* suite = suite_create("Bit Vector Suite");
 
 	TCase* tc_bit_vector = tcase_create("Bit Vector");
 	tcase_add_test (tc_bit_vector, test_create_bit_vector);
@@ -262,7 +267,7 @@ int main (void) {
 	int number_failed;
 	Suite* suite = array_suite();
 	SRunner* suite_runner = srunner_create(suite);
-	srunner_run_all(suite_runner, CK_NORMAL);
+	srunner_run_all(suite_runner, CK_VERBOSE);
 	number_failed = srunner_ntests_failed(suite_runner);
 	srunner_free(suite_runner);
 
