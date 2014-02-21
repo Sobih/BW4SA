@@ -47,13 +47,13 @@ int wavelet_rank_query(const wavelet_node* node, char c, int index) {
 
 	//not found in lower half of alphabet = marked as 0 = inverse rank
 	if (i < 0 || i > node->alphabet_length) {
-		rank = node->vector->length * 32 - rank - node->vector->filler_bits;
+		rank = index - rank;
 		child = 1;
 	}
 
 	//query a child, or return rank if leaf node
 	if (node->children[child] != 0)
-		rank = node->rank(node->children[child], c, rank);
+		return node->rank(node->children[child], c, rank);
 
 	return rank;
 }
