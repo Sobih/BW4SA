@@ -23,17 +23,6 @@ bit_vector* create_runs_vector(char* string) {
 	return runs;
 }
 
-void print_bit_vec(bit_vector* bitvec, int length) {
-	for (int i = 0; i < length; i++) {
-		if (bitvec->is_bit_marked(bitvec, i)) {
-			printf("%d", 1);
-		} else {
-			printf("%d", 0);
-		}
-	}
-	printf("\n");
-}
-
 int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval) {
 	if (interval->i >= interval->j)
 		return 0;
@@ -54,7 +43,6 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	unsigned char* bwt = s_to_BWT(string);
 	bit_vector* runs = create_runs_vector(string);
 
-	print_bit_vec(runs, strlen(bwt));
 	substring_stack* stack = create_stack(10);
 
 	//Initialise first intervals. In the start both intervals are the whole bwt
@@ -62,7 +50,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	Interval* reverse = &((Interval ) { .i = 0, .j = strlen(bwt) - 1 } );
 
 	//create starting substring
-	substring* start = create_substring(normal, reverse, 0);
+	substring* start = &((substring) { .normal = normal, .reverse = reverse, .length = 0 });
 
 	push(stack, start);
 	substring* new_substring;
@@ -81,18 +69,6 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		char* alphabet = create_alphabet_interval(substring->normal, bwt);
 		int* c_array = create_c_array_interval(substring->normal, bwt);
 
-//		printf("c-array: ");
-//		for(int i = 0; i<strlen(alphabet);i++){
-//			printf("%d ", c_array[i]);
-//		}
-//		printf("\n");
-//
-//		printf("alphabet: ");
-//			for(int i = 0; i<strlen(alphabet);i++){
-//				printf("%c ", alphabet[i]);
-//			}
-//		printf("\n");
-
 		int i;
 		for (i = 0; i < strlen(alphabet); i++) {
 
@@ -100,13 +76,9 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 					alphabet[i]);
 			Interval* reverse = update_reverse_interval(substring->reverse,substring->normal,
 					normal, bwt, alphabet[i]);
-//			printf("for loop: normal i = %d, normal j = %d, reverse i = %d, reverse j = %d\n", normal->i, normal->j, reverse->i, reverse->j);
-//			printf("substring is r-maximal? %d\n",is_reverse_interval_right_maximal(runs, reverse));
 
 			if (is_reverse_interval_right_maximal(runs, reverse)) {
-//				printf("right_maximal found\n");
-				new_substring = create_substring(normal, reverse,
-						substring->length + 1);
+				new_substring = create_substring(normal, reverse, substring->length + 1);
 				// callback function pointers
 				callback(new_substring);
 				push(stack, new_substring);
@@ -132,39 +104,21 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 Interval* update_reverse_interval(Interval* old_reverse, Interval* old_normal, Interval* normal,
 		char* bwt, const char c) {
 
+	//create c-array and alphabet from the old normal-bwt interval
 	char* alphabet = create_alphabet_interval(old_normal, bwt);
 	int* c_array = create_c_array_interval(old_normal, bwt);
-//
-//	printf("original reverse's i = %d, j = %d\n", old_reverse->i, old_reverse->j);
-//
-//	printf("c-array: ");
-//	for (int i = 0; i < strlen(alphabet); i++) {
-//		printf("%d ", c_array[i]);
-//	}
-//	printf("\n");
-//
-//	printf("alphabet: ");
-//	for (int i = 0; i < strlen(alphabet); i++) {
-//		printf("%c ", alphabet[i]);
-//	}
-//	printf("\n");
 
+	//initialise new interval to be created
 	Interval* updated = malloc(sizeof(Interval));
 	int i = old_reverse->i;
 	int j = old_reverse->j;
 
 	int char_index = get_char_index(c_array, alphabet, c);
-	//printf("%c's index in c is %d\n", c, char_index);
 
 	updated->i = i + char_index;
 
+	//length of the reverse interval is same as length of the normal interval
 	updated->j = updated->i + (normal->j - normal->i);
-	/**if(index_in_c == strlen(alphabet) - 1){
-	 updated->j = j;
-	 } else {
-	 updated->j = c_array[index_in_c + 1] - 1;
-	 }**/
-
 	return updated;
 }
 
