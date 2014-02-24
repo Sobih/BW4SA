@@ -6,7 +6,7 @@
 #include "../../include/utils.h"
 #include "../../include/backward_search.h"
 
-#define MAX_ALPHABET_SIZE 20
+#define MAX_ALPHABET_SIZE 30
 /**
 *@brief finds first index of given char from a string
 **/
@@ -100,6 +100,7 @@ int get_char_index(const int* c_array, const char* alphabet, const char c)
 			return c_array[i];
 		}
 	}
-	return -1;
+	printf("NOTFOUND\n");
+	return 0;
 }
 
