@@ -3,6 +3,7 @@
 #include "../../include/rbwt.h"
 #include "../../include/c_array.h"
 #include "../../include/iterate.h"
+#include "../iterate/print_node.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,7 +63,7 @@ int main(void)
 	scanf("%s", input);
 
 	if (choice == 1) {
-		printf("Not supported yet\n");
+		iterate(input, &print_node);
 	} else if (choice == 2) {
 		res = s_to_BWT(input);
 		printf("%s\n", res);
