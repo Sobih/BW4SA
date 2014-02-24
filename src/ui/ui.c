@@ -40,9 +40,8 @@ void print_int_array(int* array, int len)
 
 void print_instructions(int choice)
 {
-	if (choice == 1)
-		printf("...\n");
-	else if (choice == 2 || choice == 4 || choice == 6 || choice == 9)
+
+	if (choice == 1 || choice == 2 || choice == 4 || choice == 6 || choice == 9)
 		printf("Do not give a dollar sign.\n");
 	else if (choice == 3)
 		printf("Give a bwt string.\n");
@@ -103,8 +102,7 @@ void ui()
 		printf("Not supported yet\n");
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
-	} else if (choice == 9) {
-		 
+	} else if (choice == 9) {		 
 		printf("%d\n", distinct_substrings(input));
 	} else {
 		printf("Invalid choice\n");
