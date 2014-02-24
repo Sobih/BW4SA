@@ -3,12 +3,9 @@
 #include "../../include/rbwt.h"
 #include "../../include/c_array.h"
 #include "../../include/iterate.h"
-<<<<<<< Updated upstream
 #include "../iterate/print_node.h"
-=======
 #include "../../include/bit_vector.h"
 #include "../../include/distinct_substrings.h"
->>>>>>> Stashed changes
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
