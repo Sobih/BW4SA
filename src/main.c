@@ -10,7 +10,7 @@
 #include "iterate/print_node.h"
 
 int main(void) {
-	char* test = "hattivatti";
+	char* test = "ajsdgjahsdnhasvdhajsdldsjahsgdajsdgauywegahwefagwedbawdcawfgahw";
 	iterate(test, &print_node);
 	printf("TIDDIDDII!\n");
 	return 0;
