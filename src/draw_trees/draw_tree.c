@@ -8,6 +8,7 @@
 #include "../../include/iterate.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct i_node
 {
@@ -34,13 +35,17 @@ void collect_internal_nodes(substring* substr)
 
 void print_recursively(internal_node* node, int depth)
 {
-	printf("node, interval i = %d, j = %d. My depth is %d\n",node->substr->normal->i, node->substr->normal->j, depth);
-
+	if(depth == 0){
+		printf("I AM THE ROOT\n");
+	}
+	else{
+		printf("node, interval i = %d, j = %d. My depth is %d\n",node->substr->normal->i, node->substr->normal->j, depth);
+	}
 	if(node->first_child != NULL){
 		print_recursively(node->first_child, depth+1);
 	}
 	if(node->next_sibling != NULL){
-		print_recursively(node->next_sibling, depth+1);
+		print_recursively(node->next_sibling, depth);
 	}
 }
 
@@ -52,6 +57,7 @@ void draw_suffix_tree(char* bwt,int max_number_nodes)
 	node_list_index = 0;
 	iterate(bwt, &collect_internal_nodes);
 	internal_node* root = create_suffix_tree();
+	printf("completed?\n");
 
 	print_recursively(root, 0);
 }
@@ -74,11 +80,14 @@ internal_node* create_suffix_tree()
 	temp_node = root->first_child;
 
 	for(int i = 1; i < node_list_index; i++){
+		temp_node = root->first_child;
+		printf("checking node %d\n", i);
 		insert_node = calloc(1, sizeof(internal_node));
 		insert_node->substr = node_list[i];
 
 		while(temp_node != NULL){
 			if(is_child(temp_node, insert_node)){
+				printf("is child\n");
 				if(temp_node->first_child == NULL){
 					temp_node->first_child = insert_node;
 					insert_node->parent = temp_node;
@@ -87,6 +96,7 @@ internal_node* create_suffix_tree()
 				temp_node = temp_node->first_child;
 			}
 			else if(is_child(insert_node, temp_node)){
+				printf("is inverted child\n");
 				insert_node->previous_sibling = temp_node->previous_sibling;
 				insert_node->next_sibling = temp_node->next_sibling;
 				if(insert_node->previous_sibling != NULL){
@@ -103,6 +113,7 @@ internal_node* create_suffix_tree()
 				break;
 			}
 			else{
+				printf("is sibling\n");
 				if(temp_node->next_sibling == NULL){
 					temp_node->next_sibling = insert_node;
 					insert_node->previous_sibling = insert_node;

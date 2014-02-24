@@ -7,12 +7,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/bwt_to_s.h"
-
+#include "../include/draw_tree.h"
 #include "../include/iterate.h"
 #include "iterate/print_node.h"
 
 int main(void) {
-	char* test = "abracadabra";
-	iterate(test, &print_node);
+	char* test = "fsahdfkjhsadlkfjhasldkfjhsakjfhksadjfhksajdfksajfdhklsajhfdipuewhrkjsbfjhvljbfkdjaldjifodsaifjhskdjf";
+	draw_suffix_tree(test, 100);
 	return 0;
 }
