@@ -1,7 +1,7 @@
 /**
  * @file	bit_vector.c
  * @brief	Implementation of the bit vector structure.
- * @author	Max Sandberg (REXiator)
+ * @author	Max Sandberg (REXiator), Topi Paavilainen
  * @bugs	No known bugs.
  */
 
@@ -25,7 +25,7 @@
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-struct bit_vec* mark_bit_vector_bit(struct bit_vec* vector, unsigned int pos) {
+bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
 	unsigned int i = pos / 32;
 
 	if (i > vector->length)
@@ -53,7 +53,7 @@ struct bit_vec* mark_bit_vector_bit(struct bit_vec* vector, unsigned int pos) {
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-struct bit_vec* unmark_bit_vector_bit(struct bit_vec* vector, unsigned int pos) {
+bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
 	unsigned int i = pos / 32;
 
 	if (i > vector->length)
@@ -78,7 +78,7 @@ struct bit_vec* unmark_bit_vector_bit(struct bit_vec* vector, unsigned int pos) 
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-int is_bit_marked(const struct bit_vec* vector, unsigned int pos) {
+int is_bit_marked(const bit_vector* vector, unsigned int pos) {
 	unsigned int i = pos / 32;
 
 	if (i > vector->length)
@@ -102,8 +102,8 @@ int is_bit_marked(const struct bit_vec* vector, unsigned int pos) {
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-unsigned int rank_query(const struct bit_vec* vector, unsigned int pos) {
-	struct bit_vec* vec = (struct bit_vec*) vector;
+unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
+	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
 
 	for (int i = 0; i < (vec->length * 32); ++i)
@@ -127,24 +127,28 @@ unsigned int rank_query(const struct bit_vec* vector, unsigned int pos) {
  * @author	Topi Paavilainen
  * @bugs	No known bugs.
  */
-unsigned int rank_query_interval(const struct bit_vec* vector, unsigned int start, unsigned int end) {
+unsigned int rank_query_interval(const bit_vector* vector, unsigned int start, unsigned int end) {
 	unsigned int count = 0;
 	
-	for (int i = start; i <= end; i++){
-		if (vector->is_bit_marked(vector, i)) count ++;
-		if (i >= vector->length*32) break;
-	}
-	return count;
+	if (start > vector->length * 32 || end > vector->length * 32 || start >= end)
+		return 0;
 
+	for (int i = start; i <= end; i++)
+		if (vector->is_bit_marked(vector, i)) count ++;
+
+	return count;
 }
 	
-
-struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
-	if (vector == 0 || nbits == 0)
+bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
+	if (vector == 0)
 		return 0;
+
+	if (nbits == 0)
+		nbits++;
 
 	//init variables
 	vector->length = (nbits + 31) / 32;
+	vector->filler_bits = vector->length * 32 - nbits;
 	vector->mark_bit = &mark_bit_vector_bit;
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
@@ -161,7 +165,7 @@ struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits) {
 	return vector;
 }
 
-void free_bit_vector(struct bit_vec* vector) {
+void free_bit_vector(bit_vector* vector) {
 	free(vector->vector);
 	free(vector);
 }

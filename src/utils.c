@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../include/utils.h"
+#include "../include/bit_vector.h"
+#include "../include/wavelet_tree.h"
 
 /**
  * @brief	Simple swap-function.
@@ -156,14 +158,6 @@ void string_quick_sort(char **strings, unsigned int arr_size) {
 
 }
 
-/**
- * @brief	Determines the alphabet used by a string.
- * @param	string	The string from which the alphabet should be deduced.
- * @return			The alphabet used by the string.
- * @see		bit_array.h#map_alphabet
- * @author	Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
 char* determine_alphabet(const char* string) {
 	int chars_left = 10, alphabet_size = 0;
 	unsigned int size = strlen(string);
@@ -221,10 +215,14 @@ int binary_search(const void* arr, const void* key, unsigned int min, unsigned i
 		unsigned int entry_size) {
 
 	//(sub)set empty
-	if (max <= min)
+	if (max < min)
 		return -1;
 
-	int mid = min + ((max - min) / 2), comparison = memcmp(arr + mid, key, entry_size);
+	//(sub)set has size 1
+	if (max == min)
+		return memcmp(arr + (min * entry_size), key, entry_size) == 0 ? min : -1;
+
+	int mid = min + ((max - min) / 2), comparison = memcmp(arr + (mid * entry_size), key, entry_size);
 
 	//key is in lower subset
 	if (comparison > 0)
@@ -235,4 +233,71 @@ int binary_search(const void* arr, const void* key, unsigned int min, unsigned i
 		return binary_search(arr, key, mid + 1, max, entry_size);
 
 	return mid;
+}
+
+void print_bit_vector(bit_vector* vector) {
+	if (vector == 0) {
+		printf("\t(NULL)\n");
+		return;
+	}
+
+	for (int i = 0; i < vector->length; ++i) {
+		printf("\t%u, ", vector->vector[i]);
+		print_bits(vector->vector[i]);
+		printf("\n");
+	}
+
+	printf("\tFiller bits: %u\n", vector->filler_bits);
+}
+
+void print_wavelet_node(wavelet_node* node) {
+	if (node == 0)
+		return;
+
+	printf("\tBit vector:\n");
+	if (node->vector != 0)
+		print_bit_vector(node->vector);
+	else
+		printf("\t(NULL)\n");
+	printf("\tString: %s\n", node->string);
+	printf("\tAlphabet length: %u\n", node->alphabet_length);
+	printf("\tAlphabet: ");
+
+	for (int i = 0; i < node->alphabet_length; ++i)
+		printf("%c", node->alphabet[i]);
+
+	printf("\n");
+}
+
+void print_wavelet_tree(wavelet_node* node) {
+	int counter = 1, j;
+	wavelet_node** node_list = calloc(1, sizeof(wavelet_node*)), ** next;
+	node_list[0] = node;
+
+	for (int depth = 0; counter > 0; depth++) {
+		next = calloc(2 * counter, sizeof(wavelet_node*));
+		j = 0;
+
+		printf("\n#################################################\n");
+		printf("Nodes at depth %d\n\n", depth);
+
+		for (int i = 0; i < counter; ++i) {
+			print_wavelet_node(node_list[i]);
+			printf("\n");
+
+			//not leaf, add children for next round
+			if (node_list[i]->children[0] != 0) {
+				next[j] = node_list[i]->children[0];
+				next[j + 1] = node_list[i]->children[1];
+				j += 2;
+			}
+		}
+
+		counter = j;
+
+		free(node_list);
+		node_list = next;
+
+		printf("\n");
+	}
 }

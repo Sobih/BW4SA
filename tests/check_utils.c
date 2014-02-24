@@ -113,18 +113,61 @@ START_TEST (test_string_quicksort3)
 }
 END_TEST
 
+START_TEST (test_binary_search) {
+	int* asd = calloc(5, sizeof(int));
+	asd[0] = 0;
+	asd[1] = 60;
+	asd[2] = 350;
+	asd[3] = 1253;
+	asd[4] = 10592;
+
+	int index = binary_search(asd, asd + 3, 0, 4, sizeof(int));
+
+	ck_assert(index == 3);
+}
+END_TEST
+
+START_TEST (test_empty_array) {
+	int* asd = calloc(1, sizeof(int));
+	int wasd = 53;
+
+	int index = binary_search(asd, &wasd, 0, 0, sizeof(int));
+
+	ck_assert(index == -1);
+}
+END_TEST
+
+START_TEST (test_large_array_search) {
+	char* asd = "aaaaaaaaaabbccccccccccccccccccccccccccddddddddddddddddefffffffffffggghhhhhhhhhhhiijjjjjjjjjjjjjj";
+	char i = 'i';
+
+	int index = binary_search(asd, &i, 0, strlen(asd), sizeof(char));
+
+	ck_assert(index == 81);
+}
+END_TEST
 
 Suite* array_suite(void) {
 	Suite* suite = suite_create("Utils");
 
-	TCase* tc_alphabet_mapping = tcase_create("Quicksort");
-	tcase_add_test (tc_alphabet_mapping, test_quicksort);
-	tcase_add_test (tc_alphabet_mapping, test_faulty_array);
-	tcase_add_test (tc_alphabet_mapping, test_large_array);
-	tcase_add_test (tc_alphabet_mapping, test_string_quicksort);
-	tcase_add_test (tc_alphabet_mapping, test_string_quicksort2);
-	tcase_add_test (tc_alphabet_mapping, test_string_quicksort3);
-	suite_add_tcase (suite, tc_alphabet_mapping);
+	TCase* tc_quicksort = tcase_create("Quicksort");
+	tcase_add_test (tc_quicksort, test_quicksort);
+	tcase_add_test (tc_quicksort, test_faulty_array);
+	tcase_add_test (tc_quicksort, test_large_array);
+
+	TCase* tc_string_quicksort = tcase_create("String Quicksort");
+	tcase_add_test (tc_string_quicksort, test_string_quicksort);
+	tcase_add_test (tc_string_quicksort, test_string_quicksort2);
+	tcase_add_test (tc_string_quicksort, test_string_quicksort3);
+
+	TCase* tc_binary_search = tcase_create("Binary Search");
+	tcase_add_test (tc_binary_search, test_binary_search);
+	tcase_add_test (tc_binary_search, test_empty_array);
+	tcase_add_test (tc_binary_search, test_large_array_search);
+
+	suite_add_tcase (suite, tc_quicksort);
+	suite_add_tcase (suite, tc_string_quicksort);
+	suite_add_tcase (suite, tc_binary_search);
 
 	return suite;
 }

@@ -6,12 +6,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/iterate.h"
-#include "iterate/print_node.h"
+#include "../include/bwt_to_s.h"
+
+//#include "../include/iterate.h"
+//#include "iterate/print_node.h"
 
 int main(void) {
-	char* test = "ajsdgjahsdnhasvdhajsdldsjahsgdajsdgauywegahwefagwedbawdcawfgahw";
-	iterate(test, &print_node);
-	printf("TIDDIDDII!\n");
-	return 0;
+
 }

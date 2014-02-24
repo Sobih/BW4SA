@@ -23,6 +23,7 @@
 typedef struct bit_vec {
 	unsigned int* vector;
 	unsigned int length;
+	unsigned int filler_bits;
 
 	struct bit_vec* (*mark_bit) (struct bit_vec* vector, unsigned int pos);
 	struct bit_vec* (*unmark_bit) (struct bit_vec* vector, unsigned int pos);

@@ -5,12 +5,15 @@
  * This file contains some useful generic helper functions, like sorting,
  * searching, etc.
  *
- * @author	Max Sandberg (REXiator)
+ * @author	Max Sandberg (REXiator), Paula Lehtola
  * @bug		No known bugs.
  */
 
 #ifndef UTILS_H_
 #define UTILS_H_
+
+struct wavelet_node;
+struct bit_vec;
 
 /**
  * @brief	Standard generic quicksort-implementation.
@@ -46,14 +49,78 @@ void print_bits(unsigned int mask);
  * @author	Paula Lehtola
  * @bug		No known bugs.
  */
-
 void string_quick_sort(char **strings, unsigned int arr_size);
 
+/**
+ * @brief	Determines the alphabet used by a string.
+ *
+ * Determines the alphabet used by a string. The alphabet of a string is
+ * defined as the characters used in the string, including all special
+ * characters.
+ *
+ * @param	string	The string from which the alphabet should be deduced.
+ * @return			The alphabet used by the string.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 char* determine_alphabet(const char* string);
 
+/**
+ * @brief	A generic implementation of a standard binary search-algorithm.
+ * @param	arr			A pointer to an array of any type upon which the
+ * 						search is to be done.
+ * @param	key			A pointer to a value that is to be found inside the
+ * 						array.
+ * @param	min			The minimum index that is to be searched.
+ * @param	max			The maximum index that is to be searched.
+ * @param	entry_size	The size of the type of the key.
+ * @return				Returns the index of the key inside the array, or -1
+ * 						if the array doesn't contain the key.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 int binary_search(const void* arr, const void* key, unsigned int min, unsigned int max,
 		unsigned int entry_size);
 
+/**
+ * @brief	Prints the bits of an unsigned int.
+ * @param	mask	The unsigned int whose bits are to be printed.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_bits(unsigned int mask);
 
+/**
+ * @brief	A simple function that prints a bit vector and its' contents to
+ * 			stdout.
+ * @param	vector		The bit vector that is to be printed.
+ * @see		bit_vector.h
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_bit_vector(struct bit_vec* vector);
+
+/**
+ * @brief	A simple function that prints a node in a wavelet tree to stdout.
+ * @param	node		The node that is to be printed.
+ * @see		wavelet_tree.h
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_wavelet_node(struct wavelet_node* node);
+
+/**
+ * @brief	Prints an entire wavelet tree.
+ *
+ * Prints the contents of an entire wavelet (sub)tree, printing one level
+ * of depth at a time.
+ *
+ * @param	node		The node at which the (sub)tree that is to be
+ * 						printed starts.
+ * @see		wavelet_tree.h
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_wavelet_tree(struct wavelet_node* node);
 
 #endif /* UTILS_H_ */
