@@ -3,7 +3,12 @@
 #include "../../include/rbwt.h"
 #include "../../include/c_array.h"
 #include "../../include/iterate.h"
+<<<<<<< Updated upstream
 #include "../iterate/print_node.h"
+=======
+#include "../../include/bit_vector.h"
+#include "../../include/distinct_substrings.h"
+>>>>>>> Stashed changes
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +42,7 @@ void print_instructions(int choice)
 {
 	if (choice == 1)
 		printf("...\n");
-	else if (choice == 2 || choice == 4)
+	else if (choice == 2 || choice == 4 || choice == 6 || choice == 9)
 		printf("Do not give a dollar sign.\n");
 	else if (choice == 3)
 		printf("Give a bwt string.\n");
@@ -45,8 +50,21 @@ void print_instructions(int choice)
 		printf("Give a dollar sign ($) to the end of the string.\n");
 }
 
+void print_runs_vector(bit_vector* runs, int len)
+{
+	int i;
+	for (i = 0; i < len; i++) {
+		if (runs->is_bit_marked(runs, i))
+			printf("%d", 1);
+		else 
+			printf("%d", 0);
+	}
+	printf("\n");
 
-int main(void)
+}
+
+
+void ui()
 {
 	int choice, len = 0;
 	char* input = malloc(sizeof(char));
@@ -78,18 +96,19 @@ int main(void)
 		len = strlen(get_alphabet(input));
 		print_int_array(array, len);
 	} else if (choice == 6) {
-		printf("Not supported yet\n");
+		bit_vector* runs = create_runs_vector(input);
+		print_runs_vector(runs, strlen(input)+1);
+		free_bit_vector(runs);
 	} else if (choice == 7) {
 		printf("Not supported yet\n");
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {
-		printf("Not supported yet\n");
+		 
+		printf("%d\n", distinct_substrings(input));
 	} else {
 		printf("Invalid choice\n");
 	}
-	
 
-	return 0;
 
 }
