@@ -12,6 +12,8 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <limits.h>
+
 struct wavelet_node;
 struct bit_vec;
 
@@ -79,8 +81,8 @@ char* determine_alphabet(const char* string);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int binary_search(const void* arr, const void* key, unsigned int min, unsigned int max,
-		unsigned int entry_size);
+int binary_search(const void* arr, const void* key, unsigned int entry_size,
+		unsigned int min = 0, unsigned int max = UINT_MAX);
 
 /**
  * @brief	Prints the bits of an unsigned int.
