@@ -97,50 +97,27 @@ int is_bit_marked(const bit_vector* vector, unsigned int pos) {
  *
  * @param	vector		The vector that bits are going to be calculated
  * 						for.
- * @param	pos			The position after which the count should stop.
- * @return	The number of marked bits up to and including pos.
+ * @param	end			The position after which the count should stop.
+ * @param	start		The position where the count should start.
+ * @return	The number of marked bits from start up to and including end.
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
-	if (vector == 0)
+unsigned int rank_query(const bit_vector* vector, unsigned int end, unsigned int start) {
+	unsigned int vec_length = vector->get_length(vector);
+
+	if (vector == 0 || start >= vec_length || start > end)
 		return 0;
 
-	if (pos > vector->get_length(vector))
-		pos = vector->get_length(vector);
+	if (end >= vec_length)
+		end = vec_length - 1;
 
 	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
 
-	for (int i = 0; i <= pos; ++i)
+	for (int i = start; i <= end; ++i)
 		if (vec->is_bit_marked(vec, i))
 			count++;
-
-	return count;
-}
-
-/**
- * @brief	A rank query for given interval.
- *
- * This function returns number of flagged bits in bits from start to end
- * (including start and end bits)
- *
- * @param	vector		The vector that bits are going to be calculated
- * 						for.
- * @param	start		The position where count starts from.
- * @param	end			The position where count ends.
- * @return	The number of marked bits from (and including) start to (and including) end.
- * @author	Topi Paavilainen
- * @bugs	No known bugs.
- */
-unsigned int rank_query_interval(const bit_vector* vector, unsigned int start, unsigned int end) {
-	unsigned int count = 0, vec_length = vector->get_length(vector);
-	
-	if (start > vec_length || end > vec_length || start >= end)
-		return 0;
-
-	for (int i = start; i <= end; i++)
-		if (vector->is_bit_marked(vector, i)) count ++;
 
 	return count;
 }
@@ -170,7 +147,6 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
 	vector->rank = &rank_query;
-	vector->rank_interval = &rank_query_interval;
 	vector->get_length = &get_bit_vector_length;
 
 	//init vector to all zeros
