@@ -13,6 +13,7 @@
 
 int main(void) {
 	char* test = "abracadabra";
-	iterate(test, &print_node);
+	char* test2 = "arbadacarba";
+	double_iterate(test, test2, &print_double_node);
 	return 0;
 }

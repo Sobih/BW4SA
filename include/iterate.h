@@ -46,4 +46,6 @@ int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
  */
 void iterate(char* string, void (*callback) (substring* substr));
 
+void double_iterate(char* string1, char* string2, void (*callback)(substring* substr1, substring* substr2));
+
 #endif
