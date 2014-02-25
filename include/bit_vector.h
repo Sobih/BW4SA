@@ -14,6 +14,8 @@
 #ifndef MOD_BIT_ARRAY_H_
 #define MOD_BIT_ARRAY_H_
 
+#define BITS_PER_INT	(sizeof(unsigned int) * 8)
+
 /**
  * @brief	A structure for storing the bit vector and its
  * 			manipulation-functions.

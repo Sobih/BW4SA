@@ -26,12 +26,12 @@
  * @bugs	No known bugs.
  */
 bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
-	unsigned int i = pos / 32;
+	unsigned int i = pos / BITS_PER_INT;
 
 	if (i > vector->length)
 		return 0;
 
-	vector->vector[i] |= (1 << (pos % 32));
+	vector->vector[i] |= (1 << (pos % BITS_PER_INT));
 
 	return vector;
 }
@@ -54,12 +54,12 @@ bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
-	unsigned int i = pos / 32;
+	unsigned int i = pos / BITS_PER_INT;
 
 	if (i > vector->length)
 		return 0;
 
-	vector->vector[i] &= ~ (1 << (pos % 32));
+	vector->vector[i] &= ~ (1 << (pos % BITS_PER_INT));
 
 	return vector;
 }
@@ -79,12 +79,12 @@ bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 int is_bit_marked(const bit_vector* vector, unsigned int pos) {
-	unsigned int i = pos / 32;
+	unsigned int i = pos / BITS_PER_INT;
 
 	if (i > vector->length)
 		return 1;
 
-	unsigned int correct_val = (1 << (pos % 32));
+	unsigned int correct_val = (1 << (pos % BITS_PER_INT));
 
 	return (vector->vector[i] & correct_val) == correct_val ? 1 : 0;
 }
@@ -103,10 +103,16 @@ int is_bit_marked(const bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
+	if (vector == 0)
+		return 0;
+
+	if (pos > vector->length * BITS_PER_INT - vector->filler_bits)
+		pos = vector->length * BITS_PER_INT - vector->filler_bits;
+
 	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
 
-	for (int i = 0; i < (vec->length * 32); ++i)
+	for (int i = 0; i <= pos; ++i)
 		if (vec->is_bit_marked(vec, i))
 			count++;
 
@@ -128,9 +134,9 @@ unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 unsigned int rank_query_interval(const bit_vector* vector, unsigned int start, unsigned int end) {
-	unsigned int count = 0;
+	unsigned int count = 0, vec_length = vector->length * BITS_PER_INT - vector->filler_bits;
 	
-	if (start > vector->length * 32 || end > vector->length * 32 || start >= end)
+	if (start > vec_length || end > vec_length || start >= end)
 		return 0;
 
 	for (int i = start; i <= end; i++)
@@ -147,8 +153,8 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 		nbits++;
 
 	//init variables
-	vector->length = (nbits + 31) / 32;
-	vector->filler_bits = vector->length * 32 - nbits;
+	vector->length = (nbits + BITS_PER_INT - 1) / BITS_PER_INT;
+	vector->filler_bits = vector->length * BITS_PER_INT - nbits;
 	vector->mark_bit = &mark_bit_vector_bit;
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
@@ -158,9 +164,6 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 	//init vector to all zeros
 	if ((vector->vector = calloc(vector->length, sizeof(unsigned int))) == 0)
 		return 0;
-
-	for (int i = 0; i < vector->length; ++i)
-		vector->vector[i] = 0;
 
 	return vector;
 }
