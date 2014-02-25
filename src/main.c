@@ -12,8 +12,8 @@
 #include "iterate/print_node.h"
 
 int main(void) {
-	char* test = "abracadabra";
-	char* test2 = "arbadacarba";
+	char* test = "lol";
+	char* test2 = "aaoaalaaaoaaaoaa";
 	double_iterate(test, test2, &print_double_node);
 	return 0;
 }

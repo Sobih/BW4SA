@@ -150,6 +150,8 @@ void double_iterate(char* string1, char* string2,
 	unsigned char* bwt2 = s_to_BWT(string2);
 	bit_vector* runs2 = create_runs_vector(string2);
 
+	printf("%s %s %s %s \n", string1,bwt1,string2,bwt2);
+
 	substring_stack* stack1 = create_stack(10);
 	substring_stack* stack2 = create_stack(10);
 
@@ -209,6 +211,9 @@ void double_iterate(char* string1, char* string2,
 
 		int i;
 		for (i = 0; i < strlen(common_alphabet); i++) {
+			if(common_alphabet[i] == '$'){
+				continue;
+			}
 			normal1 = backward_search_interval(bwt1, substring1->normal,
 					common_alphabet[i]);
 			if (normal1 == NULL) {
