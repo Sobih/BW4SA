@@ -212,7 +212,7 @@ char* determine_alphabet(const char* string) {
 }
 
 int binary_search(const void* arr, const void* key, unsigned int entry_size,
-		unsigned int min, unsigned int max) {
+		unsigned int max, unsigned int min) {
 
 	//(sub)set empty
 	if (max < min)
@@ -226,11 +226,11 @@ int binary_search(const void* arr, const void* key, unsigned int entry_size,
 
 	//key is in lower subset
 	if (comparison > 0)
-		return binary_search(arr, key, entry_size, min, mid - 1);
+		return binary_search(arr, key, entry_size, mid - 1, min);
 
 	//key is in upper subset
 	if (comparison < 0)
-		return binary_search(arr, key, entry_size, mid + 1, max);
+		return binary_search(arr, key, entry_size, max, mid + 1);
 
 	return mid;
 }
