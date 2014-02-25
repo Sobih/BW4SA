@@ -106,8 +106,8 @@ unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
 	if (vector == 0)
 		return 0;
 
-	if (pos > vector->length * BITS_PER_INT - vector->filler_bits)
-		pos = vector->length * BITS_PER_INT - vector->filler_bits;
+	if (pos > vector->get_length(vector))
+		pos = vector->get_length(vector);
 
 	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
@@ -134,7 +134,7 @@ unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 unsigned int rank_query_interval(const bit_vector* vector, unsigned int start, unsigned int end) {
-	unsigned int count = 0, vec_length = vector->length * BITS_PER_INT - vector->filler_bits;
+	unsigned int count = 0, vec_length = vector->get_length(vector);
 	
 	if (start > vec_length || end > vec_length || start >= end)
 		return 0;
@@ -143,6 +143,17 @@ unsigned int rank_query_interval(const bit_vector* vector, unsigned int start, u
 		if (vector->is_bit_marked(vector, i)) count ++;
 
 	return count;
+}
+
+/**
+ * @brief	Returns the length of the bit vector, i.e. the number of bits in it.
+ * @param	vector	The vector whose length is to be checked.
+ * @return			The length of the bit vector, or the number of bits in it.
+ * @author	Max Sandberg (REXiator)
+ * @bugs	No known bugs.
+ */
+unsigned int get_bit_vector_length(const bit_vector* vector) {
+	return vector->length * BITS_PER_INT - vector->filler_bits;
 }
 	
 bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
@@ -160,6 +171,7 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 	vector->is_bit_marked = &is_bit_marked;
 	vector->rank = &rank_query;
 	vector->rank_interval = &rank_query_interval;
+	vector->get_length = &get_bit_vector_length;
 
 	//init vector to all zeros
 	if ((vector->vector = calloc(vector->length, sizeof(unsigned int))) == 0)
