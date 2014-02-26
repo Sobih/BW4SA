@@ -9,10 +9,11 @@
 #include "../include/bwt_to_s.h"
 
 #include "../include/iterate.h"
-#include "iterate/print_node.h"
+#include "../include/maximal_repeats.h"
 
 int main(void) {
-	char* test = "abracadabra";
-	iterate(test, &print_node);
+	char* test = "hattivatti";
+	iterate(test, &search_maximal_repeats);
+	maximals_print_nodes();
 	return 0;
 }
