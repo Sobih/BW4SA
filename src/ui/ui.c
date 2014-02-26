@@ -15,13 +15,13 @@ void print_choices()
 	printf("Welcome to the Glfbabot-BWT program!\n");
 	printf("Operations:\n");
 	printf("1 Print right maximal nodes\n");
-	printf("2 Make BWT\n");
-	printf("3 Make original string from BWT\n");
-	printf("4 Make reverse BWT\n");
-	printf("5 Print C-array\n");
-	printf("6 Make runs vector\n");
+	printf("2 Make a BWT\n");
+	printf("3 Make the original string from BWT\n");
+	printf("4 Make a reverse BWT\n");
+	printf("5 Print a C-array\n");
+	printf("6 Make a runs vector\n");
 	printf("7 Find MUM:s\n");
-	printf("8 Make DOT tree\n");
+	printf("8 Make a DOT tree\n");
 	printf("9 Count distinct substrings\n");
 
 }
