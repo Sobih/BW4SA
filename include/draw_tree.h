@@ -7,6 +7,6 @@
 #ifndef _PRINT_TREE_H_
 #define _PRINT_TREE_H_
 
-void draw_suffix_tree(char* bwt,int max_number_nodes);
+void draw_suffix_tree(char* bwt);
 
 #endif

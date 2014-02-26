@@ -12,7 +12,7 @@
 #include "iterate/print_node.h"
 
 int main(void) {
-	char* test = "fsahdfkjhsadlkfjhasldkfjhsakjfhksadjfhksajdfksajfdhklsajhfdipuewhrkjsbfjhvljbfkdjaldjifodsaifjhskdjf";
-	draw_suffix_tree(test, 100);
+	char* test = "pukinpikkuapurit";
+	draw_suffix_tree(test);
 	return 0;
 }
