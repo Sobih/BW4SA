@@ -73,7 +73,7 @@ int* create_suffix_array_from_bwt(const char* bwt)
 }
 
 void collect_internal_nodes(substring* substr, substring* prev_substr, char c);
-void print_tree_to_file(char* filename);
+void print_tree_to_file(char* filename, int* suffix_array, char* orig_string);
 internal_node* find_node_by_substring(substring* substr);
 void print_node_label_to_file(FILE* f, internal_node* node);
 
@@ -93,7 +93,7 @@ void draw_suffix_tree(char* string) {
 	root->substr->normal->j = strlen(string);
 	node_id_index = 1;
 
-	iterate_for_tree_drawing(bwt, &collect_internal_nodes);
+	iterate_for_tree_drawing(string, &collect_internal_nodes);
 	printf("completed?\n");
 	print_tree_to_file("suffix_tree.gv", suffix_array, string);
 
@@ -211,7 +211,7 @@ void print_arcs_recursively(FILE* f, internal_node* node) {
 	}
 }
 
-print_leaves_recursively(FILE* f, internal_node* node, int* suffix_array, char* orig_string, bit_vector* leaf_vec)
+void print_leaves_recursively(FILE* f, internal_node* node, int* suffix_array, char* orig_string, bit_vector* leaf_vec)
 {
 	if(node->first_child != NULL){
 		print_leaves_recursively(f, node->first_child, suffix_array, orig_string, leaf_vec);
@@ -224,12 +224,12 @@ print_leaves_recursively(FILE* f, internal_node* node, int* suffix_array, char* 
 	for(int i = node->substr->normal->i; i<=node->substr->normal->j; i++){
 		if(leaf_vec->is_bit_marked(leaf_vec, i)) continue;
 		fprintf(f, "node%d->leafnode%d [label=\"", node->id, i);
-		j = suffix_array[i]
-		while(orig_string[j] != NULL){
+
+		for(int j = suffix_array[i]+node->substr->length; j<strlen(orig_string); j++){
 			fprintf(f, "%c", orig_string[j]);
-			j++;
 		}
-		fprintf(f, "\"];\n");
+		fprintf(f, "$\"];\n");
+		leaf_vec->mark_bit(leaf_vec, i);
 	}
 }
 
@@ -244,7 +244,9 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 	print_normal_style_definitions(f);
 	printf("startin' recursion\n");
 	print_arcs_recursively(f, root->first_child);
-	print_leaves_recursively(f, root->first_child, suffix_array, orig_string);
+	bit_vector* leaf_vec = calloc(1, sizeof(bit_vector));
+	init_bit_vector(leaf_vec, strlen(orig_string));
+	print_leaves_recursively(f, root, suffix_array, orig_string, leaf_vec);
 	fprintf(f, "}\n");
 	fclose(f);
 }
