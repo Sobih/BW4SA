@@ -4,6 +4,7 @@
 #include "../../include/backward_search.h"
 #include "../../include/c_array.h"
 #include "../../include/utils.h"
+#include "../../include/mum.h"
 #include "../bwt/s_to_bwt.h"
 #include "substring_stack.h"
 #include <stdlib.h>
@@ -149,6 +150,8 @@ void double_iterate(char* string1, char* string2,
 
 	unsigned char* bwt2 = s_to_BWT(string2);
 	bit_vector* runs2 = create_runs_vector(string2);
+
+	mum_initialize_bwts(bwt1, bwt2, reverse_bwt(string1), reverse_bwt(string2));
 
 	printf("%s %s %s %s \n", string1,bwt1,string2,bwt2);
 

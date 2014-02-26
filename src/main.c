@@ -9,11 +9,12 @@
 #include "../include/bwt_to_s.h"
 
 #include "../include/iterate.h"
-#include "iterate/print_node.h"
+#include "../include/mum.h"
 
 int main(void) {
-	char* test = "lol";
-	char* test2 = "aaoaalaaaoaaaoaa";
-	double_iterate(test, test2, &print_double_node);
+	char* test = "abracadabra";
+	char* test2 = "abracadabra";
+	double_iterate(test, test2, &search_mums);
+	print_mums();
 	return 0;
 }
