@@ -12,7 +12,7 @@
 #include "iterate/print_node.h"
 
 int main(void) {
-	char* test = "lampimampi";
+	char* test = "abracadabra";
 	draw_suffix_tree(test);
 	return 0;
 }
