@@ -103,7 +103,7 @@ int is_bit_marked(const bit_vector* vector, unsigned int pos) {
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-unsigned int rank_query(const bit_vector* vector, unsigned int end, unsigned int start) {
+unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned int end) {
 	unsigned int vec_length = vector->get_length(vector);
 
 	if (vector == 0 || start >= vec_length || start > end)

@@ -32,7 +32,7 @@ typedef struct bit_vec {
 	struct bit_vec* (*mark_bit) (struct bit_vec* vector, unsigned int pos);
 	struct bit_vec* (*unmark_bit) (struct bit_vec* vector, unsigned int pos);
 	int (*is_bit_marked) (const struct bit_vec* vector, unsigned int pos);
-	unsigned int (*rank) (const struct bit_vec* vector, unsigned int start = 0, unsigned int end = UINT_MAX);
+	unsigned int (*rank) (const struct bit_vec* vector, unsigned int start, unsigned int end);
 	unsigned int (*get_length) (const struct bit_vec* vector);
 } bit_vector;
 
