@@ -32,15 +32,20 @@
  */
 typedef struct wavelet_node {
 	char* string;
-	struct bit_vec* vector;
+	bit_vector vector;
 	char* alphabet;
 	unsigned int alphabet_length;
-	struct wavelet_node* parent;
-	struct wavelet_node** children;
-
-	int (*rank) (const struct wavelet_node* node, char c, int start, int end);
-	char (*char_at) (const struct wavelet_node* node, int index);
+	unsigned int children[2];
 } wavelet_node;
+
+typedef struct wavelet_tree {
+	unsigned int (*get_num_bits) (const struct wavelet_tree* tree);
+	int (*rank) (const struct wavelet_tree* node, char c, int start, int end);
+	char (*char_at) (const struct wavelet_tree* node, int index);
+
+	unsigned int num_nodes;
+	wavelet_node nodes[];
+} wavelet_tree;
 
 /**
  * @brief	An algorithm that creates a wavelet tree from a string.
@@ -55,7 +60,7 @@ typedef struct wavelet_node {
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-wavelet_node* create_wavelet_tree(const char* string);
+wavelet_tree* create_wavelet_tree(const char* string);
 
 /**
  * @brief	Frees the memory used by an entire wavelet tree.
@@ -70,7 +75,7 @@ wavelet_node* create_wavelet_tree(const char* string);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void free_wavelet_tree(wavelet_node* root);
+void free_wavelet_tree(wavelet_tree* tree);
 
 /**
  * @brief	Frees a wavelet (sub)tree.

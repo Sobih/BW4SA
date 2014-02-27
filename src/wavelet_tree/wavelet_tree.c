@@ -33,48 +33,44 @@
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int wavelet_rank_query(const wavelet_node* node, char c, int start, int end) {
-	if (start < 0 || end < 0 || start > end)
-		return 0;
-
-	printf("Start & end before modifications: %d, %d\n", start, end);
-
-	if (end >= node->vector->get_length(node->vector))
-		end = node->vector->get_length(node->vector) - 1;
-
-	printf("End after: %d\n", end);
+int wavelet_rank_query(const wavelet_tree* tree, unsigned int curr_node, char c, int start, int end) {
+	wavelet_node* node = (wavelet_node*) &tree->nodes[curr_node];
 
 	//determine rank
-	int end_rank = node->vector->rank(node->vector, start, end);
+	int end_rank = node->vector.rank(&node->vector, start, end);
 	int half_length = (node->alphabet_length / 2) - 1;
 	int child = 0, i = binary_search(node->alphabet, &c, sizeof(char), half_length >= 0 ? half_length : 0, 0);
 
 	//if leaf node, return rank
-	if (node->children[0] == 0)
+	if (&tree[node->children[child]] == 0)
 		return (i < 0 || i > node->alphabet_length) ? end - start + 1 - end_rank : end_rank;
 
 	//determine rank for 0 -> start of vector
-	int start_rank = start > 0 ? node->vector->rank(node->vector, 0, start - 1) : 0;
-
-	printf("End rank: %d, start rank: %d\n", end_rank, start_rank);
+	int start_rank = start > 0 ? node->vector.rank(&node->vector, 0, start - 1) : 0;
 
 	//not found in lower half of alphabet = marked as 0 = inverse rank
 	if (i < 0 || i > node->alphabet_length) {
 		end = end - end_rank - start_rank;
 		start = start - start_rank;
 		child = 1;
-
-		printf("Inverse end: %d, inverse start: %d\n", end, start);
 	}
 	else {
 		end = end - (end - start - end_rank) - (start > 0 ? start + 1 - start_rank : 0);
 		start = start - (start - start_rank);
-
-		printf("Normal end: %d, normal start: %d\n", end, start);
 	}
 
 	//recurse to a child
-	return node->rank(node->children[child], c, start, end);
+	return wavelet_rank_query(tree, node->children[child], c, start, end);
+}
+
+int wavelet_root_rank_query(const wavelet_tree* tree, char c, int start, int end) {
+	if (start < 0 || end < 0 || start > end)
+		return 0;
+
+	if (end >= tree->get_num_bits(tree))
+		end = tree->get_num_bits(tree) - 1;
+
+	return wavelet_rank_query(tree, 0, c, start, end);
 }
 
 /**
@@ -85,31 +81,36 @@ int wavelet_rank_query(const wavelet_node* node, char c, int start, int end) {
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-char wavelet_char_at(const wavelet_node* node, int index) {
-	if (index < 0 || node == 0)
-		return 0;
-
-	int vec_length = node->vector->length * 32 - node->vector->filler_bits;
-
-	if (index > vec_length)
-		index = vec_length;
+char wavelet_char_at(const wavelet_tree* tree, unsigned int curr_node, int index) {
+	wavelet_node* node = (wavelet_node*) &tree->nodes[curr_node];
 
 	//node isn't leaf
 	if (node->children[0] != 0) {
-		int child = node->vector->is_bit_marked(node->vector, index) == 0 ? 1 : 0;
-		int rank = node->vector->rank(node->vector, 0, index);
+		int child = node->vector.is_bit_marked(&node->vector, index) == 0 ? 1 : 0;
+		int rank = node->vector.rank(&node->vector, 0, index);
 
 		//subtract wrongly marked bits from index and recurse
 		index -= child == 0 ? index - rank + 1 : rank;
 
-		return node->char_at(node->children[child], index);
+		return wavelet_char_at(tree, node->children[child], index);
 	}
 
 	//alphabet length = 1
 	if (node->alphabet_length == 1)
 		return node->alphabet[0];
 
-	return node->vector->is_bit_marked(node->vector, index) == 0 ? node->alphabet[1] : node->alphabet[0];
+	return node->vector.is_bit_marked(&node->vector, index) == 0 ? node->alphabet[1] : node->alphabet[0];
+}
+
+char wavelet_root_char_at(const wavelet_tree* tree, int index) {
+	if (index < 0 || index > tree->get_num_bits(tree))
+		return 0;
+
+	return wavelet_char_at(tree, 0, index);
+}
+
+unsigned int get_num_bits_tree(const wavelet_tree* tree) {
+	return tree->nodes[0].vector.get_length(&tree->nodes[0].vector);
 }
 
 /**
@@ -124,15 +125,10 @@ char wavelet_char_at(const wavelet_node* node, int index) {
  * @bug		No known bugs.
  */
 wavelet_node* init_node(wavelet_node* node, const char* string, const char* alphabet,
-		unsigned int alphabet_length, wavelet_node* parent) {
+		unsigned int alphabet_length) {
 	node->alphabet = (char*) alphabet;
 	node->alphabet_length = alphabet_length;
 	node->string = (char*) string;
-	node->vector = 0;
-	node->parent = parent;
-	node->children = calloc(2, sizeof(wavelet_node*));
-	node->rank = &wavelet_rank_query;
-	node->char_at = &wavelet_char_at;
 
 	return node;
 }
@@ -155,11 +151,12 @@ wavelet_node* init_node(wavelet_node* node, const char* string, const char* alph
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned int alphabet_length) {
+bit_vector* create_bit_vector(bit_vector* vector, const char* string, const char* alphabet,
+		unsigned int alphabet_length) {
+
 	if (string == 0 || alphabet == 0)
 		return 0;
 
-	bit_vector* vector = malloc(sizeof(bit_vector));
 	unsigned int length = strlen(string);
 
 	//init bit vector
@@ -192,11 +189,9 @@ bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-char** determine_substrings(const wavelet_node* parent) {
-	bit_vector* vector = parent->vector;
+char** determine_substrings(const wavelet_tree* tree, unsigned int parent, char** string_arr) {
+	bit_vector* vector = (bit_vector*) &tree->nodes[parent].vector;
 	unsigned int num_bits = vector->get_length(vector);
-
-	char** string_arr = malloc(2 * sizeof(char*));
 
 	//determine length of substrings
 	unsigned int left = vector->rank(vector, 0, num_bits) + 1;
@@ -212,12 +207,12 @@ char** determine_substrings(const wavelet_node* parent) {
 	for (int i = 0; i < num_bits; ++i) {
 		//marked bit = append to first substring
 		if (vector->is_bit_marked(vector, i)) {
-			string_arr[0][left] = parent->string[i];
+			string_arr[0][left] = tree->char_at(tree, i);
 			left++;
 		}
 		//unmarked bit = append to second substring
 		else {
-			string_arr[1][right] = parent->string[i];
+			string_arr[1][right] = tree->char_at(tree, i);
 			right++;
 		}
 	}
@@ -244,89 +239,92 @@ char** determine_substrings(const wavelet_node* parent) {
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-wavelet_node* create_children(wavelet_node* node) {
+int create_children(wavelet_tree* tree, unsigned int curr_node, unsigned int next,
+		bit_vector* vec, char** strings) {
+	wavelet_node* node = &tree->nodes[curr_node];
+
 	//determine bitvector of node
 	unsigned int left_length = node->alphabet_length / 2;
-	node->vector = create_bit_vector(node->string, node->alphabet, left_length > 0 ? left_length : 1);
+	node->vector = *create_bit_vector(vec, node->string, node->alphabet, left_length > 0 ? left_length : 1);
 
 	//alphabet can still be split
 	if (node->alphabet_length > 2) {
-		//allocate children
-		wavelet_node* children = calloc(2, sizeof(wavelet_node));
-		wavelet_node* left_child = &children[0];
-		wavelet_node* right_child = &children[1];
-
 		//determine length of alphabet for both children
 		unsigned int right_length = node->alphabet_length - left_length;
 
 		//determine substrings for children
-		char** substrings = determine_substrings(node);
+		strings = determine_substrings(tree, curr_node, strings);
 
 		//recursively create children of left child
-		left_child = init_node(left_child, substrings[0], node->alphabet, left_length, node);
-		node->children[0] = left_child;
-		create_children(left_child);
+		wavelet_node* next_child = &tree->nodes[next];
+		next_child = init_node(next_child, strings[0], node->alphabet, left_length);
+		node->children[0] = next;
+		next = create_children(tree, next, next + 1, vec, strings);
 
 		//recursively create children of right child
-		right_child = init_node(right_child, substrings[1], node->alphabet + left_length, right_length, node);
-		node->children[1] = right_child;
-		create_children(right_child);
-
-		free(substrings);
+		next_child = &tree->nodes[next];
+		next_child = init_node(next_child, strings[1], node->alphabet + left_length, right_length);
+		node->children[1] = next;
+		return create_children(tree, next, next + 1, vec, strings);
 	}
 
 	//alphabet small enough = no children
 	else {
 		node->children[0] = 0;
 		node->children[1] = 0;
+		return next;
 	}
-
-	return node;
 }
 
-wavelet_node* create_wavelet_tree(const char* string) {
+wavelet_tree* create_wavelet_tree(const char* string) {
 	if (string == 0)
 		return 0;
-
-	//allocate the root node
-	wavelet_node* root = malloc(sizeof(wavelet_node));
 
 	//determine the alphabet and its length
 	char* alphabet = determine_alphabet(string);
 	unsigned int alphabet_length = strlen(alphabet);
 	quick_sort(alphabet, alphabet_length, sizeof(char));
 
-	//init root and populate tree
-	root = init_node(root, string, alphabet, alphabet_length, 0);
-	root = create_children(root);
+	//allocate and initialize the tree
+	wavelet_tree* tree = malloc(sizeof(wavelet_tree));
+	tree->num_nodes = alphabet_length;
+	//tree->nodes = malloc(tree->num_nodes * sizeof(wavelet_node));
+	tree->char_at = &wavelet_root_char_at;
+	tree->get_num_bits = &get_num_bits_tree;
+	tree->rank = &wavelet_root_rank_query;
 
-	return root;
+	//init temporary bit vector and string array
+	bit_vector* vec = malloc(sizeof(bit_vector));
+	vec = init_bit_vector(vec, 1);
+	char** strings = calloc(2, sizeof(char*));
+
+	//init root and populate tree
+	init_node(&tree->nodes[0], string, alphabet, alphabet_length);
+	create_children(tree, 0, 1, vec, strings);
+
+	//free temporary variables
+	free(strings);
+	free_bit_vector(vec);
+
+	return tree;
 }
 
-void free_wavelet_tree(wavelet_node* node) {
-	if (node == NULL)
+void free_wavelet_tree(wavelet_tree* tree) {
+	if (tree == NULL)
 		return;
 
 	//free alphabet, since it only has one allocation throughout the tree
-	free(node->alphabet);
+	free(tree->nodes[0].alphabet);
 
-	free_subtree(node);
+	free_subtree(&tree->nodes[0]);
 }
 
 void free_subtree(wavelet_node* node) {
 	if (node == NULL)
 		return;
 
-	//set parent's connection to this node to NULL
-	if (node->parent != 0) {
-		if (node->parent->children[0] == node)
-			node->parent->children[0] = NULL;
-		else if (node->parent->children[1] == node)
-			node->parent->children[1] = NULL;
-	}
-
 	//free bitvector and string first
-	free(node->vector);
+	free_bit_vector(&node->vector);
 	free(node->string);
 
 	//recursively call children
