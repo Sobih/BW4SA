@@ -24,12 +24,12 @@
  * @bug				No known bugs
  */
 
-char* bwt_to_s(char* bwt) 
+char* bwt_to_s(const wavelet_node* bwt)
 {
 	long n = strlen(bwt)-1;
 	char* string = calloc(n, sizeof(char));
 	int k;	
-	Interval* interval = malloc(sizeof(Interval));
+	interval* interval = malloc(sizeof(interval));
 	interval->i = 0;
 	interval->j = 0;
 
