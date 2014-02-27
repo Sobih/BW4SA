@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../../include/utils.h"
 
 char* max_bwt;
 bit_vector* max_repeats_runs;
@@ -83,13 +84,31 @@ char *substring_from_string(char *string, int position, int length) {
 void map_to_string_and_print(substring* node, char* string) {
 	int* suffix_array = map_create_suffix_array_from_bwt(max_bwt);
 	int str_length = strlen(max_bwt);
-	int bwt_index = node->normal->i;
+	int bwt_index_i = node->normal->i;
+	int bwt_index_j = node->normal->j;
+	int* indexes_in_string = malloc(str_length * sizeof(int));
+	int index_array_i = 0;
 	char* node_as_string = malloc(str_length);
 	int i;
 	for (i = 0; i < str_length; i++) {
-		if (bwt_index == i) {
-			node_as_string = substring_from_string(string,suffix_array[i],node->length);
-			printf("%s\n", node_as_string);
+		if (i == bwt_index_i) {
+			node_as_string = substring_from_string(string, suffix_array[i],
+					node->length);
+			printf("Substring: %s\n", node_as_string);
+		}
+		if (i >= bwt_index_i && i <= bwt_index_j) {
+			indexes_in_string[index_array_i] = suffix_array[i];
+			index_array_i++;
+		}
+		if (i == bwt_index_j) {
+			quick_sort(indexes_in_string, index_array_i,sizeof(int));
+			printf("Indexes in string: ");
+			int j;
+			for (j = 0; j < index_array_i - 1; j++) {
+				printf("%d, ", indexes_in_string[j]);
+			}
+			printf("%d\n", indexes_in_string[index_array_i - 1]);
+
 		}
 	}
 }
