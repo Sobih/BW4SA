@@ -8,6 +8,8 @@
 #ifndef PRINT_NODE_H_
 #define PRINT_NODE_H_
 
+#include "../../include/iterate.h"
+
 /**
  * Prints all the information about the node in a readable form.
  *

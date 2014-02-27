@@ -1,0 +1,2 @@
+gcc -std=c99 src/main.c -o src/main.o src/ui/ui.c src/bwt/*.c libs/DBWT/*.c -I libs/DBWT src/backward-search/*.c src/utils.c src/iterate/*.c src/array/bit_vector.c src/distinct_substrings/distinct_substrings.c
+
