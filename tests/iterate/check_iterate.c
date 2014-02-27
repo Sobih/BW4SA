@@ -47,10 +47,10 @@ START_TEST(test_interval_query)
 {
 	char* string = "ABRACADABRA";
 	bit_vector* runs = create_runs_vector(string);
-	Interval* test1 = malloc(sizeof(Interval));
+	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
 	test1->j = 7;
-	Interval* test2 = malloc(sizeof(Interval));
+	interval* test2 = malloc(sizeof(interval));
 	test2->i = 1;
 	test2->j = 3;
 	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test1));
@@ -62,10 +62,10 @@ START_TEST(test_wrong_intervals)
 {
 	char* string = "ABRACADABRA";
 	bit_vector* runs = create_runs_vector(string);
-	Interval* test1 = malloc(sizeof(Interval));
+	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
 	test1->j = 4;
-	Interval* test2 = malloc(sizeof(Interval));
+	interval* test2 = malloc(sizeof(interval));
 	test2->i = 6;
 	test2->j = 6;
 	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test1));
