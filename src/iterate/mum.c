@@ -51,7 +51,7 @@ void print_mums(){
 	int i;
 	for(i = 0; i < triplets_index;i++){
 		triplet trip = mums[i];
-		printf("Index in first: %d Index in second: %d Length: %d \n", trip.pos1, trip.pos2, trip.length);
+		printf("Index in the BWT of the first string: %d\nIndex in the BWT of the second string: %d\nLength: %d \n", trip.pos1, trip.pos2, trip.length);
 
 	}
 }
