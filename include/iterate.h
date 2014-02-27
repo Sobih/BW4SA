@@ -6,8 +6,8 @@
 
 typedef struct substring_struct
 {
-	Interval* normal;
-	Interval* reverse;
+	interval* normal;
+	interval* reverse;
 	int length;
 } substring;
 
@@ -37,7 +37,7 @@ bit_vector* create_runs_vector(char* string);
 *
 * @bug no known bugs
 **/
-int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
+int is_reverse_interval_right_maximal(bit_vector* runs, interval* interval);
 
 /**
  * @brief Iterate goes through all right maximals in the given string and calls the callback-function on each of them.

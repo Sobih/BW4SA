@@ -23,7 +23,7 @@ bit_vector* create_runs_vector(char* string)
 	return runs;
 }
 
-int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval)
+int is_reverse_interval_right_maximal(bit_vector* runs, interval* interval)
 {
 	if(interval->i >= interval->j) return 0;
 	
@@ -34,9 +34,9 @@ int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval)
 	else return 0;
 }
 
-Interval* update_reverse_interval(Interval* interval, Interval* normal, const char* alphabet, const int* c_array, const char c);
+interval* update_reverse_interval(interval* interval, interval* normal, const char* alphabet, const int* c_array, const char c);
 
-substring* create_substring(Interval* normal, Interval* reverse, int length);
+substring* create_substring(interval* normal, interval* reverse, int length);
 
 void iterate(char* string, void (*callback) (substring* substr))
 {
@@ -45,8 +45,8 @@ void iterate(char* string, void (*callback) (substring* substr))
 	substring_stack* stack = create_stack(10);
 	
 	//Initialize first intervals. In the start both intervals are the whole bwt
-	Interval* normal = &((Interval) {.i = 0, .j = strlen(bwt)-1});
-	Interval* reverse = &((Interval) {.i = 0, .j = strlen(bwt)-1});
+	interval* normal = &((interval) {.i = 0, .j = strlen(bwt)-1});
+	interval* reverse = &((interval) {.i = 0, .j = strlen(bwt)-1});
 	//create starting substring
 	substring* start = create_substring(normal, reverse, 0);
 
@@ -69,8 +69,8 @@ void iterate(char* string, void (*callback) (substring* substr))
 		int i;
 		for(i = 0; i < strlen(alphabet);i++){
 		
-			Interval* normal = backward_search_interval(bwt,substring->normal,alphabet[i]);
-			Interval* reverse = update_reverse_interval(substring->reverse, normal, alphabet, c_array, alphabet[i]);
+			interval* normal = backward_search_interval(bwt,substring->normal,alphabet[i]);
+			interval* reverse = update_reverse_interval(substring->reverse, normal, alphabet, c_array, alphabet[i]);
 			if(is_reverse_interval_right_maximal(runs, reverse)) {
 				new_substring = create_substring(normal, reverse, substring->length+1);
 				// callback function pointers
@@ -95,8 +95,8 @@ void iterate(char* string, void (*callback) (substring* substr))
  * @param extension character
  * @return a new updated Interval struct in the BWT of the reverse of the string
  */
-Interval* update_reverse_interval(Interval* interval, Interval* normal, const char* alphabet, const int* c_array, const char c){
-	Interval* updated = malloc(sizeof(Interval));
+interval* update_reverse_interval(interval* interval, interval* normal, const char* alphabet, const int* c_array, const char c){
+	interval* updated = malloc(sizeof(interval));
 	int i = interval->i;
 	int j = interval->j;
 
@@ -122,7 +122,7 @@ Interval* update_reverse_interval(Interval* interval, Interval* normal, const ch
  *
  * @return pointer to a new substring struct
  */
-substring* create_substring(Interval* normal, Interval* reverse, int length)
+substring* create_substring(interval* normal, interval* reverse, int length)
 {
 	substring* new_substring = malloc(sizeof(substring));
 	new_substring->normal = normal;
