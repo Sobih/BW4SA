@@ -52,9 +52,9 @@ int lcp(char *string1, char *string2) {
  */
 
 char **create_suffixes(char *string) {
-	int len = strlen(string);	
+	int len = strlen(string);
 	char **suffixes;
-	int i;	
+	int i;
 
 	suffixes = calloc(len+1, len+1);
 
