@@ -26,14 +26,10 @@
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void swap(void* arr, unsigned int entry_size, int i, int j) {
-	void* tmp = malloc(entry_size);
-
-	memcpy(tmp, (arr + (j * entry_size)), entry_size);
+void swap(void* arr, unsigned int entry_size, int i, int j, void* swap_area) {
+	memcpy(swap_area, (arr + (j * entry_size)), entry_size);
     memcpy((arr + (j * entry_size)), (arr + (i * entry_size)), entry_size);
-    memcpy((arr + (i * entry_size)), tmp, entry_size);
-
-    free(tmp);
+    memcpy((arr + (i * entry_size)), swap_area, entry_size);
 }
 
 /**
@@ -47,7 +43,7 @@ void swap(void* arr, unsigned int entry_size, int i, int j) {
  * @bug		No known bugs.
  */
 void quicksort(void* arr, unsigned int entry_size, unsigned int a,
-		unsigned int b) {
+		unsigned int b, void* swap_area) {
 
     if (a >= b)
         return;
@@ -63,25 +59,27 @@ void quicksort(void* arr, unsigned int entry_size, unsigned int a,
         	++i;
 
         if (i < j)
-            swap(arr, entry_size, i, j);
+            swap(arr, entry_size, i, j, swap_area);
     }
 
     if (memcmp((arr + (a * entry_size)), (arr + (i * entry_size)), entry_size) > 0) {
-        swap(arr, entry_size, a, i);
-        quicksort(arr, entry_size, a, i - 1);
-        quicksort(arr, entry_size, i + 1, b);
+        swap(arr, entry_size, a, i, swap_area);
+        quicksort(arr, entry_size, a, i - 1, swap_area);
+        quicksort(arr, entry_size, i + 1, b, swap_area);
     }
 
     // there is no left-hand-side
     else
-        quicksort(arr, entry_size, a + 1, b);
+        quicksort(arr, entry_size, a + 1, b, swap_area);
 }
 
 void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size) {
 	if (arr == 0 || arr_size == 0 || entry_size == 0)
 		return;
 
-	quicksort(arr, entry_size, 0, arr_size - 1);
+	void* tmp = malloc(entry_size);
+	quicksort(arr, entry_size, 0, arr_size - 1, tmp);
+	free(tmp);
 }
 
 void print_bits(unsigned int mask) {
