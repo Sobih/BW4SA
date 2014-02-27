@@ -9,10 +9,12 @@
 #include "print_node.h"
 #include "../../include/backward_search.h" // only for interval
 #include "../../include/iterate.h" // only for substring
+#include "../bwt/map_bwt_to_s.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
+char* max_bwt;
 bit_vector* max_repeats_runs;
 substring* nodes[100];
 int nodes_index = 0;
@@ -31,6 +33,7 @@ bit_vector* create_runs_vector_from_bwt(char* bwt) {
 }
 
 void max_repeats_initialize_bwt(char* bwt) {
+	max_bwt = bwt;
 	max_repeats_runs = create_runs_vector_from_bwt(bwt);
 }
 
@@ -38,28 +41,63 @@ int is_interval_left_maximal(Interval* interval) {
 	if (interval->i >= interval->j)
 		return 0;
 
-	if (max_repeats_runs->rank_interval(max_repeats_runs, (interval->i) + 1, interval->j) > 0) {
+	if (max_repeats_runs->rank_interval(max_repeats_runs, (interval->i) + 1,
+			interval->j) > 0) {
 		return 1;
-	} else{
+	} else {
 		return 0;
 	}
 }
 
-
 void search_maximal_repeats(substring* node) {
-	if(is_interval_left_maximal(node->normal)){
+	if (is_interval_left_maximal(node->normal)) {
 		nodes[nodes_index] = node;
 		nodes_index++;
 	}
 }
 
-substring** get_nodes(){
+substring** get_nodes() {
 	return nodes;
 }
 
-void maximals_print_nodes(){
+//Modified from programmingsimplified
+char *substring_from_string(char *string, int position, int length) {
+	char *pointer;
+	int c;
+
+	pointer = malloc(length + 1);
+
+	for (c = 0; c < position; c++) {
+		string++;
+	}
+	for (c = 0; c < length; c++) {
+		*(pointer + c) = *string;
+		string++;
+	}
+
+	*(pointer + c) = '\0';
+
+	return pointer;
+}
+
+void map_to_string_and_print(substring* node, char* string) {
+	int* suffix_array = map_create_suffix_array_from_bwt(max_bwt);
+	int str_length = strlen(max_bwt);
+	int bwt_index = node->normal->i;
+	char* node_as_string = malloc(str_length);
 	int i;
-	for(i = 0; i< nodes_index;i++){
+	for (i = 0; i < str_length; i++) {
+		if (bwt_index == i) {
+			node_as_string = substring_from_string(string,suffix_array[i],node->length);
+			printf("Node as string: %s\n", node_as_string);
+		}
+	}
+}
+
+void maximals_print_nodes(char* string) {
+	int i;
+	for (i = 0; i < nodes_index; i++) {
+		map_to_string_and_print(nodes[i], string);
 		print_node(nodes[i]);
 	}
 }

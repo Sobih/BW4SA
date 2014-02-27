@@ -16,6 +16,6 @@ void search_maximal_repeats(substring* node);
 
 substring* get_nodes();
 
-void maximals_print_nodes();
+void maximals_print_nodes(char* string);
 
 #endif /* MAXIMAL_REPEATS_H_ */
