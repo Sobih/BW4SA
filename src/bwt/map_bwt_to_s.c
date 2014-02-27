@@ -5,6 +5,10 @@
  *      Author: lvapaaka
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include "../../include/c_array.h"
+
 int* map_create_suffix_array_from_bwt(const char* bwt)
 {
 	int string_length = strlen(bwt);

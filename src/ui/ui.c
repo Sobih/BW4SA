@@ -73,7 +73,7 @@ void ui()
 	printf("Write the number of the operation you want to do:\n");
 	scanf("%d", &choice);
 	
-	printf("Give the input string. ");
+	printf("Give the input string: ");
 	print_instructions(choice);
 	scanf("%s", input);
 

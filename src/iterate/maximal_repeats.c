@@ -89,15 +89,15 @@ void map_to_string_and_print(substring* node, char* string) {
 	for (i = 0; i < str_length; i++) {
 		if (bwt_index == i) {
 			node_as_string = substring_from_string(string,suffix_array[i],node->length);
-			printf("Node as string: %s\n", node_as_string);
+			printf("%s\n", node_as_string);
 		}
 	}
 }
 
 void maximals_print_nodes(char* string) {
 	int i;
+	printf("Maximal repeats: \n");
 	for (i = 0; i < nodes_index; i++) {
 		map_to_string_and_print(nodes[i], string);
-		print_node(nodes[i]);
 	}
 }
