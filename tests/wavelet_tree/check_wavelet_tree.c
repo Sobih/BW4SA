@@ -322,9 +322,9 @@ Suite* array_suite(void) {
 	tcase_add_test (tc_wavelet_tree, test_faulty_parameters);
 
 	TCase* tc_wavelet_rank = tcase_create("Wavelet Rank Query");
-	//tcase_add_test (tc_wavelet_rank, test_rank_query);
-	//tcase_add_test (tc_wavelet_rank, test_rank_query_lower_index);
-	//tcase_add_test (tc_wavelet_rank, test_rank_query_long_string);
+	tcase_add_test (tc_wavelet_rank, test_rank_query);
+	tcase_add_test (tc_wavelet_rank, test_rank_query_lower_index);
+	tcase_add_test (tc_wavelet_rank, test_rank_query_long_string);
 	tcase_add_test (tc_wavelet_rank, test_rank_query_interval);
 
 	TCase* tc_wavelet_char_at = tcase_create("Wavelet Char At");
