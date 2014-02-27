@@ -9,8 +9,7 @@
 #include "../../include/wavelet_tree.h"
 
 unsigned int* create_c_array(const wavelet_node* string, const interval* inter, const char* alphabet,
-		unsigned int alphabet_length)
-{
+		unsigned int alphabet_length) {
 	if (string == 0)
 		return 0;
 
