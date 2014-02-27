@@ -16,8 +16,8 @@
  *
  * @bug no known bugs
  */
-unsigned int* create_c_array(const wavelet_node* string, const interval* inter = 0,
-		const char* alphabet = 0, unsigned int alphabet_length = 0);
+unsigned int* create_c_array(const wavelet_node* string, const interval* inter,
+		const char* alphabet, unsigned int alphabet_length);
 
 /**
  * @brief Generates the alphabet of given string in the substring determined by interval struct
