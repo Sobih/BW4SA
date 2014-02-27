@@ -33,29 +33,48 @@
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int wavelet_rank_query(const wavelet_node* node, char c, int index) {
-	if (index < 0)
+int wavelet_rank_query(const wavelet_node* node, char c, int start, int end) {
+	if (start < 0 || end < 0 || start > end)
 		return 0;
 
-	if (index > node->vector->length * 32 - node->vector->filler_bits)
-		index = node->vector->length * 32 - node->vector->filler_bits;
+	printf("Start & end before modifications: %d, %d\n", start, end);
+
+	if (end >= node->vector->get_length(node->vector))
+		end = node->vector->get_length(node->vector) - 1;
+
+	printf("End after: %d\n", end);
 
 	//determine rank
-	int rank = node->vector->rank(node->vector, index);
+	int end_rank = node->vector->rank(node->vector, start, end);
 	int half_length = (node->alphabet_length / 2) - 1;
-	int child = 0, i = binary_search(node->alphabet, &c, 0, half_length >= 0 ? half_length : 0, sizeof(char));
+	int child = 0, i = binary_search(node->alphabet, &c, sizeof(char), half_length >= 0 ? half_length : 0, 0);
+
+	//if leaf node, return rank
+	if (node->children[0] == 0)
+		return (i < 0 || i > node->alphabet_length) ? end - start + 1 - end_rank : end_rank;
+
+	//determine rank for 0 -> start of vector
+	int start_rank = start > 0 ? node->vector->rank(node->vector, 0, start - 1) : 0;
+
+	printf("End rank: %d, start rank: %d\n", end_rank, start_rank);
 
 	//not found in lower half of alphabet = marked as 0 = inverse rank
 	if (i < 0 || i > node->alphabet_length) {
-		rank = index - rank;
+		end = end - end_rank - start_rank;
+		start = start - start_rank;
 		child = 1;
+
+		printf("Inverse end: %d, inverse start: %d\n", end, start);
+	}
+	else {
+		end = end - (end - start - end_rank) - (start > 0 ? start + 1 - start_rank : 0);
+		start = start - (start - start_rank);
+
+		printf("Normal end: %d, normal start: %d\n", end, start);
 	}
 
-	//query a child, or return rank if leaf node
-	if (node->children[child] != 0)
-		return node->rank(node->children[child], c, rank);
-
-	return rank;
+	//recurse to a child
+	return node->rank(node->children[child], c, start, end);
 }
 
 /**
@@ -78,10 +97,10 @@ char wavelet_char_at(const wavelet_node* node, int index) {
 	//node isn't leaf
 	if (node->children[0] != 0) {
 		int child = node->vector->is_bit_marked(node->vector, index) == 0 ? 1 : 0;
-		int rank = node->vector->rank(node->vector, index);
+		int rank = node->vector->rank(node->vector, 0, index);
 
 		//subtract wrongly marked bits from index and recurse
-		index -= child == 0 ? index - rank : rank;
+		index -= child == 0 ? index - rank + 1 : rank;
 
 		return node->char_at(node->children[child], index);
 	}
@@ -140,7 +159,7 @@ bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned
 	if (string == 0 || alphabet == 0)
 		return 0;
 
-	bit_vector* vector = calloc(1, sizeof(bit_vector));
+	bit_vector* vector = malloc(sizeof(bit_vector));
 	unsigned int length = strlen(string);
 
 	//init bit vector
@@ -149,7 +168,7 @@ bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned
 
 	//mark all chars that are in alphabet
 	for (int i = 0; i < length; ++i) {
-		int index = binary_search(alphabet, string + i, 0, alphabet_length - 1, sizeof(char));
+		int index = binary_search(alphabet, string + i, sizeof(char), alphabet_length - 1, 0);
 
 		//binary search on alphabet for current char, and if found, mark bit at
 		//same location in vector as current char in string
@@ -175,17 +194,17 @@ bit_vector* create_bit_vector(const char* string, const char* alphabet, unsigned
  */
 char** determine_substrings(const wavelet_node* parent) {
 	bit_vector* vector = parent->vector;
-	unsigned int num_bits = strlen(parent->string);
+	unsigned int num_bits = vector->get_length(vector);
 
-	char** string_arr = calloc(2, sizeof(char*));
+	char** string_arr = malloc(2 * sizeof(char*));
 
 	//determine length of substrings
-	unsigned int left = vector->rank(vector, num_bits) + 1;
+	unsigned int left = vector->rank(vector, 0, num_bits) + 1;
 	unsigned int right = num_bits - left + 2;
 
 	//allocate substrings
-	string_arr[0] = calloc(left, sizeof(char));
-	string_arr[1] = calloc(right, sizeof(char));
+	string_arr[0] = malloc(left * sizeof(char));
+	string_arr[1] = malloc(right * sizeof(char));
 
 	left = 0; right = 0;
 
@@ -270,7 +289,7 @@ wavelet_node* create_wavelet_tree(const char* string) {
 		return 0;
 
 	//allocate the root node
-	wavelet_node* root = calloc(1, sizeof(wavelet_node));
+	wavelet_node* root = malloc(sizeof(wavelet_node));
 
 	//determine the alphabet and its length
 	char* alphabet = determine_alphabet(string);
