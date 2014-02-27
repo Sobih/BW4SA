@@ -82,7 +82,7 @@ char* determine_alphabet(const char* string);
  * @bug		No known bugs.
  */
 int binary_search(const void* arr, const void* key, unsigned int entry_size,
-		unsigned int max, unsigned int min = 0);
+		unsigned int max, unsigned int min);
 
 /**
  * @brief	Prints the bits of an unsigned int.
