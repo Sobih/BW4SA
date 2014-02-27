@@ -324,6 +324,7 @@ Suite* array_suite(void) {
 	TCase* tc_wavelet_rank = tcase_create("Wavelet Rank Query");
 	tcase_add_test (tc_wavelet_rank, test_rank_query);
 	tcase_add_test (tc_wavelet_rank, test_rank_query_lower_index);
+	tcase_add_test (tc_wavelet_rank, test_rank_query_lower_index1);
 	tcase_add_test (tc_wavelet_rank, test_rank_query_long_string);
 	tcase_add_test (tc_wavelet_rank, test_rank_query_interval);
 
