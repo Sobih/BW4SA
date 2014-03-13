@@ -14,10 +14,11 @@
 #include <string.h>
 #include <stdio.h>
 #include "../../include/utils.h"
+#include "../../include/mapper.h"
 
 char* max_bwt;
 bit_vector* max_repeats_runs;
-substring* nodes[100];
+max_repeat_node** nodes;
 int nodes_index = 0;
 
 bit_vector* create_runs_vector_from_bwt(char* bwt) {
@@ -36,6 +37,7 @@ bit_vector* create_runs_vector_from_bwt(char* bwt) {
 void max_repeats_initialize_bwt(char* bwt) {
 	max_bwt = bwt;
 	max_repeats_runs = create_runs_vector_from_bwt(bwt);
+	nodes = calloc(100,sizeof(max_repeat_node));
 }
 
 int is_interval_left_maximal(Interval* interval) {
@@ -52,36 +54,50 @@ int is_interval_left_maximal(Interval* interval) {
 
 void search_maximal_repeats(substring* node) {
 	if (is_interval_left_maximal(node->normal)) {
-		nodes[nodes_index] = node;
+		max_repeat_node* max_node = malloc(sizeof(max_repeat_node));
+		max_node->normal = node->normal;
+		max_node->length = node->length;
+		nodes[nodes_index] = max_node;
 		nodes_index++;
 	}
 }
 
-substring** get_nodes() {
+max_repeat_node** get_nodes() {
 	return nodes;
 }
 
-//Modified from programmingsimplified
 char *substring_from_string(char *string, int position, int length) {
 	char *pointer;
-	int c;
+	int i;
+	int pointer_index = 0;
 
 	pointer = malloc(length + 1);
 
-	for (c = 0; c < position; c++) {
-		string++;
-	}
-	for (c = 0; c < length; c++) {
-		*(pointer + c) = *string;
-		string++;
-	}
+	printf("position: %d \n",position);
 
-	*(pointer + c) = '\0';
+	for (i = position; i < position + length; i++) {
+		pointer[pointer_index] = string[i];
+		printf("substring char: %c string char: %c \n", pointer[pointer_index],string[i]);
+		pointer_index++;
+	}
+	pointer[pointer_index] = '\0';
 
 	return pointer;
 }
 
-void map_to_string_and_print(substring* node, char* string) {
+void print_maximal_repeat_substrings(char* string) {
+	map_maximal_repeats_to_string(nodes, max_bwt);
+	int i;
+	int count = get_max_repeats_nodes_index();
+
+	for (i = 0; i < count; i++) {
+		printf("%s \n",
+				substring_from_string(string, nodes[i]->normal->i,
+						nodes[i]->length));
+	}
+}
+
+void map_to_string_and_print(max_repeat_node* node, char* string) {
 	int* suffix_array = map_create_suffix_array_from_bwt(max_bwt);
 	int str_length = strlen(max_bwt);
 	int bwt_index_i = node->normal->i;
@@ -101,14 +117,13 @@ void map_to_string_and_print(substring* node, char* string) {
 			index_array_i++;
 		}
 		if (i == bwt_index_j) {
-			quick_sort(indexes_in_string, index_array_i,sizeof(int));
+			quick_sort(indexes_in_string, index_array_i, sizeof(int));
 			printf("Indexes in string: ");
 			int j;
 			for (j = 0; j < index_array_i - 1; j++) {
 				printf("%d, ", indexes_in_string[j]);
 			}
 			printf("%d\n", indexes_in_string[index_array_i - 1]);
-
 		}
 	}
 }
@@ -119,4 +134,9 @@ void maximals_print_nodes(char* string) {
 	for (i = 0; i < nodes_index; i++) {
 		map_to_string_and_print(nodes[i], string);
 	}
+}
+
+int get_max_repeats_nodes_index() {
+	return nodes_index;
+
 }

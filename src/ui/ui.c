@@ -105,6 +105,7 @@ void ui()
 	} else if (choice == 10) {
 		iterate(input, &search_maximal_repeats);
 		maximals_print_nodes(input);
+		print_maximal_repeat_substrings(input);
 	} else {
 		printf("Invalid choice\n");
 	}
