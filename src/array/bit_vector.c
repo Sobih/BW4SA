@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include "../../include/utils.h"
 #include "../../include/bit_vector.h"
 
 /**
@@ -150,7 +151,7 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 	vector->get_length = &get_bit_vector_length;
 
 	//init vector to all zeros
-	if ((vector->vector = calloc(vector->length, sizeof(unsigned int))) == 0)
+	if ((vector->vector = calloc(vector->length, BITS_PER_INT / 8)) == 0)
 		return 0;
 
 	return vector;
