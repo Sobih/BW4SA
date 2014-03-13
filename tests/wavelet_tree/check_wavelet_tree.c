@@ -22,23 +22,29 @@ void assert_node_internals(struct wavelet_node* node, const char* string, const 
 	ck_assert(strcmp(node->alphabet, alphabet) == 0);
 	ck_assert(strcmp(node->string, string) == 0);
 	ck_assert(alphabet_length == node->alphabet_length);
-	ck_assert(node->vector->length == vec_length);
+	ck_assert(node->vector.length == vec_length);
 
 	for (int i = 0; i < vec_length; ++i)
-		ck_assert(node->vector->vector[i] == correct_bits[i]);
+		ck_assert(node->vector.vector[i] == correct_bits[i]);
 }
 
 START_TEST (test_create_wavelet_tree) {
 	char* string = "banana", *alphabet = "abn";
+
+	printf("Creating tree\n");
+
 	wavelet_tree* tree = create_wavelet_tree(string);
 	wavelet_node* node;
 	unsigned int correct_bits;
+
+	printf("Tree created\n");
 
 	//assert tree internals
 	ck_assert(tree->nodes != 0);
 	ck_assert(tree->num_nodes == 3);
 
 	//assert root internals
+	printf("Asserting root\n");
 	correct_bits = 42;
 	node = &tree->nodes[0];
 	assert_node_internals(node, string, alphabet, 3, 1, &correct_bits);
@@ -46,34 +52,39 @@ START_TEST (test_create_wavelet_tree) {
 	ck_assert(node->children[1] == 2);
 
 	//assert left child internals
+	printf("Asserting left child\n");
 	string = "aaa";
 	correct_bits = 7;
-	node = node->children[0];
+	node = &tree->nodes[1];
 	assert_node_internals(node, string, alphabet, 1, 1, &correct_bits);
 	ck_assert(node->children[0] == 0);
 	ck_assert(node->children[1] == 0);
 
 	//assert right child internals
+	printf("Asserting right child\n");
 	string = "bnn";
 	alphabet = "bn";
 	correct_bits = 1;
-	node = &tree->nodes[0].children[1];
+	node = &tree->nodes[2];
+	print_wavelet_node(node);
 	assert_node_internals(node, string, alphabet, 2, 1, &correct_bits);
 	ck_assert(node->children[0] == 0);
 	ck_assert(node->children[1] == 0);
 }
 END_TEST
 
-/*START_TEST (test_faulty_parameters) {
+START_TEST (test_faulty_parameters) {
 	//empty string
+	printf("Creating tree on empty string\n");
 	char* string = "";
-	struct wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
 	unsigned int correct_bits;
 
 	//assert root internals
+	printf("Asserting root\n");
+	wavelet_node* root = &tree->nodes[0];
 	correct_bits = 0;
 	assert_node_internals(root, string, string, 0, 1, &correct_bits);
-	ck_assert(root->parent == 0);
 	ck_assert(root->children[0] == 0);
 	ck_assert(root->children[1] == 0);
 
@@ -87,19 +98,19 @@ END_TEST
 
 START_TEST (test_rank_query) {
 	char* string = "banana";
-	struct wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
 
-	int rank = root->rank(root, 'a', 0, INT_MAX);
+	int rank = tree->rank(tree, 'a', 0, INT_MAX);
 	ck_assert(rank == 3);
 
 	//printf("Rank: %d, should be: %d\n", rank, 3);
 
-	rank = root->rank(root, 'b', 0, INT_MAX);
+	rank = tree->rank(tree, 'b', 0, INT_MAX);
 	ck_assert(rank == 1);
 
 	//printf("Rank: %d, should be: %d\n", rank, 1);
 
-	rank = root->rank(root, 'n', 0, INT_MAX);
+	rank = tree->rank(tree, 'n', 0, INT_MAX);
 	ck_assert(rank == 2);
 
 	//printf("Rank: %d, should be: %d\n", rank, 2);
@@ -108,37 +119,51 @@ END_TEST
 
 START_TEST (test_rank_query_lower_index) {
 	char* string = "banana";
-	struct wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
 
-	int rank = root->rank(root, 'a', 0, 3);
+	int rank = tree->rank(tree, 'a', 0, 3);
 	ck_assert(rank == 2);
 
-	rank = root->rank(root, 'b', 0, 0);
+	//printf("Rank: %d, should be: %d\n", rank, 2);
+
+	rank = tree->rank(tree, 'b', 0, 0);
 	ck_assert(rank == 1);
 
-	rank = root->rank(root, 'n', 0, 1);
+	//printf("Rank: %d, should be: %d\n", rank, 1);
+
+	rank = tree->rank(tree, 'n', 0, 1);
 	ck_assert(rank == 0);
+
+	//printf("Rank: %d, should be: %d\n", rank, 0);
 }
 END_TEST
 
 START_TEST (test_rank_query_lower_index1) {
 	char* string = "ard$rcaaaabb";
-	struct wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
 
-	int rank = root->rank(root, 'a', 0, 3);
+	print_wavelet_tree(tree);
+
+	int rank = tree->rank(tree, 'a', 0, 6);
 	ck_assert(rank == 2);
 
-	rank = root->rank(root, 'b', 0, 0);
+	//printf("Rank: %d, should be: %d\n", rank, 2);
+
+	rank = tree->rank(tree, 'b', 0, 10);
 	ck_assert(rank == 1);
 
-	rank = root->rank(root, 'n', 0, 1);
+	//printf("Rank: %d, should be: %d\n", rank, 1);
+
+	rank = tree->rank(tree, 'n', 0, INT_MAX);
 	ck_assert(rank == 0);
+
+	//printf("Rank: %d, should be: %d\n", rank, 0);
 }
 END_TEST
 
 START_TEST (test_rank_query_long_string) {
 	char* string = "LAsufhaliILUAShfauishfiuLIUASifuhasvgjbeaukfaAJLsyufluABsasfohASfliiuuBwLIUASFb8239LIUbf787glBAfAuiosdfhliUAFl789aASIFOy9ASfbilAfs98YL7gLify3bliafl98SAYFAAUKSFtifSAbAFYbKUASY8tfsakuyBfkuaYBASF7tk8asGYKJFsbKUAYSF87TASKufygskbjhKJysfa8g";
-	struct wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* root = create_wavelet_tree(string);
 
 	int rank = root->rank(root, '2', 0, INT_MAX);
 	ck_assert(rank == 1);
@@ -252,7 +277,7 @@ END_TEST
 
 START_TEST (test_rank_query_interval) {
 	char* string = "banana";
-	struct wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* root = create_wavelet_tree(string);
 
 	int rank = root->rank(root, 'a', 3, INT_MAX);
 	ck_assert(rank == 2);
@@ -291,7 +316,7 @@ END_TEST
 
 START_TEST (test_wavelet_char_at) {
 	char* string = "banana";
-	wavelet_node* root = create_wavelet_tree(string);
+	wavelet_tree* root = create_wavelet_tree(string);
 
 	ck_assert(root->char_at(root, 0) == 'b');
 	ck_assert(root->char_at(root, 1) == 'a');
@@ -315,14 +340,14 @@ START_TEST (test_wavelet_char_at) {
 	ck_assert(root->char_at(root, 9) == 'r');
 	ck_assert(root->char_at(root, 10) == 'a');
 }
-END_TEST*/
+END_TEST
 
 Suite* array_suite(void) {
 	Suite* suite = suite_create("Wavelet Suite");
 
 	TCase* tc_wavelet_tree = tcase_create("Wavelet Tree");
 	tcase_add_test (tc_wavelet_tree, test_create_wavelet_tree);
-	/*tcase_add_test (tc_wavelet_tree, test_faulty_parameters);
+	tcase_add_test (tc_wavelet_tree, test_faulty_parameters);
 
 	TCase* tc_wavelet_rank = tcase_create("Wavelet Rank Query");
 	tcase_add_test (tc_wavelet_rank, test_rank_query);
@@ -332,11 +357,11 @@ Suite* array_suite(void) {
 	tcase_add_test (tc_wavelet_rank, test_rank_query_interval);
 
 	TCase* tc_wavelet_char_at = tcase_create("Wavelet Char At");
-	tcase_add_test (tc_wavelet_char_at, test_wavelet_char_at);*/
+	tcase_add_test (tc_wavelet_char_at, test_wavelet_char_at);
 
 	suite_add_tcase (suite, tc_wavelet_tree);
-	//suite_add_tcase (suite, tc_wavelet_rank);
-	//suite_add_tcase (suite, tc_wavelet_char_at);
+	suite_add_tcase (suite, tc_wavelet_rank);
+	suite_add_tcase (suite, tc_wavelet_char_at);
 
 	return suite;
 }
