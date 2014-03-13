@@ -7,6 +7,7 @@
 #include "../../include/bit_vector.h"
 #include "../../include/distinct_substrings.h"
 #include "../../include/maximal_repeats.h"
+#include "../../include/mum.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -97,7 +98,11 @@ void ui()
 		print_runs_vector(runs, strlen(input)+1);
 		free_bit_vector(runs);
 	} else if (choice == 7) {
-		printf("Not supported yet\n");
+		printf("Give the second input string: ");
+		char* input2 = malloc(sizeof(char));
+		scanf("%s", input2);
+		double_iterate(input, input2, &search_mums);
+		print_mums();
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 

@@ -16,5 +16,6 @@
  * @param node a substring struct to be printed
  */
 void print_node(substring* node);
+void print_double_node(substring* node1, substring* node2);
 
 #endif /* PRINT_NODE_H_ */

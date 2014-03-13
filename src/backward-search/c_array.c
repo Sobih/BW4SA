@@ -100,7 +100,6 @@ int get_char_index(const int* c_array, const char* alphabet, const char c)
 			return c_array[i];
 		}
 	}
-	printf("NOTFOUND\n");
-	return 0;
+	return -1;
 }
 
