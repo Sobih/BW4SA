@@ -77,7 +77,6 @@ char *substring_from_string(char *string, int position, int length) {
 
 	for (i = position; i < position + length; i++) {
 		pointer[pointer_index] = string[i];
-		printf("substring char: %c string char: %c \n", pointer[pointer_index],string[i]);
 		pointer_index++;
 	}
 	pointer[pointer_index] = '\0';

@@ -22,6 +22,6 @@ void search_mums(substring* node1, substring* node2);
 
 triplet* get_mums();
 
-void print_mums();
+void print_mums(char* string);
 
 #endif /* MUM_H_ */

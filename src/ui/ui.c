@@ -102,7 +102,7 @@ void ui()
 		char* input2 = malloc(sizeof(char));
 		scanf("%s", input2);
 		double_iterate(input, input2, &search_mums);
-		print_mums();
+		print_mums(input);
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 
