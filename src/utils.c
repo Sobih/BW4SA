@@ -239,6 +239,8 @@ void print_bit_vector(bit_vector* vector) {
 		return;
 	}
 
+	printf("\tVector length: %u\n", vector->length);
+
 	for (int i = 0; i < vector->length; ++i) {
 		printf("\t%u, ", vector->vector[i]);
 		print_bits(vector->vector[i]);
@@ -253,8 +255,8 @@ void print_wavelet_node(wavelet_node* node) {
 		return;
 
 	printf("\tBit vector:\n");
-	if (node->vector != 0)
-		print_bit_vector(node->vector);
+	if (&node->vector != 0)
+		print_bit_vector(&node->vector);
 	else
 		printf("\t(NULL)\n");
 	printf("\tString: %s\n", node->string);
@@ -267,10 +269,10 @@ void print_wavelet_node(wavelet_node* node) {
 	printf("\n");
 }
 
-void print_wavelet_tree(wavelet_node* node) {
+void print_wavelet_tree(wavelet_tree* tree) {
 	int counter = 1, j;
 	wavelet_node** node_list = calloc(1, sizeof(wavelet_node*)), ** next;
-	node_list[0] = node;
+	node_list[0] = &tree->nodes[0];
 
 	for (int depth = 0; counter > 0; depth++) {
 		next = calloc(2 * counter, sizeof(wavelet_node*));
@@ -284,9 +286,9 @@ void print_wavelet_tree(wavelet_node* node) {
 			printf("\n");
 
 			//not leaf, add children for next round
-			if (node_list[i]->children[0] != 0) {
-				next[j] = node_list[i]->children[0];
-				next[j + 1] = node_list[i]->children[1];
+			if (node_list[i]->children[0] > 0) {
+				next[j] = &tree->nodes[node_list[i]->children[0]];
+				next[j + 1] = &tree->nodes[node_list[i]->children[1]];
 				j += 2;
 			}
 		}

@@ -14,6 +14,7 @@
 
 #include <limits.h>
 
+struct wavelet_tree;
 struct wavelet_node;
 struct bit_vec;
 
@@ -123,6 +124,6 @@ void print_wavelet_node(struct wavelet_node* node);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_wavelet_tree(struct wavelet_node* node);
+void print_wavelet_tree(struct wavelet_tree* tree);
 
 #endif /* UTILS_H_ */
