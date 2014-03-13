@@ -44,7 +44,7 @@ typedef struct wavelet_tree {
 	char (*char_at) (const struct wavelet_tree* node, int index);
 
 	unsigned int num_nodes;
-	wavelet_node nodes[];
+	wavelet_node* nodes;
 } wavelet_tree;
 
 /**
@@ -91,6 +91,6 @@ void free_wavelet_tree(wavelet_tree* tree);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void free_subtree(wavelet_node* node);
+void free_subtree(wavelet_tree* tree, unsigned int node);
 
 #endif /* WAVELET_TREE_H_ */
