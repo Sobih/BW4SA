@@ -22,7 +22,7 @@ typedef struct max_repeat_node_struct
 void max_repeats_initialize_bwt(char* bwt);
 
 /**
- * The function given to callback. Dtermines if a node is a maximal repeat and adds it to a list.
+ * The function given to callback. Determines if a node is a maximal repeat and adds it to a list.
  */
 void search_maximal_repeats(substring* node);
 
@@ -36,6 +36,14 @@ max_repeat_node* get_nodes();
  */
 void maximals_print_nodes(char* string);
 
+/**
+ * @brief	Prints the substring the interval represents
+ *
+ * First uses the mapper-function map_maximal_repeats_to_string and then prints the substring based on the mapped index.
+ *
+ * @param	string			Original string.
+ * @bug		No known bugs.
+ */
 void print_maximal_repeat_substrings(char* string);
 
 int get_max_repeats_nodes_index();

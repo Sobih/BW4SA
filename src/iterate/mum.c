@@ -8,6 +8,7 @@
 #include "../../include/mum.h"
 #include "../../include/iterate.h"
 #include "../../include/mapper.h"
+#include "../../include/bit_vector.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,6 +16,8 @@ char* mum_bwt1;
 char* mum_bwt2;
 char* mum_rbwt1;
 char* mum_rbwt2;
+bit_vector* mum_bit_vector1;
+bit_vector* mum_bit_vector2;
 triplet* mums;
 int triplets_index = 0;
 
@@ -23,6 +26,10 @@ void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_bwt2 = bwt2;
 	mum_rbwt1 = rbwt1;
 	mum_rbwt2 = rbwt2;
+	mum_bit_vector1 = malloc(sizeof(bit_vector));
+	init_bit_vector(mum_bit_vector1, strlen(bwt1));
+	mum_bit_vector2 = malloc(sizeof(bit_vector));
+	init_bit_vector(mum_bit_vector2, strlen(bwt2));
 	mums = calloc(100, sizeof(triplet));
 }
 
@@ -32,10 +39,11 @@ void search_mums(substring* node1, substring* node2) {
 			if (mum_bwt1[node1->normal->i] != mum_bwt2[node2->normal->i]) {
 				if (mum_rbwt1[node1->reverse->i]
 						!= mum_rbwt2[node2->reverse->i]) {
-					printf("MUM found\n");
 					triplet trip = *((triplet*) malloc(sizeof(triplet)));
 					trip.pos1 = node1->normal->i;
+					mum_bit_vector1->mark_bit(mum_bit_vector1,node1->normal->i);
 					trip.pos2 = node2->normal->i;
+					mum_bit_vector2->mark_bit(mum_bit_vector2,node2->normal->i);
 					trip.length = node1->length;
 					mums[triplets_index] = trip;
 					triplets_index++;
@@ -70,4 +78,9 @@ void print_mums(char* string) {
 		char* subs = substring_from_string(string, trip.pos1, trip.length);
 		printf("The substring itself: %s \n", subs);
 	}
+}
+
+void mum_print_bit_vectors(){
+	print_bit_vector(mum_bit_vector1);
+	print_bit_vector(mum_bit_vector2);
 }

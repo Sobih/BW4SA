@@ -73,8 +73,6 @@ char *substring_from_string(char *string, int position, int length) {
 
 	pointer = malloc(length + 1);
 
-	printf("position: %d \n",position);
-
 	for (i = position; i < position + length; i++) {
 		pointer[pointer_index] = string[i];
 		pointer_index++;

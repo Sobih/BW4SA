@@ -26,4 +26,6 @@ void print_mums(char* string);
 
 int get_triplets_index();
 
+void mum_print_bit_vectors();
+
 #endif /* MUM_H_ */
