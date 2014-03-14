@@ -29,7 +29,7 @@ void search_maximal_repeats(substring* node);
 /**
  * Returns the list of maximal repeat nodes.
  */
-max_repeat_node** get_nodes();
+max_repeat_node* get_nodes();
 
 /**
  * Prints what substring the maximal repeat is and the indexes (in sorted order) it occurs at.

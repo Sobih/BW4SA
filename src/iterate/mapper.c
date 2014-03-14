@@ -10,8 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void map_maximal_repeats_to_string(max_repeat_node** nodes, char* bwt) {
-
+void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt) {
 	int i;
 	int count = get_max_repeats_nodes_index();
 	long n = strlen(bwt) - 1;
@@ -19,25 +18,23 @@ void map_maximal_repeats_to_string(max_repeat_node** nodes, char* bwt) {
 	Interval* interval = malloc(sizeof(Interval));
 	interval->i = 0;
 	interval->j = 0;
-
 	for (i = 0; i < count; i++) {
 		for (k = 1; k <= n; k++) {
-			if (nodes[i]->normal->i == interval->i) {
-				nodes[i]->normal->i = (n - k) + 1;
+			if (nodes[i].normal->i == interval->i) {
+				nodes[i].normal->i = (n - k) + 1;
 				break;
 			}
 			interval = backward_search_interval(bwt, interval,
 					bwt[interval->i]);
 		}
 		free(interval);
-
 	}
 }
 
 void map_mum_triplets_to_string(triplet* nodes, char* bwt1, char* bwt2,
 		int count) {
-	update_position_in_triplets(nodes,bwt1,count,1);
-	update_position_in_triplets(nodes,bwt2,count,2);
+	update_position_in_triplets(nodes, bwt1, count, 1);
+	update_position_in_triplets(nodes, bwt2, count, 2);
 }
 
 void update_position_in_triplets(triplet* nodes, char* bwt, int count,
