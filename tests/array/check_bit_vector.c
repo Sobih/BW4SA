@@ -98,6 +98,7 @@ START_TEST (test_bit_marking) {
 		ck_assert((vector->vector[indices[i] / 32] & mask) == mask);
 	}
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -140,6 +141,7 @@ START_TEST (test_bit_unmarking) {
 			ck_assert((vector->vector[indices[i] / 32] & mask) == mask);
 	}
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -179,6 +181,7 @@ START_TEST (test_mark_checking) {
 				vector->is_bit_marked(vector, indices[i]));
 	}
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -211,6 +214,7 @@ START_TEST (test_rank) {
 	//check that rank returns all marked bits
 	ck_assert(vector->rank(vector, 0, vector->get_length(vector) - 1) == ind_amount);
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -228,6 +232,8 @@ START_TEST (test_rank_lower_index) {
 	ck_assert(vector->rank(vector, 0, 9) == 5);
 	ck_assert(vector->rank(vector, 0, 0) == 1);
 	ck_assert(vector->rank(vector, 0, 14) == 8);
+
+	free_bit_vector(vector);
 }
 END_TEST
 
@@ -239,6 +245,8 @@ START_TEST(test_rank_interval1) {
 	ck_assert_int_eq(2, vec->rank(vec, 2, 4));
 	ck_assert_int_eq(1, vec->rank(vec, 3, 7));
 	ck_assert_int_eq(2, vec->rank(vec, 0, 9));
+
+	free_bit_vector(vec);
 }
 END_TEST
 
@@ -255,6 +263,8 @@ START_TEST(test_rank_interval2) {
 	ck_assert_int_eq(3, vec->rank(vec, 28, 89));
 	ck_assert_int_eq(3, vec->rank(vec, 28, 93));
 	ck_assert_int_eq(3, vec->rank(vec, 28, 1020));
+
+	free_bit_vector(vec);
 }
 END_TEST
 
