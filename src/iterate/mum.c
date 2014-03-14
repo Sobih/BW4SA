@@ -48,6 +48,10 @@ triplet* get_mums() {
 	return mums;
 }
 
+int get_mums_amount() {
+	return triplets_index;
+}
+
 void print_mums(char* string) {
 	int i;
 	for (i = 0; i < triplets_index; i++) {

@@ -12,6 +12,8 @@
 #include "../include/utils.h"
 #include "../include/bit_vector.h"
 #include "../include/wavelet_tree.h"
+#include "../include/mum.h"
+#include "../include/maximal_repeats.h"
 
 /**
  * @brief	Simple swap-function.

@@ -8,6 +8,7 @@
 #include "../../include/distinct_substrings.h"
 #include "../../include/maximal_repeats.h"
 #include "../../include/mum.h"
+#include "../iterate/triplet_sorter.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -103,6 +104,8 @@ void ui()
 		scanf("%s", input2);
 		double_iterate(input, input2, &search_mums);
 		print_mums(input);
+		//compare_quick_sort(get_mums(), get_mums_amount(), sizeof(triplet), &compare_triplets_pos1);
+		//print_mums(input);
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 
@@ -111,6 +114,7 @@ void ui()
 		iterate(input, &search_maximal_repeats);
 		maximals_print_nodes(input);
 		print_maximal_repeat_substrings(input);
+		//compare_quick_sort()
 	} else {
 		printf("Invalid choice\n");
 	}
