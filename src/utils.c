@@ -300,4 +300,6 @@ void print_wavelet_tree(wavelet_tree* tree) {
 
 		printf("\n");
 	}
+
+	free(node_list);
 }
