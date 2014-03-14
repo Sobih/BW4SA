@@ -18,18 +18,23 @@
  *
  * The rank query on a wavelet tree works by recursively doing a rank
  * function on a child of the current node based on if the character
- * has been encoded as a 0 or a 1 in the current node. If <code>index</code>
+ * has been encoded as a 0 or a 1 in the current node. If <code>end</code>
  * is larger than the size of the bit vector, the rank operation will
  * be done for the entire length of the vector.
  *
- * @param	node	The node on which the rank query is to be started.
- * @param	c		The character for which the rank is to be found.
- * @param	index	The index up to which the rank query is going to
- * 					be made inside the bit vector.
- * @return			Returns the number of occurrences of character
- * 					<code>c</code> in a string up to <code>index</code>.
+ * @param	tree		The wavelet tree on which the rank query is
+ * 						performed.
+ * @param	curr_node	The node on which the rank query is currently
+ * 						operating on.
+ * @param	c			The character for which the rank is to be found.
+ * @param	start		The indec of the first character from which the
+ * 						rank query should start.
+ * @param	end			The index up to which the rank query is going to
+ *	 					be made inside the bit vector.
+ * @return				Returns the number of occurrences of character
+ * 						<code>c</code> in a string.
+ * @see		#wavelet_root_rank_query
  * @see		bit_vector.c#rank_query
- * @see		bit_vector.c#rank_query_interval
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
@@ -66,6 +71,25 @@ int wavelet_rank_query(const wavelet_tree* tree, unsigned int curr_node, char c,
 	return wavelet_rank_query(tree, node->children[child], c, start, end);
 }
 
+/**
+ * @brief	The rank query that is called from inside the tree.
+ *
+ * The entry point for the rank query. Checks all parameters are
+ * within bounds and does an initial search for the character inside
+ * the root alphabet. If not found, 0 can be returned right away.
+ *
+ * @param	tree	The wavelet tree upon which a rank query is to
+ * 					be made.
+ * @param	c		The character that is to be counted.
+ * @param	start	The starting index for the rank query.
+ * @param	end		The ending index for the rank query.
+ * @return			Returns the number of occurrences of character
+ * 					<code>c</code> between <code>start</code> and
+ * 					<code>end</code>.
+ * @see		#wavelet_rank_query
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 int wavelet_root_rank_query(const wavelet_tree* tree, char c, int start, int end) {
 	if (start < 0 || end < 0 || start > end)
 		return 0;
@@ -84,9 +108,10 @@ int wavelet_root_rank_query(const wavelet_tree* tree, char c, int start, int end
 
 /**
  * @brief	Returns the character at a certain index inside a wavelet tree.
- * @param	node	The root of the (sub)tree that is to be searched.
- * @param	index	The index of the character that is to be identified.
- * @return			The found character at the location.
+ * @param	tree		The tree that is to be searched.
+ * @param	curr_node	The current node that is under search.
+ * @param	index		The index of the character that is to be identified.
+ * @return				The found character at the location.
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
@@ -111,6 +136,15 @@ char wavelet_char_at(const wavelet_tree* tree, unsigned int curr_node, int index
 	return node->vector.is_bit_marked(&node->vector, index) == 0 ? node->alphabet[1] : node->alphabet[0];
 }
 
+/**
+ * @brief	The root function of char at that is called from the tree.
+ * @param	tree	The tree that is to be searched.
+ * @param	index	The index of the character that is to be recognized.
+ * @return			The found character.
+ * @see		#wavelet_char_at
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 char wavelet_root_char_at(const wavelet_tree* tree, int index) {
 	if (index < 0 || index > tree->get_num_bits(tree))
 		return 0;
@@ -118,6 +152,15 @@ char wavelet_root_char_at(const wavelet_tree* tree, int index) {
 	return wavelet_char_at(tree, 0, index);
 }
 
+/**
+ * @brief	A function that returns the number of bits inside the
+ * 			bit vector of the root node (= length of the string).
+ * @param	tree	The wavelet tree for which the length of the
+ * 					root string is to be determined.
+ * @return			The length of the string used by the root node.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 unsigned int get_num_bits_tree(const wavelet_tree* tree) {
 	return tree->nodes[0].vector.get_length(&tree->nodes[0].vector);
 }
@@ -128,7 +171,6 @@ unsigned int get_num_bits_tree(const wavelet_tree* tree) {
  * @param	string			The string used by the node.
  * @param	alphabet		Half of the alphabet used by the string of the node.
  * @param	alphabet_length	Length of the alphabet.
- * @param 	parent			The parent node of the node to be initialized.
  * @return					An initialized wavelet node.
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
@@ -149,6 +191,7 @@ wavelet_node* init_node(wavelet_node* node, const char* string, const char* alph
  * of the node marked as a 1 inside the bit vector and all other characters
  * marked as 0.
  *
+ * @param	vector			The bit vector that is to be initialized.
  * @param	string			The string for which a bit vector is created.
  * @param	alphabet		The alphabet used by the string.
  * @param	alphabet_length	The length of the alphabet used by the string.
@@ -192,9 +235,12 @@ bit_vector* create_bit_vector(bit_vector* vector, const char* string, const char
  * 0-marked characters in the bit vector of the parent and putting them in
  * one string and the 1-marked characters into another string.
  *
- * @param	parent	The parent node from which a new set of substrings
- * 					should be determined.
- * @return			An array of the two constructed substrings.
+ * @param	tree		The wavelet tree where the parent node resides.
+ * @param	parent		The index of the parent node inside the wavelet tree
+ * 						from which a new set of substrings should be determined.
+ * @param	string_arr	An array of strings with space for 2 strings.
+ * @param	string		The string that is to be split.
+ * @return				An array of the two constructed substrings.
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
@@ -240,12 +286,16 @@ char** determine_substrings(const wavelet_tree* tree, unsigned int parent, char*
  * This algorithm populates the wavelet tree. It takes an initialized
  * node as parameter for which it creates a bit vector and any possible
  * children. If children are created, it will recursively call itself
- * for the children. Otherwise it will return the node supplied as
- * parameter.
+ * for the children. Otherwise it will return the index where the next
+ * node should be placed inside the tree.
  *
- * @param	node	The node for which a bit vector and children is
- * 					to be created.
- * @return			The initialized node with possible children created.
+ * @param	tree		The wavelet tree that is being populated.
+ * @param	curr_node	The index of the node for which a bit vector and
+ * 						children is to be created.
+ * @param	next		Index of the next free space inside the wavelet
+ * 						tree.
+ * @param	string		The substring used by the current node.
+ * @return				The next free index inside the wavelet tree.
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
@@ -334,6 +384,22 @@ void free_wavelet_tree(wavelet_tree* tree) {
 	free(tree);
 }
 
+/**
+ * @brief	Frees a wavelet (sub)tree.
+ *
+ * This algorithm frees a wavelet node and all of it's
+ * descendants. It does not free the alphabet used by the
+ * wavelet tree but it does break the link between the
+ * parent node and the subtree that is being free, so it
+ * should be used with caution.
+ *
+ * @param	tree	The wavelet tree where the subtree resides.
+ * @param	node	The index of the root of the subtree
+ * 					that is to be freed.
+ * @see		#free_wavelet_tree
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void free_subtree(wavelet_tree* tree, unsigned int node) {
 	if (tree == NULL)
 		return;
