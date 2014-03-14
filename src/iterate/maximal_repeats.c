@@ -18,7 +18,7 @@
 
 char* max_bwt;
 bit_vector* max_repeats_runs;
-max_repeat_node** nodes;
+max_repeat_node* nodes;
 int nodes_index = 0;
 
 bit_vector* create_runs_vector_from_bwt(char* bwt) {
@@ -54,15 +54,15 @@ int is_interval_left_maximal(Interval* interval) {
 
 void search_maximal_repeats(substring* node) {
 	if (is_interval_left_maximal(node->normal)) {
-		max_repeat_node* max_node = malloc(sizeof(max_repeat_node));
-		max_node->normal = node->normal;
-		max_node->length = node->length;
+		max_repeat_node max_node = *((max_repeat_node*) malloc(sizeof(max_repeat_node)));;
+		max_node.normal = node->normal;
+		max_node.length = node->length;
 		nodes[nodes_index] = max_node;
 		nodes_index++;
 	}
 }
 
-max_repeat_node** get_nodes() {
+max_repeat_node* get_nodes() {
 	return nodes;
 }
 
@@ -72,8 +72,6 @@ char *substring_from_string(char *string, int position, int length) {
 	int pointer_index = 0;
 
 	pointer = malloc(length + 1);
-
-	printf("position: %d \n",position);
 
 	for (i = position; i < position + length; i++) {
 		pointer[pointer_index] = string[i];
@@ -91,16 +89,16 @@ void print_maximal_repeat_substrings(char* string) {
 
 	for (i = 0; i < count; i++) {
 		printf("%s \n",
-				substring_from_string(string, nodes[i]->normal->i,
-						nodes[i]->length));
+				substring_from_string(string, nodes[i].normal->i,
+						nodes[i].length));
 	}
 }
 
-void map_to_string_and_print(max_repeat_node* node, char* string) {
+void map_to_string_and_print(max_repeat_node node, char* string) {
 	int* suffix_array = map_create_suffix_array_from_bwt(max_bwt);
 	int str_length = strlen(max_bwt);
-	int bwt_index_i = node->normal->i;
-	int bwt_index_j = node->normal->j;
+	int bwt_index_i = node.normal->i;
+	int bwt_index_j = node.normal->j;
 	int* indexes_in_string = malloc(str_length * sizeof(int));
 	int index_array_i = 0;
 	char* node_as_string = malloc(str_length);
@@ -108,7 +106,7 @@ void map_to_string_and_print(max_repeat_node* node, char* string) {
 	for (i = 0; i < str_length; i++) {
 		if (i == bwt_index_i) {
 			node_as_string = substring_from_string(string, suffix_array[i],
-					node->length);
+					node.length);
 			printf("Substring: %s\n", node_as_string);
 		}
 		if (i >= bwt_index_i && i <= bwt_index_j) {

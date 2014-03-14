@@ -11,7 +11,7 @@
 #include "maximal_repeats.h"
 #include "mum.h"
 
-void map_maximal_repeats_to_string(max_repeat_node** nodes, char* bwt);
+void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt);
 
 void map_mum_triplets_to_string(triplet* nodes, char* bwt1, char* bwt2, int count);
 

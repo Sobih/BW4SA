@@ -104,8 +104,8 @@ void ui()
 		scanf("%s", input2);
 		double_iterate(input, input2, &search_mums);
 		print_mums(input);
-		//compare_quick_sort(get_mums(), get_mums_amount(), sizeof(triplet), &compare_triplets_pos1);
-		//print_mums(input);
+		mum_print_bit_vectors();
+
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 
