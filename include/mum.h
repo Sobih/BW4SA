@@ -24,4 +24,6 @@ triplet* get_mums();
 
 void print_mums(char* string);
 
+int get_triplets_index();
+
 #endif /* MUM_H_ */

@@ -32,6 +32,7 @@ void search_mums(substring* node1, substring* node2) {
 			if (mum_bwt1[node1->normal->i] != mum_bwt2[node2->normal->i]) {
 				if (mum_rbwt1[node1->reverse->i]
 						!= mum_rbwt2[node2->reverse->i]) {
+					printf("MUM found\n");
 					triplet trip = *((triplet*) malloc(sizeof(triplet)));
 					trip.pos1 = node1->normal->i;
 					trip.pos2 = node2->normal->i;
@@ -46,6 +47,10 @@ void search_mums(substring* node1, substring* node2) {
 
 triplet* get_mums() {
 	return mums;
+}
+
+int get_triplets_index(){
+	return triplets_index;
 }
 
 void print_mums(char* string) {
