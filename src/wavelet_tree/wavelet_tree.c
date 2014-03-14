@@ -34,7 +34,8 @@
  * @bug		No known bugs.
  */
 int wavelet_rank_query(const wavelet_tree* tree, unsigned int curr_node, char c, int start, int end) {
-	printf("Current node: %u, Start: %d, End: %d\n", curr_node, start, end);
+	if (start > end)
+		return 0;
 
 	wavelet_node* node = &tree->nodes[curr_node];
 
@@ -50,8 +51,6 @@ int wavelet_rank_query(const wavelet_tree* tree, unsigned int curr_node, char c,
 	//determine rank for 0 -> start of vector
 	int start_rank = start > 0 ? node->vector.rank(&node->vector, 0, start - 1) : 0;
 
-	printf("Start rank: %u, End rank: %u, i: %u\n", start_rank, end_rank, i);
-
 	//not found in lower half of alphabet = marked as 0 = inverse rank
 	if (i < 0 || i > node->alphabet_length) {
 		end = end - end_rank - start_rank;
@@ -62,8 +61,6 @@ int wavelet_rank_query(const wavelet_tree* tree, unsigned int curr_node, char c,
 		end = end - (end - start - end_rank) - (start > 0 ? start + 1 - start_rank : 1);
 		start = start - (start - start_rank);
 	}
-
-	printf("Start: %u, End: %u, Child: %u\n", start, end, child);
 
 	//recurse to a child
 	return wavelet_rank_query(tree, node->children[child], c, start, end);
@@ -76,10 +73,8 @@ int wavelet_root_rank_query(const wavelet_tree* tree, char c, int start, int end
 	//preliminary search, return 0 if character not even in alphabet
 	int ind = binary_search(tree->nodes[0].alphabet, &c, sizeof(char), tree->nodes[0].alphabet_length, 0);
 
-	if (ind > tree->nodes[0].alphabet_length || ind < 0)
+	if (ind >= tree->nodes[0].alphabet_length || ind < 0)
 		return 0;
-
-	printf("Doing rank query...\n");
 
 	if (end >= tree->get_num_bits(tree))
 		end = tree->get_num_bits(tree) - 1;
@@ -96,7 +91,7 @@ int wavelet_root_rank_query(const wavelet_tree* tree, char c, int start, int end
  * @bug		No known bugs.
  */
 char wavelet_char_at(const wavelet_tree* tree, unsigned int curr_node, int index) {
-	wavelet_node* node = (wavelet_node*) &tree->nodes[curr_node];
+	wavelet_node* node = &tree->nodes[curr_node];
 
 	//node isn't leaf
 	if (node->children[0] != 0) {
@@ -173,13 +168,9 @@ bit_vector* create_bit_vector(bit_vector* vector, const char* string, const char
 
 	unsigned int length = strlen(string);
 
-	printf("\tInitializing bit vector using %s, %s, and %d...\n", string, alphabet, alphabet_length);
-
 	//init bit vector
 	if (init_bit_vector(vector, length) == 0)
 		return 0;
-
-	printf("\tMarking chars...\n");
 
 	//mark all chars that are in alphabet
 	for (int i = 0; i < length; ++i) {
@@ -187,17 +178,9 @@ bit_vector* create_bit_vector(bit_vector* vector, const char* string, const char
 
 		//binary search on alphabet for current char, and if found, mark bit at
 		//same location in vector as current char in string
-		if (index >= 0 && index < alphabet_length) {
-			printf("\tMarking char at %d...\n", i);
-
+		if (index >= 0 && index < alphabet_length)
 			vector->mark_bit(vector, i);
-		}
 	}
-
-	print_bit_vector(vector);
-
-	printf("\tPointer: %u\n", vector->vector);
-	printf("\tNumber: %u\n", vector->vector[0]);
 
 	return vector;
 }
@@ -216,7 +199,7 @@ bit_vector* create_bit_vector(bit_vector* vector, const char* string, const char
  * @bug		No known bugs.
  */
 char** determine_substrings(const wavelet_tree* tree, unsigned int parent, char** string_arr,
-		char* string) {
+		const char* string) {
 	bit_vector* vector = (bit_vector*) &tree->nodes[parent].vector;
 	unsigned int num_bits = vector->get_length(vector);
 
@@ -266,57 +249,41 @@ char** determine_substrings(const wavelet_tree* tree, unsigned int parent, char*
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int create_children(wavelet_tree* tree, unsigned int curr_node, unsigned int next, char* string) {
-	printf("New node.\n");
-
+int create_children(wavelet_tree* tree, unsigned int curr_node, unsigned int next, const char* string) {
 	wavelet_node* node = &tree->nodes[curr_node];
-
-	printf("\tDetermining bit vector of node %u...\n", curr_node);
 
 	//determine bitvector of node
 	unsigned int left_length = node->alphabet_length / 2;
 	create_bit_vector(&node->vector, string, node->alphabet, left_length > 0 ? left_length : 1);
-	//memcpy(&node->vector, vec, sizeof(bit_vector));
-
-	printf("\tPointer: %u\n", node->vector.vector);
-	printf("\tNumber: %u\n", node->vector.vector[0]);
-
-	printf("\tCompleted vector:\n");
-	print_bit_vector(&node->vector);
 
 	//alphabet can still be split
 	if (node->alphabet_length > 2) {
 		//determine length of alphabet for both children
 		unsigned int right_length = node->alphabet_length - left_length;
 
-		printf("\tDetermining substrings...\n");
-
 		//determine substrings for children
 		char** strings = malloc(2 * sizeof(char*));
 		determine_substrings(tree, curr_node, strings, string);
 
-		printf("\tDetermined substrings: %s, %s\n", strings[0], strings[1]);
-
 		//recursively create children of left child
 		wavelet_node* next_child = &tree->nodes[next];
 		string = strings[0];
-		next_child = init_node(next_child, strings[0], node->alphabet, left_length);
+		next_child = init_node(next_child, string, node->alphabet, left_length);
 		node->children[0] = next;
 		next = create_children(tree, next, next + 1, string);
 
 		//recursively create children of right child
 		next_child = &tree->nodes[next];
 		string = strings[1];
-		next_child = init_node(next_child, strings[1], node->alphabet + left_length, right_length);
+		next_child = init_node(next_child, string, node->alphabet + left_length, right_length);
 		node->children[1] = next;
 		free(strings);
+
 		return create_children(tree, next, next + 1, string);
 	}
 
 	//alphabet small enough = no children
 	else {
-		printf("\tNo children, returning %d...\n", next);
-
 		node->children[0] = 0;
 		node->children[1] = 0;
 		return next;
@@ -327,24 +294,18 @@ wavelet_tree* create_wavelet_tree(const char* string) {
 	if (string == 0)
 		return 0;
 
-	printf("Determining alphabet...\n");
-
 	//determine the alphabet and its length
 	char* alphabet = determine_alphabet(string);
 	unsigned int alphabet_length = strlen(alphabet);
 	quick_sort(alphabet, alphabet_length, sizeof(char));
 
-	printf("Initializing tree internals...\n");
-
 	//allocate and initialize the tree
 	wavelet_tree* tree = malloc(sizeof(wavelet_tree));
-	tree->num_nodes = alphabet_length > 0 ? alphabet_length : 1;
+	tree->num_nodes = alphabet_length > 0 ? alphabet_length * (int) log2(alphabet_length) : 1;
 	tree->nodes = malloc(tree->num_nodes * sizeof(wavelet_node));
 	tree->char_at = &wavelet_root_char_at;
 	tree->get_num_bits = &get_num_bits_tree;
 	tree->rank = &wavelet_root_rank_query;
-
-	printf("Initializing root and populating tree...\n");
 
 	//init root and populate tree
 	init_node(&tree->nodes[0], string, alphabet, alphabet_length);
@@ -360,7 +321,17 @@ void free_wavelet_tree(wavelet_tree* tree) {
 	//free alphabet, since it only has one allocation throughout the tree
 	free(tree->nodes[0].alphabet);
 
-	free_subtree(tree, 0);
+	//free subtrees of root to leave original string intact
+	if (tree->nodes[0].children[0] != 0) {
+		free_subtree(tree, tree->nodes[0].children[0]);
+		free_subtree(tree, tree->nodes[0].children[1]);
+	}
+
+	//free root bit vector
+	free(tree->nodes[0].vector.vector);
+
+	free(tree->nodes);
+	free(tree);
 }
 
 void free_subtree(wavelet_tree* tree, unsigned int node) {
@@ -368,13 +339,12 @@ void free_subtree(wavelet_tree* tree, unsigned int node) {
 		return;
 
 	//free bitvector and string first
-	free_bit_vector(&tree->nodes[node].vector);
+	free(tree->nodes[node].vector.vector);
 	free(tree->nodes[node].string);
 
 	//recursively call children
-	free_subtree(tree, tree->nodes[node].children[0]);
-	free_subtree(tree, tree->nodes[node].children[1]);
-
-	//free entire struct
-	free(&tree->nodes[node]);
+	if (tree->nodes[node].children[0] != 0) {
+		free_subtree(tree, tree->nodes[node].children[0]);
+		free_subtree(tree, tree->nodes[node].children[1]);
+	}
 }
