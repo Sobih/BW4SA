@@ -85,6 +85,7 @@ void draw_suffix_tree(char* string, char* filename) {
 	root->substr->normal = calloc(1, sizeof(Interval));
 	root->substr->normal->i = 0;
 	root->substr->normal->j = strlen(string);
+	root->c = ' ';
 	node_id_index = 1;
 
 	iterate_for_tree_drawing(string, &collect_internal_nodes);
@@ -113,6 +114,7 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 	if (temp_node == NULL) {
 		root->first_child = insert_node;
 		insert_node->parent = root;
+		insert_node->weiner_node = root;
 		return;
 	}
 	//otherwise go through the suffix tree until right place is found
@@ -246,7 +248,7 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 
 	fprintf(f, "	//Weiner links:\n");
 	fprintf(f, "	edge [color=\"red\", arrowhead=\"normal\"];\n");
-	print_weiner_links_recursively(f, root->first_child);
+	print_weiner_links_recursively(f, root);
 
 	fprintf(f, "}\n");
 	fclose(f);
@@ -268,7 +270,7 @@ int substring_and_node_equal(substring* substr, internal_node* node) {
 }
 
 internal_node* find_node_by_substring(substring* substr) {
-	internal_node* temp_node = root->first_child;
+	internal_node* temp_node = root;
 	while (temp_node != NULL) {
 
 		if (substring_and_node_equal(substr, temp_node)) {
