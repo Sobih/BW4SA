@@ -3,6 +3,7 @@
 #include "../../include/rbwt.h"
 #include "../../include/backward_search.h"
 #include "../../include/c_array.h"
+#include "../../include/maximal_repeats.h"
 #include "../bwt/s_to_bwt.h"
 #include "substring_stack.h"
 #include <stdlib.h>
@@ -44,6 +45,9 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	bit_vector* runs = create_runs_vector(string);
 
 	substring_stack* stack = create_stack(10);
+
+	// WARNING WARNING, NOT GOOD
+	max_repeats_initialize_bwt(bwt);
 
 	//Initialise first intervals. In the start both intervals are the whole bwt
 	Interval* normal = &((Interval ) { .i = 0, .j = strlen(bwt) - 1 } );
