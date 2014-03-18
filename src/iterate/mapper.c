@@ -31,12 +31,6 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt) {
 	}
 }
 
-void map_mum_triplets_to_string(triplet* nodes, char* bwt1, char* bwt2,
-		int count) {
-	update_position_in_triplets(nodes, bwt1, count, 1);
-	update_position_in_triplets(nodes, bwt2, count, 2);
-}
-
 void update_position_in_triplets(triplet* nodes, char* bwt, int count,
 		int position) {
 	int i;
@@ -65,5 +59,11 @@ void update_position_in_triplets(triplet* nodes, char* bwt, int count,
 		free(interval);
 
 	}
+}
+
+void map_mum_triplets_to_string(triplet* nodes, char* bwt1, char* bwt2,
+		int count) {
+	update_position_in_triplets(nodes, bwt1, count, 1);
+	update_position_in_triplets(nodes, bwt2, count, 2);
 }
 

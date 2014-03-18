@@ -16,10 +16,10 @@
 #include "../../include/utils.h"
 #include "../../include/mapper.h"
 
-char* max_bwt;
-bit_vector* max_repeats_runs;
-max_repeat_node* nodes;
-int nodes_index = 0;
+static char* max_bwt;
+static bit_vector* max_repeats_runs;
+static max_repeat_node* nodes;
+static int nodes_index = 0;
 
 bit_vector* create_runs_vector_from_bwt(char* bwt) {
 	bit_vector* runs = malloc(sizeof(bit_vector));
@@ -66,22 +66,6 @@ max_repeat_node* get_nodes() {
 	return nodes;
 }
 
-char *substring_from_string(char *string, int position, int length) {
-	char *pointer;
-	int i;
-	int pointer_index = 0;
-
-	pointer = malloc(length + 1);
-
-	for (i = position; i < position + length; i++) {
-		pointer[pointer_index] = string[i];
-		pointer_index++;
-	}
-	pointer[pointer_index] = '\0';
-
-	return pointer;
-}
-
 void print_maximal_repeat_substrings(char* string) {
 	map_maximal_repeats_to_string(nodes, max_bwt);
 	int i;
@@ -94,6 +78,7 @@ void print_maximal_repeat_substrings(char* string) {
 	}
 }
 
+// OLD MAPPING
 void map_to_string_and_print(max_repeat_node node, char* string) {
 	int* suffix_array = map_create_suffix_array_from_bwt(max_bwt);
 	int str_length = strlen(max_bwt);
@@ -125,6 +110,7 @@ void map_to_string_and_print(max_repeat_node node, char* string) {
 	}
 }
 
+// OLD PRINTING
 void maximals_print_nodes(char* string) {
 	int i;
 	printf("Maximal repeats: \n");

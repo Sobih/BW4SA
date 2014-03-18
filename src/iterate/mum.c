@@ -9,17 +9,18 @@
 #include "../../include/iterate.h"
 #include "../../include/mapper.h"
 #include "../../include/bit_vector.h"
+#include "../../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-char* mum_bwt1;
-char* mum_bwt2;
-char* mum_rbwt1;
-char* mum_rbwt2;
-bit_vector* mum_bit_vector1;
-bit_vector* mum_bit_vector2;
-triplet* mums;
-int triplets_index = 0;
+static char* mum_bwt1;
+static char* mum_bwt2;
+static char* mum_rbwt1;
+static char* mum_rbwt2;
+static bit_vector* mum_bit_vector1;
+static bit_vector* mum_bit_vector2;
+static triplet* mums;
+static int triplets_index = 0;
 
 void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_bwt1 = bwt1;
@@ -57,11 +58,7 @@ triplet* get_mums() {
 	return mums;
 }
 
-<<<<<<< HEAD
 int get_mums_amount() {
-=======
-int get_triplets_index(){
->>>>>>> 729fe5feeda616aca25d620770afa6ff66b73ba5
 	return triplets_index;
 }
 

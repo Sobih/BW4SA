@@ -303,3 +303,19 @@ void print_wavelet_tree(wavelet_node* node) {
 		printf("\n");
 	}
 }
+
+char *substring_from_string(char *string, int position, int length) {
+	char *pointer;
+	int i;
+	int pointer_index = 0;
+
+	pointer = malloc(length + 1);
+
+	for (i = position; i < position + length; i++) {
+		pointer[pointer_index] = string[i];
+		pointer_index++;
+	}
+	pointer[pointer_index] = '\0';
+
+	return pointer;
+}

@@ -123,4 +123,6 @@ void print_wavelet_node(struct wavelet_node* node);
  */
 void print_wavelet_tree(struct wavelet_node* node);
 
+char *substring_from_string(char *string, int position, int length);
+
 #endif /* UTILS_H_ */
