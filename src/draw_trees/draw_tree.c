@@ -15,11 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct c_node {
-	struct c_node* next;
-	char c;
-} char_node;
-
 typedef struct i_node {
 	struct i_node* first_child;
 	struct i_node* next_sibling;
@@ -27,8 +22,7 @@ typedef struct i_node {
 	struct i_node* parent;
 	struct i_node* weiner_node;
 	int id;
-
-	char_node* first_char;
+	char c;
 	substring* substr;
 } internal_node;
 
@@ -74,8 +68,11 @@ int* create_suffix_array_from_bwt(const char* bwt)
 }
 
 void collect_internal_nodes(substring* substr, substring* prev_substr, char c);
+
 void print_tree_to_file(char* filename, int* suffix_array, char* orig_string);
+
 internal_node* find_node_by_substring(substring* substr);
+
 void print_node_label_to_file(FILE* f, internal_node* node);
 
 void draw_suffix_tree(char* string, char* filename) {
@@ -107,17 +104,9 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 	node_id_index++;
 	internal_node* prev_node = find_node_by_substring(prev_substr);
 
-	if (prev_node == NULL) {
-//		printf("prev node not found\n");
-		insert_node->first_char = calloc(1, sizeof(char_node));
-		insert_node->first_char->c = c;
-	} else {
-//		printf("prev node found\n");
-		insert_node->first_char = calloc(1, sizeof(char_node));
-		insert_node->first_char->next = prev_node->first_char;
-		insert_node->first_char->c = c;
-		insert_node->weiner_node = prev_node;
-	}
+	insert_node->c = c;
+
+	insert_node->weiner_node = prev_node;
 	internal_node* temp_node = root->first_child;
 
 	//if this node is first to be put in the tree, it will be the first child of the root node
@@ -154,7 +143,7 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 			insert_node->first_child = temp_node;
 			insert_node->parent = temp_node->parent;
 			if (temp_node->parent->first_child == temp_node) {
-				printf("parent fixed\n");
+//				printf("parent fixed\n");
 				temp_node->parent->first_child = insert_node;
 			}
 			temp_node->parent = insert_node;
@@ -252,6 +241,7 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 	init_bit_vector(leaf_vec, strlen(orig_string));
 
 	fprintf(f, "	//arcs leading to the leaves of the suffix tree:\n");
+	fprintf(f, "	node [label=\"\", shape=\"square\", width=0.1];\n");
 	print_leaves_recursively(f, root, suffix_array, orig_string, leaf_vec);
 
 	fprintf(f, "	//Weiner links:\n");
@@ -294,7 +284,7 @@ internal_node* find_node_by_substring(substring* substr) {
 
 void print_node_label_to_file(FILE* f, internal_node* node) {
 
-	char_node* temp_node = node->first_char;
+	internal_node* temp_node = node;
 
 	int parent_label_length = 0;
 	if (node->parent->parent != NULL) {
@@ -307,7 +297,7 @@ void print_node_label_to_file(FILE* f, internal_node* node) {
 		if (loop_index >= parent_label_length) {
 			fprintf(f, "%c", temp_node->c);
 		}
-		temp_node = temp_node->next;
+		temp_node = temp_node->weiner_node;
 		loop_index++;
 	}
 }
