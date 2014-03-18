@@ -270,7 +270,7 @@ int substring_and_node_equal(substring* substr, internal_node* node) {
 }
 
 internal_node* find_node_by_substring(substring* substr) {
-	internal_node* temp_node = root->first_child;
+	internal_node* temp_node = root;
 	while (temp_node != NULL) {
 
 		if (substring_and_node_equal(substr, temp_node)) {
