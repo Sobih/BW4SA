@@ -5,7 +5,7 @@
  *      Author: lvapaaka
  */
 
-#include "dbwt.h"
+#include "../../libs/DBWT/dbwt.h"
 #include <stdlib.h>
 #include <string.h>
 

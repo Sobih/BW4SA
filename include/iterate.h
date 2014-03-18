@@ -46,4 +46,7 @@ int is_reverse_interval_right_maximal(bit_vector* runs, Interval* interval);
  */
 void iterate(char* string, void (*callback) (substring* substr));
 
+//an additional iterate function. Works just like normal iterate, but passes few extra parameters to the callback function
+void iterate_for_tree_drawing(char* string, void (*callback)(substring* substr, substring* prev_substr, char c));
+
 #endif

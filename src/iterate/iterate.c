@@ -96,6 +96,60 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	}
 }
 
+void iterate_for_tree_drawing(char* string, void (*callback)(substring* substr, substring* prev_substr, char c)) {
+
+	unsigned char* bwt = s_to_BWT(string);
+	bit_vector* runs = create_runs_vector(string);
+
+	substring_stack* stack = create_stack(10);
+
+	//Initialise first intervals. In the start both intervals are the whole bwt
+	Interval* normal = &((Interval ) { .i = 0, .j = strlen(bwt) - 1 } );
+	Interval* reverse = &((Interval ) { .i = 0, .j = strlen(bwt) - 1 } );
+
+	//create starting substring
+	substring* start = &((substring) { .normal = normal, .reverse = reverse, .length = 0 });
+
+	push(stack, start);
+	substring* new_substring;
+	substring* substring;
+
+	while (1) {
+		substring = pop(stack);
+
+		if (substring == NULL)
+			break;
+
+		//if size of the interval is 1, it cannot be a right-maximal string
+		//if(substring->normal->i == substring->normal->j) continue;
+
+		// Determine characters that precede the interval
+		char* alphabet = create_alphabet_interval(substring->normal, bwt);
+		int* c_array = create_c_array_interval(substring->normal, bwt);
+
+		int i;
+		for (i = 0; i < strlen(alphabet); i++) {
+
+			Interval* normal = backward_search_interval(bwt, substring->normal,
+					alphabet[i]);
+			Interval* reverse = update_reverse_interval(substring->reverse,substring->normal,
+					normal, bwt, alphabet[i]);
+
+			if (is_reverse_interval_right_maximal(runs, reverse)) {
+				new_substring = create_substring(normal, reverse, substring->length + 1);
+				// callback function pointers
+				callback(new_substring, substring, alphabet[i]);
+				push(stack, new_substring);
+			} else {
+				free(normal);
+				free(reverse);
+			}
+		}
+		free(alphabet);
+		free(c_array);
+	}
+}
+
 /**
  * Updates the interval in the BWT of the reverse of the string
  * @param reverse-BWT interval of the mother node
