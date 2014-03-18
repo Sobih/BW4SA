@@ -61,6 +61,6 @@ void print_mums(char* string);
  *
  * @bug		No known bugs.
  */
-void mum_print_bit_vectors();
+void mum_print_bit_vectors(char* string1, char* string2);
 
 #endif /* MUM_H_ */

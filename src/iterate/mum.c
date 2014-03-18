@@ -17,8 +17,6 @@ static char* mum_bwt1;
 static char* mum_bwt2;
 static char* mum_rbwt1;
 static char* mum_rbwt2;
-static bit_vector* mum_bit_vector1;
-static bit_vector* mum_bit_vector2;
 static triplet* mums;
 static int triplets_index = 0;
 
@@ -27,10 +25,6 @@ void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_bwt2 = bwt2;
 	mum_rbwt1 = rbwt1;
 	mum_rbwt2 = rbwt2;
-	mum_bit_vector1 = malloc(sizeof(bit_vector));
-	init_bit_vector(mum_bit_vector1, strlen(bwt1));
-	mum_bit_vector2 = malloc(sizeof(bit_vector));
-	init_bit_vector(mum_bit_vector2, strlen(bwt2));
 	mums = calloc(100, sizeof(triplet));
 }
 
@@ -42,9 +36,7 @@ void search_mums(substring* node1, substring* node2) {
 						!= mum_rbwt2[node2->reverse->i]) {
 					triplet trip = *((triplet*) malloc(sizeof(triplet)));
 					trip.pos1 = node1->normal->i;
-					mum_bit_vector1->mark_bit(mum_bit_vector1,node1->normal->i);
 					trip.pos2 = node2->normal->i;
-					mum_bit_vector2->mark_bit(mum_bit_vector2,node2->normal->i);
 					trip.length = node1->length;
 					mums[triplets_index] = trip;
 					triplets_index++;
@@ -81,7 +73,39 @@ void print_mums(char* string) {
 	}
 }
 
-void mum_print_bit_vectors(){
-	print_bit_vector(mum_bit_vector1);
-	print_bit_vector(mum_bit_vector2);
+bit_vector** mum_make_bit_vectors() {
+	bit_vector** vectors = calloc(sizeof(bit_vector),2);
+	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
+	init_bit_vector(bit_vector1, strlen(mum_bwt1));
+	bit_vector* bit_vector2 = malloc(sizeof(bit_vector));
+	init_bit_vector(bit_vector2, strlen(mum_bwt2));
+	int i;
+	for (i = 0; i < triplets_index; i++) {
+		triplet trip = mums[i];
+		bit_vector1->mark_bit(bit_vector1, trip.pos1);
+		bit_vector2->mark_bit(bit_vector2, trip.pos2);
+	}
+	vectors[0] = bit_vector1;
+	vectors[1] = bit_vector2;
+	return vectors;
+}
+
+void print_bit_vector_with_string(char* string1, bit_vector* vector) {
+	printf("%s \n", string1);
+	int i;
+	for (i = 0; i < strlen(string1); i++) {
+		if (vector->is_bit_marked(vector, i)) {
+			printf("1");
+		} else {
+			printf("0");
+		}
+	}
+	printf("\n");
+}
+
+void mum_print_bit_vectors(char* string1, char* string2) {
+	bit_vector** vectors = mum_make_bit_vectors();
+
+	print_bit_vector_with_string (string1,vectors[0]);
+	print_bit_vector_with_string (string2,vectors[1]);
 }

@@ -104,7 +104,7 @@ void ui()
 		scanf("%s", input2);
 		double_iterate(input, input2, &search_mums);
 		print_mums(input);
-		mum_print_bit_vectors();
+		mum_print_bit_vectors(input,input2);
 
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
