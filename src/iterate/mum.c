@@ -19,7 +19,7 @@ static char* mum_bwt2;
 static char* mum_rbwt1;
 static char* mum_rbwt2;
 static triplet* mums;
-static int triplets_index = 0;
+static int triplets_index;
 
 void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_bwt1 = bwt1;
@@ -27,6 +27,7 @@ void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_rbwt1 = rbwt1;
 	mum_rbwt2 = rbwt2;
 	mums = calloc(100, sizeof(triplet));
+	triplets_index = 0;
 }
 
 void search_mums(substring* node1, substring* node2) {
@@ -74,7 +75,7 @@ void print_mums(char* string) {
 	}
 }
 
-bit_vector** mum_make_bit_vectors() {
+bit_vector** mum_make_bit_vectors(triplet* mapped_mums) {
 	bit_vector** vectors = calloc(sizeof(bit_vector),2);
 	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
 	init_bit_vector(bit_vector1, strlen(mum_bwt1));
@@ -105,7 +106,7 @@ void print_bit_vector_with_string(char* string1, bit_vector* vector) {
 }
 
 void mum_print_bit_vectors(char* string1, char* string2) {
-	bit_vector** vectors = mum_make_bit_vectors();
+	bit_vector** vectors = mum_make_bit_vectors(mums);
 
 	print_bit_vector_with_string (string1,vectors[0]);
 	print_bit_vector_with_string (string2,vectors[1]);

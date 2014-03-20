@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../../include/backward_search.h";
+#include "../../include/backward_search.h"
 
 START_TEST(test_get_index)
 {

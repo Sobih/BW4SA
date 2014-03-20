@@ -19,7 +19,7 @@
 static char* max_bwt;
 static bit_vector* max_repeats_runs;
 static max_repeat_node* nodes;
-static int nodes_index = 0;
+static int nodes_index;
 
 bit_vector* create_runs_vector_from_bwt(char* bwt) {
 	bit_vector* runs = malloc(sizeof(bit_vector));
@@ -38,6 +38,7 @@ void max_repeats_initialize_bwt(char* bwt) {
 	max_bwt = bwt;
 	max_repeats_runs = create_runs_vector_from_bwt(bwt);
 	nodes = calloc(100,sizeof(max_repeat_node));
+	nodes_index = 0;
 }
 
 int is_interval_left_maximal(Interval* interval) {
@@ -67,9 +68,9 @@ max_repeat_node* get_nodes() {
 }
 
 void print_maximal_repeat_substrings(char* string) {
-	map_maximal_repeats_to_string(nodes, max_bwt);
-	int i;
 	int count = get_max_repeats_nodes_index();
+	map_maximal_repeats_to_string(nodes, max_bwt, count);
+	int i;
 
 	for (i = 0; i < count; i++) {
 		printf("%s \n",

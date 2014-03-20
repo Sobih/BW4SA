@@ -18,7 +18,7 @@
  *
  * @bug		No known bugs.
  */
-void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt);
+void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt, int count);
 
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found MUMs.
