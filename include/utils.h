@@ -123,4 +123,14 @@ void print_wavelet_node(struct wavelet_node* node);
  */
 void print_wavelet_tree(struct wavelet_node* node);
 
+/**
+ * @brief	Returns a substring char array from the given char array.
+ *
+ * @param	string		The whole string
+ * @param	position	Starting position of the substring
+ * @param	length		Length of the substring
+ * @bug		No known bugs.
+ */
+char *substring_from_string(char *string, int position, int length);
+
 #endif /* UTILS_H_ */

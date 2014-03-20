@@ -7,6 +7,8 @@
 #include "../../include/bit_vector.h"
 #include "../../include/distinct_substrings.h"
 #include "../../include/maximal_repeats.h"
+#include "../../include/mum.h"
+#include "../iterate/triplet_sorter.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -98,14 +100,22 @@ void ui()
 		print_runs_vector(runs, strlen(input)+1);
 		free_bit_vector(runs);
 	} else if (choice == 7) {
-		printf("Not supported yet\n");
+		printf("Give the second input string: ");
+		char* input2 = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
+		scanf("%s", input2);
+		double_iterate(input, input2, &search_mums);
+		print_mums(input);
+		mum_print_bit_vectors(input,input2);
+
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
 		iterate(input, &search_maximal_repeats);
-		maximals_print_nodes(input);
+		//maximals_print_nodes(input);
+		print_maximal_repeat_substrings(input);
+		//compare_quick_sort()
 	} else {
 		printf("Invalid choice\n");
 	}
