@@ -100,10 +100,59 @@ START_TEST(test_mum1_bitvector)
 		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
 				s_to_BWT("mehukatti"), get_mums_amount());
 		bit_vector** vectors = mum_make_bit_vectors(nodes);
-		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0],2));
-		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0],3));
-		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1],5));
-		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1],7));
+		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 2));
+		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
+		ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 5));
+		ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 7));
+		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
+		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 7));
+		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 2));
+		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 3));
+	}END_TEST
+
+START_TEST(test_mum2_bitvector)
+	{
+		double_iterate("abracadabra", "arbadacarba", &search_mums);
+		triplet* nodes = get_mums();
+		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
+				s_to_BWT("arbadacarba"), get_mums_amount());
+		bit_vector** vectors = mum_make_bit_vectors(nodes);
+		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
+		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 5));
+		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 3));
+		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
+	}END_TEST
+
+START_TEST(test_mum3_bitvector_no_mums)
+	{
+		double_iterate("abracadabra", "vzxmneytymn", &search_mums);
+		triplet* nodes = get_mums();
+		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
+				s_to_BWT("arbadacarba"), get_mums_amount());
+		bit_vector** vectors = mum_make_bit_vectors(nodes);
+		int i;
+		for (i = 0; i < vectors[0]->length; i++) {
+			ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], i));
+		}
+		for (i = 0; i < vectors[1]->length; i++) {
+			ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], i));
+		}
+	}END_TEST
+
+START_TEST(test_mum3_bitvector_no_mums)
+	{
+		double_iterate("abracadabra", "vzxmneytymn", &search_mums);
+		triplet* nodes = get_mums();
+		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
+				s_to_BWT("arbadacarba"), get_mums_amount());
+		bit_vector** vectors = mum_make_bit_vectors(nodes);
+		int i;
+		for (i = 0; i < vectors[0]->length; i++) {
+			ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], i));
+		}
+		for (i = 0; i < vectors[1]->length; i++) {
+			ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], i));
+		}
 	}END_TEST
 
 TCase * create_mums_test_case(void) {
@@ -116,6 +165,8 @@ TCase * create_mums_test_case(void) {
 	tcase_add_test(tc_stack, test_mum3_mapped);
 	tcase_add_test(tc_stack, test_mum_empty);
 	tcase_add_test(tc_stack, test_mum1_bitvector);
+	tcase_add_test(tc_stack, test_mum2_bitvector);
+	tcase_add_test(tc_stack, test_mum3_bitvector_no_mums);
 	return tc_stack;
 }
 

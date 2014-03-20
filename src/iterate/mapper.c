@@ -13,15 +13,15 @@
 void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt) {
 	int i;
 	int count = get_max_repeats_nodes_index();
-	long n = strlen(bwt) - 1;
+	long n = strlen(bwt);
 	int k;
 	Interval* interval = malloc(sizeof(Interval));
 	interval->i = 0;
 	interval->j = 0;
 	for (i = 0; i < count; i++) {
-		for (k = 1; k <= n; k++) {
+		for (k = 0; k < n; k++) {
 			if (nodes[i].normal->i == interval->i) {
-				nodes[i].normal->i = (n - k) + 1;
+				nodes[i].normal->i = (n - k) - 1;
 				break;
 			}
 			interval = backward_search_interval(bwt, interval,
@@ -34,22 +34,23 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt) {
 void update_position_in_triplets(triplet* nodes, char* bwt, int count,
 		int position) {
 	int i;
-	long n = strlen(bwt) - 1;
+	long n = strlen(bwt);
 	int k;
 	Interval* interval = malloc(sizeof(Interval));
 	interval->i = 0;
 	interval->j = 0;
 	for (i = 0; i < count; i++) {
-		for (k = 1; k <= n; k++) {
+		for (k = 0; k < n; k++) {
 			if (position == 1) {
 				if (nodes[i].pos1 == interval->i) {
-					nodes[i].pos1 = (n - k) + 1;
+					printf("k is %d", k);
+					nodes[i].pos1 = (n - k) - 1;
 					break;
 				}
 			}
 			if (position == 2) {
 				if (nodes[i].pos2 == interval->i) {
-					nodes[i].pos2 = (n - k) + 1;
+					nodes[i].pos2 = (n - k) - 1;
 					break;
 				}
 			}
