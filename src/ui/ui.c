@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAX_INPUT_STRING_LENGTH 100
 
 void print_choices()
 {
@@ -64,7 +65,7 @@ void print_runs_vector(bit_vector* runs, int len)
 void ui()
 {
 	int choice, len = 0;
-	char* input = malloc(sizeof(char));
+	char* input = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
 	char* res = malloc(sizeof(char));
 	int* array = calloc(20, sizeof(int)); 
 	
@@ -73,7 +74,7 @@ void ui()
 	printf("Write the number of the operation you want to do:\n");
 	scanf("%d", &choice);
 	
-	printf("Give the input string: ");
+	printf("Give the input string: (max size %d) ", MAX_INPUT_STRING_LENGTH);
 	print_instructions(choice);
 	scanf("%s", input);
 

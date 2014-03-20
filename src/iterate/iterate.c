@@ -61,6 +61,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	substring* substring;
 
 	while (1) {
+		printf("iterating\n");
 		substring = pop(stack);
 
 		if (substring == NULL)

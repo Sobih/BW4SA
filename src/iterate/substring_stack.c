@@ -1,6 +1,7 @@
 #include "../../include/iterate.h"
 #include "substring_stack.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 substring_stack* create_stack(int initial_size)
 {
@@ -17,6 +18,7 @@ void double_size(substring_stack* stack);
 
 void push(substring_stack* stack, substring* substr)
 {
+	printf("stack size %d \n",stack->array_ptr);
 	if(stack->array_size == stack->array_ptr){
 		double_size(stack);
 	}
@@ -26,6 +28,7 @@ void push(substring_stack* stack, substring* substr)
 
 substring* pop(substring_stack* stack)
 {
+	printf("stack size %d\n", stack->array_ptr);
 	if(stack->array_ptr == 0) return NULL;
 	
 	substring* substr = stack->array[stack->array_ptr-1];
@@ -38,6 +41,7 @@ substring* pop(substring_stack* stack)
 **/
 void double_size(substring_stack* stack)
 {
+	printf("doubled!!!!\n");
 	int old_size = stack->array_size;
 	substring** old_array = stack->array;
 	substring** new_array = malloc(sizeof(substring*)*old_size*2);
