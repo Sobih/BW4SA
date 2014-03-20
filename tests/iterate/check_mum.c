@@ -14,7 +14,7 @@ START_TEST(test_mum1)
 	{
 		double_iterate("laatikko", "mehukatti", &search_mums);
 		triplet* nodes = get_mums();
-		ck_assert_int_eq(2, get_triplets_index());
+		ck_assert_int_eq(2, get_mums_amount());
 		ck_assert_int_eq(2, nodes[0].pos1);
 		ck_assert_int_eq(1, nodes[0].pos2);
 		ck_assert_int_eq(2, nodes[0].length);
@@ -28,8 +28,8 @@ START_TEST(test_mum1_mapped)
 		double_iterate("laatikko", "mehukatti", &search_mums);
 		triplet* nodes = get_mums();
 		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
-				s_to_BWT("mehukatti"), get_triplets_index());
-		ck_assert_int_eq(2, get_triplets_index());
+				s_to_BWT("mehukatti"), get_mums_amount());
+		ck_assert_int_eq(2, get_mums_amount());
 		ck_assert_int_eq(2, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
 		ck_assert_int_eq(2, nodes[0].length);
@@ -42,7 +42,7 @@ START_TEST(test_mum2)
 	{
 		double_iterate("abracadabra", "arbadacarba", &search_mums);
 		triplet* nodes = get_mums();
-		ck_assert_int_eq(2, get_triplets_index());
+		ck_assert_int_eq(2, get_mums_amount());
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(3, nodes[0].pos2);
 		ck_assert_int_eq(3, nodes[0].length);
@@ -56,8 +56,8 @@ START_TEST(test_mum2_mapped)
 		double_iterate("abracadabra", "arbadacarba", &search_mums);
 		triplet* nodes = get_mums();
 		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_triplets_index());
-		ck_assert_int_eq(2, get_triplets_index());
+				s_to_BWT("arbadacarba"), get_mums_amount());
+		ck_assert_int_eq(2, get_mums_amount());
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(3, nodes[0].pos2);
 		ck_assert_int_eq(3, nodes[0].length);
@@ -70,14 +70,14 @@ START_TEST(test_mum_empty)
 	{
 		double_iterate("qwertyui", "asdfghjkl", &search_mums);
 		triplet* nodes = get_mums();
-		ck_assert_int_eq(0, get_triplets_index());
+		ck_assert_int_eq(0, get_mums_amount());
 	}END_TEST
 
 START_TEST(test_mum3)
 	{
 		double_iterate("qwertnmyuiop", "asdfgnmhjkl", &search_mums);
 		triplet* nodes = get_mums();
-		ck_assert_int_eq(1, get_triplets_index());
+		ck_assert_int_eq(1, get_mums_amount());
 		ck_assert_int_eq(2, nodes[0].length);
 	}END_TEST
 
@@ -86,11 +86,24 @@ START_TEST(test_mum3_mapped)
 		double_iterate("qwertnmyuiop", "asdfgnmhjkl", &search_mums);
 		triplet* nodes = get_mums();
 		map_mum_triplets_to_string(nodes, s_to_BWT("qwertnmyuiop"),
-						s_to_BWT("asdfgnmhjkl"), get_triplets_index());
-		ck_assert_int_eq(1, get_triplets_index());
+				s_to_BWT("asdfgnmhjkl"), get_mums_amount);
+		ck_assert_int_eq(1, get_mums_amount);
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
 		ck_assert_int_eq(2, nodes[0].length);
+	}END_TEST
+
+START_TEST(test_mum1_bitvector)
+	{
+		double_iterate("laatikko", "mehukatti", &search_mums);
+		triplet* nodes = get_mums();
+		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
+				s_to_BWT("mehukatti"), get_mums_amount());
+		bit_vector** vectors = mum_make_bit_vectors(nodes);
+		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0],2));
+		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0],3));
+		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1],5));
+		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1],7));
 	}END_TEST
 
 TCase * create_mums_test_case(void) {
@@ -102,6 +115,7 @@ TCase * create_mums_test_case(void) {
 	tcase_add_test(tc_stack, test_mum3);
 	tcase_add_test(tc_stack, test_mum3_mapped);
 	tcase_add_test(tc_stack, test_mum_empty);
+	tcase_add_test(tc_stack, test_mum1_bitvector);
 	return tc_stack;
 }
 

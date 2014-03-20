@@ -73,7 +73,7 @@ void print_mums(char* string) {
 	}
 }
 
-bit_vector** mum_make_bit_vectors() {
+bit_vector** mum_make_bit_vectors(triplet* mapped_mums) {
 	bit_vector** vectors = calloc(sizeof(bit_vector),2);
 	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
 	init_bit_vector(bit_vector1, strlen(mum_bwt1));
@@ -104,7 +104,7 @@ void print_bit_vector_with_string(char* string1, bit_vector* vector) {
 }
 
 void mum_print_bit_vectors(char* string1, char* string2) {
-	bit_vector** vectors = mum_make_bit_vectors();
+	bit_vector** vectors = mum_make_bit_vectors(mums);
 
 	print_bit_vector_with_string (string1,vectors[0]);
 	print_bit_vector_with_string (string2,vectors[1]);
