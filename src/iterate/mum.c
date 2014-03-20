@@ -18,7 +18,7 @@ static char* mum_bwt2;
 static char* mum_rbwt1;
 static char* mum_rbwt2;
 static triplet* mums;
-static int triplets_index = 0;
+static int triplets_index;
 
 void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_bwt1 = bwt1;
@@ -26,6 +26,7 @@ void mum_initialize_bwts(char* bwt1, char* bwt2, char* rbwt1, char* rbwt2) {
 	mum_rbwt1 = rbwt1;
 	mum_rbwt2 = rbwt2;
 	mums = calloc(100, sizeof(triplet));
+	triplets_index = 0;
 }
 
 void search_mums(substring* node1, substring* node2) {

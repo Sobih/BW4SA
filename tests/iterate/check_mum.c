@@ -8,6 +8,8 @@
 #include <check.h>
 #include "../../include/iterate.h"
 #include "../../include/mum.h"
+#include "../../include/mapper.h"
+#include "../../src/bwt/s_to_bwt.h"
 #include <stdlib.h>
 
 START_TEST(test_mum1)
@@ -86,8 +88,8 @@ START_TEST(test_mum3_mapped)
 		double_iterate("qwertnmyuiop", "asdfgnmhjkl", &search_mums);
 		triplet* nodes = get_mums();
 		map_mum_triplets_to_string(nodes, s_to_BWT("qwertnmyuiop"),
-				s_to_BWT("asdfgnmhjkl"), get_mums_amount);
-		ck_assert_int_eq(1, get_mums_amount);
+				s_to_BWT("asdfgnmhjkl"), get_mums_amount());
+		ck_assert_int_eq(1, get_mums_amount());
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
 		ck_assert_int_eq(2, nodes[0].length);
@@ -139,7 +141,7 @@ START_TEST(test_mum3_bitvector_no_mums)
 		}
 	}END_TEST
 
-START_TEST(test_mum3_bitvector_no_mums)
+START_TEST(test_mum3_bitvector_no_mums2)
 	{
 		double_iterate("abracadabra", "vzxmneytymn", &search_mums);
 		triplet* nodes = get_mums();
@@ -167,6 +169,7 @@ TCase * create_mums_test_case(void) {
 	tcase_add_test(tc_stack, test_mum1_bitvector);
 	tcase_add_test(tc_stack, test_mum2_bitvector);
 	tcase_add_test(tc_stack, test_mum3_bitvector_no_mums);
+	tcase_add_test(tc_stack, test_mum3_bitvector_no_mums2);
 	return tc_stack;
 }
 

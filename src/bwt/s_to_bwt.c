@@ -5,7 +5,7 @@
  *      Author: lvapaaka
  */
 
-#include "dbwt.h"
+#include "../../libs/DBWT/dbwt.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -15,6 +15,7 @@ uchar* s_to_BWT(uchar *string) {
 	long n = strlen(string);
 	uchar *d = calloc(n + 2, sizeof(uchar));
 	d = dbwt_bwt(string, n, &last, 0);
+	d = realloc(d, (n+2)*sizeof(uchar));
 	d[last] = '$';
 	d[n + 1] = 0;
 	//(*_last) = last;

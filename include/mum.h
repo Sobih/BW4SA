@@ -63,4 +63,16 @@ void print_mums(char* string);
  */
 void mum_print_bit_vectors(char* string1, char* string2);
 
+/**
+ * @brief	Makes and returns a list of two bit vectors, corresponding to the given strings.
+ *
+ * Takes in a list of triplets where the positions have been updated to point to the original string.
+ *
+ * @param	mapped_mums		A triplet list where the indexes have been mapped to the original strings.
+ * @return 	Bit vectors with starts of MUMs marked.
+ *
+ * @bug		No known bugs.
+ */
+bit_vector** mum_make_bit_vectors(triplet* mapped_mums);
+
 #endif /* MUM_H_ */

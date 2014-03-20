@@ -43,7 +43,6 @@ void update_position_in_triplets(triplet* nodes, char* bwt, int count,
 		for (k = 0; k < n; k++) {
 			if (position == 1) {
 				if (nodes[i].pos1 == interval->i) {
-					printf("k is %d", k);
 					nodes[i].pos1 = (n - k) - 1;
 					break;
 				}
