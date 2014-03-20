@@ -6,14 +6,13 @@
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
 
-interval* backward_search(const wavelet_node* bwt, const wavelet_node* string) {
-	bit_vector* bwt_vec = bwt->vector, *str_vec = string->vector;
-	int i = 0, j = bwt_vec->get_length(bwt_vec) - 1, k, index;
-	unsigned int alphabet_length = bwt->alphabet_length - 1;
-	char* alphabet = bwt->alphabet, current;
+interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string) {
+	int i = 0, j = bwt->get_num_bits(bwt) - 1, k, index;
+	unsigned int alphabet_length = bwt->get_alphabet_length(bwt) - 1;
+	char* alphabet = bwt->get_alphabet(bwt), current;
 	unsigned int* c_array = create_c_array(bwt);
 
-	for(k = str_vec->get_length(str_vec) - 1; k >= 0; k--) {
+	for(k = string->get_num_bits(string) - 1; k >= 0; k--) {
 		if(j < i)
 			return NULL;
 
@@ -23,8 +22,8 @@ interval* backward_search(const wavelet_node* bwt, const wavelet_node* string) {
 		if (index < 0)
 			return NULL;
 
-		i = c_array[index] + bwt->rank(bwt, current, i - 1);
-		j = c_array[index] + bwt->rank(bwt, current, j) - 1;
+		i = c_array[index] + bwt->rank(bwt, current, 0, i - 1);
+		j = i + bwt->rank(bwt, current, i, j) - 1;
 	}
 
 	interval* new_interval = malloc(sizeof(interval));
@@ -34,13 +33,13 @@ interval* backward_search(const wavelet_node* bwt, const wavelet_node* string) {
 	return new_interval;		
 }
 
-interval* backward_search_interval(const wavelet_node* bwt, const interval* interval, char c) {
+interval* backward_search_interval(const wavelet_tree* bwt, const interval* interval, char c) {
 	int* c_array = create_c_array(bwt);
-	char* alphabet = bwt->alphabet;
+	char* alphabet = bwt->get_alphabet(bwt);
 
-	int index = binary_search(alphabet, &c, 0, bwt->alphabet_length - 1, sizeof(char));
-	int i = index + bwt->rank(bwt, c, interval->i - 1);
-	int j = index + bwt->rank(bwt, c, interval->j) - 1;
+	int index = binary_search(alphabet, &c, 0, bwt->get_alphabet_length(bwt) - 1, sizeof(char));
+	int i = index + bwt->rank(bwt, c, 0, interval->i - 1);
+	int j = i + bwt->rank(bwt, c, interval->i, interval->j) - 1;
 
 	if (i > j) return NULL;
 

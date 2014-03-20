@@ -8,7 +8,7 @@
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
 
-unsigned int* create_c_array(const wavelet_node* string, const interval* inter, const char* alphabet,
+unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, const char* alphabet,
 		unsigned int alphabet_length) {
 	if (string == 0)
 		return 0;
@@ -21,8 +21,8 @@ unsigned int* create_c_array(const wavelet_node* string, const interval* inter, 
 	}
 
 	if (!alphabet) {
-		alphabet = string->alphabet;
-		alphabet_length = string->alphabet_length;
+		alphabet = string->get_alphabet(string);
+		alphabet_length = string->get_alphabet_length(string);
 	}
 
 	unsigned int* c_array = malloc((alphabet_length + 1) * sizeof(unsigned int));
@@ -39,7 +39,7 @@ unsigned int* create_c_array(const wavelet_node* string, const interval* inter, 
 	return c_array;
 }
 
-char* create_alphabet_interval(const interval* interval, const wavelet_node* string)
+char* create_alphabet_interval(const interval* interval, const wavelet_tree* string)
 {
 	unsigned int length = interval->j - interval->i + 1;
 	char* alphabet = calloc(length, sizeof(char));
@@ -49,7 +49,7 @@ char* create_alphabet_interval(const interval* interval, const wavelet_node* str
 	for (int i = interval->i; i < interval->j; ++i) {
 		current = string->char_at(string, i);
 
-		if (binary_search(alphabet, &current, sizeof(char), length) < 0) {
+		if (binary_search(alphabet, &current, sizeof(char), counter) < 0) {
 			alphabet[counter] = current;
 			counter++;
 			quick_sort(alphabet, counter, sizeof(char));
