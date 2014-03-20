@@ -24,16 +24,16 @@
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-typedef struct bit_vec {
+typedef struct bit_vector {
 	unsigned int* vector;
 	unsigned int length;
 	unsigned int filler_bits;
 
-	struct bit_vec* (*mark_bit) (struct bit_vec* vector, unsigned int pos);
-	struct bit_vec* (*unmark_bit) (struct bit_vec* vector, unsigned int pos);
-	int (*is_bit_marked) (const struct bit_vec* vector, unsigned int pos);
-	unsigned int (*rank) (const struct bit_vec* vector, unsigned int start, unsigned int end);
-	unsigned int (*get_length) (const struct bit_vec* vector);
+	struct bit_vector* (*mark_bit) (struct bit_vector* vector, unsigned int pos);
+	struct bit_vector* (*unmark_bit) (struct bit_vector* vector, unsigned int pos);
+	int (*is_bit_marked) (const struct bit_vector* vector, unsigned int pos);
+	unsigned int (*rank) (const struct bit_vector* vector, unsigned int start, unsigned int end);
+	unsigned int (*get_length) (const struct bit_vector* vector);
 } bit_vector;
 
 /**
@@ -49,7 +49,7 @@ typedef struct bit_vec {
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits);
+bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits);
 
 /**
  * @brief	Frees the bit vector and all its internal variables.
@@ -57,6 +57,6 @@ struct bit_vec* init_bit_vector(struct bit_vec* vector, unsigned int nbits);
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-void free_bit_vector(struct bit_vec* vector);
+void free_bit_vector(bit_vector* vector);
 
 #endif /* MOD_BIT_ARRAY_H_ */
