@@ -6,6 +6,7 @@
 #include "../../include/utils.h"
 #include "../../include/mum.h"
 #include "../../include/maximal_repeats.h"
+#include "../../include/structs.h"
 #include "../bwt/s_to_bwt.h"
 #include "substring_stack.h"
 #include <stdlib.h>

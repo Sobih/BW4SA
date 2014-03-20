@@ -8,11 +8,12 @@
 #ifndef MAXIMAL_REPEATS_H_
 #define MAXIMAL_REPEATS_H_
 
-#include "iterate.h"
+struct substring_struct;
+struct interval;
 
 typedef struct max_repeat_node_struct
 {
-	Interval* normal;
+	struct interval* normal;
 	int length;
 } max_repeat_node;
 
@@ -28,7 +29,7 @@ void max_repeats_initialize_bwt(char* bwt);
  *
  * @param 		A substring node that has the intervals in BWT and BWT of the reverse of the string.
  */
-void search_maximal_repeats(substring* node);
+void search_maximal_repeats(struct substring_struct* node);
 
 /**
  * @brief 		Returns the list of maximal repeat nodes.

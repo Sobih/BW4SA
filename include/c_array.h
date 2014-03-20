@@ -1,7 +1,7 @@
 #ifndef C_ARRAY_H_
 #define C_ARRAY_H_
 
-#include "backward_search.h"
+struct interval;
 /**
  * @brief Generates array C of given string. This is still a rather slow version of algorithm, but
  * with small alphabets this should not be a problem.
@@ -42,7 +42,7 @@ char* get_alphabet(const char* string);
  *
  * @bug no known bugs
  */
-int* create_c_array_interval(const Interval* interval, char* bwt);
+int* create_c_array_interval(const struct interval* interval, char* bwt);
 
 /**
  * @brief Generates the alphabet of given string in the substring determined by interval struct
@@ -57,7 +57,7 @@ int* create_c_array_interval(const Interval* interval, char* bwt);
  *
  * @bug no known bugs
  */
-char* create_alphabet_interval(const Interval* interval, char* bwt);
+char* create_alphabet_interval(const struct interval* interval, char* bwt);
 
 int get_char_index(const int* c_array, const char* alphabet, const char c);
 

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../../include/c_array.h"
 #include "../../include/utils.h"
-#include "../../include/backward_search.h"
+#include "../../include/structs.h"
 
 #define MAX_ALPHABET_SIZE 30
 /**

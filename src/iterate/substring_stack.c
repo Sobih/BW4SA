@@ -1,4 +1,4 @@
-#include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include "substring_stack.h"
 #include <stdlib.h>
 #include <stdio.h>

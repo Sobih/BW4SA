@@ -1,7 +1,7 @@
 #ifndef SUBSTRING_STACK_H_
 #define SUBSTRING_STACK_H_
 
-#include "../../include/iterate.h"
+struct substring;
 
 /**
 * @brief simple stack data structure for substring structs. Can hold any amount of data, array size is automatically doubled is memory gets full

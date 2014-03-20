@@ -6,7 +6,7 @@
  */
 
 
-#include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include <stdio.h>
 
 void print_node(substring* node){

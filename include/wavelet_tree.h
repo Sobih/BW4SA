@@ -15,7 +15,7 @@
 #ifndef WAVELET_TREE_H_
 #define WAVELET_TREE_H_
 
-#include "bit_vector.h"
+struct bit_vector;
 
 /**
  * @brief	A simple struct for storing a node of a wavelet tree.

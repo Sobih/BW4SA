@@ -6,7 +6,7 @@
  */
 
 #include "../../include/mum.h"
-#include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include "../../include/mapper.h"
 #include "../../include/bit_vector.h"
 #include "../../include/utils.h"

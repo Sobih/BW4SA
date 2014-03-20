@@ -2,14 +2,7 @@
 #ifndef BACKWARD_SEARCH_H_
 #define BACKWARD_SEARCH_H_
 
-/**
-* Struct for intervals in bwt
-**/
-typedef struct interval
-{
-	int i;
-	int j;
-} Interval;
+struct interval;
 
 /**
 * @brief function that finds interval of given string from given bwt
@@ -21,7 +14,7 @@ typedef struct interval
 * @return interval of searched string
 *
 **/
-Interval* backward_search(const char* bwt, const char* string);
+struct interval* backward_search(const char* bwt, const char* string);
 
 /**
  * @brief finds the interval of a given letter in an interval.
@@ -35,7 +28,7 @@ Interval* backward_search(const char* bwt, const char* string);
  * @return interval of searched left extension
  *
  */
-Interval* backward_search_interval(const char* bwt, Interval* interval, const char c);
+struct interval* backward_search_interval(const char* bwt, struct interval* interval, const char c);
 
 
 /**

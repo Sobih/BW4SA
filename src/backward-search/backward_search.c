@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "../../include/c_array.h"
-#include "../../include/backward_search.h"
+#include "../../include/structs.h"
 /*
  * backward_search.c
  *

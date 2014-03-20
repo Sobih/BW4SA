@@ -7,8 +7,8 @@
 
 #include "../../include/bit_vector.h"
 #include "print_node.h"
-#include "../../include/backward_search.h" // only for interval
-#include "../../include/iterate.h" // only for substring
+#include "../../include/structs.h"
+#include "../../include/maximal_repeats.h"
 #include "../bwt/map_bwt_to_s.h"
 #include <stdlib.h>
 #include <string.h>

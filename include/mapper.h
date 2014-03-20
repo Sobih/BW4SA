@@ -8,8 +8,8 @@
 #ifndef MAPPER_H_
 #define MAPPER_H_
 
-#include "maximal_repeats.h"
-#include "mum.h"
+struct max_repeat_node_struct;
+struct triplet_struct;
 
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found maximal repeats.
@@ -18,7 +18,7 @@
  *
  * @bug		No known bugs.
  */
-void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt, int count);
+void map_maximal_repeats_to_string(struct max_repeat_node_struct* nodes, char* bwt, int count);
 
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found MUMs.
@@ -27,6 +27,6 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt, int count)
  *
  * @bug		No known bugs.
  */
-void map_mum_triplets_to_string(triplet* nodes, char* bwt1, char* bwt2, int count);
+void map_mum_triplets_to_string(struct triplet_struct* nodes, char* bwt1, char* bwt2, int count);
 
 #endif /* MAPPER_H_ */

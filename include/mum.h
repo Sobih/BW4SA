@@ -8,7 +8,9 @@
 #ifndef MUM_H_
 #define MUM_H_
 
-#include "iterate.h"
+struct substring_struct;
+struct triplet_struct;
+struct bit_vec;
 
 typedef struct triplet_struct {
 	unsigned int pos1;
@@ -32,7 +34,7 @@ void mum_initialize_bwts(char* bwt1,char* bwt2, char* rbwt1, char* rbwt2);
  * @param	node2			The intervals of a substring in the second string
  * @bug		Doesn't differentiate between the $-characters
  */
-void search_mums(substring* node1, substring* node2);
+void search_mums(struct substring_struct* node1, struct substring_struct* node2);
 
 /**
  * @brief	Return the list of found MUMs as a list of triplet structs.
@@ -73,6 +75,6 @@ void mum_print_bit_vectors(char* string1, char* string2);
  *
  * @bug		No known bugs.
  */
-bit_vector** mum_make_bit_vectors(triplet* mapped_mums);
+struct bit_vec** mum_make_bit_vectors(triplet* mapped_mums);
 
 #endif /* MUM_H_ */
