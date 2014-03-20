@@ -6,6 +6,7 @@
 #include "../iterate/print_node.h"
 #include "../../include/bit_vector.h"
 #include "../../include/distinct_substrings.h"
+#include "../../include/maximal_repeats.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,7 +24,7 @@ void print_choices()
 	printf("7 Find MUM:s\n");
 	printf("8 Make a DOT tree\n");
 	printf("9 Count distinct substrings\n");
-
+	printf("10 Display maximal repeats\n");
 }
 
 void print_int_array(int* array, int len)
@@ -72,7 +73,7 @@ void ui()
 	printf("Write the number of the operation you want to do:\n");
 	scanf("%d", &choice);
 	
-	printf("Give the input string. ");
+	printf("Give the input string: ");
 	print_instructions(choice);
 	scanf("%s", input);
 
@@ -101,6 +102,9 @@ void ui()
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 
 		printf("%d\n", distinct_substrings(input));
+	} else if (choice == 10) {
+		iterate(input, &search_maximal_repeats);
+		maximals_print_nodes(input);
 	} else {
 		printf("Invalid choice\n");
 	}
