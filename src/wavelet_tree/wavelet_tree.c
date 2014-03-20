@@ -166,6 +166,19 @@ unsigned int get_num_bits_tree(const wavelet_tree* tree) {
 }
 
 /**
+ * @brief	A function that returns the length of the alphabet of
+ * 			the root node.
+ * @param	tree	The tree for which the alphabet length should
+ * 					be determined.
+ * @return	The length of the longest alphabet in the tree.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+unsigned int get_alphabet_length_tree(const wavelet_tree* tree) {
+	return tree->nodes[0].alphabet_length;
+}
+
+/**
  * @brief	A simple function for initializing the values in a wavelet node.
  * @param	node			The node that is to be initialized.
  * @param	string			The string used by the node.
@@ -355,6 +368,7 @@ wavelet_tree* create_wavelet_tree(const char* string) {
 	tree->nodes = malloc(tree->num_nodes * sizeof(wavelet_node));
 	tree->char_at = &wavelet_root_char_at;
 	tree->get_num_bits = &get_num_bits_tree;
+	tree->get_alphabet_length = &get_alphabet_length_tree;
 	tree->rank = &wavelet_root_rank_query;
 
 	//init root and populate tree
