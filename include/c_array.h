@@ -1,8 +1,8 @@
 #ifndef C_ARRAY_H_
 #define C_ARRAY_H_
 
-#include "backward_search.h"
-#include "wavelet_tree.h"
+struct wavelet_tree;
+struct interval;
 
 /**
  * @brief Generates array C of given string. This is still a rather slow version of algorithm, but
@@ -16,8 +16,8 @@
  *
  * @bug no known bugs
  */
-unsigned int* create_c_array(const wavelet_node* string, const interval* inter,
-		const char* alphabet, unsigned int alphabet_length);
+unsigned int* create_c_array(const struct wavelet_tree* string, const struct interval* inter,
+		const char* alphabet, unsigned int alphabet_length, unsigned int* target);
 
 /**
  * @brief Generates the alphabet of given string in the substring determined by interval struct
@@ -32,6 +32,7 @@ unsigned int* create_c_array(const wavelet_node* string, const interval* inter,
  *
  * @bug no known bugs
  */
-char* create_alphabet_interval(const interval* interval, const wavelet_node* string);
+char* create_alphabet_interval(const struct interval* interval, const struct wavelet_tree* string,
+		char* target);
 
 #endif

@@ -9,6 +9,8 @@
 #ifndef BWT_TO_S_H_
 #define BWT_TO_S_H_
 
+struct wavelet_tree;
+
 /**
  * @brief A function to convert a BWT of a string back to an original string.
  *
@@ -21,7 +23,7 @@
  * @bug				No known bugs
  */
 
-char* bwt_to_s(char* bwt); 
+char* bwt_to_s(const struct wavelet_tree* bwt);
 
 
 #endif /* BWT_TO_S_H_ */

@@ -6,11 +6,11 @@
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
 
-interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string) {
+interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string, interval* target) {
 	int i = 0, j = bwt->get_num_bits(bwt) - 1, k, index;
 	unsigned int alphabet_length = bwt->get_alphabet_length(bwt) - 1;
 	char* alphabet = bwt->get_alphabet(bwt), current;
-	unsigned int* c_array = create_c_array(bwt);
+	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
 
 	for(k = string->get_num_bits(string) - 1; k >= 0; k--) {
 		if(j < i)
@@ -26,27 +26,32 @@ interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string) {
 		j = i + bwt->rank(bwt, current, i, j) - 1;
 	}
 
-	interval* new_interval = malloc(sizeof(interval));
-	new_interval->i = i;
-	new_interval->j = j;
+	if (target == 0)
+		target = malloc(sizeof(interval));
 
-	return new_interval;		
+	target->i = i;
+	target->j = j;
+
+	return target;
 }
 
-interval* backward_search_interval(const wavelet_tree* bwt, const interval* interval, char c) {
-	int* c_array = create_c_array(bwt);
+interval* backward_search_interval(const wavelet_tree* bwt, const interval* inter, char c,
+		interval* target) {
+	int* c_array = create_c_array(bwt, 0, 0, 0, 0);
 	char* alphabet = bwt->get_alphabet(bwt);
 
 	int index = binary_search(alphabet, &c, 0, bwt->get_alphabet_length(bwt) - 1, sizeof(char));
-	int i = index + bwt->rank(bwt, c, 0, interval->i - 1);
-	int j = i + bwt->rank(bwt, c, interval->i, interval->j) - 1;
+	int i = index + bwt->rank(bwt, c, 0, inter->i - 1);
+	int j = i + bwt->rank(bwt, c, inter->i, inter->j) - 1;
 
 	if (i > j) return NULL;
 
-	struct interval* new_interval = malloc(sizeof(struct interval));
-	new_interval->i = i;
-	new_interval->j = j;
+	if (target == 0)
+		target = malloc(sizeof(interval));
 
-	return new_interval;
+	target->i = i;
+	target->j = j;
+
+	return target;
 }
 	

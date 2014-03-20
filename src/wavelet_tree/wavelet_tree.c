@@ -390,26 +390,6 @@ wavelet_tree* create_wavelet_tree(const char* string) {
 	return tree;
 }
 
-void free_wavelet_tree(wavelet_tree* tree) {
-	if (tree == NULL)
-		return;
-
-	//free alphabet, since it only has one allocation throughout the tree
-	free(tree->nodes[0].alphabet);
-
-	//free subtrees of root to leave original string intact
-	if (tree->nodes[0].children[0] != 0) {
-		free_subtree(tree, tree->nodes[0].children[0]);
-		free_subtree(tree, tree->nodes[0].children[1]);
-	}
-
-	//free root bit vector
-	free(tree->nodes[0].vector.vector);
-
-	free(tree->nodes);
-	free(tree);
-}
-
 /**
  * @brief	Frees a wavelet (sub)tree.
  *
@@ -439,4 +419,24 @@ void free_subtree(wavelet_tree* tree, unsigned int node) {
 		free_subtree(tree, tree->nodes[node].children[0]);
 		free_subtree(tree, tree->nodes[node].children[1]);
 	}
+}
+
+void free_wavelet_tree(wavelet_tree* tree) {
+	if (tree == NULL)
+		return;
+
+	//free alphabet, since it only has one allocation throughout the tree
+	free(tree->nodes[0].alphabet);
+
+	//free subtrees of root to leave original string intact
+	if (tree->nodes[0].children[0] != 0) {
+		free_subtree(tree, tree->nodes[0].children[0]);
+		free_subtree(tree, tree->nodes[0].children[1]);
+	}
+
+	//free root bit vector
+	free(tree->nodes[0].vector.vector);
+
+	free(tree->nodes);
+	free(tree);
 }

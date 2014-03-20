@@ -12,11 +12,9 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-#include <limits.h>
-
 struct wavelet_tree;
 struct wavelet_node;
-struct bit_vec;
+struct bit_vector;
 
 /**
  * @brief	Standard generic quicksort-implementation.
@@ -101,7 +99,7 @@ void print_bits(unsigned int mask);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_bit_vector(struct bit_vec* vector);
+void print_bit_vector(struct bit_vector* vector);
 
 /**
  * @brief	A simple function that prints a node in a wavelet tree to stdout.

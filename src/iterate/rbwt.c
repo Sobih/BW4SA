@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../bwt/s_to_bwt.h"
+#include "../../include/wavelet_tree.h"
 
 /** 
  * @brief	reverses a string	
@@ -25,17 +26,13 @@
  * @author 	Paula Lehtola
  * @bug 	No known bugs.
  */
+char* reverse_string(const char* string, char* target, unsigned int length) {
+	for (int i = 0; i < length - 1; i++)
+		target[i] = string[length - i - 1];
 
-char *reverse_string(char *string) {
-	const int len = strlen(string);
-	int i;
-	char *rev = malloc(len+1);
-	for (i = 0; i < len; i++) {
-		rev[i] = string[len-i-1];
-	}
-	rev[len] = '\0';
+	target[length - 1] = '\0';
 
-	return rev;
+	return target;
 }
 
 /** 
@@ -46,10 +43,11 @@ char *reverse_string(char *string) {
  * @author 	Paula Lehtola
  * @bug 	No known bugs.
  */
-
-char *reverse_bwt(char *string) {
-	char *rev = reverse_string(string);
-	char *bwt = s_to_BWT(rev);
+wavelet_tree* reverse_bwt(const char* string) {
+	unsigned int length = strlen(string);
+	uchar* rev = malloc(length * sizeof(uchar));
+	rev = reverse_string(string, rev, length);
+	wavelet_tree* bwt = s_to_BWT(rev);
 	free(rev);
 	return bwt;
 }

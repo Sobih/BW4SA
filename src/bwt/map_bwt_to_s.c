@@ -8,22 +8,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../../include/c_array.h"
+#include "../../include/utils.h"
+#include "../../include/wavelet_tree.h"
 
-int* map_create_suffix_array_from_bwt(const char* bwt)
+int* map_create_suffix_array_from_bwt(const wavelet_tree* bwt)
 {
-	int string_length = strlen(bwt);
-	int* suffix_array = malloc(sizeof(int)*string_length);
-	int interval = 0;
+	int string_length = bwt->get_num_bits(bwt), interval = 0, index;
+	int* suffix_array = malloc(sizeof(int) * string_length);
 
-	int* c_array = create_c_array(bwt);
-	char* alphabet = get_alphabet(bwt);
-	int c_value = 0;
+	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
+	char* alphabet = bwt->get_alphabet(bwt), current;
+	int c_value = 0, alphabet_length = bwt->get_alphabet_length(bwt);
 
-	for(int i=string_length-1; i>= 0; i--){
+	for(int i = string_length - 1; i >= 0; i--) {
 		suffix_array[interval] = i;
-		interval = get_char_index(c_array, alphabet, bwt[interval])
-				+ rank(interval, bwt[interval], bwt);
-
+		current = bwt->char_at(bwt, interval);
+		index = binary_search(alphabet, &current, sizeof(char), alphabet_length, 0);
+		interval = c_array[index] + bwt->rank(bwt, current, 0, interval - 1);
 	}
+
 	return suffix_array;
 }
