@@ -12,6 +12,7 @@
 #include "../../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static char* mum_bwt1;
 static char* mum_bwt2;
