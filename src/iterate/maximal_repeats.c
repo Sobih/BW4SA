@@ -68,9 +68,9 @@ max_repeat_node* get_nodes() {
 }
 
 void print_maximal_repeat_substrings(char* string) {
-	map_maximal_repeats_to_string(nodes, max_bwt);
-	int i;
 	int count = get_max_repeats_nodes_index();
+	map_maximal_repeats_to_string(nodes, max_bwt, count);
+	int i;
 
 	for (i = 0; i < count; i++) {
 		printf("%s \n",

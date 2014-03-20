@@ -9,6 +9,7 @@
 #include "../../include/iterate.h"
 #include "../../include/maximal_repeats.h"
 #include "../../include/mapper.h"
+#include "../../src/bwt/s_to_bwt.h"
 #include <stdlib.h>
 
 START_TEST(test_maximal_repeat2)
@@ -28,7 +29,7 @@ START_TEST(test_maximal_repeat2_mapped)
 	{
 		iterate("abracadabra", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("abracadabra"));
+		map_maximal_repeats_to_string(nodes, s_to_BWT("abracadabra"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
 		ck_assert_int_eq(10, nodes[0].normal->i);
 		ck_assert_int_eq(1, nodes[0].length);
@@ -53,7 +54,7 @@ START_TEST(test_maximal_repeat2b_mapped)
 	{
 		iterate("hattivatti", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("hattivatti"));
+		map_maximal_repeats_to_string(nodes, s_to_BWT("hattivatti"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
 		ck_assert_int_eq(8, nodes[0].normal->i);
 		ck_assert_int_eq(1, nodes[0].length);
@@ -81,7 +82,7 @@ START_TEST(test_maximal_repeat3_mapped)
 	{
 		iterate("balalaikka", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("balalaikka"));
+		map_maximal_repeats_to_string(nodes, s_to_BWT("balalaikka"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(3, get_max_repeats_nodes_index());
 		ck_assert_int_eq(9, nodes[0].normal->i);
 		ck_assert_int_eq(1, nodes[0].length);
@@ -112,7 +113,7 @@ START_TEST(test_maximal_repeat1_mapped)
 	{
 		iterate("ilotalo", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("ilotalo"));
+		map_maximal_repeats_to_string(nodes, s_to_BWT("ilotalo"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(1, get_max_repeats_nodes_index());
 		ck_assert_int_eq(5, nodes[0].normal->i);
 		ck_assert_int_eq(2, nodes[0].length);

@@ -10,9 +10,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt) {
+void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt, int count) {
 	int i;
-	int count = get_max_repeats_nodes_index();
 	long n = strlen(bwt);
 	int k;
 	Interval* interval = malloc(sizeof(Interval));
