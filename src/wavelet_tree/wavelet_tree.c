@@ -179,6 +179,18 @@ unsigned int get_alphabet_length_tree(const wavelet_tree* tree) {
 }
 
 /**
+ * @brief	A function that returns the alphabet of the root node.
+ * @param	tree	The tree for which the alphabet should be
+ * 					returned.
+ * @return	The alphabet used by the root node.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+char* get_alphabet(const wavelet_tree* tree) {
+	return tree->nodes[0].alphabet;
+}
+
+/**
  * @brief	A simple function for initializing the values in a wavelet node.
  * @param	node			The node that is to be initialized.
  * @param	string			The string used by the node.

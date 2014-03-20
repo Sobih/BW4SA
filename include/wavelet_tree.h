@@ -48,6 +48,7 @@ typedef struct wavelet_node {
 typedef struct wavelet_tree {
 	unsigned int (*get_num_bits) (const struct wavelet_tree* tree);
 	unsigned int (*get_alphabet_length) (const struct wavelet_tree* tree);
+	char* (*get_alphabet) (const struct wavelet_tree* tree);
 	int (*rank) (const struct wavelet_tree* node, char c, int start, int end);
 	char (*char_at) (const struct wavelet_tree* node, int index);
 
