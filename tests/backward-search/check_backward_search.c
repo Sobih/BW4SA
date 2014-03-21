@@ -14,16 +14,16 @@
 START_TEST(test_search_simple)
 {
 	char* str = "ard$rcaaaabb";
-	wavelet_node* bwt = create_wavelet_tree(str);
+	wavelet_tree* bwt = create_wavelet_tree(str);
 
 	printf("asd\n");
 
 	str = "abra";
-	wavelet_node* string = create_wavelet_tree(str);
+	wavelet_tree* string = create_wavelet_tree(str);
 
 	printf("asd\n");
 
-	interval* interval = backward_search(bwt, string);
+	interval* interval = backward_search(bwt, string, 0);
 
 	printf("Interval: %u, %u\n", interval->i, interval->j);
 
@@ -35,16 +35,16 @@ END_TEST
 START_TEST(test_search_simple2)
 {
 	char* str = "ard$rcaaaabb";
-	wavelet_node* bwt = create_wavelet_tree(str);
+	wavelet_tree* bwt = create_wavelet_tree(str);
 
 	printf("asd\n");
 
 	str = "bra";
-	wavelet_node* string = create_wavelet_tree(str);
+	wavelet_tree* string = create_wavelet_tree(str);
 
 	printf("asd\n");
 
-	interval* interval = backward_search(bwt, string);
+	interval* interval = backward_search(bwt, string, 0);
 	ck_assert_int_eq(6, interval->i);
 	ck_assert_int_eq(7, interval->j);
 }
@@ -53,16 +53,16 @@ END_TEST
 START_TEST(test_search_simple3)
 {
 	char* str = "ard$rcaaaabb";
-	wavelet_node* bwt = create_wavelet_tree(str);
+	wavelet_tree* bwt = create_wavelet_tree(str);
 
 	printf("asd\n");
 
 	str = "abracadabra";
-	wavelet_node* string = create_wavelet_tree(str);
+	wavelet_tree* string = create_wavelet_tree(str);
 
 	printf("asd\n");
 
-	interval* interval = backward_search(bwt, string);
+	interval* interval = backward_search(bwt, string, 0);
 	printf("Interval: %u, %u\n", interval->i, interval->j);
 
 	ck_assert_int_eq(3, interval->i);
@@ -73,16 +73,16 @@ END_TEST
 START_TEST(test_search_when_not_found)
 {
 	char* str = "ard$rcaaaabb";
-	wavelet_node* bwt = create_wavelet_tree(str);
+	wavelet_tree* bwt = create_wavelet_tree(str);
 
 	printf("asd\n");
 
 	str = "nakki";
-	wavelet_node* string = create_wavelet_tree(str);
+	wavelet_tree* string = create_wavelet_tree(str);
 
 	printf("asd\n");
 
-	interval* interval = backward_search(bwt, string);
+	interval* interval = backward_search(bwt, string, 0);
 	fail_unless(interval == NULL);
 }
 END_TEST
@@ -90,16 +90,16 @@ END_TEST
 START_TEST(test_search_different_word)
 {
 	char* str = "ipssm$pissii";
-	wavelet_node* bwt = create_wavelet_tree(str);
+	wavelet_tree* bwt = create_wavelet_tree(str);
 
 	printf("asd\n");
 
 	str = "iss";
-	wavelet_node* string = create_wavelet_tree(str);
+	wavelet_tree* string = create_wavelet_tree(str);
 
 	printf("asd\n");
 
-	interval* interval = backward_search(bwt, string);
+	interval* interval = backward_search(bwt, string, 0);
 	ck_assert_int_eq(3, interval->i);
 	ck_assert_int_eq(4, interval->j);
 }

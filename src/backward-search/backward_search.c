@@ -7,30 +7,49 @@
 #include "../../include/wavelet_tree.h"
 
 interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string, interval* target) {
+	printf("OAIGDJ\n");
 	int i = 0, j = bwt->get_num_bits(bwt) - 1, k, index;
+	printf("OAIGDJ\n");
 	unsigned int alphabet_length = bwt->get_alphabet_length(bwt) - 1;
+	printf("OAIGDJ\n");
 	char* alphabet = bwt->get_alphabet(bwt), current;
+	printf("OAIGDJ\n");
 	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
+	printf("OAIGDJ\n");
 
 	for(k = string->get_num_bits(string) - 1; k >= 0; k--) {
-		if(j < i)
+		printf("i: %d, j: %d\n", i, j);
+
+		if(j < i) {
+			printf("NULLNULLNULLNULL\n");
 			return NULL;
+		}
 
 		current = string->char_at(string, k);
-		index = binary_search(alphabet, &current, 0, alphabet_length, sizeof(char));
+		index = binary_search(alphabet, &current, sizeof(char), alphabet_length, 0);
 
-		if (index < 0)
+		printf("index: %d\n", index);
+
+		if (index < 0) {
+			printf("NULLNULLNULLNULL\n");
 			return NULL;
+		}
 
 		i = c_array[index] + bwt->rank(bwt, current, 0, i - 1);
 		j = i + bwt->rank(bwt, current, i, j) - 1;
 	}
 
+	printf("ASODIJSAOIDJOAISJHFOIAHSOGIHSAOFIH\n");
+
 	if (target == 0)
 		target = malloc(sizeof(interval));
 
+	printf("AOSIDJBGEYIIBGEAFDGKJHBSHGKJBDGSGFDSKJEAKJYGDAGDAKJHGDAKJHBGDAKJHB\n");
+
 	target->i = i;
 	target->j = j;
+
+	printf("AOSIDJBGEYIIBGEAFDGKJHBSHGKJBDGSGFDSKJEAKJYGDAGDAKJHGDAKJHBGDAKJHB\n");
 
 	return target;
 }

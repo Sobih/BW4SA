@@ -186,7 +186,7 @@ unsigned int get_alphabet_length_tree(const wavelet_tree* tree) {
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-char* get_alphabet(const wavelet_tree* tree) {
+char* get_alphabet_tree(const wavelet_tree* tree) {
 	return tree->nodes[0].alphabet;
 }
 
@@ -381,6 +381,7 @@ wavelet_tree* create_wavelet_tree(const char* string) {
 	tree->char_at = &wavelet_root_char_at;
 	tree->get_num_bits = &get_num_bits_tree;
 	tree->get_alphabet_length = &get_alphabet_length_tree;
+	tree->get_alphabet = &get_alphabet_tree;
 	tree->rank = &wavelet_root_rank_query;
 
 	//init root and populate tree
