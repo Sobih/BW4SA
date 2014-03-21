@@ -4,6 +4,7 @@
 #include "../../src/iterate/substring_stack.h"
 #include "../../include/bit_vector.h"
 #include "../../include/backward_search.h"
+#include "../../include/wavelet_tree.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,7 +14,8 @@ int list_ptr = 0;
 START_TEST(simple_runs_test)
 {
 	char* string = "abracadabra";
-	bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 0));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 1));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 2));
@@ -32,7 +34,8 @@ END_TEST
 START_TEST(another_simple_test)
 {
 	char* string = "HATTIVATTI";
-	bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 0));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 1));
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 2));
@@ -50,7 +53,8 @@ END_TEST
 START_TEST(test_interval_query)
 {
 	char* string = "ABRACADABRA";
-	bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
 	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
 	test1->j = 7;
@@ -65,7 +69,8 @@ END_TEST
 START_TEST(test_wrong_intervals)
 {
 	char* string = "ABRACADABRA";
-	bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* tree = create_wavelet_tree(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
 	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
 	test1->j = 4;
@@ -109,8 +114,8 @@ START_TEST(test_iterate2)
 	shared_list = malloc(sizeof(substring*)*max_size);
 	char* string = "hattivatti";
 
-	Interval* normal = &((Interval) {.i = 8, .j = 9});
-	Interval* reverse = &((Interval) {.i = 4, .j = 5});
+	interval* normal = &((interval) {.i = 8, .j = 9});
+	interval* reverse = &((interval) {.i = 4, .j = 5});
 	substring* tti = &((substring) {.normal = normal, .reverse = reverse, .length = 3});
 
 	printf("testing iterate2\n");
@@ -129,12 +134,12 @@ START_TEST(test_iterate1)
 	shared_list = malloc(sizeof(substring*)*max_size);
 	char* string = "abracadabra";
 
-	Interval* normal = &((Interval) {.i = 2, .j = 3});
-	Interval* reverse = &((Interval) {.i = 4, .j = 5});
+	interval* normal = &((interval) {.i = 2, .j = 3});
+	interval* reverse = &((interval) {.i = 4, .j = 5});
 	substring* abra = &((substring) {.normal = normal, .reverse = reverse, .length = 4});
 
-	normal = &((Interval) {.i = 10, .j = 11});
-	reverse = &((Interval) {.i = 4, .j = 5});
+	normal = &((interval) {.i = 10, .j = 11});
+	reverse = &((interval) {.i = 4, .j = 5});
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
 	iterate(string, &put_substring_list);
