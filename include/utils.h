@@ -12,8 +12,9 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+struct wavelet_tree;
 struct wavelet_node;
-struct bit_vec;
+struct bit_vector;
 
 /**
  * @brief	Standard generic quicksort-implementation.
@@ -79,8 +80,8 @@ char* determine_alphabet(const char* string);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int binary_search(const void* arr, const void* key, unsigned int min, unsigned int max,
-		unsigned int entry_size);
+int binary_search(const void* arr, const void* key, unsigned int entry_size,
+		unsigned int max, unsigned int min);
 
 /**
  * @brief	Prints the bits of an unsigned int.
@@ -98,7 +99,7 @@ void print_bits(unsigned int mask);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_bit_vector(struct bit_vec* vector);
+void print_bit_vector(struct bit_vector* vector);
 
 /**
  * @brief	A simple function that prints a node in a wavelet tree to stdout.
@@ -121,7 +122,7 @@ void print_wavelet_node(struct wavelet_node* node);
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_wavelet_tree(struct wavelet_node* node);
+void print_wavelet_tree(struct wavelet_tree* tree);
 
 /**
  * @brief	Returns a substring char array from the given char array.
@@ -132,5 +133,18 @@ void print_wavelet_tree(struct wavelet_node* node);
  * @bug		No known bugs.
  */
 char *substring_from_string(char *string, int position, int length);
+
+/**
+* @brief creates vector runs from given string
+*
+* @param string normal string (rbwt is generated from it)
+*
+* @return pointer to runs vector
+*
+* @author Topi Paavilainen
+*
+* @bug no known bugs
+**/
+struct bit_vector* create_runs_vector(const struct wavelet_tree* string, struct bit_vector* target);
 
 #endif /* UTILS_H_ */

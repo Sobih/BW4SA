@@ -15,31 +15,46 @@
 #ifndef WAVELET_TREE_H_
 #define WAVELET_TREE_H_
 
-struct bit_vector;
+#include "bit_vector.h"
 
 /**
  * @brief	A simple struct for storing a node of a wavelet tree.
  *
  * This struct stores all the necessary data of a node inside a
- * wavelet tree. The tree is a linked structure, so traversal of
- * the tree is possible in normal (root -> leaf) and reverse
- * (leaf -> root) order thanks to every node storing their respective
- * children and parent. Every node also contains a pointer to a
- * rank-function for the wavelet tree for ease of access.
+ * wavelet tree, including the bit vector, the alphabet used and
+ * locations of its children (if any).
  *
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
 typedef struct wavelet_node {
 	char* string;
-	struct bit_vec* vector;
+	bit_vector vector;
 	char* alphabet;
 	unsigned int alphabet_length;
-	struct wavelet_node* parent;
-	struct wavelet_node** children;
-
-	int (*rank) (const struct wavelet_node* node, char c, int index);
+	unsigned int children[2];
 } wavelet_node;
+
+/**
+ * @brief	A struct for storing a wavelet tree.
+ *
+ * This structure stores all the nodes of a wavelet tree, as well
+ * as function pointers to operations possible on the tree. Such
+ * operations include length of the root node, rank and char at.
+ *
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+typedef struct wavelet_tree {
+	unsigned int (*get_num_bits) (const struct wavelet_tree* tree);
+	unsigned int (*get_alphabet_length) (const struct wavelet_tree* tree);
+	char* (*get_alphabet) (const struct wavelet_tree* tree);
+	int (*rank) (const struct wavelet_tree* node, char c, int start, int end);
+	char (*char_at) (const struct wavelet_tree* node, int index);
+
+	unsigned int num_nodes;
+	wavelet_node* nodes;
+} wavelet_tree;
 
 /**
  * @brief	An algorithm that creates a wavelet tree from a string.
@@ -49,42 +64,24 @@ typedef struct wavelet_node {
  *
  * @param	string	The string of characters from which a wavelet
  * 					tree is to be constructed.
- * @return			The root of the constructed wavelet tree, or
+ * @return			A structure containing the wavelet tree, or
  * 					NULL if the string is uninitialized.
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-wavelet_node* create_wavelet_tree(const char* string);
+wavelet_tree* create_wavelet_tree(const char* string);
 
 /**
  * @brief	Frees the memory used by an entire wavelet tree.
  *
  * This algorithm frees an entire wavelet tree. It also frees
- * the alphabet used by the wavelet tree, and since the pointer
- * to the alphabet is shared by all nodes this algorithm should
- * not be called on any node but the root.
+ * the alphabet used by the wavelet tree, but leaves the
+ * original string from which the tree was created intact.
  *
- * @param	root	The root of the wavelet tree.
- * @see		#free_subtree
+ * @param	tree	The wavelet tree to be freed.
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void free_wavelet_tree(wavelet_node* root);
-
-/**
- * @brief	Frees a wavelet (sub)tree.
- *
- * This algorithm frees a wavelet node and all of it's
- * descendants. It does not free the alphabet used by the
- * wavelet tree, so this algorithm can safely be used on any
- * node inside a wavelet tree without damaging the remaining
- * tree.
- *
- * @param	node	The root of the subtree that is to be freed.
- * @see		#free_wavelet_tree
- * @author	Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-void free_subtree(wavelet_node* node);
+void free_wavelet_tree(wavelet_tree* tree);
 
 #endif /* WAVELET_TREE_H_ */

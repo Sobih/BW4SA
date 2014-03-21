@@ -8,12 +8,13 @@
 #ifndef MAXIMAL_REPEATS_H_
 #define MAXIMAL_REPEATS_H_
 
-struct substring_struct;
-struct interval;
+#include "structs.h"
 
-typedef struct max_repeat_node_struct
+struct wavelet_tree;
+
+typedef struct max_repeat_node
 {
-	struct interval* normal;
+	interval normal;
 	int length;
 } max_repeat_node;
 
@@ -22,14 +23,14 @@ typedef struct max_repeat_node_struct
  *
  * @param 		BWT of the searched string
  */
-void max_repeats_initialize_bwt(char* bwt);
+void max_repeats_initialize_bwt(struct wavelet_tree* bwt);
 
 /**
  * @brief 		The function given to callback. Determines if a node is a maximal repeat and adds it to a list.
  *
  * @param 		A substring node that has the intervals in BWT and BWT of the reverse of the string.
  */
-void search_maximal_repeats(struct substring_struct* node);
+void search_maximal_repeats(substring* node);
 
 /**
  * @brief 		Returns the list of maximal repeat nodes.

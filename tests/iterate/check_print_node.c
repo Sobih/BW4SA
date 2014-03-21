@@ -7,8 +7,8 @@
 substring* create_substr(void)
 {
 	substring* new = malloc(sizeof(substring));
-	new->normal = malloc(sizeof(Interval));
-	new->reverse = malloc(sizeof(Interval));
+	new->normal = malloc(sizeof(interval));
+	new->reverse = malloc(sizeof(interval));
 	return new;
 }
 

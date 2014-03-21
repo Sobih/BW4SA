@@ -12,12 +12,12 @@ typedef struct interval
 {
 	int i;
 	int j;
-} Interval;
+} interval;
 
-typedef struct substring_struct
+typedef struct substring
 {
-	Interval* normal;
-	Interval* reverse;
+	interval normal;
+	interval reverse;
 	int length;
 } substring;
 

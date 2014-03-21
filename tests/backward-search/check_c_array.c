@@ -1,11 +1,16 @@
 
 
-#include "c_array.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
+<<<<<<< HEAD
 #include "../../include/backward_search.h"
+=======
+#include "../../include/c_array.h"
+#include "../../include/backward_search.h";
+#include "../../include/wavelet_tree.h"
+>>>>>>> e837fbf518a16fe8b37f60112ff056551794a3f6
 
 START_TEST(test_get_index)
 {
@@ -49,11 +54,12 @@ START_TEST(test_carray_simple)
 {
 	const int correct_array[] = {0,1, 6, 8, 9, 10};
 	char* string = "ABRACADABRA$";
-	int i;
-	int* carray = create_c_array(string);
-	for(i=0;i<6;i++){
+	wavelet_node* root = create_wavelet_tree(string);
+
+	int* carray = create_c_array(root);
+
+	for(int i = 0; i < 6; i++)
 		ck_assert_int_eq(correct_array[i], carray[i]);
-	}
 }
 END_TEST
 
@@ -61,19 +67,19 @@ START_TEST(test_carray_simple2)
 {
 	int correct_array[] = {0,1,3,4,6,10};
 	char* string = "hattivatti$";
-	int i;
-	int* carray = create_c_array(string);
-	for(i=0;i<6;i++){
-		ck_assert_int_eq(correct_array[i], carray[i]);
-	}
+	wavelet_node* root = create_wavelet_tree(string);
+
+	int* carray = create_c_array(root);
 	
+	for(int i = 0; i < 6; i++)
+		ck_assert_int_eq(correct_array[i], carray[i]);
 }
 END_TEST
 
 START_TEST(carray_interval1)
 {
 	char* string = "aasdjfsbdhablsdaksdakjsdaksjdbiuephq";
-	Interval* interval = malloc(sizeof(Interval));
+	interval* interval = malloc(sizeof(interval));
 	interval->i = 0;
 	interval->j = 5;
 	int correct[] = {0,2,3,4,5};
@@ -87,7 +93,7 @@ END_TEST
 START_TEST(carray_interval2)
 {
 	char* string = "aggcaggaatttacagcaagacagcgacgacattat";
-	Interval* interval = malloc(sizeof(Interval));
+	interval* interval = malloc(sizeof(interval));
 	interval->i = 7;
 	interval->j = 13;
 	int correct[] = {0,3,4};
@@ -101,7 +107,7 @@ END_TEST
 START_TEST(alphabet_interval1)
 {
 	char* string = "abracadabra";
-	Interval* interval = malloc(sizeof(Interval));
+	interval* interval = malloc(sizeof(interval));
 	interval->i = 4;
 	interval->j = 6;
 	char* correct = "acd";
@@ -115,7 +121,7 @@ END_TEST
 START_TEST(alphabet_interval2)
 {
 	char* string = "dsdasdasdasdppkkklklkljjljpkkpkp";
-	Interval* interval = malloc(sizeof(Interval));
+	interval* interval = malloc(sizeof(interval));
 	interval->i = 10;
 	interval->j = 14;
 	char* correct = "dkps";

@@ -98,6 +98,7 @@ START_TEST (test_bit_marking) {
 		ck_assert((vector->vector[indices[i] / 32] & mask) == mask);
 	}
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -140,6 +141,7 @@ START_TEST (test_bit_unmarking) {
 			ck_assert((vector->vector[indices[i] / 32] & mask) == mask);
 	}
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -179,6 +181,7 @@ START_TEST (test_mark_checking) {
 				vector->is_bit_marked(vector, indices[i]));
 	}
 
+	free(indices);
 	free_bit_vector(vector);
 }
 END_TEST
@@ -188,10 +191,6 @@ START_TEST (test_rank) {
 	unsigned int length = 503 * 32, ind_amount = ceil(length / 30), random;
 	unsigned int* indices = calloc(ind_amount, sizeof(unsigned int));
 
-	//initialize indices to 0
-	for (int i = 0; i < ind_amount; ++i)
-		indices[i] = 0;
-
 	//initialize random seed
 	srand(time(NULL));
 
@@ -200,7 +199,7 @@ START_TEST (test_rank) {
 	init_bit_vector(vector, length);
 
 	//test that rank doesn't find any marked bits
-	ck_assert(vector->rank(vector, vector->length * 32) == 0);
+	ck_assert(vector->rank(vector, 0, vector->get_length(vector)) == 0);
 
 	//mark bits at random indices
 	for (int i = 0; i < ind_amount; ++i) {
@@ -213,7 +212,26 @@ START_TEST (test_rank) {
 	}
 
 	//check that rank returns all marked bits
-	ck_assert(vector->rank(vector, vector->length * 32) == ind_amount);
+	ck_assert(vector->rank(vector, 0, vector->get_length(vector) - 1) == ind_amount);
+
+	free(indices);
+	free_bit_vector(vector);
+}
+END_TEST
+
+START_TEST (test_rank_lower_index) {
+	struct bit_vec* vector;
+	unsigned int length = 1;
+
+	vector = malloc(sizeof(bit_vector));
+	init_bit_vector(vector, length);
+	vector->vector[0] = 2453799;
+	vector->filler_bits = 10;
+
+	ck_assert(vector->rank(vector, 0, vector->length * 32) == 11);
+	ck_assert(vector->rank(vector, 0, 9) == 5);
+	ck_assert(vector->rank(vector, 0, 0) == 1);
+	ck_assert(vector->rank(vector, 0, 14) == 8);
 
 	free_bit_vector(vector);
 }
@@ -224,9 +242,11 @@ START_TEST(test_rank_interval1) {
 	init_bit_vector(vec, 10);
 	vec->mark_bit(vec, 2);
 	vec->mark_bit(vec, 4);
-	ck_assert_int_eq(2, vec->rank_interval(vec, 2, 4));
-	ck_assert_int_eq(1, vec->rank_interval(vec, 3, 7));
-	ck_assert_int_eq(2, vec->rank_interval(vec, 0, 9));
+	ck_assert_int_eq(2, vec->rank(vec, 2, 4));
+	ck_assert_int_eq(1, vec->rank(vec, 3, 7));
+	ck_assert_int_eq(2, vec->rank(vec, 0, 9));
+
+	free_bit_vector(vec);
 }
 END_TEST
 
@@ -237,12 +257,14 @@ START_TEST(test_rank_interval2) {
 	vec->mark_bit(vec, 89);
 	vec->mark_bit(vec, 56);
 	vec->mark_bit(vec, 28);
-	ck_assert_int_eq(4, vec->rank_interval(vec, 0, 99));
-	ck_assert_int_eq(0, vec->rank_interval(vec, 16, 26));
-	ck_assert_int_eq(2, vec->rank_interval(vec, 27, 28));
-	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 89));
-	ck_assert_int_eq(3, vec->rank_interval(vec, 28, 93));
-	ck_assert_int_eq(0, vec->rank_interval(vec, 28, 1020));
+	ck_assert_int_eq(4, vec->rank(vec, 0, 99));
+	ck_assert_int_eq(0, vec->rank(vec, 16, 26));
+	ck_assert_int_eq(2, vec->rank(vec, 27, 28));
+	ck_assert_int_eq(3, vec->rank(vec, 28, 89));
+	ck_assert_int_eq(3, vec->rank(vec, 28, 93));
+	ck_assert_int_eq(3, vec->rank(vec, 28, 1020));
+
+	free_bit_vector(vec);
 }
 END_TEST
 
@@ -256,6 +278,7 @@ Suite* array_suite(void) {
 	tcase_add_test (tc_bit_vector, test_bit_unmarking);
 	tcase_add_test (tc_bit_vector, test_mark_checking);
 	tcase_add_test (tc_bit_vector, test_rank);
+	tcase_add_test (tc_bit_vector, test_rank_lower_index);
 	tcase_add_test (tc_bit_vector, test_rank_interval1);
 	tcase_add_test (tc_bit_vector, test_rank_interval2);
 	suite_add_tcase (suite, tc_bit_vector);
