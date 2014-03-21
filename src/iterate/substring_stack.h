@@ -11,7 +11,7 @@
 **/
 typedef struct substring_stack_struct
 {
-	substring** array;
+	substring* array;
 	int array_size;
 	int array_ptr;
 }substring_stack;
@@ -42,5 +42,7 @@ void push(substring_stack* stack, substring* substr);
 * @return pointer to the popped substring
 **/
 substring* pop(substring_stack* stack);
+
+inline void free_stack(substring_stack* stack);
 
 #endif /* SUBSTRING_STACK_H_ */
