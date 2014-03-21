@@ -62,9 +62,10 @@ inline interval* update_reverse_interval(interval* inter, interval* normal, cons
  *
  * @return pointer to a new substring struct
  */
-inline substring* create_substring(interval* normal, interval* reverse, int length)
+inline substring* create_substring(interval* normal, interval* reverse, int length, substring* target)
 {
-	substring* target = malloc(sizeof(substring));
+	if (target == 0)
+		target = malloc(sizeof(substring));
 
 	target->normal.i = normal->i;
 	target->normal.j = normal->j;
@@ -95,7 +96,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	interval* reverse = &((interval) {.i = 0, .j = bwt_length - 1});
 
 	//create starting substring
-	substring* new_substring, *substring = create_substring(normal, reverse, 0);
+	substring* new_substring = 0, *substring = create_substring(normal, reverse, 0, 0);
 
 	while (1) {
 		if (substring == NULL)
@@ -114,7 +115,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 					alphabet_length, c_array, alpha_data->alphabet[i], reverse);
 
 			if(is_reverse_interval_right_maximal(reverse_runs, reverse)) {
-				new_substring = create_substring(normal, reverse, substring->length + 1);
+				new_substring = create_substring(normal, reverse, substring->length + 1, new_substring);
 				// callback function pointers
 				callback(new_substring);
 				push(stack, new_substring);
