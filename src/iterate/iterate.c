@@ -121,14 +121,13 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 			}
 		}
 
-		free(substring);
-
 		substring = pop(stack);
 	}
 
 	free(c_array);
 	free(alpha_data->alphabet);
 	free(alpha_data);
+	free_stack(stack);
 }
 
 /*
