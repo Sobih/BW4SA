@@ -43,6 +43,6 @@ void push(substring_stack* stack, substring* substr);
 **/
 substring* pop(substring_stack* stack);
 
-inline void free_stack(substring_stack* stack);
+void free_stack(substring_stack* stack);
 
 #endif /* SUBSTRING_STACK_H_ */
