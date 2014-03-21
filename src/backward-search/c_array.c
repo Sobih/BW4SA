@@ -41,14 +41,16 @@ unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, 
 	return target;
 }
 
-char* create_alphabet_interval(const interval* interval, const wavelet_tree* string, char* target)
+alphabet_data* create_alphabet_interval(const interval* interval, const wavelet_tree* string, alphabet_data* target)
 {
 	int length = interval->j - interval->i + 1;
 	unsigned int counter = 0;
 	char current;
 
 	if (target == 0)
-		target = malloc(length * sizeof(char));
+		target = malloc(sizeof(alphabet_data));
+
+	target->alphabet = realloc(target->alphabet, length * sizeof(char));
 	target[length - 1] = 0;
 
 	for (int i = interval->i; i < interval->j; ++i) {
@@ -61,6 +63,8 @@ char* create_alphabet_interval(const interval* interval, const wavelet_tree* str
 	}
 
 	quick_sort(target, counter, sizeof(char));
+
+	target->length = counter;
 
 	return target;
 }

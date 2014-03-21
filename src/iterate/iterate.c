@@ -27,7 +27,7 @@ bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
 	return target;
 }
 
-int is_reverse_interval_right_maximal(bit_vector* runs, interval* interval) {
+inline int is_reverse_interval_right_maximal(bit_vector* runs, interval* interval) {
 	return runs->rank(runs, (interval->i)+1, interval->j) > 0 ? 1 : 0;
 }
 
@@ -40,7 +40,7 @@ int is_reverse_interval_right_maximal(bit_vector* runs, interval* interval) {
  * @param extension character
  * @return a new updated Interval struct in the BWT of the reverse of the string
  */
-interval* update_reverse_interval(interval* inter, interval* normal, const char* alphabet,
+inline interval* update_reverse_interval(interval* inter, interval* normal, const char* alphabet,
 		unsigned int alphabet_length, const int* c_array, const char c, interval* target) {
 
 	if (target == 0)
@@ -62,7 +62,7 @@ interval* update_reverse_interval(interval* inter, interval* normal, const char*
  *
  * @return pointer to a new substring struct
  */
-substring* create_substring(interval* normal, interval* reverse, int length)
+inline substring* create_substring(interval* normal, interval* reverse, int length)
 {
 	substring* target = malloc(sizeof(substring));
 
@@ -84,7 +84,8 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	substring_stack* stack = create_stack(10);
 	int bwt_length = bwt->get_num_bits(bwt), i, alphabet_length = bwt->get_alphabet_length(bwt);
 	unsigned int* c_array = malloc((alphabet_length + 1) * sizeof(unsigned int));
-	char* alphabet = malloc((alphabet_length + 1) * sizeof(char));
+	alphabet_data* alpha_data = malloc(sizeof(alphabet_data));
+	alpha_data->alphabet = malloc((alphabet_length + 1) * sizeof(char));
 
 	// WARNING WARNING, NOT GOOD
 	max_repeats_initialize_bwt(bwt);
@@ -104,14 +105,13 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		//if(substring->normal->i == substring->normal->j) continue;
 
 		// Determine characters that precede the interval
-		alphabet = create_alphabet_interval(substring->normal, bwt, alphabet);
+		alpha_data = create_alphabet_interval(substring->normal, bwt, alpha_data);
 		c_array = create_c_array(bwt, substring->normal, 0, 0, c_array);
-		alphabet_length = strlen(alphabet);
 
 		for(i = 0; i < alphabet_length; i++) {
-			interval* normal = backward_search_interval(bwt, substring->normal, alphabet[i], normal);
-			interval* reverse = update_reverse_interval(substring->reverse, normal, alphabet, alphabet_length,
-					c_array, alphabet[i], reverse);
+			interval* normal = backward_search_interval(bwt, substring->normal, alpha_data->alphabet[i], normal);
+			interval* reverse = update_reverse_interval(substring->reverse, normal, alpha_data->alphabet,
+					alphabet_length, c_array, alpha_data->alphabet[i], reverse);
 
 			if(is_reverse_interval_right_maximal(reverse_runs, reverse)) {
 				new_substring = create_substring(normal, reverse, substring->length + 1);
@@ -127,7 +127,8 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	}
 
 	free(c_array);
-	free(alphabet);
+	free(alpha_data->alphabet);
+	free(alpha_data);
 }
 
 /*

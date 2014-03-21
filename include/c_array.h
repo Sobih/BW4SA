@@ -4,6 +4,11 @@
 struct wavelet_tree;
 struct interval;
 
+typedef struct alphabet_data {
+	char* alphabet;
+	unsigned int length;
+} alphabet_data;
+
 /**
  * @brief Generates array C of given string. This is still a rather slow version of algorithm, but
  * with small alphabets this should not be a problem.
@@ -32,7 +37,7 @@ unsigned int* create_c_array(const struct wavelet_tree* string, const struct int
  *
  * @bug no known bugs
  */
-char* create_alphabet_interval(const struct interval* interval, const struct wavelet_tree* string,
-		char* target);
+alphabet_data* create_alphabet_interval(const struct interval* interval, const struct wavelet_tree* string,
+		alphabet_data* target);
 
 #endif
