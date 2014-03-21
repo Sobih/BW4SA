@@ -44,27 +44,25 @@ unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, 
 alphabet_data* create_alphabet_interval(const interval* interval, const wavelet_tree* string, alphabet_data* target)
 {
 	int length = interval->j - interval->i + 1;
-	unsigned int counter = 0;
 	char current;
 
 	if (target == 0)
 		target = malloc(sizeof(alphabet_data));
 
+	target->length = 0;
 	target->alphabet = realloc(target->alphabet, length * sizeof(char));
-	target[length - 1] = 0;
+	target->alphabet[length - 1] = 0;
 
 	for (int i = interval->i; i < interval->j; ++i) {
 		current = string->char_at(string, i);
 
-		if (binary_search(target, &current, sizeof(char), counter, 0) < 0) {
-			target[counter] = current;
-			counter++;
+		if (binary_search(target, &current, sizeof(char), target->length, 0) < 0) {
+			target->alphabet[target->length] = current;
+			target->length++;
 		}
 	}
 
-	quick_sort(target, counter, sizeof(char));
-
-	target->length = counter;
+	quick_sort(target, target->length, sizeof(char));
 
 	return target;
 }
