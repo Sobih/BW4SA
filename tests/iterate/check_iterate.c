@@ -4,11 +4,20 @@
 #include "../../src/iterate/substring_stack.h"
 #include "../../include/bit_vector.h"
 #include "../../include/backward_search.h"
+#include "../utils_for_tests/utils_for_tests.h"
+#include "../../src/bwt/s_to_bwt.h"
+#include "../../src/bwt/map_bwt_to_s.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 substring** shared_list;
 int list_ptr = 0;
+
+//static variables for randomized tests
+static rmaximal_substr* naive_rmaximals;
+static int callback_flag;
+static int* suffix_array;
 
 START_TEST(simple_runs_test)
 {
@@ -79,7 +88,7 @@ END_TEST
 
 void put_substring_list(substring* substr)
 {
-	printf("putting substr \n");
+	//printf("putting substr \n");
 	shared_list[list_ptr] = substr;
 	list_ptr++;
 }
@@ -102,6 +111,7 @@ int shared_list_contains(substring* comp)
 	return 0;
 }
 
+//this test tests nothing??
 START_TEST(test_iterate2)
 {
 	list_ptr = 0;
@@ -113,13 +123,10 @@ START_TEST(test_iterate2)
 	Interval* reverse = &((Interval) {.i = 4, .j = 5});
 	substring* tti = &((substring) {.normal = normal, .reverse = reverse, .length = 3});
 
-	printf("testing iterate2\n");
+	//printf("testing iterate2\n");
 	iterate(string, &put_substring_list);
-	printf("iterate done\n");
-	for(int i=0;i<list_ptr;i++){
-		printf("normal i %d, normal j %d\n",
-				shared_list[i]->normal->i, shared_list[i]->reverse->j);
-	}
+	//printf("iterate done\n");
+
 }END_TEST
 
 START_TEST(test_iterate1)
@@ -138,17 +145,96 @@ START_TEST(test_iterate1)
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
 	iterate(string, &put_substring_list);
-	for(int i=0;i<list_ptr;i++){
-			printf("normal i %d, normal j %d\n",
-					shared_list[i]->normal->i, shared_list[i]->normal->j);
-		}
 
 	fail_unless(shared_list_contains(abra) == 1);
 	fail_unless(shared_list_contains(ra) == 1);
 }
 END_TEST
 
+int check_list_contains_and_remove(int index_bwt, int length){
+	rmaximal_substr* prev = naive_rmaximals;
+	rmaximal_substr* node = naive_rmaximals->next;
 
+	while(node != NULL){
+		if(node->length == length && node->start_index == suffix_array[index_bwt]){
+			prev->next = node->next;
+			free(node);
+			return 1;
+		}
+		prev = node;
+		node = node->next;
+	}
+	return 0;
+}
+
+void check_substrings_callback(substring* substr)
+{
+	for(int i = substr->normal->i; i <= substr->normal->j; i++){
+		if(!check_list_contains_and_remove(i, substr->length)){
+			callback_flag = 0;
+		}
+	}
+}
+
+START_TEST(test_iterate_randomized_small_alphabet)
+{
+	srand(time(NULL));
+	char* alphabet = "acgt";
+	char* bwt;
+	for(int i= 0; i<1000; i++){
+		int length = (rand() % 200)+1;
+		char* rand_string = generate_random_string(alphabet, length);
+		bwt = s_to_BWT(rand_string);
+		suffix_array = map_create_suffix_array_from_bwt(bwt);
+		naive_rmaximals = find_right_maximal_substrings(rand_string);
+		callback_flag = 1;
+
+		iterate(rand_string, &check_substrings_callback);
+		fail_unless(naive_rmaximals->next == NULL);
+		fail_unless(callback_flag == 1);
+	}
+}
+END_TEST
+
+START_TEST(test_iterate_randomized_big_alphabet)
+{
+	srand(time(NULL));
+	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
+	char* bwt;
+	for(int i= 0; i<1000; i++){
+		int length = (rand() % 100) + 100;
+		char* rand_string = generate_random_string(alphabet, length);
+		bwt = s_to_BWT(rand_string);
+		suffix_array = map_create_suffix_array_from_bwt(bwt);
+		naive_rmaximals = find_right_maximal_substrings(rand_string);
+		callback_flag = 1;
+
+		iterate(rand_string, &check_substrings_callback);
+		fail_unless(naive_rmaximals->next == NULL);
+		fail_unless(callback_flag == 1);
+	}
+}
+END_TEST
+
+START_TEST(test_iterate_randomized_one_long_string)
+{
+	srand(time(NULL));
+	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
+	char* bwt;
+
+	int length = (rand() % 1000) + 1000;
+	char* rand_string = generate_random_string(alphabet, length);
+	bwt = s_to_BWT(rand_string);
+	suffix_array = map_create_suffix_array_from_bwt(bwt);
+	naive_rmaximals = find_right_maximal_substrings(rand_string);
+	callback_flag = 1;
+
+	iterate(rand_string, &check_substrings_callback);
+	fail_unless(naive_rmaximals->next == NULL);
+	fail_unless(callback_flag == 1);
+
+}
+END_TEST
 
 TCase * create_runs_vec_test_case(void){
 	TCase * tc_runs = tcase_create("runs_vec_test");
@@ -167,14 +253,26 @@ TCase * create_iterate_tcase(void){
 	return tc_iterate;
 }
 
+TCase * create_randomized_tcase(void)
+{
+	TCase* tc_random = tcase_create("randomized_tests");
+	tcase_add_test(tc_random, test_iterate_randomized_small_alphabet);
+	tcase_add_test(tc_random, test_iterate_randomized_big_alphabet);
+	tcase_add_test(tc_random, test_iterate_randomized_one_long_string);
+	return tc_random;
+}
+
 
 Suite * test_suite(void)
 {
-	Suite *s = suite_create("Iterate");
-	TCase *tc_runs = create_runs_vec_test_case();
-	TCase *tc_iterate = create_iterate_tcase();
+	Suite* s = suite_create("Iterate");
+	TCase* tc_runs = create_runs_vec_test_case();
+	TCase* tc_iterate = create_iterate_tcase();
+	TCase* tc_randomized = create_randomized_tcase();
+
 	suite_add_tcase(s, tc_runs);
 	suite_add_tcase(s, tc_iterate);
+	suite_add_tcase(s, tc_randomized);
 	
 	return s;
 }
