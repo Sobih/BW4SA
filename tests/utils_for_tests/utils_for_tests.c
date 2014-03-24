@@ -29,8 +29,10 @@ int list_contains_substr(char* string, rmaximal_substr* head, int start, int len
 
 int is_substring_right_maximal(char* string, int string_length, int substr_start, int substr_length)
 {
-	for(int i = substr_start+1; i+substr_length<=string_length; i++){
-		if(two_substrings_maximal(string, string_length, substr_start, substr_start+i, substr_length)){
+	printf("index %d, length %d\n", substr_start, substr_length);
+
+	for(int i = 0; i+substr_length<=string_length; i++){
+		if(two_substrings_maximal(string, string_length, substr_start, i, substr_length)){
 			return 1;
 		}
 	}
@@ -39,25 +41,31 @@ int is_substring_right_maximal(char* string, int string_length, int substr_start
 
 int two_substrings_maximal(char* string, int string_length, int first_index, int second_index, int substr_length)
 {
-	if(first_index+substr_length-1 >= string_length || second_index+substr_length-1 >= string_length){
-//		printf("too long\n");
+
+	if(first_index == second_index){
+		return 0;
+	}
+
+	if(first_index+substr_length > string_length || second_index+substr_length > string_length){
+		printf("too long\n");
 				return 0;
 			}
 	for(int i=0; i<substr_length; i++){
 
 		if(string[first_index+i] != string[second_index+i]){
-//			printf("chars differ\n");
+			printf("chars differ\n");
 			return 0;
 		}
 	}
 	if(first_index+substr_length >= string_length || second_index+substr_length >= string_length){
-//		printf("another in end\n");
+		printf("maximal 1\n");
 		return 1;
 	}
 	if(string[first_index+substr_length] != string[second_index+substr_length]){
-//		printf("maximal\n");
+		printf("maximal 2\n");
 		return 1;
 	}
+	printf("not maximal..\n");
 	return 0;
 }
 void print_substr(char* string, int start_index, int length){
@@ -76,11 +84,11 @@ rmaximal_substr* find_right_maximal_substrings(char* string)
 	int string_length = strlen(string);
 
 	for(int length = 1; length < string_length; length++){
-		for(int i = 0; i+length<string_length; i++){
+		for(int i = 0; i+length<=string_length; i++){
 
 			if(is_substring_right_maximal(string, string_length, i, length)){
 
-				if(list_contains_substr(string, head, i, length)) continue;
+				//if(list_contains_substr(string, head, i, length)) continue;
 
 				new = calloc(1, sizeof(rmaximal_substr));
 				new->start_index = i;
@@ -132,7 +140,7 @@ int main()
 	char* test_alphabet = "acgt";
 //	printf("%s\n", generate_random_string(test_alphabet, 10000));
 	char* test = generate_random_string(test_alphabet, 1000);
-	test = "hattivatti";
+	test = "abracadabra";
 	printf("%s\n", test);
 	rmaximal_substr* rmax = find_right_maximal_substrings(test);
 	print_rmaximal_list(test, rmax);
