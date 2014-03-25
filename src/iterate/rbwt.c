@@ -29,7 +29,7 @@
 char* reverse_string(const char* string, char* target, unsigned int length) {
 	for (int i = 0; i < length - 1; i++)
 		target[i] = string[length - i - 1];
-
+ /// EATS A LETTER FIX IT
 	target[length - 1] = '\0';
 
 	return target;

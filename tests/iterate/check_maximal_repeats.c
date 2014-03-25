@@ -17,11 +17,11 @@ START_TEST(test_maximal_repeat2)
 		iterate("abracadabra", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
-		ck_assert_int_eq(1, nodes[0].normal->i);
-		ck_assert_int_eq(5, nodes[0].normal->j);
+		ck_assert_int_eq(1, nodes[0].normal.i);
+		ck_assert_int_eq(5, nodes[0].normal.j);
 		ck_assert_int_eq(1, nodes[0].length);
-		ck_assert_int_eq(2, nodes[1].normal->i);
-		ck_assert_int_eq(3, nodes[1].normal->j);
+		ck_assert_int_eq(2, nodes[1].normal.i);
+		ck_assert_int_eq(3, nodes[1].normal.j);
 		ck_assert_int_eq(4, nodes[1].length);
 	}END_TEST
 
@@ -31,9 +31,9 @@ START_TEST(test_maximal_repeat2_mapped)
 		max_repeat_node* nodes = get_nodes();
 		map_maximal_repeats_to_string(nodes, s_to_BWT("abracadabra"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
-		ck_assert_int_eq(10, nodes[0].normal->i);
+		ck_assert_int_eq(10, nodes[0].normal.i);
 		ck_assert_int_eq(1, nodes[0].length);
-		ck_assert_int_eq(7, nodes[1].normal->i);
+		ck_assert_int_eq(7, nodes[1].normal.i);
 		ck_assert_int_eq(4, nodes[1].length);
 	}END_TEST
 
@@ -42,11 +42,11 @@ START_TEST(test_maximal_repeat2b)
 		iterate("hattivatti", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
-		ck_assert_int_eq(6, nodes[0].normal->i);
-		ck_assert_int_eq(9, nodes[0].normal->j);
+		ck_assert_int_eq(6, nodes[0].normal.i);
+		ck_assert_int_eq(9, nodes[0].normal.j);
 		ck_assert_int_eq(1, nodes[0].length);
-		ck_assert_int_eq(1, nodes[1].normal->i);
-		ck_assert_int_eq(2, nodes[1].normal->j);
+		ck_assert_int_eq(1, nodes[1].normal.i);
+		ck_assert_int_eq(2, nodes[1].normal.j);
 		ck_assert_int_eq(4, nodes[1].length);
 	}END_TEST
 
@@ -56,9 +56,9 @@ START_TEST(test_maximal_repeat2b_mapped)
 		max_repeat_node* nodes = get_nodes();
 		map_maximal_repeats_to_string(nodes, s_to_BWT("hattivatti"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
-		ck_assert_int_eq(8, nodes[0].normal->i);
+		ck_assert_int_eq(8, nodes[0].normal.i);
 		ck_assert_int_eq(1, nodes[0].length);
-		ck_assert_int_eq(6, nodes[1].normal->i);
+		ck_assert_int_eq(6, nodes[1].normal.i);
 		ck_assert_int_eq(4, nodes[1].length);
 	}END_TEST
 
@@ -67,14 +67,14 @@ START_TEST(test_maximal_repeat3)
 		iterate("balalaikka", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
 		ck_assert_int_eq(3, get_max_repeats_nodes_index());
-		ck_assert_int_eq(1, nodes[0].normal->i);
-		ck_assert_int_eq(4, nodes[0].normal->j);
+		ck_assert_int_eq(1, nodes[0].normal.i);
+		ck_assert_int_eq(4, nodes[0].normal.j);
 		ck_assert_int_eq(1, nodes[0].length);
-		ck_assert_int_eq(7, nodes[1].normal->i);
-		ck_assert_int_eq(8, nodes[1].normal->j);
+		ck_assert_int_eq(7, nodes[1].normal.i);
+		ck_assert_int_eq(8, nodes[1].normal.j);
 		ck_assert_int_eq(1, nodes[1].length);
-		ck_assert_int_eq(3, nodes[2].normal->i);
-		ck_assert_int_eq(4, nodes[2].normal->j);
+		ck_assert_int_eq(3, nodes[2].normal.i);
+		ck_assert_int_eq(4, nodes[2].normal.j);
 		ck_assert_int_eq(3, nodes[2].length);
 	}END_TEST
 
@@ -84,11 +84,11 @@ START_TEST(test_maximal_repeat3_mapped)
 		max_repeat_node* nodes = get_nodes();
 		map_maximal_repeats_to_string(nodes, s_to_BWT("balalaikka"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(3, get_max_repeats_nodes_index());
-		ck_assert_int_eq(9, nodes[0].normal->i);
+		ck_assert_int_eq(9, nodes[0].normal.i);
 		ck_assert_int_eq(1, nodes[0].length);
-		ck_assert_int_eq(8, nodes[1].normal->i);
+		ck_assert_int_eq(8, nodes[1].normal.i);
 		ck_assert_int_eq(1, nodes[1].length);
-		ck_assert_int_eq(3, nodes[2].normal->i);
+		ck_assert_int_eq(3, nodes[2].normal.i);
 		ck_assert_int_eq(3, nodes[2].length);
 	}END_TEST
 
@@ -104,8 +104,8 @@ START_TEST(test_maximal_repeat1)
 		iterate("ilotalo", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
 		ck_assert_int_eq(1, get_max_repeats_nodes_index());
-		ck_assert_int_eq(3, nodes[0].normal->i);
-		ck_assert_int_eq(4, nodes[0].normal->j);
+		ck_assert_int_eq(3, nodes[0].normal.i);
+		ck_assert_int_eq(4, nodes[0].normal.j);
 		ck_assert_int_eq(2, nodes[0].length);
 	}END_TEST
 
@@ -115,7 +115,7 @@ START_TEST(test_maximal_repeat1_mapped)
 		max_repeat_node* nodes = get_nodes();
 		map_maximal_repeats_to_string(nodes, s_to_BWT("ilotalo"),get_max_repeats_nodes_index());
 		ck_assert_int_eq(1, get_max_repeats_nodes_index());
-		ck_assert_int_eq(5, nodes[0].normal->i);
+		ck_assert_int_eq(5, nodes[0].normal.i);
 		ck_assert_int_eq(2, nodes[0].length);
 	}END_TEST
 

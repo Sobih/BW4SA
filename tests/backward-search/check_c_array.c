@@ -4,13 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
-<<<<<<< HEAD
 #include "../../include/backward_search.h"
-=======
 #include "../../include/c_array.h"
-#include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
->>>>>>> e837fbf518a16fe8b37f60112ff056551794a3f6
+#include "../../include/structs.h"
 
 START_TEST(test_carray_simple)
 {
