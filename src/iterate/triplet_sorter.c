@@ -4,25 +4,25 @@
 #include <stdio.h>
 // swap function in utils.h
 
-int compare_ints(int* a, int* b) {
-	return *a - *b;
+int compare_triplets_pos1(void* first, void* second) {
+	triplet* f = (triplet*)first;
+	triplet* s = (triplet*)second;
+	return f->pos1 - s->pos1;
 }
 
-int compare_triplets_pos1(triplet* first, triplet* second) {
-
-	printf("first: %d second: %d\n", first->pos1, second->pos1);
-	return first->pos1 - second->pos1;
+int compare_triplets_pos2(void* first, void* second) {
+	triplet* f = (triplet*)first;
+	triplet* s = (triplet*)second;
+	return f->pos2 - s->pos2;
 }
 
-int compare_triplets_pos2(triplet* first, triplet* second) {
-	return first->pos2 - second->pos2;
-}
-
-int compare_max_repeat_nodes(max_repeat_node* first, max_repeat_node* second) {
-	if (first->normal->i != second->normal->i) {
-		return first->normal->i - second->normal->i;
+int compare_max_repeat_nodes(void* first, void* second) {
+	max_repeat_node* f = (max_repeat_node*)first;
+	max_repeat_node* s = (max_repeat_node*)second;
+	if (f->normal->i != s->normal->i) {
+		return f->normal->i - s->normal->i;
 	} else {
-		return first->normal->j - second->normal->j;
+		return f->normal->j - s->normal->j;
 	}
 }
 
@@ -32,36 +32,22 @@ void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsig
 	if (a >= b)
 		return;
 
-	//printf("TESTING\n");
 	void* key = (arr + (a * entry_size));
 	int i = a + 1, j = b;
 	
 	while (i < j) {
-		
-		//int w = compare((arr + (j * entry_size)), key);
-		//printf("w: %d\n", w);
-		while (i < j && compare((arr + (j * entry_size)), key) >= 0) {
+
+		while (i < j && compare((arr + (j * entry_size)), key) >= 0) 
 			j--;
-			//printf("j: %d\n", j);
-		}
-			
 
-		while (i < j && compare((arr + (i * entry_size)), key) <= 0) {
-				
+		while (i < j && compare((arr + (i * entry_size)), key) <= 0) 			
 			i++;
-			//printf("i: %d\n", i);
-		}
-			
-		//printf("i: %d j: %d\n", i, j);
-		if (i < j) {	
-			//printf("SWAPPING");		
-			swap(arr, entry_size, i, j);
-		}
 
+		if (i < j) 	
+			swap(arr, entry_size, i, j);
 	}
 
-	//int x = compare((arr + (a * entry_size)), (arr + (i * entry_size)));
-	//printf("x: %d\n", x);
+
 	if (compare((arr + (a * entry_size)), (arr + (i * entry_size))) > 0) {
 
 		swap(arr, entry_size, a, i);
