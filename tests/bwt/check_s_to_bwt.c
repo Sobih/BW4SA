@@ -6,6 +6,7 @@
  */
 
 #include "../../src/bwt/s_to_bwt.h"
+#include "../../include/wavelet_tree.h"
 #include <check.h>
 #include <stdlib.h>
 
@@ -13,8 +14,8 @@ START_TEST(test_abracadabra_bwt)
 	{
 		uchar* input = "abracadabra";
 		uchar* expected_string = "ard$rcaaaabb";
-		wavelet_node* expected_BWT = create_wavelet_tree(expected_string);
-		wavelet_node* result = s_to_BWT(input);
+		wavelet_tree* expected_BWT = create_wavelet_tree(expected_string);
+		wavelet_tree* result = s_to_BWT(input);
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
@@ -34,8 +35,8 @@ START_TEST(test_hattivatti_bwt)
 	{
 		uchar* input = "hattivatti";
 		uchar* expected_string = "ivh$ttttaai";
-		wavelet_node* expected_BWT = create_wavelet_tree(expected_string);
-		wavelet_node* result = s_to_BWT(input);
+		wavelet_tree* expected_BWT = create_wavelet_tree(expected_string);
+		wavelet_tree* result = s_to_BWT(input);
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
@@ -54,8 +55,8 @@ START_TEST(test_lol_bwt)
 	{
 		uchar* input = "lol";
 		uchar* expected_string = "lo$l";
-		wavelet_node* expected_BWT = create_wavelet_tree(expected_string);
-		wavelet_node* result = s_to_BWT(input);
+		wavelet_tree* expected_BWT = create_wavelet_tree(expected_string);
+		wavelet_tree* result = s_to_BWT(input);
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
@@ -67,8 +68,8 @@ START_TEST(test_hei_bwt)
 	{
 		uchar* input = "hei";
 		uchar* expected_string = "ih$e";
-		wavelet_node* expected_BWT = create_wavelet_tree(expected_string);
-		wavelet_node* result = s_to_BWT(input);
+		wavelet_tree* expected_BWT = create_wavelet_tree(expected_string);
+		wavelet_tree* result = s_to_BWT(input);
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
@@ -80,8 +81,8 @@ START_TEST(test_a_bwt)
 	{
 		uchar* input = "a";
 		uchar* expected_string = "a$";
-		wavelet_node* expected_BWT = create_wavelet_tree(expected_string);
-		wavelet_node* result = s_to_BWT(input);
+		wavelet_tree* expected_BWT = create_wavelet_tree(expected_string);
+		wavelet_tree* result = s_to_BWT(input);
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
@@ -91,8 +92,8 @@ START_TEST(test_laatikko_bwt)
 	{
 		uchar* input = "laatikko";
 		uchar* expected_string = "olatik$ka";
-		wavelet_node* expected_BWT = create_wavelet_tree(expected_string);
-		wavelet_node* result = s_to_BWT(input);
+		wavelet_tree* expected_BWT = create_wavelet_tree(expected_string);
+		wavelet_tree* result = s_to_BWT(input);
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
