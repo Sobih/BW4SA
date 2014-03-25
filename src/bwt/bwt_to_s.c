@@ -27,15 +27,16 @@
 
 char* bwt_to_s(const wavelet_tree* bwt)
 {
-	long n = bwt->get_num_bits(bwt) - 1;
+	long n = bwt->get_num_bits(bwt);
 	char* string = malloc(n * sizeof(char));
-	int k;	
 	interval inter = (interval) {.i = 0, .j = 0};
 
-	for (k = 1; k <= n; k++) {
-		string[n-k] = bwt->char_at(bwt, inter.i);
-		backward_search_interval(bwt, &inter, string[n-k], &inter);
+	for (int k = 1; k < n; k++) {
+		string[n - k - 1] = bwt->char_at(bwt, inter.i);
+		backward_search_interval(bwt, &inter, string[n - k - 1], &inter);
 	}
+
+	string[n - 1] = 0;
 
 	return string;
 }
