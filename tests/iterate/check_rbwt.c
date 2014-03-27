@@ -2,31 +2,46 @@
 //--- tests/check_money.2.c	2013-09-20 23:37:40.000000000 -0400
 //+++ tests/check_money.3.c	2013-09-20 23:37:40.000000000 -0400
 //@@ -1,18 +1,38 @@
- #include <stdlib.h>
- #include <check.h>
- #include "../../include/rbwt.h"
+#include <stdlib.h>
+#include <check.h>
+#include "../../include/rbwt.h"
+#include "../../include/wavelet_tree.h"
  
 START_TEST (reverse_test)
 {
-	ck_assert_str_eq(reverse_string("MISSISSIPPI"), "IPPISSISSIM");
+	char* str = "MISSISSIPPI";
+	int length = strlen(str) + 1;
+	char* rev = malloc(length * sizeof(char));
+	ck_assert_str_eq(reverse_string("MISSISSIPPI", rev, length), "IPPISSISSIM");
 }
 END_TEST
 
 START_TEST (reverse_test2)
 {
-	ck_assert_str_eq(reverse_string("TAAA"), "AAAT");
+	char* str = "TAAA";
+	int length = strlen(str) + 1;
+	char* rev = malloc(length * sizeof(char));
+	ck_assert_str_eq(reverse_string("TAAA", rev, length), "AAAT");
 }
 END_TEST
 
 START_TEST (reverse_bwt_test) 
 {
-	ck_assert_str_eq(reverse_bwt("ABRACADABRA"), "ABDBC$RRAAAA");	
+	char* true_rev = "ABDBC$RRAAAA";
+	wavelet_tree* rev = reverse_bwt("ABRACADABRA");
+
+	for (int i = 0; i < rev->get_num_bits(rev); ++i)
+		ck_assert(true_rev[i] == rev->char_at(rev, i));
 }
 END_TEST
 
 START_TEST (reverse_bwt_test2) 
 {
-	ck_assert_str_eq(reverse_bwt("HATTIVATTI"), "HTTAV$TTIIA");	
+	char* true_rev = "HTTAV$TTIIA";
+	wavelet_tree* rev = reverse_bwt("HATTIVATTI");
+
+	for (int i = 0; i < rev->get_num_bits(rev); ++i)
+		ck_assert(true_rev[i] == rev->char_at(rev, i));
 }
 END_TEST
 
