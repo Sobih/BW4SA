@@ -119,6 +119,15 @@ START_TEST(test_maximal_repeat1_mapped)
 		ck_assert_int_eq(2, nodes[0].length);
 	}END_TEST
 
+START_TEST(test_max_repeats_randomized){
+
+	}
+TCase * create_max_repeats_randomized_test_case(void) {
+	TCase * tc_randrep = tcase_create("randomized_max_repeats_tests");
+
+	return tc_randrep;
+}
+
 TCase * create_maximal_repeats_test_case(void) {
 	TCase * tc_stack = tcase_create("maximal_repeat_test");
 	tcase_add_test(tc_stack, test_maximal_repeat2);
