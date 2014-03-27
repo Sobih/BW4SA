@@ -4,10 +4,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "../../include/backward_search.h"
 #include "../../include/c_array.h"
 #include "../../include/wavelet_tree.h"
 #include "../../include/structs.h"
+#include "../../include/utils.h"
+
+char* generate_random_string(char* string, unsigned int length) {
+	if (length == 0)
+		return string;
+
+	string[length - 1] = 0;
+
+	if (length == 1)
+		return string;
+
+	for (int i = length - 2; i >= 0; --i)
+		*(string + i) = (char) ((rand() % 75) + 49);
+
+	return string;
+}
 
 START_TEST(test_carray_simple)
 {
@@ -83,6 +100,53 @@ START_TEST(carray_interval2)
 }
 END_TEST
 
+START_TEST(alphabet_interval) {
+	srand(time(NULL));
+
+	int length = (rand() % 500) + 1;
+	char* string = malloc(length * sizeof(char));
+
+	generate_random_string(string, length);
+	wavelet_tree* tree = create_wavelet_tree(string);
+
+	int start = rand() % length, end;
+
+	do {
+		end = rand() % length;
+	} while (end <= start);
+
+	interval* inter = malloc(sizeof(interval));
+	inter->i = start;
+	inter->j = end;
+
+	//find correct alphabet naïvely
+	int counter = 0, index;
+	char* correct_alphabet = calloc(length, sizeof(char));
+	for (int i = start; i <= end; ++i) {
+		index = binary_search(correct_alphabet, (string + i), sizeof(char), counter, 0);
+		if (index < 0 || index >= counter) {
+			correct_alphabet[counter] = string[i];
+			counter++;
+			quick_sort(correct_alphabet, counter, sizeof(char));
+		}
+	}
+
+	int correct_length = strlen(correct_alphabet);
+
+	alphabet_data* alphabet = create_alphabet_interval(inter, tree, 0);
+
+	printf("Alphabet: %s\n", alphabet->alphabet);
+	printf("Length: %d\n", alphabet->length);
+	printf("Correct alphabet: %s\n", correct_alphabet);
+	printf("Correct length: %d\n", correct_length);
+
+	ck_assert(correct_length == alphabet->length);
+
+	for (int i = 0; i < correct_length; ++i)
+		ck_assert(alphabet->alphabet[i] == correct_alphabet[i]);
+}
+END_TEST
+
 START_TEST(alphabet_interval1)
 {
 	char* string = "abracadabra";
@@ -129,6 +193,7 @@ TCase * create_carray_test_case(void){
 	tcase_add_test(tc_carray, test_carray_simple2);
 	tcase_add_test(tc_carray, carray_interval1);
 	tcase_add_test(tc_carray, carray_interval2);
+	tcase_add_test(tc_carray, alphabet_interval);
 	tcase_add_test(tc_carray, alphabet_interval1);
 	tcase_add_test(tc_carray, alphabet_interval2);
 	return tc_carray;
