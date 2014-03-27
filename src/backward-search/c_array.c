@@ -71,13 +71,12 @@ alphabet_data* create_alphabet_interval(const interval* inter, const wavelet_tre
 	for (int i = inter->i; i <= inter->j; ++i) {
 		current = string->char_at(string, i);
 
-		if (binary_search(alphabet, &current, sizeof(char), counter == 0 ? 0 : counter - 1, 0) < 0) {
+		if (binary_search(alphabet, &current, sizeof(char), counter - 1, 0) < 0) {
 			alphabet[counter] = current;
 			counter++;
+			quick_sort(alphabet, counter, sizeof(char));
 		}
 	}
-
-	quick_sort(alphabet, counter, sizeof(char));
 
 	alphabet[counter] = 0;
 	target->length = counter;
