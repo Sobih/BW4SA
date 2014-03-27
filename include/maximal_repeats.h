@@ -8,26 +8,52 @@
 #ifndef MAXIMAL_REPEATS_H_
 #define MAXIMAL_REPEATS_H_
 
-#include "iterate.h"
+#include "structs.h"
+
+struct wavelet_tree;
+
+typedef struct max_repeat_node
+{
+	interval normal;
+	int length;
+} max_repeat_node;
 
 /**
- * Initializes the BWT for the file so that callback doesn't require passing it on.
+ * @brief 		Initializes the BWT for the file so that callback doesn't require passing it on.
+ *
+ * @param 		BWT of the searched string
  */
-void max_repeats_initialize_bwt(char* bwt);
+void max_repeats_initialize_bwt(struct wavelet_tree* bwt);
 
 /**
- * The function given to callback. Dtermines if a node is a maximal repeat and adds it to a list.
+ * @brief 		The function given to callback. Determines if a node is a maximal repeat and adds it to a list.
+ *
+ * @param 		A substring node that has the intervals in BWT and BWT of the reverse of the string.
  */
 void search_maximal_repeats(substring* node);
 
 /**
- * Returns the list of maximal repeat nodes.
+ * @brief 		Returns the list of maximal repeat nodes.
+ *
+ * @return		List of found maximal repeats as nodes that hold a BWT interval and length of substring.
  */
-substring* get_nodes();
+max_repeat_node* get_nodes();
 
 /**
- * Prints what substring the maximal repeat is and the indexes (in sorted order) it occurs at.
+ * @brief		Prints the substring the interval represents
+ *
+ * First uses the mapper-function map_maximal_repeats_to_string and then prints the substring based on the mapped index.
+ *
+ * @param		string			Original string.
+ * @bug			No known bugs.
  */
-void maximals_print_nodes(char* string);
+void print_maximal_repeat_substrings(char* string);
+
+/**
+ * @brief 		Returns the size of the node list.
+ *
+ * @return		Size of the node list. Same as number of found maximal repeats.
+ */
+int get_max_repeats_nodes_index();
 
 #endif /* MAXIMAL_REPEATS_H_ */

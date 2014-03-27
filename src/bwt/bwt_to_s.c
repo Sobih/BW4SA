@@ -8,6 +8,7 @@
 
 
 #include "../../include/backward_search.h"
+#include "../../include/structs.h"
 #include "../../include/wavelet_tree.h"
 #include <stdio.h>
 #include <stdlib.h>

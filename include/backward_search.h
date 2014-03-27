@@ -2,15 +2,7 @@
 #ifndef BACKWARD_SEARCH_H_
 #define BACKWARD_SEARCH_H_
 
-/**
-* Struct for intervals in bwt
-**/
-typedef struct interval
-{
-	int i;
-	int j;
-} interval;
-
+struct interval;
 struct wavelet_tree;
 
 /**
@@ -23,7 +15,8 @@ struct wavelet_tree;
 * @return interval of searched string
 *
 **/
-interval* backward_search(const struct wavelet_tree* bwt, const struct wavelet_tree* string, interval* target);
+
+struct interval* backward_search(const struct wavelet_tree* bwt, const struct wavelet_tree* string, struct interval* target);
 
 /**
  * @brief finds the interval of a given letter in an interval.
@@ -37,7 +30,7 @@ interval* backward_search(const struct wavelet_tree* bwt, const struct wavelet_t
  * @return interval of searched left extension
  *
  */
-interval* backward_search_interval(const struct wavelet_tree* bwt, const interval* inter, char c,
-		interval* target);
+struct interval* backward_search_interval(const struct wavelet_tree* bwt, const struct interval* inter, char c,
+		struct interval* target);
 
 #endif /* BACKWARD_SEARCH_H_ */

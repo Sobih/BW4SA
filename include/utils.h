@@ -124,4 +124,27 @@ void print_wavelet_node(struct wavelet_node* node);
  */
 void print_wavelet_tree(struct wavelet_tree* tree);
 
+/**
+ * @brief	Returns a substring char array from the given char array.
+ *
+ * @param	string		The whole string
+ * @param	position	Starting position of the substring
+ * @param	length		Length of the substring
+ * @bug		No known bugs.
+ */
+char *substring_from_string(char *string, int position, int length);
+
+/**
+* @brief creates vector runs from given string
+*
+* @param string normal string (rbwt is generated from it)
+*
+* @return pointer to runs vector
+*
+* @author Topi Paavilainen
+*
+* @bug no known bugs
+**/
+struct bit_vector* create_runs_vector(const struct wavelet_tree* string, struct bit_vector* target);
+
 #endif /* UTILS_H_ */

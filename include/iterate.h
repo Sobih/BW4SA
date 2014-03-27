@@ -1,29 +1,10 @@
 #ifndef ITERATE_H_
 #define ITERATE_H_
 
-struct wavelet_tree;
-struct bit_vector;
 struct interval;
-
-typedef struct substring_struct
-{
-	struct interval normal;
-	struct interval reverse;
-	int length;
-} substring;
-
-/**
-* @brief creates vector runs from given string
-*
-* @param string normal string (rbwt is generated from it)
-*
-* @return pointer to runs vector
-*
-* @author Topi Paavilainen
-*
-* @bug no known bugs
-**/
-struct bit_vector* create_runs_vector(const struct wavelet_tree* string, struct bit_vector* target);
+struct bit_vector;
+struct substring;
+struct wavelet_tree;
 
 /**
 * @brief function that determines if given interval in given reverse-bwt is right-maximal or not.
@@ -45,7 +26,9 @@ int is_reverse_interval_right_maximal(struct bit_vector* runs, struct interval* 
  * @param string base string to be iterated on
  * @param address of the callback function
  */
-void iterate(char* string, void (*callback) (substring* substr));
+void iterate(char* string, void (*callback) (struct substring* substr));
+
+void double_iterate(char* string1, char* string2, void (*callback)(struct substring* substr1, struct substring* substr2));
 
 //an additional iterate function. Works just like normal iterate, but passes few extra parameters to the callback function
 //void iterate_for_tree_drawing(char* string, void (*callback)(substring* substr, substring* prev_substr, char c));

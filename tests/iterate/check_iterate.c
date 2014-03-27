@@ -5,6 +5,8 @@
 #include "../../include/bit_vector.h"
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
+#include "../../include/structs.h"
+#include "../../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -84,7 +86,6 @@ END_TEST
 
 void put_substring_list(substring* substr)
 {
-	printf("putting substr \n");
 	shared_list[list_ptr] = substr;
 	list_ptr++;
 }
@@ -95,10 +96,10 @@ int shared_list_contains(substring* comp)
 	substring* sub;
 	for(int i = 0; i<list_ptr; i++){
 		sub = shared_list[i];
-		if(sub->normal->i == comp->normal->i &&
-				sub->normal->j == comp->normal->j &&
-				sub->reverse->i == comp->reverse->i &&
-				sub->reverse->j == comp->reverse->j &&
+		if(sub->normal.i == comp->normal.i &&
+				sub->normal.j == comp->normal.j &&
+				sub->reverse.i == comp->reverse.i &&
+				sub->reverse.j == comp->reverse.j &&
 				sub->length == comp->length){
 			return 1;
 		}
@@ -114,17 +115,11 @@ START_TEST(test_iterate2)
 	shared_list = malloc(sizeof(substring*)*max_size);
 	char* string = "hattivatti";
 
-	interval* normal = &((interval) {.i = 8, .j = 9});
-	interval* reverse = &((interval) {.i = 4, .j = 5});
+	interval normal = (interval) {.i = 8, .j = 9};
+	interval reverse = (interval) {.i = 4, .j = 5};
 	substring* tti = &((substring) {.normal = normal, .reverse = reverse, .length = 3});
 
-	printf("testing iterate2\n");
 	iterate(string, &put_substring_list);
-	printf("iterate done\n");
-	for(int i=0;i<list_ptr;i++){
-		printf("normal i %d, normal j %d\n",
-				shared_list[i]->normal->i, shared_list[i]->reverse->j);
-	}
 }END_TEST
 
 START_TEST(test_iterate1)
@@ -134,19 +129,15 @@ START_TEST(test_iterate1)
 	shared_list = malloc(sizeof(substring*)*max_size);
 	char* string = "abracadabra";
 
-	interval* normal = &((interval) {.i = 2, .j = 3});
-	interval* reverse = &((interval) {.i = 4, .j = 5});
+	interval normal = (interval) {.i = 2, .j = 3};
+	interval reverse = (interval) {.i = 4, .j = 5};
 	substring* abra = &((substring) {.normal = normal, .reverse = reverse, .length = 4});
 
-	normal = &((interval) {.i = 10, .j = 11});
-	reverse = &((interval) {.i = 4, .j = 5});
+	normal = (interval) {.i = 10, .j = 11};
+	reverse = (interval) {.i = 4, .j = 5};
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
 	iterate(string, &put_substring_list);
-	for(int i=0;i<list_ptr;i++){
-			printf("normal i %d, normal j %d\n",
-					shared_list[i]->normal->i, shared_list[i]->normal->j);
-		}
 
 	fail_unless(shared_list_contains(abra) == 1);
 	fail_unless(shared_list_contains(ra) == 1);

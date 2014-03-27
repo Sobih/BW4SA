@@ -5,6 +5,7 @@
 #include <limits.h>
 #include "../../include/c_array.h"
 #include "../../include/utils.h"
+#include "../../include/structs.h"
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
 

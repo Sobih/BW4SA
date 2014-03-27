@@ -27,10 +27,11 @@
  * @bug 	No known bugs.
  */
 char* reverse_string(const char* string, char* target, unsigned int length) {
-	for (int i = 0; i < length - 1; i++)
-		target[i] = string[length - i - 2];
+	int i;
+	for (i = 0; i < length; i++)
+		target[i] = string[length - i - 1];
 
-	target[length - 1] = '\0';
+	target[length] = '\0';
 
 	return target;
 }

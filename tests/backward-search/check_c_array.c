@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../../include/c_array.h"
 #include "../../include/backward_search.h"
+#include "../../include/c_array.h"
 #include "../../include/wavelet_tree.h"
+#include "../../include/structs.h"
 
 START_TEST(test_carray_simple)
 {

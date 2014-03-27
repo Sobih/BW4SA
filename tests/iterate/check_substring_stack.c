@@ -1,6 +1,7 @@
 
 #include <check.h>
 #include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include "../../src/iterate/substring_stack.h"
 #include <stdlib.h>
 

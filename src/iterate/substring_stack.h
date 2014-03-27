@@ -1,7 +1,7 @@
 #ifndef SUBSTRING_STACK_H_
 #define SUBSTRING_STACK_H_
 
-#include "../../include/iterate.h"
+struct substring;
 
 /**
 * @brief simple stack data structure for substring structs. Can hold any amount of data, array size is automatically doubled is memory gets full
@@ -11,7 +11,7 @@
 **/
 typedef struct substring_stack_struct
 {
-	substring* array;
+	struct substring* array;
 	int array_size;
 	int array_ptr;
 }substring_stack;
@@ -32,7 +32,7 @@ substring_stack* create_stack(int initial_size);
 *
 * @param substr 
 **/
-void push(substring_stack* stack, substring* substr);
+void push(substring_stack* stack, struct substring* substr);
 
 /**
 * @brief pops the topmost element from given stack and removes it from stack
@@ -41,7 +41,7 @@ void push(substring_stack* stack, substring* substr);
 *
 * @return pointer to the popped substring
 **/
-substring* pop(substring_stack* stack);
+struct substring* pop(substring_stack* stack);
 
 void free_stack(substring_stack* stack);
 

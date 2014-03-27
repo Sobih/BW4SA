@@ -14,7 +14,7 @@
 wavelet_tree* s_to_BWT (uchar* string) {
 	unsigned int last;
 	long n = strlen(string);
-	uchar* d = malloc(n * sizeof(uchar));
+	uchar* d = malloc((n +1) * sizeof(uchar));
 	d = dbwt_bwt(string, n, &last, 0);
 	d = realloc(d, (n + 2) * sizeof(uchar));
 	d[last] = '$';

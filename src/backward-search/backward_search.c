@@ -1,8 +1,14 @@
-
+/*
+ * backward_search.c
+ *
+ *  Created on: 30.1.2014
+ *      Author: lvapaaka
+ */
 #include <string.h>
 #include <stdlib.h>
 #include "../../include/utils.h"
 #include "../../include/c_array.h"
+#include "../../include/structs.h"
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
 

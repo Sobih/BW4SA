@@ -3,13 +3,19 @@
 #include "../../include/rbwt.h"
 #include "../../include/c_array.h"
 #include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include "../iterate/print_node.h"
 #include "../../include/bit_vector.h"
 #include "../../include/distinct_substrings.h"
 #include "../../include/maximal_repeats.h"
+#include "../../include/wavelet_tree.h"
+#include "../../include/mum.h"
+#include "../../include/utils.h"
+#include "../iterate/triplet_sorter.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAX_INPUT_STRING_LENGTH 100
 
 void print_choices()
 {
@@ -64,7 +70,7 @@ void print_runs_vector(bit_vector* runs, int len)
 void ui()
 {
 	int choice, len = 0;
-	char* input = malloc(sizeof(char));
+	char* input = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
 	char* res = malloc(sizeof(char));
 	int* array = calloc(20, sizeof(int)); 
 	
@@ -73,38 +79,48 @@ void ui()
 	printf("Write the number of the operation you want to do:\n");
 	scanf("%d", &choice);
 	
-	printf("Give the input string: ");
+	printf("Give the input string: (max size %d) ", MAX_INPUT_STRING_LENGTH);
 	print_instructions(choice);
 	scanf("%s", input);
+	wavelet_tree* root = create_wavelet_tree(input);
+	wavelet_tree* res_root;
 
 	if (choice == 1) {
 		iterate(input, &print_node);
 	} else if (choice == 2) {
-		res = s_to_BWT(input);
-		printf("%s\n", res);
+		res_root = s_to_BWT(input);
+		print_wavelet_tree(res_root);
 	} else if (choice == 3) {
-		res = bwt_to_s(input);
+		res = bwt_to_s(root);
 		printf("%s\n", res);
 	} else if (choice == 4) {
-		res = reverse_bwt(input);
-		printf("%s\n", res);
+		res_root = reverse_bwt(input);
+		print_wavelet_tree(res_root);
 	} else if (choice == 5) {
-		array = create_c_array(input);
-		len = strlen(get_alphabet(input));
+		array = create_c_array(root,0,0,0,0);
+		int len = strlen(determine_alphabet(input));
 		print_int_array(array, len);
 	} else if (choice == 6) {
-		bit_vector* runs = create_runs_vector(input);
+		bit_vector* runs = create_runs_vector(root,0);
 		print_runs_vector(runs, strlen(input)+1);
 		free_bit_vector(runs);
 	} else if (choice == 7) {
-		printf("Not supported yet\n");
+		printf("Give the second input string: ");
+		char* input2 = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
+		scanf("%s", input2);
+		double_iterate(input, input2, &search_mums);
+		print_mums(input);
+		mum_print_bit_vectors(input,input2);
+
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {		 
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
 		iterate(input, &search_maximal_repeats);
-		maximals_print_nodes(input);
+		//maximals_print_nodes(input);
+		print_maximal_repeat_substrings(input);
+		//compare_quick_sort()
 	} else {
 		printf("Invalid choice\n");
 	}

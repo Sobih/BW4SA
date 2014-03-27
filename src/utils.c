@@ -307,3 +307,34 @@ void print_wavelet_tree(wavelet_tree* tree) {
 
 	free(node_list);
 }
+
+char *substring_from_string(char *string, int position, int length) {
+	char *pointer;
+	int i;
+	int pointer_index = 0;
+
+	pointer = malloc(length + 1);
+
+	for (i = position; i < position + length; i++) {
+		pointer[pointer_index] = string[i];
+		pointer_index++;
+	}
+	pointer[pointer_index] = '\0';
+
+	return pointer;
+}
+
+bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
+	if (target == 0)
+		target = malloc(sizeof(bit_vector));
+
+	unsigned int length = string->get_num_bits(string);
+	init_bit_vector(target, length);
+
+	target->mark_bit(target, 0);
+	for (int i = 1; i < length; i++)
+		if (string->char_at(string, i - 1) != string->char_at(string, i))
+			target->mark_bit(target, i);
+
+	return target;
+}
