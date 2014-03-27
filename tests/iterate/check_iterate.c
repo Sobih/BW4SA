@@ -7,6 +7,7 @@
 #include "../../include/wavelet_tree.h"
 #include "../../include/structs.h"
 #include "../../include/utils.h"
+#include "../../include/rbwt.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,8 +16,9 @@ int list_ptr = 0;
 
 START_TEST(simple_runs_test)
 {
+	printf("SIMPLE RUNS TEST\n");
 	char* string = "abracadabra";
-	wavelet_tree* tree = create_wavelet_tree(string);
+	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 0));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 1));
@@ -35,8 +37,9 @@ END_TEST
 
 START_TEST(another_simple_test)
 {
+	printf("ANOTHER SIMPLE TEST\n");
 	char* string = "HATTIVATTI";
-	wavelet_tree* tree = create_wavelet_tree(string);
+	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 0));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 1));
@@ -54,8 +57,9 @@ END_TEST
 
 START_TEST(test_interval_query)
 {
+	printf("TEST INTERVAL QUERY\n");
 	char* string = "ABRACADABRA";
-	wavelet_tree* tree = create_wavelet_tree(string);
+	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
 	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
@@ -70,8 +74,9 @@ END_TEST
 
 START_TEST(test_wrong_intervals)
 {
+	printf("TEST WRONG INTERVALS\n");
 	char* string = "ABRACADABRA";
-	wavelet_tree* tree = create_wavelet_tree(string);
+	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
 	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
@@ -86,7 +91,17 @@ END_TEST
 
 void put_substring_list(substring* substr)
 {
-	shared_list[list_ptr] = substr;
+	shared_list[list_ptr] = malloc(sizeof(substring));
+	substring* tmp = shared_list[list_ptr];
+
+	tmp->length = substr->length;
+
+	tmp->normal.i = substr->normal.i;
+	tmp->normal.j = substr->normal.j;
+
+	tmp->reverse.i = substr->reverse.i;
+	tmp->reverse.j = substr->reverse.j;
+
 	list_ptr++;
 }
 
@@ -110,6 +125,7 @@ int shared_list_contains(substring* comp)
 
 START_TEST(test_iterate2)
 {
+	printf("TEST ITERATE 2\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
@@ -124,6 +140,7 @@ START_TEST(test_iterate2)
 
 START_TEST(test_iterate1)
 {
+	printf("TEST ITERATE 1\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
@@ -138,6 +155,9 @@ START_TEST(test_iterate1)
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
 	iterate(string, &put_substring_list);
+
+	for (int i = 0; i < list_ptr; ++i)
+		print_node(shared_list[i]);
 
 	fail_unless(shared_list_contains(abra) == 1);
 	fail_unless(shared_list_contains(ra) == 1);
