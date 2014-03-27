@@ -28,7 +28,7 @@
  */
 char* reverse_string(const char* string, char* target, unsigned int length) {
 	for (int i = 0; i < length - 1; i++)
-		target[i] = string[length - i - 2];
+		target[i] = string[length - i - 1];
 
 	target[length - 1] = '\0';
 
@@ -44,7 +44,7 @@ char* reverse_string(const char* string, char* target, unsigned int length) {
  * @bug 	No known bugs.
  */
 wavelet_tree* reverse_bwt(const char* string) {
-	unsigned int length = strlen(string) + 1;
+	unsigned int length = strlen(string);
 	uchar* rev = malloc(length * sizeof(uchar));
 	rev = reverse_string(string, rev, length);
 	wavelet_tree* bwt = s_to_BWT(rev);
