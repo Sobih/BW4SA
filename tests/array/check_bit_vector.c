@@ -22,7 +22,7 @@ int contains(unsigned int* arr, unsigned int arr_size, unsigned int key) {
 }
 
 START_TEST (test_create_bit_vector) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 430;
 
 	//allocate vector, checking for null
@@ -50,7 +50,7 @@ START_TEST (test_create_bit_vector) {
 END_TEST
 
 START_TEST (test_create_faulty_vector) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 0;
 
 	//allocate vector, checking for null
@@ -71,7 +71,7 @@ START_TEST (test_create_faulty_vector) {
 END_TEST
 
 START_TEST (test_bit_marking) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 38 * 32, ind_amount = ceil(length / 20), random, mask;
 	unsigned int* indices = calloc(ind_amount, sizeof(unsigned int));
 
@@ -104,7 +104,7 @@ START_TEST (test_bit_marking) {
 END_TEST
 
 START_TEST (test_bit_unmarking) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 14 * 32, ind_amount = ceil(length / 20), random, mask;
 	unsigned int* indices = calloc(ind_amount, sizeof(unsigned int));
 	unsigned int half = ind_amount / 2;
@@ -147,7 +147,7 @@ START_TEST (test_bit_unmarking) {
 END_TEST
 
 START_TEST (test_mark_checking) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 56 * 32, ind_amount = ceil(length / 20), random, mask;
 	unsigned int* indices = calloc(ind_amount, sizeof(unsigned int));
 
@@ -187,7 +187,7 @@ START_TEST (test_mark_checking) {
 END_TEST
 
 START_TEST (test_rank) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 503 * 32, ind_amount = ceil(length / 30), random;
 	unsigned int* indices = calloc(ind_amount, sizeof(unsigned int));
 
@@ -220,7 +220,7 @@ START_TEST (test_rank) {
 END_TEST
 
 START_TEST (test_rank_lower_index) {
-	struct bit_vec* vector;
+	bit_vector* vector;
 	unsigned int length = 1;
 
 	vector = malloc(sizeof(bit_vector));
@@ -238,7 +238,7 @@ START_TEST (test_rank_lower_index) {
 END_TEST
 
 START_TEST(test_rank_interval1) {
-	struct bit_vec* vec = malloc(sizeof(struct bit_vec));
+	bit_vector* vec = malloc(sizeof(bit_vector));
 	init_bit_vector(vec, 10);
 	vec->mark_bit(vec, 2);
 	vec->mark_bit(vec, 4);
@@ -251,7 +251,7 @@ START_TEST(test_rank_interval1) {
 END_TEST
 
 START_TEST(test_rank_interval2) {
-	struct bit_vec* vec = malloc(sizeof(struct bit_vec));
+	bit_vector* vec = malloc(sizeof(bit_vector));
 	init_bit_vector(vec, 100);
 	vec->mark_bit(vec, 27);
 	vec->mark_bit(vec, 89);
