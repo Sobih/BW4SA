@@ -20,12 +20,23 @@ substring** create_n_substrs(int n)
 	return array;
 }
 
+void assert_substrings(substring* a, substring* b) {
+	ck_assert(a->length == b->length);
+
+	ck_assert(a->normal.i == b->normal.i);
+	ck_assert(a->normal.j == b->normal.j);
+
+	ck_assert(a->reverse.i == b->reverse.i);
+	ck_assert(a->reverse.j == b->reverse.j);
+}
+
 START_TEST(test_simple_pushnpop)
 {
 	substring_stack* stack = create_stack(10);
 	substring* new = create_substr();
 	push(stack, new);
-	fail_unless(new == pop(stack));
+
+	assert_substrings(pop(stack), new);
 }
 END_TEST
 
@@ -38,9 +49,10 @@ START_TEST(test_simple_pushnpop2)
 	push(stack, new2);
 	substring* new3 = create_substr();
 	push(stack, new3);
-	fail_unless(new3 == pop(stack));
-	fail_unless(new2 == pop(stack));
-	fail_unless(new == pop(stack));
+
+	assert_substrings(pop(stack), new3);
+	assert_substrings(pop(stack), new2);
+	assert_substrings(pop(stack), new);
 }
 END_TEST
 
@@ -55,7 +67,7 @@ START_TEST(heavy_pushnpop)
 	}
 	int j;
 	for(i=n-1, j= 0; i>=0; i--, j++){
-		fail_unless(arr[i] == pop(stack));
+		assert_substrings(pop(stack), arr[i]);
 	}
 	
 }
@@ -73,7 +85,7 @@ START_TEST(heavy_pushnpop2)
 			push(stack, arr[j]);
 		}
 		for(k=i;k>=0;k--){
-			fail_unless(arr[k] == pop(stack));
+			assert_substrings(pop(stack), arr[k]);
 		}
 	}
 	
@@ -92,7 +104,7 @@ START_TEST(heavy_pushnpop3)
 			push(stack, arr[j]);
 		}
 		for(k=i;k>=0;k--){
-			fail_unless(arr[k] == pop(stack));
+			assert_substrings(pop(stack), arr[k]);
 		}
 	}
 	
@@ -110,7 +122,7 @@ START_TEST(even_more_heavier_pushnpop)
 	}
 	int j;
 	for(i=n-1, j= 0; i>=0; i--, j++){
-		fail_unless(arr[i] == pop(stack));
+		assert_substrings(pop(stack), arr[i]);
 	}
 }
 END_TEST
