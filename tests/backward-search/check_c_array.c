@@ -19,6 +19,9 @@ START_TEST(test_carray_simple)
 
 	for(int i = 0; i < 6; i++)
 		ck_assert_int_eq(correct_array[i], carray[i]);
+
+	free_wavelet_tree(root);
+	free(carray);
 }
 END_TEST
 
@@ -32,6 +35,9 @@ START_TEST(test_carray_simple2)
 	
 	for(int i = 0; i < 6; i++)
 		ck_assert_int_eq(correct_array[i], carray[i]);
+
+	free_wavelet_tree(root);
+	free(carray);
 }
 END_TEST
 
@@ -39,15 +45,20 @@ START_TEST(carray_interval1)
 {
 	char* string = "aasdjfsbdhablsdaksdakjsdaksjdbiuephq";
 	wavelet_tree* tree = create_wavelet_tree(string);
-	interval* interval = malloc(sizeof(interval));
-	interval->i = 0;
-	interval->j = 5;
+
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 0;
+	inter->j = 5;
+
 	int correct[] = {0,2,3,4,5};
-	unsigned int* c_arr = create_c_array(tree, interval, 0, 0, 0);
-	for(int i=0; i< 5; i++){
-		printf("Current number: %u\n", c_arr[i]);
+	unsigned int* c_arr = create_c_array(tree, inter, 0, 0, 0);
+
+	for(int i=0; i< 5; i++)
 		ck_assert_int_eq(correct[i], c_arr[i]);
-	}
+
+	free_wavelet_tree(tree);
+	free(inter);
+	free(c_arr);
 }
 END_TEST
 
@@ -55,15 +66,20 @@ START_TEST(carray_interval2)
 {
 	char* string = "aggcaggaatttacagcaagacagcgacgacattat";
 	wavelet_tree* tree = create_wavelet_tree(string);
-	interval* interval = malloc(sizeof(interval));
-	interval->i = 7;
-	interval->j = 13;
+
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 7;
+	inter->j = 13;
+
 	int correct[] = {0,3,4};
-	unsigned int* c_arr = create_c_array(tree, interval, 0, 0, 0);
-	for(int i=0; i< 3; i++){
-		printf("Current number: %u\n", c_arr[i]);
+	unsigned int* c_arr = create_c_array(tree, inter, 0, 0, 0);
+
+	for(int i=0; i< 3; i++)
 		ck_assert_int_eq(correct[i], c_arr[i]);
-	}
+
+	free_wavelet_tree(tree);
+	free(inter);
+	free(c_arr);
 }
 END_TEST
 
@@ -71,14 +87,19 @@ START_TEST(alphabet_interval1)
 {
 	char* string = "abracadabra";
 	wavelet_tree* tree = create_wavelet_tree(string);
-	interval* interval = malloc(sizeof(interval));
-	interval->i = 4;
-	interval->j = 6;
+
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 4;
+	inter->j = 6;
+
 	char* correct = "acd";
-	alphabet_data* alphabet = create_alphabet_interval(interval, tree, 0);
+	alphabet_data* alphabet = create_alphabet_interval(inter, tree, 0);
 	ck_assert_str_eq(correct, alphabet->alphabet);
 		
-	
+	free_wavelet_tree(tree);
+	free(inter);
+	free(alphabet->alphabet);
+	free(alphabet);
 }
 END_TEST
 
@@ -86,14 +107,19 @@ START_TEST(alphabet_interval2)
 {
 	char* string = "dsdasdasdasdppkkklklkljjljpkkpkp";
 	wavelet_tree* tree = create_wavelet_tree(string);
-	interval* interval = malloc(sizeof(interval));
-	interval->i = 10;
-	interval->j = 14;
+
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 10;
+	inter->j = 14;
+
 	char* correct = "dkps";
-	alphabet_data* alphabet = create_alphabet_interval(interval, tree, 0);
+	alphabet_data* alphabet = create_alphabet_interval(inter, tree, 0);
 	ck_assert_str_eq(correct, alphabet->alphabet);
 		
-	
+	free_wavelet_tree(tree);
+	free(inter);
+	free(alphabet->alphabet);
+	free(alphabet);
 }
 END_TEST
 

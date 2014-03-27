@@ -13,61 +13,54 @@
 #include "../../include/wavelet_tree.h"
 
 interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string, interval* target) {
-	printf("OAIGDJ\n");
-	int i = 0, j = bwt->get_num_bits(bwt) - 1, k, index;
-	printf("OAIGDJ\n");
+	int i = 0, j = bwt->get_num_bits(bwt) - 1, index;
 	unsigned int alphabet_length = bwt->get_alphabet_length(bwt) - 1;
-	printf("OAIGDJ\n");
 	char* alphabet = bwt->get_alphabet(bwt), current;
-	printf("OAIGDJ\n");
 	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
-	printf("OAIGDJ\n");
+	int upper, lower;
 
-	for(k = string->get_num_bits(string) - 1; k >= 0; k--) {
-		printf("i: %d, j: %d\n", i, j);
-
+	for (int k = string->get_num_bits(string) - 1; k >= 0; k--) {
 		if(j < i) {
-			printf("NULLNULLNULLNULL\n");
+			free(c_array);
 			return NULL;
 		}
 
 		current = string->char_at(string, k);
 		index = binary_search(alphabet, &current, sizeof(char), alphabet_length, 0);
 
-		printf("index: %d\n", index);
-
 		if (index < 0) {
-			printf("NULLNULLNULLNULL\n");
+			free(c_array);
 			return NULL;
 		}
 
-		i = c_array[index] + bwt->rank(bwt, current, 0, i - 1);
-		j = i + bwt->rank(bwt, current, i, j) - 1;
+		upper = bwt->rank(bwt, current, i, j) - 1;
+		lower = bwt->rank(bwt, current, 0, i - 1);
+
+		i = c_array[index] + lower;
+		j = i + upper;
 	}
 
-	printf("ASODIJSAOIDJOAISJHFOIAHSOGIHSAOFIH\n");
+	free(c_array);
 
 	if (target == 0)
 		target = malloc(sizeof(interval));
 
-	printf("AOSIDJBGEYIIBGEAFDGKJHBSHGKJBDGSGFDSKJEAKJYGDAGDAKJHGDAKJHBGDAKJHB\n");
-
 	target->i = i;
 	target->j = j;
-
-	printf("AOSIDJBGEYIIBGEAFDGKJHBSHGKJBDGSGFDSKJEAKJYGDAGDAKJHGDAKJHBGDAKJHB\n");
 
 	return target;
 }
 
 interval* backward_search_interval(const wavelet_tree* bwt, const interval* inter, char c,
 		interval* target) {
-	int* c_array = create_c_array(bwt, 0, 0, 0, 0);
+	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
 	char* alphabet = bwt->get_alphabet(bwt);
 
-	int index = binary_search(alphabet, &c, 0, bwt->get_alphabet_length(bwt) - 1, sizeof(char));
-	int i = index + bwt->rank(bwt, c, 0, inter->i - 1);
+	int index = binary_search(alphabet, &c, sizeof(char), bwt->get_alphabet_length(bwt) - 1, 0);
+	int i = c_array[index] + bwt->rank(bwt, c, 0, inter->i - 1);
 	int j = i + bwt->rank(bwt, c, inter->i, inter->j) - 1;
+
+	free(c_array);
 
 	if (i > j) return NULL;
 

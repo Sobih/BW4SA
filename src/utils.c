@@ -210,7 +210,11 @@ char* determine_alphabet(const char* string) {
 }
 
 int binary_search(const void* arr, const void* key, unsigned int entry_size,
-		unsigned int max, unsigned int min) {
+		int max, int min) {
+
+	//not viable indexes
+	if (max < 0 || min < 0)
+		return -1;
 
 	//(sub)set empty
 	if (max < min)
