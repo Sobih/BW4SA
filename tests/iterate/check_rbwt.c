@@ -11,7 +11,6 @@
 int wavelet_tree_matches_string(wavelet_tree* tree, char* string, int length) {
 	int i;
 	for (i = 0; i < length; i++) {
-		printf("char in tree: %c char in string. %c \n", tree->char_at(tree, i), string[i]);
 		if (tree->char_at(tree, i) != string[i]) {
 			return 0;
 		}
@@ -29,27 +28,25 @@ START_TEST (reverse_test)
 START_TEST (reverse_test2)
 	{
 		char* string = malloc(sizeof(char) * 12);
-		string = reverse_string("TAAA", string, 5);
+		string = reverse_string("TAAA", string, 4);
 		ck_assert_str_eq(string, "AAAT");
 	}END_TEST
 
 START_TEST (reverse_bwt_test)
 	{
 		wavelet_tree* rbwt = reverse_bwt("ABRACADABRA");
-		print_wavelet_tree(rbwt);
 		ck_assert_int_eq(1, wavelet_tree_matches_string(rbwt,"ABDBC$RRAAAA",12));
 	}END_TEST
 
 START_TEST (reverse_bwt_test2)
 	{
 		wavelet_tree* rbwt = reverse_bwt("HATTIVATTI");
-		print_wavelet_tree(rbwt);
 		ck_assert_int_eq(1, wavelet_tree_matches_string(rbwt,"HTTAV$TTIIA",11));
 	}END_TEST
 
 
 Suite *count_suite(void) {
-	Suite *s = suite_create("Count_substrings");
+	Suite *s = suite_create("Reverse_BWT");
 
 	/* Core test case */
 	TCase *tc_core = tcase_create("Core");
