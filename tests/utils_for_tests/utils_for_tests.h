@@ -21,6 +21,8 @@ test_substr* find_maximal_repeat_substrings(char* string);
 
 test_substr* find_right_maximal_substrings(char* string);
 
-void print_rmaximal_list(char* string, test_substr* head);
+void print_substring_list(char* string, test_substr* head);
+
+void print_substring_indices(test_substr* head);
 
 #endif /* UTILS_FOR_TESTS_H_ */

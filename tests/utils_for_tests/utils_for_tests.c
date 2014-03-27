@@ -88,16 +88,27 @@ int is_substring_right_maximal(char* string, int string_length,
 
 int is_substring_max_repeat(char* string, int string_length, int substr_start,
 		int substr_length) {
+
+	int found = 0;
 	for (int i = 0; i + substr_length <= string_length; i++) {
 		if (two_substrings_right_maximal(string, string_length, substr_start, i,
-				substr_length)
-				&& two_substrings_left_maximal(string, string_length,
-						substr_start, i, substr_length)) {
-			return 1;
+				substr_length)) {
+			found = 1;
+			break;
 		}
 	}
+	if(!found){
+		return 0;
+	}
+	for (int i = 0; i + substr_length <= string_length; i++) {
+			if (two_substrings_left_maximal(string, string_length,
+							substr_start, i, substr_length)) {
+				return 1;
+			}
+		}
 	return 0;
 }
+
 void print_substr(char* string, int start_index, int length) {
 	for (int i = 0; i < length; i++) {
 		printf("%c", string[start_index + i]);
@@ -181,6 +192,15 @@ void print_substring_list(char* string, test_substr* head) {
 		print_substr(string, current->start_index, current->length);
 		current = current->next;
 	}
+}
+
+void print_substring_indices(test_substr* head) {
+	test_substr* current = head->next;
+	while(current != NULL){
+		printf("index: %d, length %d\n", current->start_index, current->length);
+		current = current->next;
+	}
+
 }
 
 //int main(){
