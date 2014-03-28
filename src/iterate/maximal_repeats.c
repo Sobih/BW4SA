@@ -43,8 +43,11 @@ int is_interval_left_maximal(interval inter) {
 
 void search_maximal_repeats(substring* node) {
 	if (is_interval_left_maximal(node->normal)) {
-		max_repeat_node max_node = *((max_repeat_node*) malloc(sizeof(max_repeat_node)));;
-		max_node.normal = node->normal;
+		printf("Found maximal repeat.\n");
+		print_node(node);
+		max_repeat_node max_node = *((max_repeat_node*) malloc(sizeof(max_repeat_node)));
+		max_node.normal.i = node->normal.i;
+		max_node.normal.j = node->normal.j;
 		max_node.length = node->length;
 		nodes[nodes_index] = max_node;
 		nodes_index++;
@@ -60,9 +63,10 @@ void print_maximal_repeat_substrings(char* string) {
 	int i;
 
 	for (i = 0; i < nodes_index; i++) {
-		printf("%s \n",
+		printf("String: %s, starting position: %d, length of substring: %d \n", string, nodes[i].normal.i, nodes[i].length);
+		printf("Substring: %s index:%d length: %d \n",
 				substring_from_string(string, nodes[i].normal.i,
-						nodes[i].length));
+						nodes[i].length), nodes[i].normal.i, nodes[i].length);
 	}
 }
 
