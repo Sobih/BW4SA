@@ -201,6 +201,23 @@ START_TEST(test_interval_search_ha)
 }
 END_TEST
 
+START_TEST(test_interval_search_not_found) {
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 5;
+	inter->j = 8;
+
+	wavelet_tree* tree = create_wavelet_tree("ivh$ttttaai");
+
+	interval* result = backward_search_interval(tree, inter, 'k', 0);
+
+	ck_assert(result == NULL);
+
+	free_wavelet_tree(tree);
+	free(result);
+	free(inter);
+}
+END_TEST
+
 TCase* create_backward_search_test_case(void) {
 	TCase* tc_backward_search = tcase_create("backward_search_test");
 	tcase_add_test(tc_backward_search, test_search_simple);
@@ -219,6 +236,7 @@ TCase* create_backward_search_interval_test_case(void) {
 	tcase_add_test(tc_backward_search_interval, test_interval_search_bra);
 	tcase_add_test(tc_backward_search_interval, test_interval_search_tt);
 	tcase_add_test(tc_backward_search_interval, test_interval_search_ha);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_not_found);
 
 	return tc_backward_search_interval;
 }
