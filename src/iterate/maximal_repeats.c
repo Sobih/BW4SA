@@ -37,7 +37,7 @@ bit_vector* create_runs_vector_from_bwt(char* bwt) {
 void max_repeats_initialize_bwt(char* bwt) {
 	max_bwt = bwt;
 	max_repeats_runs = create_runs_vector_from_bwt(bwt);
-	nodes = calloc(100,sizeof(max_repeat_node));
+	nodes = calloc(10000,sizeof(max_repeat_node));
 	nodes_index = 0;
 }
 

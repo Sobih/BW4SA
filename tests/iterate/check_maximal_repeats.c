@@ -129,7 +129,6 @@ int find_and_remove_test_substr(test_substr* head, int index, int length) {
 	test_substr* previous = head;
 	test_substr* current = head->next;
 
-	printf("searching for index %d, length %d\n", index, length);
 	while (current != NULL) {
 
 		if (current->length == length && current->start_index == index) {
@@ -143,11 +142,6 @@ int find_and_remove_test_substr(test_substr* head, int index, int length) {
 	return 0;
 }
 
-void print_maxreps(int size, max_repeat_node* max){
-	for(int i = 0; i < size; i++){
-		printf("node i = %d, j = %d, length = %d\n", max[i].normal->i, max[i].normal->j, max[i].length);
-	}
-}
 START_TEST(test_max_repeats_randomized)
 {
 	srand(time(NULL));
@@ -157,30 +151,17 @@ START_TEST(test_max_repeats_randomized)
 	int length;
 	char* alphabet = "abcgdf";
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 100; i++) {
 
-		test = generate_random_string(alphabet, rand() % 10 + 1);
-		test = "sdasdasd";
+		test = generate_random_string(alphabet, rand() % 100 + 1);
 		bwt = s_to_BWT(test);
 		suffix_array = map_create_suffix_array_from_bwt(bwt);
 
 		test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
 		iterate(test, &search_maximal_repeats);
 		max_repeat_node* maxrep_fast = get_nodes();
-		printf("naive:\n");
-		print_substring_list(test, maxrep_naive);
-		printf("\nASDAÖLKSDJMASÖLKDJMAÖSLDSA\n");
-		printf("un-naive:\n");
-		print_maximal_repeat_substrings(test);
+
 		int max_number_nodes = get_max_repeats_nodes_index();
-		print_maxreps(max_number_nodes, maxrep_fast);
-		print_substring_indices(maxrep_naive);
-
-		for(int g = 0; g < strlen(test); g++){
-			printf("%d ", suffix_array[g]);
-		}
-		printf("\n");
-
 
 		for(int j = 0; j < max_number_nodes; j++){
 			for(int k = 0; k + maxrep_fast[j].normal->i <=  maxrep_fast[j].normal->j; k++){
@@ -195,10 +176,45 @@ START_TEST(test_max_repeats_randomized)
 	}
 }END_TEST
 
+START_TEST(test_max_repeats_randomized2)
+{
+	srand(time(NULL));
+	char* test;
+	char* bwt;
+	int* suffix_array;
+	int length;
+	char* alphabet = "aoskfdhebs";
+
+	for (int i = 0; i < 10; i++) {
+
+		test = generate_random_string(alphabet, rand() % 1000 + 100);
+		bwt = s_to_BWT(test);
+		suffix_array = map_create_suffix_array_from_bwt(bwt);
+
+		test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
+		iterate(test, &search_maximal_repeats);
+		max_repeat_node* maxrep_fast = get_nodes();
+
+		int max_number_nodes = get_max_repeats_nodes_index();
+
+		for(int j = 0; j < max_number_nodes; j++){
+			for(int k = 0; k + maxrep_fast[j].normal->i <=  maxrep_fast[j].normal->j; k++){
+
+				fail_unless(find_and_remove_test_substr(maxrep_naive,
+						 suffix_array[maxrep_fast[j].normal->i + k], maxrep_fast[j].length));
+			}
+		}
+		print_substring_list(test, maxrep_naive);
+		fail_unless(maxrep_naive->next == NULL);
+
+	}
+}END_TEST
 
 TCase * create_max_repeats_randomized_test_case(void) {
 	TCase * tc_randrep = tcase_create("max_repeats_randomized");
+	tcase_add_test(tc_randrep, test_max_repeats_randomized2);
 	tcase_add_test(tc_randrep, test_max_repeats_randomized);
+	tcase_set_timeout(tc_randrep, 100);
 	return tc_randrep;
 }
 
