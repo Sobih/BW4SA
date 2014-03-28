@@ -42,30 +42,35 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 void update_position_in_triplets(triplet* nodes, wavelet_tree* bwt, int count,
 		int position) {
 	int i;
-	long n = bwt->num_nodes - 1;
+	long n = bwt->get_num_bits(bwt);
 	int k;
 	interval* inter = malloc(sizeof(interval));
+	interval* target = malloc(sizeof(interval));
 	inter->i = 0;
 	inter->j = 0;
 	for (i = 0; i < count; i++) {
-		for (k = 1; k <= n; k++) {
+		for (k = 0; k < n; k++) {
 			if (position == 1) {
 				if (nodes[i].pos1 == inter->i) {
-					nodes[i].pos1 = (n - k) + 1;
+					nodes[i].pos1 = (n - k) - 1;
 					break;
 				}
 			}
 			if (position == 2) {
 				if (nodes[i].pos2 == inter->i) {
-					nodes[i].pos2 = (n - k) + 1;
+					nodes[i].pos2 = (n - k) - 1;
 					break;
 				}
 			}
-			inter = backward_search_interval(bwt, inter,
-					bwt->char_at(bwt, inter->i), inter);
+			target = backward_search_interval(bwt, inter,
+					bwt->char_at(bwt, inter->i), target);
+			memcpy(inter, target, sizeof(interval));
 		}
+		inter->i = 0;
+		inter->j = 0;
 	}
 	free(inter);
+	free(target);
 }
 
 void map_mum_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
