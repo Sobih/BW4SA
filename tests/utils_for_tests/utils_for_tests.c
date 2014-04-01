@@ -203,6 +203,90 @@ void print_substring_indices(test_substr* head) {
 
 }
 
+int two_substrings_from_different_strings_equal(char* string1, char* string2, int string1_length, int string2_length, int string1_index, int string2_index, int substr_length)
+{
+	int i;
+
+	if (string1_index + substr_length > string1_length || string2_index + substr_length > string2_length) {
+		return 0;
+	}
+	
+	for (i = 0; i < substr_length; i++) {
+		if (string[string1_index] + i != string[second_index + i]) {
+			return 0;
+		}
+	
+	}
+	
+	return 1;
+
+}
+
+
+int two_substrings_from_different_strings_right_maximal(char* string1, char* string2, int string1_length, int string2_length, int string1_index, int string2_index, int substr_length) 
+{
+	if (!two_substrings_from_different_strings_equal(string1, string2, string1_length, string2_length, string1_index, string2_index, substr_length)) {
+		return 0;
+	}
+	
+	if (string1_index + substr_length >= string1_length || string2_index + substr_length >= string2_length) {
+		return 1;	
+	}
+	
+	if (string1[string1_index + substr_length] != string2[string2_index + substr_length]) {
+		return 1;
+	}
+	
+	return 0;
+}
+
+int two_substrings_from_different_strings_left_maximal(char* string1, char* string2, int string1_length, int string2_length, int string1_index, int string2_index, int substr_length) {
+	
+	if (!two_substrings_from_different_strings_equal(string1, string2, string1_length, string2_length, string1_index, string2_index, substr_length)) {
+		return 0;
+	}
+	
+	if (string1_index == 0 || string2_index == 0) {
+		return 1;
+	}
+	
+	if (string1[string1_index - 1] != string2[string2_index - 1]) {
+		return 1;
+	}
+	
+	return 0;
+
+}
+
+int is_substring_in_two_strings_max_repeat(char* string1, char* string2, int string1_length, int string2_length, int string1_substr_start, int string2_substr_start, int substr_length)
+{
+	int i, found = 0;
+	//for (i = 0; i + substr)
+
+}
+
+
+void find_maximal_exact_match_naive(char* string1, char* string2)
+{
+	int i, j, k, l;
+	
+	for (i = 0; i < strlen(string1); i++) {
+		for (j = 0; j < strlen(string1); j++) {
+			for (k = 0; k < strlen(string2); k++) {
+				for (l = 0; l < strlen(string2); l++) {
+					
+				
+				}
+			
+			}
+		
+		}
+	
+	}
+
+
+}
+
 //int main(){
 //
 //	char* test = generate_random_string("acgt", 100);
