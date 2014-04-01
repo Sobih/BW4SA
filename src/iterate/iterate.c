@@ -38,14 +38,21 @@ interval* update_reverse_interval(interval* inter, interval* normal,
 	if (target == 0)
 		target = malloc(sizeof(interval));
 
+
+	printf("\nsearching for %c in %s \n", c, alphabet);
+
 	int index_in_c_array = binary_search(alphabet, &c, sizeof(char),
 			alphabet_length, 0);
+	if(index_in_c_array >= alphabet_length ){
+		printf("RÖLÖLÖLÖÖLÖLÖLÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖ index: %d alphabet length: %d", index_in_c_array, alphabet_length);
+	}
 	int char_index = c_array[index_in_c_array];
 	target->i = inter->i + char_index;
 
 	//length of the reverse interval is same as length of the normal interval
 	int normal_j = normal->j;
 	int normal_i = normal->i;
+
 	int new_j = target->i + (normal_j - normal_i);
 	target->j = new_j;
 	return target;
@@ -239,7 +246,7 @@ char* combine_alphabets_intersection(alphabet_data* alpha_data1,
 	if (alphabet2[index2] == END_STRING) {
 		index2++;
 	}
-	while (index1 <= alpha_data1->length && index2 <= alpha_data2->length) {
+	while (index1 < alpha_data1->length && index2 < alpha_data2->length) {
 		if (alphabet1[index1] == alphabet2[index2]) {
 			printf("Common letter: %c \n", alphabet1[index1]);
 			common_alphabet[common_index] = alphabet1[index1];
@@ -301,18 +308,9 @@ void double_iterate(char* string1, char* string2,
 	substring* new_substring2 = 0, *substring2 = create_substring(normal2,
 			reverse2, 0, 0);
 
+	substring* temp;
+
 	while (1) {
-
-		if (substring1 == NULL) {
-			printf("Substring 1 was null \n");
-			break;
-		}
-
-		if (substring2 == NULL) {
-			printf("Substring 2 was null \n");
-			break;
-		}
-
 		//if size of the interval is 1, it cannot be a right-maximal string
 		//if(substring->normal->i == substring->normal->j) continue;
 
@@ -334,8 +332,13 @@ void double_iterate(char* string1, char* string2,
 		int common_alphabet_length = strlen(common_alphabet);
 
 		for (i = 0; i < common_alphabet_length; i++) {
+			printf("\nfor loop, letter = %c\n\n", common_alphabet[i]);
+
 			//print_node(substring1->normal);
 			//printf("letter added to the left: %c \n", common_alphabet[i]);
+			printf("searching for %c in node:\n", common_alphabet[i]);
+			print_node(substring1);
+			printf("\n\n");
 			normal1 = backward_search_interval(bwt1, &substring1->normal,
 					common_alphabet[i], normal1);
 			if (normal1 == NULL) {
@@ -350,16 +353,25 @@ void double_iterate(char* string1, char* string2,
 				continue;
 			}
 			reverse1 = update_reverse_interval(&substring1->reverse, normal1,
-					alpha_data1->alphabet, common_alphabet_length, c_array1,
+					alpha_data1->alphabet, alpha_data1->length, c_array1,
 					common_alphabet[i], reverse1);
 			reverse2 = update_reverse_interval(&substring2->reverse, normal2,
-					alpha_data2->alphabet, common_alphabet_length, c_array2,
+					alpha_data2->alphabet, alpha_data2->length, c_array2,
 					common_alphabet[i], reverse2);
+
+			printf("substring 1 before making new_substring:\n");
+			print_node(substring1);
+			printf("\n\n");
 
 			new_substring1 = create_substring(normal1, reverse1,
 					substring1->length + 1, new_substring1);
 			new_substring2 = create_substring(normal2, reverse2,
 					substring2->length + 1, new_substring2);
+
+			printf("substring 1 after making new_substring:\n");
+			print_node(substring1);
+			printf("\n\n");
+
 			printf("ADDING NEW SUBSTRINGS TO STACKS \n");
 			print_node(new_substring1);
 			print_node(new_substring2);
@@ -370,8 +382,21 @@ void double_iterate(char* string1, char* string2,
 			push(stack2, new_substring2);
 		}
 
-		substring1 = pop(stack1);
-		substring2 = pop(stack2);
+		printf("\nPOPPING FROM STACK!\n");
+		temp = pop(stack1);
+		if (temp == NULL) {
+			printf("Substring 1 was null \n");
+			break;
+		}
+		substring1 = create_substring(&temp->normal, &temp->reverse,
+				temp->length, substring1);
+		temp = pop(stack2);
+		if (temp == NULL) {
+			printf("Substring 2 was null \n");
+			break;
+		}
+		substring2 = create_substring(&temp->normal, &temp->reverse,
+				temp->length, substring2);
 	}
 
 	free(c_array1);
