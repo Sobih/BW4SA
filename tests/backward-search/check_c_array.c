@@ -103,47 +103,62 @@ END_TEST
 START_TEST(alphabet_interval) {
 	srand(time(NULL));
 
-	int length = (rand() % 500) + 1;
+	int length = (rand() % 500) + 1, runs = 500, start, end, counter, index, correct_length;
 	char* string = malloc(length * sizeof(char));
-
-	generate_random_string(string, length);
-	wavelet_tree* tree = create_wavelet_tree(string);
-
-	int start = rand() % length, end;
-
-	do {
-		end = rand() % length;
-	} while (end <= start);
-
 	interval* inter = malloc(sizeof(interval));
-	inter->i = start;
-	inter->j = end;
+	wavelet_tree* tree;
+	char* correct_alphabet;
+	alphabet_data* alphabet;
 
-	//find correct alphabet naïvely
-	int counter = 0, index;
-	char* correct_alphabet = calloc(length, sizeof(char));
-	for (int i = start; i <= end; ++i) {
-		index = binary_search(correct_alphabet, (string + i), sizeof(char), counter, 0);
-		if (index < 0 || index >= counter) {
-			correct_alphabet[counter] = string[i];
-			counter++;
-			quick_sort(correct_alphabet, counter, sizeof(char));
+	int run_counter = 1;
+
+	for (int i = 0; i < runs; ++i) {
+		//printf("Commencing run %d / %d\n", run_counter, runs);
+
+		generate_random_string(string, length);
+		tree = create_wavelet_tree(string);
+
+		start = rand() % (length / 2);
+
+		do {
+			end = rand() % (length - 1);
+		} while (end <= start);
+
+		inter->i = start;
+		inter->j = end;
+
+		//find correct alphabet naïvely
+		counter = 0;
+		correct_alphabet = calloc(length, sizeof(char));
+		for (int i = start; i <= end; ++i) {
+			index = binary_search(correct_alphabet, (string + i), sizeof(char), counter, 0);
+			if (index < 0 || index > counter) {
+				correct_alphabet[counter] = string[i];
+				counter++;
+				quick_sort(correct_alphabet, counter, sizeof(char));
+			}
 		}
+
+		correct_alphabet[counter] = 0;
+
+		correct_length = strlen(correct_alphabet);
+
+		alphabet = create_alphabet_interval(inter, tree, 0);
+
+		ck_assert(correct_length == alphabet->length);
+
+		for (int i = 0; i < correct_length; ++i)
+			ck_assert(alphabet->alphabet[i] == correct_alphabet[i]);
+
+		free_wavelet_tree(tree);
+		free(correct_alphabet);
+		free(alphabet->alphabet);
+		free(alphabet);
+
+		run_counter++;
 	}
 
-	int correct_length = strlen(correct_alphabet);
-
-	alphabet_data* alphabet = create_alphabet_interval(inter, tree, 0);
-
-	printf("Alphabet: %s\n", alphabet->alphabet);
-	printf("Length: %d\n", alphabet->length);
-	printf("Correct alphabet: %s\n", correct_alphabet);
-	printf("Correct length: %d\n", correct_length);
-
-	ck_assert(correct_length == alphabet->length);
-
-	for (int i = 0; i < correct_length; ++i)
-		ck_assert(alphabet->alphabet[i] == correct_alphabet[i]);
+	//printf("Finished %d / %d in total\n", run_counter - 1, runs);
 }
 END_TEST
 

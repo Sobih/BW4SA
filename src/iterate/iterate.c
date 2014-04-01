@@ -83,7 +83,6 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	wavelet_tree* bwt = s_to_BWT(string), *rev_bwt = reverse_bwt(string);
 	bit_vector* reverse_runs = create_runs_vector(rev_bwt, 0);
 	substring_stack* stack = create_stack(10);
-	//printf("Bwt, reverse bwt, reverse runs and stack created\n");
 	int bwt_length = bwt->get_num_bits(bwt), i, alphabet_length =
 			bwt->get_alphabet_length(bwt);
 	unsigned int* c_array = malloc(
@@ -93,21 +92,16 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 
 	// WARNING WARNING, NOT GOOD
 	max_repeats_initialize_bwt(bwt);
-	//printf("Max repeats initialized\n");
 
 	//Initialize first intervals. In the start both intervals are the whole bwt
 	interval* normal = &((interval ) { .i = 0, .j = bwt_length - 1 } );
 	interval* reverse = &((interval ) { .i = 0, .j = bwt_length - 1 } );
-
-	//printf("Intervals initialized\n");
 
 	//create starting substring
 	substring* new_substring = 0, *substr = create_substring(normal, reverse,
 			0, 0);
 
 	substring* temp;
-
-	//printf("Substrings created.\n");
 
 	while (1) {
 		if (substr == NULL)
@@ -122,13 +116,6 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 
 		c_array = create_c_array(bwt, &substr->normal, 0, 0, c_array);
 
-		/*printf("C-array created: ");
-
-		 for (int i = 0; i < alpha_data->length; ++i)
-		 printf("%u, ", c_array[i]);
-
-		 printf("\n");*/
-
 		alphabet_length = alpha_data->length;
 
 		for (i = 0; i < alphabet_length; i++) {
@@ -141,16 +128,12 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 					alpha_data->alphabet, alphabet_length, c_array,
 					alpha_data->alphabet[i], reverse);
 
-			//printf("normal and reverse updated\n");
-
 			if (is_reverse_interval_right_maximal(reverse_runs, reverse)) {
-				//printf("Reverse is right maximal\n");
 				new_substring = create_substring(normal, reverse,
 						substr->length + 1, new_substring);
 				// callback function pointers
 				callback(new_substring);
 				push(stack, new_substring);
-				//printf("Reverse pushed to stack\n");
 			}
 		}
 
