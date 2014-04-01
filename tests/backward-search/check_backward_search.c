@@ -344,25 +344,14 @@ START_TEST (test_interval_search_random) {
 
 	int run_counter = 1;
 
-	//printf("Variables initialized\n");
-
 	for (; run_counter <= runs; ++run_counter) {
-		printf("Doing run %d / %d\n", run_counter, runs);
-
 		string = generate_random_string(string, length);
-
-		//printf("String generated: %s\n", string);
-
 		tree = s_to_BWT(string);
-
-		//printf("Tree generated\n");
 
 		for (int j = 0; j < tree->get_num_bits(tree); ++j)
 			bwt[j] = tree->char_at(tree, j);
 
 		bwt[tree->get_num_bits(tree)] = 0;
-
-		//printf("String bwt created\n");
 
 		start = rand() % ((length + 1) / 2);
 
@@ -373,33 +362,14 @@ START_TEST (test_interval_search_random) {
 		inter->i = start;
 		inter->j = end;
 
-		/*printf("Start and end determined\n");
-
-		printf("Naive bwt: %s\n", bwt);
-		printf("Wavelet bwt: ");
-		for (int j = 0; j < tree->get_num_bits(tree); ++j)
-			printf("%c", tree->char_at(tree, j));
-
-		printf("\nNaive alphabet: %s\n", get_alphabet(bwt));
-		printf("Complex alphabet: %s\n", tree->get_alphabet(tree));*/
-
 		for (int j = 0; j < tree->get_num_bits(tree); ++j) {
-			//printf("Testing naive backwards search\n");
 			naive = backward_search_interval_naive(bwt, inter, bwt[j]);
-
-			//printf("Testing complex backwards search\n");
 			complex = backward_search_interval(tree, inter, bwt[j], complex);
 
 			if (complex == NULL || naive == NULL) {
-				//printf("Either NULL\n");
-
 				ck_assert(complex == naive);
-
-				//printf("Both NULL\n");
 				continue;
 			}
-
-			//printf("Naive: %d, %d\t\tComplex: %d, %d\n", naive->i, naive->j, complex->i, complex->j);
 
 			ck_assert(naive->i == complex->i);
 			ck_assert(naive->j == complex->j);
@@ -408,11 +378,7 @@ START_TEST (test_interval_search_random) {
 		}
 
 		free_wavelet_tree(tree);
-
-		//printf("Run completed\n");
 	}
-
-	printf("Completed %d / %d runs\n", run_counter - 1, runs);
 }
 END_TEST
 
