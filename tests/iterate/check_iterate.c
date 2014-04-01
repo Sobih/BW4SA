@@ -15,7 +15,7 @@ substring** shared_list;
 int list_ptr = 0;
 
 //static variables for randomized tests
-static rmaximal_substr* naive_rmaximals;
+static test_substr* naive_rmaximals;
 static int callback_flag;
 static int* suffix_array;
 
@@ -152,8 +152,8 @@ START_TEST(test_iterate1)
 END_TEST
 
 int check_list_contains_and_remove(int index_bwt, int length){
-	rmaximal_substr* prev = naive_rmaximals;
-	rmaximal_substr* node = naive_rmaximals->next;
+	test_substr* prev = naive_rmaximals;
+	test_substr* node = naive_rmaximals->next;
 
 	while(node != NULL){
 		if(node->length == length && node->start_index == suffix_array[index_bwt]){
@@ -181,7 +181,7 @@ START_TEST(test_iterate_randomized_small_alphabet)
 	srand(time(NULL));
 	char* alphabet = "acgt";
 	char* bwt;
-	for(int i= 0; i<1000; i++){
+	for(int i= 0; i<100; i++){
 		int length = (rand() % 200)+1;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
@@ -201,7 +201,7 @@ START_TEST(test_iterate_randomized_big_alphabet)
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
 	char* bwt;
-	for(int i= 0; i<1000; i++){
+	for(int i= 0; i<100; i++){
 		int length = (rand() % 100) + 100;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
