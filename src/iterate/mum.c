@@ -38,6 +38,7 @@ void search_mums(substring* node1, substring* node2) {
 				if (mum_rbwt1->char_at(mum_rbwt1,node1->reverse.i)
 						!= mum_rbwt2->char_at(mum_rbwt2,node2->reverse.i)) {
 					triplet trip = *((triplet*) malloc(sizeof(triplet)));
+					printf("FOUND MUM! pos1: %d, pos2: %d", node1->normal.i, node2->normal.i);
 					trip.pos1 = node1->normal.i;
 					trip.pos2 = node2->normal.i;
 					trip.length = node1->length;
