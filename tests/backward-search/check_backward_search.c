@@ -6,11 +6,127 @@
  */
 
 #include "../../include/backward_search.h"
-#include "../../include/wavelet_tree.h"
 #include "../../include/structs.h"
+#include "../../include/wavelet_tree.h"
+#include "../../src/bwt/s_to_bwt.h"
+#include "../../include/utils.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+int get_char_index(const int* c_array, const char* alphabet, const char c)
+{
+	int i;
+	for(i=0;i<strlen(alphabet);i++){
+		if(alphabet[i] == c){
+			return c_array[i];
+		}
+	}
+	return -1;
+}
+
+int get_index(const char* string, const char c, int length)
+{
+	int i;
+	for(i=0;i<length;i++){
+		if(c == string[i]){
+			return i;
+		}
+	}
+	return -1;
+}
+
+char* get_alphabet(const char* string)
+{
+	int i;
+	char* alphabet = malloc(200 * sizeof(char));
+	int alphabet_index = 0;
+
+	int length = strlen(string);
+	for(i=0;i<length;i++){
+		if(get_index(alphabet, string[i], alphabet_index) == -1){
+			//alphabet[alphabet_index+1] = alphabet[alphabet_index];
+			alphabet[alphabet_index] = string[i];
+			alphabet_index++;
+		}
+	}
+
+	alphabet[alphabet_index] = 0;
+
+	quick_sort(alphabet, strlen(alphabet), sizeof(char));
+	return alphabet;
+}
+
+int* create_c_array_naive(const char* string)
+{
+	int i;
+	char* alphabet = get_alphabet(string);
+	int alpha_length = strlen(alphabet);
+	int* c_array = calloc(alpha_length, sizeof(int));
+
+	for(i=0;i<strlen(string);i++){
+		int index = get_index(alphabet, string[i], alpha_length);
+		c_array[index] += 1;
+	}
+	for(i=0;i<strlen(alphabet)-1;i++){
+		c_array[i+1] = c_array[i+1] + c_array[i];
+	}
+
+	for(i=strlen(alphabet)-1; i>0;i--){
+		c_array[i] = c_array[i-1];
+	}
+	c_array[0] = 0;
+
+	free(alphabet);
+
+	return c_array;
+}
+
+int rank(const int index, const char c, const char* string){
+	int i, count = 0;
+	if(index <= 0){
+		return 0;
+	}
+
+	for(i = index - 1; i >= 0; i--){
+		if(string[i] == c){
+			count++;
+		}
+	}
+	return count;
+}
+
+interval* backward_search_interval_naive(const char* bwt, interval* inter, const char c){
+	int* c_array = create_c_array_naive(bwt);
+	char* alphabet = get_alphabet(bwt);
+
+	int i = inter->i;
+	int j = inter->j;
+	i = get_char_index(c_array, alphabet, c)+rank(i, c, bwt);
+	j = get_char_index(c_array, alphabet, c)+rank(j+1, c, bwt)-1;
+	if(i > j){
+		return NULL;
+	}
+	interval* new_interval = malloc(sizeof(interval));
+	new_interval->i = i;
+	new_interval->j = j;
+	return new_interval;
+}
+
+char* generate_random_string(char* string, unsigned int length) {
+	if (length == 0)
+		return string;
+
+	string[length - 1] = 0;
+
+	if (length == 1)
+		return string;
+
+	for (int i = length - 2; i >= 0; --i)
+		*(string + i) = (char) ((rand() % 75) + 49);
+
+	return string;
+}
 
 START_TEST(test_search_simple)
 {
@@ -218,6 +334,88 @@ START_TEST(test_interval_search_not_found) {
 }
 END_TEST
 
+START_TEST (test_interval_search_random) {
+	srand(time(NULL));
+
+	int length = (rand() % 50) + 2, runs = 100, start, end;
+	char* string = malloc(length * sizeof(char)), *bwt = malloc((length + 2) * sizeof(char));
+	interval* inter = malloc(sizeof(interval)), *complex = malloc(sizeof(interval)), *naive;
+	wavelet_tree* tree;
+
+	int run_counter = 1;
+
+	//printf("Variables initialized\n");
+
+	for (; run_counter <= runs; ++run_counter) {
+		printf("Doing run %d / %d\n", run_counter, runs);
+
+		string = generate_random_string(string, length);
+
+		//printf("String generated: %s\n", string);
+
+		tree = s_to_BWT(string);
+
+		//printf("Tree generated\n");
+
+		for (int j = 0; j < tree->get_num_bits(tree); ++j)
+			bwt[j] = tree->char_at(tree, j);
+
+		bwt[tree->get_num_bits(tree)] = 0;
+
+		//printf("String bwt created\n");
+
+		start = rand() % ((length + 1) / 2);
+
+		do {
+			end = rand() % (length + 1);
+		} while (end <= start);
+
+		inter->i = start;
+		inter->j = end;
+
+		/*printf("Start and end determined\n");
+
+		printf("Naive bwt: %s\n", bwt);
+		printf("Wavelet bwt: ");
+		for (int j = 0; j < tree->get_num_bits(tree); ++j)
+			printf("%c", tree->char_at(tree, j));
+
+		printf("\nNaive alphabet: %s\n", get_alphabet(bwt));
+		printf("Complex alphabet: %s\n", tree->get_alphabet(tree));*/
+
+		for (int j = 0; j < tree->get_num_bits(tree); ++j) {
+			//printf("Testing naive backwards search\n");
+			naive = backward_search_interval_naive(bwt, inter, bwt[j]);
+
+			//printf("Testing complex backwards search\n");
+			complex = backward_search_interval(tree, inter, bwt[j], complex);
+
+			if (complex == NULL || naive == NULL) {
+				//printf("Either NULL\n");
+
+				ck_assert(complex == naive);
+
+				//printf("Both NULL\n");
+				continue;
+			}
+
+			//printf("Naive: %d, %d\t\tComplex: %d, %d\n", naive->i, naive->j, complex->i, complex->j);
+
+			ck_assert(naive->i == complex->i);
+			ck_assert(naive->j == complex->j);
+
+			free(naive);
+		}
+
+		free_wavelet_tree(tree);
+
+		//printf("Run completed\n");
+	}
+
+	printf("Completed %d / %d runs\n", run_counter - 1, runs);
+}
+END_TEST
+
 TCase* create_backward_search_test_case(void) {
 	TCase* tc_backward_search = tcase_create("backward_search_test");
 	tcase_add_test(tc_backward_search, test_search_simple);
@@ -237,6 +435,7 @@ TCase* create_backward_search_interval_test_case(void) {
 	tcase_add_test(tc_backward_search_interval, test_interval_search_tt);
 	tcase_add_test(tc_backward_search_interval, test_interval_search_ha);
 	tcase_add_test(tc_backward_search_interval, test_interval_search_not_found);
+	tcase_add_test(tc_backward_search_interval, test_interval_search_random);
 
 	return tc_backward_search_interval;
 }
