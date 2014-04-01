@@ -6,145 +6,203 @@
  */
 
 #include "../../include/backward_search.h"
+#include "../../include/wavelet_tree.h"
+#include "../../include/structs.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-START_TEST(test_count_zero_letters)
-{
-	const char* string = "abracadabra";
-	ck_assert_int_eq(0, rank(0, 'c', string));
-}
-END_TEST
-
-START_TEST(test_count_one_letter)
-{
-	const char* string = "abracadabra";
-	ck_assert_int_eq(1, rank(8, 'c', string));
-}
-END_TEST
-
-START_TEST(test_count_all_a_letters)
-{
-	const char* string = "abracadabra";
-	ck_assert_int_eq(5, rank(11, 'a', string));
-}
-END_TEST
-
-START_TEST(test_count_some_a_letters)
-{
-	const char* string = "abracadabra";
-	ck_assert_int_eq(3, rank(7, 'a', string));
-}
-END_TEST
-
 START_TEST(test_search_simple)
 {
-	Interval* interval = backward_search("ard$rcaaaabb", "abra");
+	char* str = "ard$rcaaaabb";
+	wavelet_tree* bwt = create_wavelet_tree(str);
+
+	str = "abra";
+	wavelet_tree* string = create_wavelet_tree(str);
+
+	interval* interval = backward_search(bwt, string, 0);
+
 	ck_assert_int_eq(2, interval->i);
 	ck_assert_int_eq(3, interval->j);
+
+	free_wavelet_tree(bwt);
+	free_wavelet_tree(string);
+	free(interval);
 }
 END_TEST
 
 START_TEST(test_search_simple2)
 {
-	Interval* interval = backward_search("ard$rcaaaabb", "bra");
+	char* str = "ard$rcaaaabb";
+	wavelet_tree* bwt = create_wavelet_tree(str);
+
+	str = "bra";
+	wavelet_tree* string = create_wavelet_tree(str);
+
+	interval* interval = backward_search(bwt, string, 0);
+
 	ck_assert_int_eq(6, interval->i);
 	ck_assert_int_eq(7, interval->j);
+
+	free_wavelet_tree(bwt);
+	free_wavelet_tree(string);
+	free(interval);
 }
 END_TEST
 
 START_TEST(test_search_simple3)
 {
-	Interval* interval = backward_search("ard$rcaaaabb", "abracadabra");
+	char* str = "ard$rcaaaabb";
+	wavelet_tree* bwt = create_wavelet_tree(str);
+
+	str = "abracadabra";
+	wavelet_tree* string = create_wavelet_tree(str);
+
+	interval* interval = backward_search(bwt, string, 0);
+
 	ck_assert_int_eq(3, interval->i);
 	ck_assert_int_eq(3, interval->j);
+
+	free_wavelet_tree(bwt);
+	free_wavelet_tree(string);
+	free(interval);
 }
 END_TEST
 
 START_TEST(test_search_when_not_found)
 {
-	
-	Interval* interval = backward_search("ard$rcaaaabb", "nakki");
+	char* str = "ard$rcaaaabb";
+	wavelet_tree* bwt = create_wavelet_tree(str);
+
+	str = "nakki";
+	wavelet_tree* string = create_wavelet_tree(str);
+
+	interval* interval = backward_search(bwt, string, 0);
+
 	fail_unless(interval == NULL);
+
+	free_wavelet_tree(bwt);
+	free_wavelet_tree(string);
+	free(interval);
 }
 END_TEST
 
 START_TEST(test_search_different_word)
 {
-	
-	Interval* interval = backward_search("ipssm$pissii", "iss");
+	char* str = "ipssm$pissii";
+	wavelet_tree* bwt = create_wavelet_tree(str);
+
+	str = "iss";
+	wavelet_tree* string = create_wavelet_tree(str);
+
+	interval* interval = backward_search(bwt, string, 0);
+
 	ck_assert_int_eq(3, interval->i);
 	ck_assert_int_eq(4, interval->j);
+
+	free_wavelet_tree(bwt);
+	free_wavelet_tree(string);
+	free(interval);
 }
 END_TEST
 
 START_TEST(test_interval_search_ra)
 {
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 1;
-	interval->j = 5;
-	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'r');
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 1;
+	inter->j = 5;
+
+	wavelet_tree* tree = create_wavelet_tree("ard$rcaaaabb");
+
+	interval* result = backward_search_interval(tree, inter, 'r', 0);
+
 	ck_assert_int_eq(10, result->i);
     ck_assert_int_eq(11, result->j);
+
+    free_wavelet_tree(tree);
+    free(result);
+    free(inter);
 }
 END_TEST
 
 START_TEST(test_interval_search_da)
 {
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 1;
-	interval->j = 5;
-	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'd');
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 1;
+	inter->j = 5;
+
+	wavelet_tree* tree = create_wavelet_tree("ard$rcaaaabb");
+
+	interval* result = backward_search_interval(tree, inter, 'd', 0);
+
 	ck_assert_int_eq(9, result->i);
     ck_assert_int_eq(9, result->j);
+
+    free_wavelet_tree(tree);
+    free(result);
+    free(inter);
 }
 END_TEST
 
 START_TEST(test_interval_search_bra)
 {
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 10;
-	interval->j = 11;
-	Interval* result = backward_search_interval("ard$rcaaaabb", interval, 'b');
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 10;
+	inter->j = 11;
+
+	wavelet_tree* tree = create_wavelet_tree("ard$rcaaaabb");
+
+	interval* result = backward_search_interval(tree, inter, 'b', 0);
+
 	ck_assert_int_eq(6, result->i);
     ck_assert_int_eq(7, result->j);
+
+    free_wavelet_tree(tree);
+    free(result);
+    free(inter);
 }
 END_TEST
 
 START_TEST(test_interval_search_tt)
 {
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 6;
-	interval->j = 9;
-	Interval* result = backward_search_interval("ivh$ttttaai", interval, 't');
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 6;
+	inter->j = 9;
+
+	wavelet_tree* tree = create_wavelet_tree("ivh$ttttaai");
+
+	interval* result = backward_search_interval(tree, inter, 't', 0);
+
 	ck_assert_int_eq(8, result->i);
     ck_assert_int_eq(9, result->j);
+
+    free_wavelet_tree(tree);
+    free(result);
+    free(inter);
 }
 END_TEST
 
 START_TEST(test_interval_search_ha)
 {
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 1;
-	interval->j = 2;
-	Interval* result = backward_search_interval("ivh$ttttaai", interval, 'h');
+	interval* inter = malloc(sizeof(interval));
+	inter->i = 1;
+	inter->j = 2;
+
+	wavelet_tree* tree = create_wavelet_tree("ivh$ttttaai");
+
+	interval* result = backward_search_interval(tree, inter, 'h', 0);
+
 	ck_assert_int_eq(3, result->i);
     ck_assert_int_eq(3, result->j);
+
+    free_wavelet_tree(tree);
+    free(result);
+    free(inter);
 }
 END_TEST
 
-TCase * create_rank_test_case(void){
-	TCase * tc_rank = tcase_create("rank_test");
-	tcase_add_test(tc_rank, test_count_zero_letters);
-	tcase_add_test(tc_rank, test_count_one_letter);
-	tcase_add_test(tc_rank, test_count_all_a_letters);
-	tcase_add_test(tc_rank, test_count_some_a_letters);
-
-	return tc_rank;
-}
-TCase * create_backward_search_test_case(void){
-	TCase * tc_backward_search = tcase_create("backward_search_test");
+TCase* create_backward_search_test_case(void) {
+	TCase* tc_backward_search = tcase_create("backward_search_test");
 	tcase_add_test(tc_backward_search, test_search_simple);
 	tcase_add_test(tc_backward_search, test_search_simple2);
 	tcase_add_test(tc_backward_search, test_search_simple3);
@@ -154,8 +212,8 @@ TCase * create_backward_search_test_case(void){
 	return tc_backward_search;
 }
 
-TCase * create_backward_search_interval_test_case(void){
-	TCase * tc_backward_search_interval = tcase_create("backward_search_interval_test");
+TCase* create_backward_search_interval_test_case(void) {
+	TCase* tc_backward_search_interval = tcase_create("backward_search_interval_test");
 	tcase_add_test(tc_backward_search_interval, test_interval_search_ra);
 	tcase_add_test(tc_backward_search_interval, test_interval_search_da);
 	tcase_add_test(tc_backward_search_interval, test_interval_search_bra);
@@ -169,10 +227,8 @@ Suite * test_suite(void)
 {
 	Suite *s = suite_create("testi");
 	TCase *tc_backward_search = create_backward_search_test_case();
-	TCase *tc_rank = create_rank_test_case();
 	TCase *tc_backward_search_interval = create_backward_search_interval_test_case();
 	suite_add_tcase(s, tc_backward_search);
-	suite_add_tcase(s, tc_rank);
 	suite_add_tcase(s, tc_backward_search_interval);
 	return s;
 }

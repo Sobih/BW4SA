@@ -1,11 +1,12 @@
 #include "../../src/bwt/s_to_bwt.h"
 #include "../../include/bwt_to_s.h"
+#include "../../include/wavelet_tree.h"
 #include <check.h>
 #include <stdlib.h>
 
 void test(char* input)
 {
-	char* bwt = s_to_BWT(input);
+	wavelet_tree* bwt = s_to_BWT(input);
 	char* result = bwt_to_s(bwt);
 	ck_assert_str_eq(input, result);
 }

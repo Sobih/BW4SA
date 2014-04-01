@@ -8,9 +8,11 @@
 #ifndef MUM_H_
 #define MUM_H_
 
-#include "iterate.h"
+struct substring;
+struct bit_vector;
+struct wavelet_tree;
 
-typedef struct triplet_struct {
+typedef struct triplet {
 	unsigned int pos1;
 	unsigned int pos2;
 	unsigned int length;
@@ -24,7 +26,8 @@ typedef struct triplet_struct {
  * @param	rbwt2			The BWT of the reverse of the second string
  * @bug		No known bugs.
  */
-void mum_initialize_bwts(char* bwt1,char* bwt2, char* rbwt1, char* rbwt2);
+void mum_initialize_bwts(struct wavelet_tree* bwt1, struct wavelet_tree* bwt2,
+		struct wavelet_tree* rbwt1, struct wavelet_tree* rbwt2);
 
 /**
  * @brief	Callback function given to double_iterate that determines if a substring is a MUM (Maximal Unique match)
@@ -32,7 +35,7 @@ void mum_initialize_bwts(char* bwt1,char* bwt2, char* rbwt1, char* rbwt2);
  * @param	node2			The intervals of a substring in the second string
  * @bug		Doesn't differentiate between the $-characters
  */
-void search_mums(substring* node1, substring* node2);
+void search_mums(struct substring* node1, struct substring* node2);
 
 /**
  * @brief	Return the list of found MUMs as a list of triplet structs.
@@ -73,6 +76,6 @@ void mum_print_bit_vectors(char* string1, char* string2);
  *
  * @bug		No known bugs.
  */
-bit_vector** mum_make_bit_vectors(triplet* mapped_mums);
+struct bit_vector** mum_make_bit_vectors(triplet* mapped_mums);
 
 #endif /* MUM_H_ */

@@ -1,7 +1,14 @@
 #ifndef C_ARRAY_H_
 #define C_ARRAY_H_
 
-#include "backward_search.h"
+struct wavelet_tree;
+struct interval;
+
+typedef struct alphabet_data {
+	char* alphabet;
+	unsigned int length;
+} alphabet_data;
+
 /**
  * @brief Generates array C of given string. This is still a rather slow version of algorithm, but
  * with small alphabets this should not be a problem.
@@ -14,35 +21,8 @@
  *
  * @bug no known bugs
  */
-int* create_c_array(const char* string);
-
-/**
- * @brief Generates alphabet of given string. Alphabet is a string with all characters from the string ordered alphabetically
- * 
- * @param string which the alphabet will be generated from
- *
- * @return alphabet of all characters from given string
- *
- * @author Topi Paavilainen
- *
- * @bug no known bugs
- */
-char* get_alphabet(const char* string);
-
-/**
- * @brief Generates c-array from interval of a given string determined by given interval struct
- * 
- * @param interval 
- *
- * @param string which the c_array will be generated from
- *
- * @return c_array of given interval
- *
- * @author Topi Paavilainen
- *
- * @bug no known bugs
- */
-int* create_c_array_interval(const Interval* interval, char* bwt);
+unsigned int* create_c_array(const struct wavelet_tree* string, const struct interval* inter,
+		const char* alphabet, unsigned int alphabet_length, unsigned int* target);
 
 /**
  * @brief Generates the alphabet of given string in the substring determined by interval struct
@@ -57,8 +37,7 @@ int* create_c_array_interval(const Interval* interval, char* bwt);
  *
  * @bug no known bugs
  */
-char* create_alphabet_interval(const Interval* interval, char* bwt);
-
-int get_char_index(const int* c_array, const char* alphabet, const char c);
+alphabet_data* create_alphabet_interval(const struct interval* interval, const struct wavelet_tree* string,
+		alphabet_data* target);
 
 #endif

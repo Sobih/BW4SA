@@ -10,6 +10,7 @@
 #include "../../include/mum.h"
 #include "../../include/mapper.h"
 #include "../../src/bwt/s_to_bwt.h"
+#include "../../include/bit_vector.h"
 #include <stdlib.h>
 
 START_TEST(test_mum1)

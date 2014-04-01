@@ -1,24 +1,27 @@
 
 #include <check.h>
 #include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include "../../src/iterate/print_node.h"
 #include <stdlib.h>
 
 substring* create_substr(void)
 {
 	substring* new = malloc(sizeof(substring));
-	new->normal = malloc(sizeof(Interval));
-	new->reverse = malloc(sizeof(Interval));
+	interval normal = *((interval*) malloc(sizeof(interval)));
+	interval reverse = *((interval*) malloc(sizeof(interval)));
+	new->normal = normal;
+	new->reverse = reverse;
 	return new;
 }
 
 START_TEST(test_print)
 {
 	substring* new = create_substr();
-	new->normal->i = 5;
-	new->normal->j = 8;
-	new->reverse->i = 6;
-	new->reverse->j = 9;
+	new->normal.i = 5;
+	new->normal.j = 8;
+	new->reverse.i = 6;
+	new->reverse.j = 9;
 	new->length = 3;
 	print_node(new);
 }

@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include "../../include/utils.h"
 #include "../../include/bit_vector.h"
 
 /**
@@ -26,12 +27,12 @@
  * @bugs	No known bugs.
  */
 bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
-	unsigned int i = pos / 32;
+	unsigned int i = pos / BITS_PER_INT;
 
 	if (i > vector->length)
 		return 0;
 
-	vector->vector[i] |= (1 << (pos % 32));
+	vector->vector[i] |= (1 << (pos % BITS_PER_INT));
 
 	return vector;
 }
@@ -54,12 +55,12 @@ bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
-	unsigned int i = pos / 32;
+	unsigned int i = pos / BITS_PER_INT;
 
 	if (i > vector->length)
 		return 0;
 
-	vector->vector[i] &= ~ (1 << (pos % 32));
+	vector->vector[i] &= ~ (1 << (pos % BITS_PER_INT));
 
 	return vector;
 }
@@ -79,12 +80,12 @@ bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
  * @bugs	No known bugs.
  */
 int is_bit_marked(const bit_vector* vector, unsigned int pos) {
-	unsigned int i = pos / 32;
+	unsigned int i = pos / BITS_PER_INT;
 
 	if (i > vector->length)
 		return 1;
 
-	unsigned int correct_val = (1 << (pos % 32));
+	unsigned int correct_val = (1 << (pos % BITS_PER_INT));
 
 	return (vector->vector[i] & correct_val) == correct_val ? 1 : 0;
 }
@@ -97,16 +98,25 @@ int is_bit_marked(const bit_vector* vector, unsigned int pos) {
  *
  * @param	vector		The vector that bits are going to be calculated
  * 						for.
- * @param	pos			The position after which the count should stop.
- * @return	The number of marked bits up to and including pos.
+ * @param	end			The position after which the count should stop.
+ * @param	start		The position where the count should start.
+ * @return	The number of marked bits from start up to and including end.
  * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
+unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned int end) {
+	unsigned int vec_length = vector->get_length(vector);
+
+	if (vector == 0 || start >= vec_length || start > end)
+		return 0;
+
+	if (end >= vec_length)
+		end = vec_length - 1;
+
 	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
 
-	for (int i = 0; i < (vec->length * 32); ++i)
+	for (int i = start; i <= end; ++i)
 		if (vec->is_bit_marked(vec, i))
 			count++;
 
@@ -114,30 +124,14 @@ unsigned int rank_query(const bit_vector* vector, unsigned int pos) {
 }
 
 /**
- * @brief	A rank query for given interval.
- *
- * This function returns number of flagged bits in bits from start to end
- * (including start and end bits)
- *
- * @param	vector		The vector that bits are going to be calculated
- * 						for.
- * @param	start		The position where count starts from.
- * @param	end			The position where count ends.
- * @return	The number of marked bits from (and including) start to (and including) end.
- * @author	Topi Paavilainen
+ * @brief	Returns the length of the bit vector, i.e. the number of bits in it.
+ * @param	vector	The vector whose length is to be checked.
+ * @return			The length of the bit vector, or the number of bits in it.
+ * @author	Max Sandberg (REXiator)
  * @bugs	No known bugs.
  */
-unsigned int rank_query_interval(const bit_vector* vector, unsigned int start, unsigned int end) {
-	unsigned int count = 0;
-	
-	if (start > vector->length * 32 || end > vector->length * 32 || start > end)
-		return 0;
-
-
-	for (int i = start; i <= end; i++)
-		if (vector->is_bit_marked(vector, i)) count ++;
-
-	return count;
+unsigned int get_bit_vector_length(const bit_vector* vector) {
+	return vector->length * BITS_PER_INT - vector->filler_bits;
 }
 	
 bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
@@ -148,20 +142,17 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 		nbits++;
 
 	//init variables
-	vector->length = (nbits + 31) / 32;
-	vector->filler_bits = vector->length * 32 - nbits;
+	vector->length = (nbits + BITS_PER_INT - 1) / BITS_PER_INT;
+	vector->filler_bits = vector->length * BITS_PER_INT - nbits;
 	vector->mark_bit = &mark_bit_vector_bit;
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
 	vector->rank = &rank_query;
-	vector->rank_interval = &rank_query_interval;
+	vector->get_length = &get_bit_vector_length;
 
 	//init vector to all zeros
-	if ((vector->vector = calloc(vector->length, sizeof(unsigned int))) == 0)
+	if ((vector->vector = calloc(vector->length, BITS_PER_INT / 8)) == 0)
 		return 0;
-
-	for (int i = 0; i < vector->length; ++i)
-		vector->vector[i] = 0;
 
 	return vector;
 }

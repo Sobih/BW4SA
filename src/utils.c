@@ -12,8 +12,6 @@
 #include "../include/utils.h"
 #include "../include/bit_vector.h"
 #include "../include/wavelet_tree.h"
-#include "../include/mum.h"
-#include "../include/maximal_repeats.h"
 
 /**
  * @brief	Simple swap-function.
@@ -28,14 +26,10 @@
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void swap(void* arr, unsigned int entry_size, int i, int j) {
-	void* tmp = malloc(entry_size);
-
-	memcpy(tmp, (arr + (j * entry_size)), entry_size);
+void swap(void* arr, unsigned int entry_size, int i, int j, void* swap_area) {
+	memcpy(swap_area, (arr + (j * entry_size)), entry_size);
     memcpy((arr + (j * entry_size)), (arr + (i * entry_size)), entry_size);
-    memcpy((arr + (i * entry_size)), tmp, entry_size);
-
-    free(tmp);
+    memcpy((arr + (i * entry_size)), swap_area, entry_size);
 }
 
 /**
@@ -49,7 +43,7 @@ void swap(void* arr, unsigned int entry_size, int i, int j) {
  * @bug		No known bugs.
  */
 void quicksort(void* arr, unsigned int entry_size, unsigned int a,
-		unsigned int b) {
+		unsigned int b, void* swap_area) {
 
     if (a >= b)
         return;
@@ -65,25 +59,27 @@ void quicksort(void* arr, unsigned int entry_size, unsigned int a,
         	++i;
 
         if (i < j)
-            swap(arr, entry_size, i, j);
+            swap(arr, entry_size, i, j, swap_area);
     }
 
     if (memcmp((arr + (a * entry_size)), (arr + (i * entry_size)), entry_size) > 0) {
-        swap(arr, entry_size, a, i);
-        quicksort(arr, entry_size, a, i - 1);
-        quicksort(arr, entry_size, i + 1, b);
+        swap(arr, entry_size, a, i, swap_area);
+        quicksort(arr, entry_size, a, i - 1, swap_area);
+        quicksort(arr, entry_size, i + 1, b, swap_area);
     }
 
     // there is no left-hand-side
     else
-        quicksort(arr, entry_size, a + 1, b);
+        quicksort(arr, entry_size, a + 1, b, swap_area);
 }
 
 void quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size) {
 	if (arr == 0 || arr_size == 0 || entry_size == 0)
 		return;
 
-	quicksort(arr, entry_size, 0, arr_size - 1);
+	void* tmp = malloc(entry_size);
+	quicksort(arr, entry_size, 0, arr_size - 1, tmp);
+	free(tmp);
 }
 
 void print_bits(unsigned int mask) {
@@ -213,8 +209,12 @@ char* determine_alphabet(const char* string) {
 	return alphabet;
 }
 
-int binary_search(const void* arr, const void* key, unsigned int min, unsigned int max,
-		unsigned int entry_size) {
+int binary_search(const void* arr, const void* key, unsigned int entry_size,
+		int max, int min) {
+
+	//not viable indexes
+	if (max < 0 || min < 0)
+		return -1;
 
 	//(sub)set empty
 	if (max < min)
@@ -228,11 +228,11 @@ int binary_search(const void* arr, const void* key, unsigned int min, unsigned i
 
 	//key is in lower subset
 	if (comparison > 0)
-		return binary_search(arr, key, min, mid - 1, entry_size);
+		return binary_search(arr, key, entry_size, mid - 1, min);
 
 	//key is in upper subset
 	if (comparison < 0)
-		return binary_search(arr, key, mid + 1, max, entry_size);
+		return binary_search(arr, key, entry_size, max, mid + 1);
 
 	return mid;
 }
@@ -242,6 +242,8 @@ void print_bit_vector(bit_vector* vector) {
 		printf("\t(NULL)\n");
 		return;
 	}
+
+	printf("\tVector length: %u\n", vector->length);
 
 	for (int i = 0; i < vector->length; ++i) {
 		printf("\t%u, ", vector->vector[i]);
@@ -257,8 +259,8 @@ void print_wavelet_node(wavelet_node* node) {
 		return;
 
 	printf("\tBit vector:\n");
-	if (node->vector != 0)
-		print_bit_vector(node->vector);
+	if (&node->vector != 0)
+		print_bit_vector(&node->vector);
 	else
 		printf("\t(NULL)\n");
 	printf("\tString: %s\n", node->string);
@@ -271,10 +273,10 @@ void print_wavelet_node(wavelet_node* node) {
 	printf("\n");
 }
 
-void print_wavelet_tree(wavelet_node* node) {
+void print_wavelet_tree(wavelet_tree* tree) {
 	int counter = 1, j;
 	wavelet_node** node_list = calloc(1, sizeof(wavelet_node*)), ** next;
-	node_list[0] = node;
+	node_list[0] = &tree->nodes[0];
 
 	for (int depth = 0; counter > 0; depth++) {
 		next = calloc(2 * counter, sizeof(wavelet_node*));
@@ -288,9 +290,9 @@ void print_wavelet_tree(wavelet_node* node) {
 			printf("\n");
 
 			//not leaf, add children for next round
-			if (node_list[i]->children[0] != 0) {
-				next[j] = node_list[i]->children[0];
-				next[j + 1] = node_list[i]->children[1];
+			if (node_list[i]->children[0] > 0) {
+				next[j] = &tree->nodes[node_list[i]->children[0]];
+				next[j + 1] = &tree->nodes[node_list[i]->children[1]];
 				j += 2;
 			}
 		}
@@ -302,6 +304,8 @@ void print_wavelet_tree(wavelet_node* node) {
 
 		printf("\n");
 	}
+
+	free(node_list);
 }
 
 char *substring_from_string(char *string, int position, int length) {
@@ -318,4 +322,19 @@ char *substring_from_string(char *string, int position, int length) {
 	pointer[pointer_index] = '\0';
 
 	return pointer;
+}
+
+bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
+	if (target == 0)
+		target = malloc(sizeof(bit_vector));
+
+	unsigned int length = string->get_num_bits(string);
+	init_bit_vector(target, length);
+
+	target->mark_bit(target, 0);
+	for (int i = 1; i < length; i++)
+		if (string->char_at(string, i - 1) != string->char_at(string, i))
+			target->mark_bit(target, i);
+
+	return target;
 }
