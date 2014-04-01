@@ -43,8 +43,6 @@ int is_interval_left_maximal(interval inter) {
 
 void search_maximal_repeats(substring* node) {
 	if (is_interval_left_maximal(node->normal)) {
-		printf("Found maximal repeat.\n");
-		print_node(node);
 		max_repeat_node max_node = *((max_repeat_node*) malloc(sizeof(max_repeat_node)));
 		max_node.normal.i = node->normal.i;
 		max_node.normal.j = node->normal.j;

@@ -120,9 +120,6 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		alpha_data = create_alphabet_interval(&substr->normal, bwt,
 				alpha_data);
 
-		printf("Alphabet determined: %s. Length: %d\n", alpha_data->alphabet,
-				alpha_data->length);
-
 		c_array = create_c_array(bwt, &substr->normal, 0, 0, c_array);
 
 		/*printf("C-array created: ");
@@ -159,7 +156,6 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 
 		temp = pop(stack);
 		if (temp == NULL) {
-			printf("Substring 1 was null \n");
 			break;
 		}
 		substr = create_substring(&temp->normal, &temp->reverse,
@@ -329,14 +325,12 @@ void double_iterate(char* string1, char* string2,
 			normal1 = backward_search_interval(bwt1, &substring1->normal,
 					common_alphabet[i], normal1);
 			if (normal1 == NULL) {
-				printf("normal 1 was null\n");
 				continue;
 			}
 			//print_node(substring2->normal);
 			normal2 = backward_search_interval(bwt2, &substring2->normal,
 					common_alphabet[i], normal2);
 			if (normal2 == NULL) {
-				printf("normal 2 was null\n");
 				continue;
 			}
 			reverse1 = update_reverse_interval(&substring1->reverse, normal1,
