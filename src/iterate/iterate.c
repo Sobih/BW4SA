@@ -121,9 +121,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		for (i = 0; i < alphabet_length; i++) {
 			normal = backward_search_interval(bwt, &substr->normal,
 					alpha_data->alphabet[i], normal);
-			if (normal == NULL) {
-				continue;
-			}
+
 			reverse = update_reverse_interval(&substr->reverse, normal,
 					alpha_data->alphabet, alphabet_length, c_array,
 					alpha_data->alphabet[i], reverse);
@@ -138,9 +136,10 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		}
 
 		temp = pop(stack);
-		if (temp == NULL) {
+
+		if (temp == NULL)
 			break;
-		}
+
 		substr = create_substring(&temp->normal, &temp->reverse,
 				temp->length, substr);
 	}
