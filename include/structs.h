@@ -21,4 +21,10 @@ typedef struct substring
 	int length;
 } substring;
 
+typedef struct triplet {
+	unsigned int pos1;
+	unsigned int pos2;
+	unsigned int length;
+} triplet;
+
 #endif /* STRUCTS_H_ */

@@ -11,12 +11,7 @@
 struct substring;
 struct bit_vector;
 struct wavelet_tree;
-
-typedef struct triplet {
-	unsigned int pos1;
-	unsigned int pos2;
-	unsigned int length;
-} triplet;
+struct triplet;
 
 /**
  * @brief	Initialization function for mums, so the callback can be done without having all BWTs as parameters.
@@ -42,7 +37,7 @@ void search_mums(struct substring* node1, struct substring* node2);
  * @return	List of found MUMs
  * @bug		No known bugs.
  */
-triplet* get_mums();
+struct triplet* get_mums();
 
 /**
  * @brief	Return the amount of MUMs found.
@@ -76,6 +71,6 @@ void mum_print_bit_vectors(char* string1, char* string2);
  *
  * @bug		No known bugs.
  */
-struct bit_vector** mum_make_bit_vectors(triplet* mapped_mums);
+struct bit_vector** mum_make_bit_vectors(struct triplet* mapped_mums);
 
 #endif /* MUM_H_ */
