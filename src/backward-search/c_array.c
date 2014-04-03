@@ -9,11 +9,6 @@
 #include "../../include/backward_search.h"
 #include "../../include/wavelet_tree.h"
 
-void print_alphabet(char* alphabet, unsigned int size) {
-	for (int i = 0; i < size; ++i)
-		printf("%c", alphabet[i]);
-}
-
 unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, const char* alphabet,
 		unsigned int alphabet_length, unsigned int* target) {
 	if (string == 0)
