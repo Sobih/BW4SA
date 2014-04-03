@@ -4,6 +4,10 @@
 #include "../../src/iterate/substring_stack.h"
 #include "../../include/bit_vector.h"
 #include "../../include/backward_search.h"
+#include "../../include/wavelet_tree.h"
+#include "../../include/structs.h"
+#include "../../include/utils.h"
+#include "../../include/rbwt.h"
 #include "../utils_for_tests/utils_for_tests.h"
 #include "../../src/bwt/s_to_bwt.h"
 #include "../../src/bwt/map_bwt_to_s.h"
@@ -21,8 +25,10 @@ static int* suffix_array;
 
 START_TEST(simple_runs_test)
 {
+	printf("SIMPLE RUNS TEST\n");
 	char* string = "abracadabra";
-	bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* tree = reverse_bwt(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 0));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 1));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 2));
@@ -40,8 +46,10 @@ END_TEST
 
 START_TEST(another_simple_test)
 {
+	printf("ANOTHER SIMPLE TEST\n");
 	char* string = "HATTIVATTI";
-	bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* tree = reverse_bwt(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 0));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 1));
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 2));
@@ -58,12 +66,14 @@ END_TEST
 
 START_TEST(test_interval_query)
 {
+	printf("TEST INTERVAL QUERY\n");
 	char* string = "ABRACADABRA";
-	bit_vector* runs = create_runs_vector(string);
-	Interval* test1 = malloc(sizeof(Interval));
+	wavelet_tree* tree = reverse_bwt(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
+	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
 	test1->j = 7;
-	Interval* test2 = malloc(sizeof(Interval));
+	interval* test2 = malloc(sizeof(interval));
 	test2->i = 1;
 	test2->j = 3;
 	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test1));
@@ -73,12 +83,14 @@ END_TEST
 
 START_TEST(test_wrong_intervals)
 {
+	printf("TEST WRONG INTERVALS\n");
 	char* string = "ABRACADABRA";
-	bit_vector* runs = create_runs_vector(string);
-	Interval* test1 = malloc(sizeof(Interval));
+	wavelet_tree* tree = reverse_bwt(string);
+	bit_vector* runs = create_runs_vector(tree, 0);
+	interval* test1 = malloc(sizeof(interval));
 	test1->i = 6;
 	test1->j = 4;
-	Interval* test2 = malloc(sizeof(Interval));
+	interval* test2 = malloc(sizeof(interval));
 	test2->i = 6;
 	test2->j = 6;
 	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test1));
@@ -88,8 +100,17 @@ END_TEST
 
 void put_substring_list(substring* substr)
 {
-	//printf("putting substr \n");
-	shared_list[list_ptr] = substr;
+	shared_list[list_ptr] = malloc(sizeof(substring));
+	substring* tmp = shared_list[list_ptr];
+
+	tmp->length = substr->length;
+
+	tmp->normal.i = substr->normal.i;
+	tmp->normal.j = substr->normal.j;
+
+	tmp->reverse.i = substr->reverse.i;
+	tmp->reverse.j = substr->reverse.j;
+
 	list_ptr++;
 }
 
@@ -99,10 +120,10 @@ int shared_list_contains(substring* comp)
 	substring* sub;
 	for(int i = 0; i<list_ptr; i++){
 		sub = shared_list[i];
-		if(sub->normal->i == comp->normal->i &&
-				sub->normal->j == comp->normal->j &&
-				sub->reverse->i == comp->reverse->i &&
-				sub->reverse->j == comp->reverse->j &&
+		if(sub->normal.i == comp->normal.i &&
+				sub->normal.j == comp->normal.j &&
+				sub->reverse.i == comp->reverse.i &&
+				sub->reverse.j == comp->reverse.j &&
 				sub->length == comp->length){
 			return 1;
 		}
@@ -114,34 +135,33 @@ int shared_list_contains(substring* comp)
 //this test tests nothing??
 START_TEST(test_iterate2)
 {
+	printf("TEST ITERATE 2\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
 	char* string = "hattivatti";
 
-	Interval* normal = &((Interval) {.i = 8, .j = 9});
-	Interval* reverse = &((Interval) {.i = 4, .j = 5});
+	interval normal = (interval) {.i = 8, .j = 9};
+	interval reverse = (interval) {.i = 4, .j = 5};
 	substring* tti = &((substring) {.normal = normal, .reverse = reverse, .length = 3});
 
-	//printf("testing iterate2\n");
 	iterate(string, &put_substring_list);
-	//printf("iterate done\n");
-
 }END_TEST
 
 START_TEST(test_iterate1)
 {
+	printf("TEST ITERATE 1\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
 	char* string = "abracadabra";
 
-	Interval* normal = &((Interval) {.i = 2, .j = 3});
-	Interval* reverse = &((Interval) {.i = 4, .j = 5});
+	interval normal = (interval) {.i = 2, .j = 3};
+	interval reverse = (interval) {.i = 4, .j = 5};
 	substring* abra = &((substring) {.normal = normal, .reverse = reverse, .length = 4});
 
-	normal = &((Interval) {.i = 10, .j = 11});
-	reverse = &((Interval) {.i = 4, .j = 5});
+	normal = (interval) {.i = 10, .j = 11};
+	reverse = (interval) {.i = 4, .j = 5};
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
 	iterate(string, &put_substring_list);
@@ -169,7 +189,7 @@ int check_list_contains_and_remove(int index_bwt, int length){
 
 void check_substrings_callback(substring* substr)
 {
-	for(int i = substr->normal->i; i <= substr->normal->j; i++){
+	for(int i = substr->normal.i; i <= substr->normal.j; i++){
 		if(!check_list_contains_and_remove(i, substr->length)){
 			callback_flag = 0;
 		}
@@ -180,11 +200,17 @@ START_TEST(test_iterate_randomized_small_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "acgt";
+<<<<<<< HEAD
 	char* bwt;
 	for(int i= 0; i<100; i++){
+=======
+	wavelet_tree* bwt;
+	for(int i= 0; i<1000; i++){
+>>>>>>> 28b69ce15a01f4ea5191347f5f24d03e691c99fe
 		int length = (rand() % 200)+1;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
+
 		suffix_array = map_create_suffix_array_from_bwt(bwt);
 		naive_rmaximals = find_right_maximal_substrings(rand_string);
 		callback_flag = 1;
@@ -200,8 +226,13 @@ START_TEST(test_iterate_randomized_big_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
+<<<<<<< HEAD
 	char* bwt;
 	for(int i= 0; i<100; i++){
+=======
+	wavelet_tree* bwt;
+	for(int i= 0; i<1000; i++){
+>>>>>>> 28b69ce15a01f4ea5191347f5f24d03e691c99fe
 		int length = (rand() % 100) + 100;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
@@ -220,7 +251,7 @@ START_TEST(test_iterate_randomized_one_long_string)
 {
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
-	char* bwt;
+	wavelet_tree* bwt;
 
 	int length = (rand() % 1000) + 1000;
 	char* rand_string = generate_random_string(alphabet, length);
@@ -273,10 +304,10 @@ Suite * test_suite(void)
 	suite_add_tcase(s, tc_runs);
 	suite_add_tcase(s, tc_iterate);
 	suite_add_tcase(s, tc_randomized);
-	
+
 	return s;
 }
-	
+
 int main(){
 	int number_failed;
 	Suite *s = test_suite();
@@ -285,7 +316,7 @@ int main(){
 	srunner_run_all(sr, CK_VERBOSE);
 	number_failed = srunner_ntests_failed(sr);
 	srunner_free(sr);
-	
+
 	if(number_failed == 0){
 		return 0;
 	}

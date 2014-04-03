@@ -8,6 +8,8 @@
 
 
 #include "../../include/backward_search.h"
+#include "../../include/structs.h"
+#include "../../include/wavelet_tree.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,21 +26,18 @@
  * @bug				No known bugs
  */
 
-char* bwt_to_s(char* bwt) 
+char* bwt_to_s(const wavelet_tree* bwt)
 {
-	long n = strlen(bwt)-1;
-	char* string = calloc(n, sizeof(char));
-	int k;	
-	Interval* interval = malloc(sizeof(Interval));
-	interval->i = 0;
-	interval->j = 0;
+	long n = bwt->get_num_bits(bwt);
+	char* string = malloc(n * sizeof(char));
+	interval inter = (interval) {.i = 0, .j = 0};
 
-	for (k = 1; k <= n; k++) {
-		string[n-k] = bwt[interval->i];
-		interval = backward_search_interval(bwt, interval, string[n-k]);
+	for (int k = 1; k < n; k++) {
+		string[n - k - 1] = bwt->char_at(bwt, inter.i);
+		backward_search_interval(bwt, &inter, string[n - k - 1], &inter);
 	}
-	free(interval);
+
+	string[n - 1] = 0;
 
 	return string;
-
 }

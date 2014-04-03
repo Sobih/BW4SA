@@ -15,10 +15,10 @@ int compare_triplets_pos2(triplet first, triplet second) {
 }
 
 int compare_max_repeat_nodes(max_repeat_node first, max_repeat_node second) {
-	if (first.normal->i != second.normal->i) {
-		return first.normal->i - second.normal->i;
+	if (first.normal.i != second.normal.i) {
+		return first.normal.i - second.normal.i;
 	} else {
-		return first.normal->j - second.normal->j;
+		return first.normal.j - second.normal.j;
 	}
 }
 

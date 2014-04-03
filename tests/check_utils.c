@@ -121,7 +121,7 @@ START_TEST (test_binary_search) {
 	asd[3] = 1253;
 	asd[4] = 10592;
 
-	int index = binary_search(asd, asd + 3, 0, 4, sizeof(int));
+	int index = binary_search(asd, asd + 3, sizeof(int), 4, 0);
 
 	ck_assert(index == 3);
 }
@@ -131,7 +131,7 @@ START_TEST (test_empty_array) {
 	int* asd = calloc(1, sizeof(int));
 	int wasd = 53;
 
-	int index = binary_search(asd, &wasd, 0, 0, sizeof(int));
+	int index = binary_search(asd, &wasd, sizeof(int), 0, 0);
 
 	ck_assert(index == -1);
 }
@@ -141,7 +141,7 @@ START_TEST (test_large_array_search) {
 	char* asd = "aaaaaaaaaabbccccccccccccccccccccccccccddddddddddddddddefffffffffffggghhhhhhhhhhhiijjjjjjjjjjjjjj";
 	char i = 'i';
 
-	int index = binary_search(asd, &i, 0, strlen(asd), sizeof(char));
+	int index = binary_search(asd, &i, sizeof(char), strlen(asd), 0);
 
 	ck_assert(index == 81);
 }
