@@ -258,28 +258,45 @@ int two_substrings_from_different_strings_left_maximal(char* string1, char* stri
 
 }
 
-int is_substring_in_two_strings_max_repeat(char* string1, char* string2, int string1_length, int string2_length, int string1_substr_start, int string2_substr_start, int substr_length)
+int is_substring_in_two_strings_max_repeat(char* string1, char* string2, int string1_length, int string2_length, int string1_substr_start, int substr_length)
 {
 	int i, found = 0;
-	//for (i = 0; i + substr)
-
+	for (i = 0; i + substr_length <= string2_length; i++) {
+		if (two_substrings_from_different_strings_right_maximal(string1, string2, string1_length, string2_length, string1_substr_start, i, substr_length)) {
+			found = 1;
+			break;
+		}
+	}
+	
+	if (!found) return 0;
+	
+		for (i = 0; i + substr_length <= string2_length; i++) {
+			if (two_substrings_from_different_strings_left_maximal(string1, string2, string1_length, string2_length, string1_substr_start, i, substr_length)) {
+			return 1;
+			
+		}
+	}
+	
+	return 0;
+	
 }
 
 
 void find_maximal_exact_match_naive(char* string1, char* string2)
 {
-	int i, j, k, l;
+	int length, i;
 	
-	for (i = 0; i < strlen(string1); i++) {
-		for (j = 0; j < strlen(string1); j++) {
-			for (k = 0; k < strlen(string2); k++) {
-				for (l = 0; l < strlen(string2); l++) {
-					
-				
-				}
+	
+	test_substr* current = calloc(1, sizeof(test_substr));
+	test_substr* head = current;
+	test_substr* new;
+	
+	int string1_length = strlen(string1);
+	int string2_length = strlen(string2);
+	
+	for (length = 1; length < string1_length; length++) {
+		for (i = 0; i + length <= string1_length; i++) {
 			
-			}
-		
 		}
 	
 	}
