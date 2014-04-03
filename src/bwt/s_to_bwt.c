@@ -5,54 +5,21 @@
  *      Author: lvapaaka
  */
 
-#include "dbwt.h"
-#include <stdio.h>
+#include "../../libs/DBWT/dbwt.h"
+#include "../../include/wavelet_tree.h"
+#include <stdlib.h>
 #include <string.h>
+#include "s_to_bwt.h"
 
-/**
- * Parses the result file into a string.
- *
- * Currently limited to 100 characters.
- *
- * @return first line of output.bw as a string
- */
-char* get_BWT_from_result_file_as_string(){
-	FILE* f;
-	char* c = calloc(100,sizeof(char));
-	if (!(f = fopen("output.bw", "r")))
-		return "";
-	fgets(c,100,f);
-	fclose(f);
+wavelet_tree* s_to_BWT (uchar* string) {
+	unsigned int last;
+	long n = strlen(string);
+	uchar* d = malloc((n + 1) * sizeof(uchar));
+	d = dbwt_bwt(string, n, &last, 0);
+	d = realloc(d, (n + 2) * sizeof(uchar));
+	d[last] = '$';
+	d[n + 1] = 0;
 
-	remove("output.bw");
-	remove("output.lst");
-
-	return c;
+	return create_wavelet_tree(d);
 }
-
-/**
- * Converts a string into a file and inputs that to function bwt in the DBWT library.
- *
- * @param input char array to be used in bwt
- */
-void generate_result_file_from_string(char *input) {
-	FILE* f;
-	if (!(f = fopen("input.txt", "w+")))
-		return;
-	fputs(input, f);
-	fclose(f);
-
-	bwt("input.txt");
-
-	remove("input.txt");
-}
-
-char* s_to_BWT(char *string) {
-	generate_result_file_from_string(string);
-	string = get_BWT_from_result_file_as_string();
-	return string;
-}
-
-
-
 

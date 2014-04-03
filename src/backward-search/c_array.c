@@ -2,67 +2,85 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "../../include/c_array.h"
 #include "../../include/utils.h"
+#include "../../include/structs.h"
+#include "../../include/backward_search.h"
+#include "../../include/wavelet_tree.h"
 
-#define MAX_ALPHABET_SIZE 20
-/**
-*@brief finds first index of given char from a string
-**/
-int get_index(const char* string, const char c)
-{
-	int i;
-	for(i=0;i<strlen(string);i++){
-		if(c == *(string+i)){
-			return i;
+void print_alphabet(char* alphabet, unsigned int size) {
+	for (int i = 0; i < size; ++i)
+		printf("%c", alphabet[i]);
+}
+
+unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, const char* alphabet,
+		unsigned int alphabet_length, unsigned int* target) {
+	if (string == 0)
+		return 0;
+
+	if (!alphabet) {
+		alphabet = string->get_alphabet(string);
+		alphabet_length = string->get_alphabet_length(string);
+	}
+
+	unsigned int start = 0, end = INT_MAX;
+	alphabet_data* data = 0;
+
+	if (inter) {
+		start = inter->i;
+		end = inter->j;
+		data = create_alphabet_interval(inter, string, 0);
+		alphabet = data->alphabet;
+		alphabet_length = data->length;
+	}
+
+	if (target == 0)
+		target = malloc((alphabet_length + 1) * sizeof(unsigned int));
+
+	target[0] = 0;
+
+	for(int i = 0; i < alphabet_length - 1; i++) {
+		//count number of occurrences of each character
+		target[i + 1] = string->rank(string, alphabet[i], start, end);
+
+		//add previous count to each number
+		target[i + 1] += target[i];
+	}
+
+	if (data) {
+		free(data->alphabet);
+		free(data);
+	}
+
+	return target;
+}
+
+alphabet_data* create_alphabet_interval(const interval* inter, const wavelet_tree* string, alphabet_data* target) {
+	if (inter == 0 || string == 0 || inter->i > inter->j)
+		return 0;
+
+	int length = inter->j - inter->i + 1, counter = 0;
+	char* alphabet = malloc((length + 1) * sizeof(char)), current;
+
+	if (target == 0)
+		target = malloc(sizeof(alphabet_data));
+	else
+		free(target->alphabet);
+
+	for (int i = inter->i; i <= inter->j; ++i) {
+		current = string->char_at(string, i);
+
+		if (binary_search(alphabet, &current, sizeof(char), counter - 1, 0) < 0) {
+			alphabet[counter] = current;
+			counter++;
+			quick_sort(alphabet, counter, sizeof(char));
 		}
 	}
-	return -1;
+
+	alphabet[counter] = 0;
+	target->length = counter;
+	target->alphabet = alphabet;
+
+	return target;
 }
-
-/**
-*@brief returns string of all characters in alphabet of the given word, ordered alphabetically
-**/
-char* get_alphabet(const char* string)
-{
-
-	int i;
-	char* alphabet = calloc(MAX_ALPHABET_SIZE, sizeof(char));
-	alphabet[0] = '\0';
-	int alphabet_index = 0;
-	
-	for(i=0;i<strlen(string);i++){
-		if(get_index(alphabet, string[i]) == -1){
-			alphabet[alphabet_index+1] = alphabet[alphabet_index];
-			alphabet[alphabet_index] = string[i];
-			alphabet_index++;
-		}
-	}
-	quick_sort(alphabet, strlen(alphabet), sizeof(char));
-	return alphabet;
-}
-
-int* create_c_array(const char* string)
-{
-	int i;
-	char* alphabet = get_alphabet(string);
-	int* c_array = calloc(strlen(alphabet), sizeof(int));
-	
-	for(i=0;i<strlen(string);i++){
-		int index = get_index(alphabet, string[i]);
-		c_array[index] += 1;
-	}
-	for(i=0;i<strlen(alphabet)-1;i++){
-		c_array[i+1] = c_array[i+1] + c_array[i];
-	}
-	
-	for(i=strlen(alphabet); i>0;i--){
-		c_array[i] = c_array[i-1];
-	}
-	c_array[0] = 0;
-	
-	free(alphabet);
-	
-	return c_array;
-}
-
