@@ -1,11 +1,9 @@
 /**
  * @file	bwt_to_s.h
- * @brief	A function to convert BWT back to an original string. 
- *
- * @author	Paula Lehtola, Lassi Vapaakallio
- * @bug		No known bugs
+ * @brief	Implementation of the function to convert BWT back to an original string.
+ * @author	Paula Lehtola, Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
-
 
 #include "../../include/backward_search.h"
 #include "../../include/structs.h"
@@ -13,18 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/**
- * @brief A function to convert a BWT of a string back to an original string.
- *
- * This function takes a BWT of a string as an input and converts it back to the original string  
- * (without $)
- *
- * @param bwt		The bwt of a string
- * @return string	The original string
- * @author 			Paula Lehtola, Lassi Vapaakallio
- * @bug				No known bugs
- */
 
 char* bwt_to_s(const wavelet_tree* bwt)
 {

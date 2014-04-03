@@ -1,3 +1,10 @@
+/**
+ * @file	substring_stack.c
+ * @brief	Implementation of the substring stack.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+
 #include "../../include/structs.h"
 #include "substring_stack.h"
 #include <stdlib.h>
@@ -15,8 +22,11 @@ substring_stack* create_stack(int initial_size)
 }
 
 /**
-* @brief function that doubles the size of given stack's array and copies the values to the new array. After copying the old array's memory is freed
-**/
+ * @brief 	A function that doubles the size of given stack.
+ * @param	stack	The stack whose size is to be doubled.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void double_size(substring_stack* stack)
 {
 	stack->array_size *= 2;

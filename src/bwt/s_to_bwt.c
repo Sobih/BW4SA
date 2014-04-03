@@ -1,8 +1,8 @@
-/*
- * s_to_bwt.c
- *
- *  Created on: 24.1.2014
- *      Author: lvapaaka
+/**
+ * @file	s_to_bwt.c
+ * @brief	Implementation of the function for creating a BWT from a c-string.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include "../../libs/DBWT/dbwt.h"

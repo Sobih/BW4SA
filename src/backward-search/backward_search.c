@@ -1,9 +1,10 @@
-/*
- * backward_search.c
- *
- *  Created on: 30.1.2014
- *      Author: lvapaaka
+/**
+ * @file	backward_search.c
+ * @brief	Implementation of backwards search.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
+
 #include <string.h>
 #include <stdlib.h>
 #include "../../include/utils.h"

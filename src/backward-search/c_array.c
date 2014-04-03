@@ -1,3 +1,9 @@
+/**
+ * @file	c_array.c
+ * @brief	Implementation of the algorithms related to the c-array.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 
 #include <string.h>
 #include <stdio.h>

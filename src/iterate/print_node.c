@@ -1,10 +1,9 @@
-/*
- * print_node.c
- *
- *  Created on: 7.2.2014
- *      Author: lvapaaka
+/**
+ * @file	print_node.c
+ * @brief	Implementation of the printing of substrings.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
-
 
 #include "../../include/structs.h"
 #include <stdio.h>

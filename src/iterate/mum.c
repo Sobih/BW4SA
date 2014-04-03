@@ -1,8 +1,8 @@
-/*
- * mum.c
- *
- *  Created on: 26.2.2014
- *      Author: lvapaaka
+/**
+ * @file	mum.c
+ * @brief	Implementation of the algorithms related to maximal unique matches.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include "../../include/mum.h"
@@ -93,6 +93,14 @@ bit_vector** mum_make_bit_vectors(triplet* mapped_mums) {
 	return vectors;
 }
 
+/**
+ * @brief	A simple function for printing a bit vector with the c-string
+ * 			that is related to it to stdout.
+ * @param	string1	The string related to the vector.
+ * @param	vector	The bit vector to be printed.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void print_bit_vector_with_string(char* string1, bit_vector* vector) {
 	printf("%s \n", string1);
 	int i;
