@@ -6,10 +6,14 @@
  */
 
 #include "../../include/iterate.h"
+#include "../../include/structs.h"
 #include "../../include/c_array.h"
 #include "../../include/backward_search.h"
 #include "../../include/bit_vector.h"
+#include "../../include/wavelet_tree.h"
 #include "../bwt/s_to_bwt.h"
+#include "../bwt/map_bwt_to_s.h"
+#include "../iterate/print_node.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,7 +40,7 @@ void print_recursively(internal_node* node, int depth) {
 	} else {
 		printf(
 				"node %d, interval (%d, %d). My depth is %d and my parent is node %d\n",
-				node->id, node->substr->normal->i, node->substr->normal->j,
+				node->id, node->substr->normal.i, node->substr->normal.j,
 				depth, node->parent->id);
 	}
 	if (node->first_child != NULL) {
@@ -45,26 +49,6 @@ void print_recursively(internal_node* node, int depth) {
 	if (node->next_sibling != NULL) {
 		print_recursively(node->next_sibling, depth);
 	}
-}
-
-int* create_suffix_array_from_bwt(const char* bwt)
-{
-	int string_length = strlen(bwt);
-	int* suffix_array = malloc(sizeof(int)*string_length);
-	int interval = 0;
-
-	int* c_array = create_c_array(bwt);
-	char* alphabet = get_alphabet(bwt);
-	int c_value = 0;
-
-	for(int i=string_length-1; i>= 0; i--){
-		suffix_array[interval] = i;
-		interval = get_char_index(c_array, alphabet, bwt[interval])
-				+ rank(interval, bwt[interval], bwt);
-
-	}
-	return suffix_array;
-
 }
 
 void collect_internal_nodes(substring* substr, substring* prev_substr, char c);
@@ -76,15 +60,13 @@ internal_node* find_node_by_substring(substring* substr);
 void print_node_label_to_file(FILE* f, internal_node* node);
 
 void draw_suffix_tree(char* string, char* filename) {
-	unsigned char* bwt = s_to_BWT(string);
-	int* suffix_array = create_suffix_array_from_bwt(bwt);
+	wavelet_tree* bwt = s_to_BWT(string);
+	int* suffix_array = map_create_suffix_array_from_bwt(bwt);
 
 	root = calloc(1, sizeof(internal_node));
 	root->id = 0;
 	root->substr = calloc(1, sizeof(substring));
-	root->substr->normal = calloc(1, sizeof(Interval));
-	root->substr->normal->i = 0;
-	root->substr->normal->j = strlen(string);
+	root->substr->normal = ((interval ) { .i = 0, .j = strlen(string) } );
 	root->c = ' ';
 	node_id_index = 1;
 
@@ -97,6 +79,11 @@ int is_child(substring* parent, substring* child);
 
 void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 
+	printf("This one:");
+	print_node(substr);
+	printf("Last one:");
+	print_node(prev_substr);
+	printf("letter %c \n\n", c);
 	//initialise the node to be inserted
 	internal_node* insert_node = calloc(1, sizeof(internal_node));
 	insert_node->substr = substr;
@@ -215,7 +202,7 @@ void print_leaves_recursively(FILE* f, internal_node* node, int* suffix_array, c
 	}
 
 	int j;
-	for(int i = node->substr->normal->i; i<=node->substr->normal->j; i++){
+	for(int i = node->substr->normal.i; i<=node->substr->normal.j; i++){
 		if(leaf_vec->is_bit_marked(leaf_vec, i)) continue;
 		fprintf(f, "	node%d->leafnode%d [label=\"", node->id, i);
 
@@ -256,15 +243,15 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 
 //function returns 1 if substr2 is inside (in other words a child) of substring 1, otherwise 0
 int is_child(substring* parent, substring* child) {
-	if (parent->normal->i <= child->normal->i
-			&& parent->normal->j >= child->normal->j)
+	if (parent->normal.i <= child->normal.i
+			&& parent->normal.j >= child->normal.j)
 		return 1;
 	return 0;
 }
 
 int substring_and_node_equal(substring* substr, internal_node* node) {
-	if (substr->normal->i == node->substr->normal->i
-			&& substr->normal->j == node->substr->normal->j)
+	if (substr->normal.i == node->substr->normal.i
+			&& substr->normal.j == node->substr->normal.j)
 		return 1;
 	return 0;
 }
