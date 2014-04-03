@@ -13,22 +13,21 @@ struct interval;
 struct wavelet_tree;
 
 /**
-* @brief	A function for finding the interval of given string in given BWT.
-* @param 	bwt 	BWT of the string to be looked up, given in wavelet tree-
-* 					form.*
-* @param 	string 	The string to be searched inside the BWT, given in wavelet
-* 					tree-form.
-* @param	target	The interval-structure where the results should be stored.
-* 					If NULL, a new interval-structure will be allocated and
-* 					returned.
-* @return 			The interval of the searched string inside the BWT, or NULL
-* 					if it can't be found.
-* @see		wavelet_tree.h
-* @see		structs.h#interval
-* @author	Lassi Vapaakallio, Max Sandberg (REXiator)
-* @bug		No known bugs.
-**/
-
+ * @brief	A function for finding the interval of given string in given BWT.
+ * @param 	bwt 	BWT of the string to be looked up, given in wavelet tree-
+ * 					form.*
+ * @param 	string 	The string to be searched inside the BWT, given in wavelet
+ * 					tree-form.
+ * @param	target	The interval-structure where the results should be stored.
+ * 					If NULL, a new interval-structure will be allocated and
+ * 					returned.
+ * @return 			The interval of the searched string inside the BWT, or NULL
+ * 					if it can't be found.
+ * @see		wavelet_tree.h
+ * @see		structs.h#interval
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 struct interval* backward_search(const struct wavelet_tree* bwt, const struct wavelet_tree* string, struct interval* target);
 
 /**

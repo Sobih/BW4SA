@@ -64,8 +64,9 @@ triplet* get_mums();
 int get_mums_amount();
 
 /**
- * @brief	Prints the indexes the of the MUM in both strings, as well as the substring itself,
+ * @brief	Prints the indexes of the MUM in both strings, as well as the substring itself,
  * 			to stdout.
+ * @param	string	The string that is to be searched inside the MUM.
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
@@ -76,6 +77,8 @@ void print_mums(char* string);
  *
  * Every time a MUM is found, the BWT index of the MUM is marked on both strings' bit vectors.
  *
+ * @param	string1	The first string for which a bit vector is to be printed.
+ * @param	string2	The first string for which a bit vector is to be printed.
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */

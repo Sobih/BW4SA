@@ -2,7 +2,7 @@
  * @file	bit_vector.c
  * @brief	Implementation of the bit vector structure.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 
 #include <stdlib.h>
@@ -24,7 +24,7 @@
  * 					internal conflicts occur.
  * @see		#unmark_bit_vector_bit
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
 	unsigned int i = pos / BITS_PER_INT;
@@ -52,7 +52,7 @@ bit_vector* mark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
  *		 			internal conflicts occur.
  * @see		#mark_bit_vector_bit
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
 	unsigned int i = pos / BITS_PER_INT;
@@ -77,7 +77,7 @@ bit_vector* unmark_bit_vector_bit(bit_vector* vector, unsigned int pos) {
  * @return			1 if the bit is found, 0 if it is not or if any internal
  *		 			errors occur.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 int is_bit_marked(const bit_vector* vector, unsigned int pos) {
 	unsigned int i = pos / BITS_PER_INT;
@@ -102,7 +102,7 @@ int is_bit_marked(const bit_vector* vector, unsigned int pos) {
  * @param	start	The position where the count should start.
  * @return			The number of marked bits from start up to and including end.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned int end) {
 	unsigned int vec_length = vector->get_length(vector);
@@ -128,7 +128,7 @@ unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned i
  * @param	vector	The vector whose length is to be checked.
  * @return			The length of the bit vector, or the number of bits in it.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 unsigned int get_bit_vector_length(const bit_vector* vector) {
 	return vector->length * BITS_PER_INT - vector->filler_bits;

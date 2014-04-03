@@ -22,7 +22,7 @@
  * @brief	A structure for storing the bit vector and its
  * 			manipulation-functions.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 typedef struct bit_vector {
 	unsigned int* vector;
@@ -97,7 +97,7 @@ typedef struct bit_vector {
  * @param	nbits		The amount of bits that should be allocated to the vector.
  * @return	The initialized vector, or NULL if any error occurred.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits);
 
@@ -105,7 +105,7 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits);
  * @brief	Frees the bit vector and all its internal variables.
  * @param	vector		The vector that is to be destroyed.
  * @author	Max Sandberg (REXiator)
- * @bugs	No known bugs.
+ * @bug		No known bugs.
  */
 void free_bit_vector(bit_vector* vector);
 

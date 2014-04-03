@@ -119,6 +119,7 @@ void print_wavelet_tree(struct wavelet_tree* tree);
  * @param	string		The whole string.
  * @param	position	Starting position of the substring.
  * @param	length		Length of the substring.
+ * @return				A substring of the string supplied as parameter.
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
