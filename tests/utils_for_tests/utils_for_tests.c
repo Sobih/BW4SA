@@ -8,7 +8,6 @@
 char* generate_random_string(char* alphabet, int length) {
 	int alphabet_size = strlen(alphabet);
 	char* string = calloc(length + 1, sizeof(char));
-	srand((int) time(NULL));
 
 	for (int i = 0; i < length; i++) {
 		string[i] = alphabet[rand() % alphabet_size];
@@ -176,8 +175,7 @@ int list_contains_substr(char* string, test_substr* head, int start, int length)
 	test_substr* current = head->next;
 	while (current != NULL) {
 		if (current->length == length) {
-			if (two_substrings_equal(string, current->start_index, start,
-					length)) {
+			if (current->start_index == start) {
 				return 1;
 			}
 		}
@@ -203,12 +201,83 @@ void print_substring_indices(test_substr* head) {
 
 }
 
+int two_substrings_equal2(char* first, int first_index, char* second, int second_index, int length)
+{
+	for(int i = 0; i < length; i++){
+		if(first[first_index+i] != second[second_index+i]){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+test_substr** find_common_substrings(char* first, char* second) {
+
+	test_substr* dummy1 = calloc(1, sizeof(test_substr));
+	test_substr* current1 = dummy1;
+
+	test_substr* dummy2 = calloc(1, sizeof(test_substr));
+	test_substr* current2 = dummy2;
+
+	int shorter_length;
+	if (strlen(first) > strlen(second)) {
+		shorter_length = strlen(second);
+	} else {
+		shorter_length = strlen(first);
+	}
+	int first_length = strlen(first);
+	int second_length = strlen(second);
+
+	int found = 0;
+
+	for (int length = 1; length <= shorter_length; length++) {
+		for(int index1 = 0; index1 <= first_length-length; index1++) {
+
+			for(int index2 = 0; index2 <= second_length-length; index2++){
+
+				if(two_substrings_equal2(first, index1, second, index2, length)){
+
+					found = 1;
+
+					if(!list_contains_substr(second, dummy2, index2, length)){
+
+						current2-> next = calloc(1, sizeof(test_substr));
+						current2 = current2->next;
+						current2->start_index = index2;
+						current2->length = length;
+					}
+				}
+			}
+			if(found){
+				current1-> next = calloc(1, sizeof(test_substr));
+				current1 = current1->next;
+				current1->start_index = index1;
+				current1->length = length;
+				found = 0;
+			}
+		}
+	}
+
+
+	test_substr** list = malloc(sizeof(test_substr*)*2);
+	list[0] = dummy1;
+	list[1] = dummy2;
+
+	return list;
+}
+//
 //int main(){
 //
-//	char* test = generate_random_string("acgt", 100);
-//	test = "sadhgajhgshajdhsgdjakjdhaksdjqwgeyuoqweluywqiehqwhevjwqhevwqeiugqweqwuegqwiyeqweqiywleq";
-//	test_substr* repeats = find_maximal_repeat_substrings(test);
-//	print_substring_list(test, repeats);
+//	//char* test = generate_random_string("acgt", 100);
+//	srand(time(NULL));
+//	char* test1 = generate_random_string("acgt", 100);
+//	char* test2 = generate_random_string("acgt", 100);
+//	printf("%s\n", test1);
+//	printf("%s", test2);
+//	test_substr** doubles = find_common_substrings(test1, test2);
+//	print_substring_list(test1, doubles[0]);
+//	printf("\n");
+//	print_substring_list(test2, doubles[1]);
 //	return 0;
 //}
 

@@ -23,6 +23,9 @@ static test_substr* naive_rmaximals;
 static int callback_flag;
 static int* suffix_array;
 
+static test_substr** naive_doubles;
+static int* suffix_array2;
+
 START_TEST(simple_runs_test)
 {
 	printf("SIMPLE RUNS TEST\n");
@@ -171,12 +174,12 @@ START_TEST(test_iterate1)
 }
 END_TEST
 
-int check_list_contains_and_remove(int index_bwt, int length){
-	test_substr* prev = naive_rmaximals;
-	test_substr* node = naive_rmaximals->next;
+int check_list_contains_and_remove(int index_bwt, int length, test_substr* list, int* suffixes){
+	test_substr* prev = list;
+	test_substr* node = list->next;
 
 	while(node != NULL){
-		if(node->length == length && node->start_index == suffix_array[index_bwt]){
+		if(node->length == length && node->start_index == suffixes[index_bwt]){
 			prev->next = node->next;
 			free(node);
 			return 1;
@@ -187,10 +190,10 @@ int check_list_contains_and_remove(int index_bwt, int length){
 	return 0;
 }
 
-void check_substrings_callback(substring* substr)
+int check_substrings_callback(substring* substr)
 {
 	for(int i = substr->normal.i; i <= substr->normal.j; i++){
-		if(!check_list_contains_and_remove(i, substr->length)){
+		if(!check_list_contains_and_remove(i, substr->length, naive_rmaximals, suffix_array)){
 			callback_flag = 0;
 		}
 	}
@@ -200,13 +203,10 @@ START_TEST(test_iterate_randomized_small_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "acgt";
-<<<<<<< HEAD
-	char* bwt;
-	for(int i= 0; i<100; i++){
-=======
+
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
->>>>>>> 28b69ce15a01f4ea5191347f5f24d03e691c99fe
+
 		int length = (rand() % 200)+1;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
@@ -226,13 +226,9 @@ START_TEST(test_iterate_randomized_big_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
-<<<<<<< HEAD
-	char* bwt;
-	for(int i= 0; i<100; i++){
-=======
+
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
->>>>>>> 28b69ce15a01f4ea5191347f5f24d03e691c99fe
 		int length = (rand() % 100) + 100;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
@@ -267,6 +263,80 @@ START_TEST(test_iterate_randomized_one_long_string)
 }
 END_TEST
 
+void check_doubles_callback(substring* substr1, substring* substr2){
+
+	for(int i = substr1->normal.i; i <= substr1->normal.j; i++){
+		if(!check_list_contains_and_remove(i, substr1->length, naive_doubles[0], suffix_array)){
+			fail_unless(1 == 0);
+		}
+	}
+	for(int i = substr2->normal.i; i <= substr2->normal.j; i++){
+		if(!check_list_contains_and_remove(i, substr2->length, naive_doubles[1], suffix_array2)){
+			fail_unless(1 == 0);
+		}
+	}
+}
+
+START_TEST(test_double_iterate_randomized)
+{
+	srand(time(NULL));
+	char* alphabet = "acgt";
+
+	wavelet_tree* bwt1, *bwt2;
+	for(int i= 0; i<1000; i++){
+
+		int length = (rand() % 200)+1;
+		char* rand_string1 = generate_random_string(alphabet, length);
+		bwt1 = s_to_BWT(rand_string1);
+
+		length = (rand() % 200)+1;
+		char* rand_string2 = generate_random_string(alphabet, length);
+		bwt2 = s_to_BWT(rand_string2);
+
+		suffix_array = map_create_suffix_array_from_bwt(bwt1);
+		suffix_array2 = map_create_suffix_array_from_bwt(bwt2);
+
+		naive_doubles = find_common_substrings(rand_string1, rand_string2);
+		callback_flag = 1;
+
+		double_iterate(rand_string1, rand_string2, &check_doubles_callback);
+
+		fail_unless(naive_doubles[0]->next == NULL);
+		fail_unless(naive_doubles[1]->next == NULL);
+	}
+}
+END_TEST
+
+START_TEST(test_double_iterate_randomized_long_alphabet)
+{
+	srand(time(NULL));
+	char* alphabet = "qazwsxedcrfvtgbyhnujmikol1234567890";
+
+	wavelet_tree* bwt1, *bwt2;
+	for(int i= 0; i<1000; i++){
+
+		int length = (rand() % 200)+1;
+		char* rand_string1 = generate_random_string(alphabet, length);
+		bwt1 = s_to_BWT(rand_string1);
+
+		length = (rand() % 200)+1;
+		char* rand_string2 = generate_random_string(alphabet, length);
+		bwt2 = s_to_BWT(rand_string2);
+
+		suffix_array = map_create_suffix_array_from_bwt(bwt1);
+		suffix_array2 = map_create_suffix_array_from_bwt(bwt2);
+
+		naive_doubles = find_common_substrings(rand_string1, rand_string2);
+		callback_flag = 1;
+
+		double_iterate(rand_string1, rand_string2, &check_doubles_callback);
+
+		fail_unless(naive_doubles[0]->next == NULL);
+		fail_unless(naive_doubles[1]->next == NULL);
+	}
+}
+END_TEST
+
 TCase * create_runs_vec_test_case(void){
 	TCase * tc_runs = tcase_create("runs_vec_test");
 	tcase_add_test(tc_runs, simple_runs_test);
@@ -293,6 +363,16 @@ TCase * create_randomized_tcase(void)
 	return tc_random;
 }
 
+TCase * create_double_iterate_randomized_tcase(void)
+{
+	TCase* tc_double = tcase_create("randomized_tests");
+	tcase_add_test(tc_double, test_double_iterate_randomized);
+	tcase_add_test(tc_double, test_double_iterate_randomized_long_alphabet);
+
+	return tc_double;
+}
+
+
 
 Suite * test_suite(void)
 {
@@ -300,11 +380,12 @@ Suite * test_suite(void)
 	TCase* tc_runs = create_runs_vec_test_case();
 	TCase* tc_iterate = create_iterate_tcase();
 	TCase* tc_randomized = create_randomized_tcase();
+	TCase* tc_double = create_double_iterate_randomized_tcase();
 
 	suite_add_tcase(s, tc_runs);
 	suite_add_tcase(s, tc_iterate);
 	suite_add_tcase(s, tc_randomized);
-
+	suite_add_tcase(s, tc_double);
 	return s;
 }
 
