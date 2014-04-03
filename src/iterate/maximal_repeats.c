@@ -24,8 +24,8 @@ static int nodes_index;
 
 void max_repeats_initialize_bwt(wavelet_tree* bwt) {
 	max_bwt = bwt;
-	max_repeats_runs = create_runs_vector(bwt,0);
-	nodes = calloc(1000,sizeof(max_repeat_node));
+	max_repeats_runs = create_runs_vector(bwt, 0);
+	nodes = calloc(10000,sizeof(max_repeat_node));
 	nodes_index = 0;
 }
 

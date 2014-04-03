@@ -11,6 +11,12 @@
 #include "../../include/mapper.h"
 #include "../../src/bwt/s_to_bwt.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include "../utils_for_tests/utils_for_tests.h"
+#include "../../src/bwt/map_bwt_to_s.h"
+#include "../../include/wavelet_tree.h"
+
 
 START_TEST(test_maximal_repeat2)
 	{
@@ -119,6 +125,100 @@ START_TEST(test_maximal_repeat1_mapped)
 		ck_assert_int_eq(2, nodes[0].length);
 	}END_TEST
 
+//returns 0 if the searched substring is not found
+int find_and_remove_test_substr(test_substr* head, int index, int length) {
+	test_substr* previous = head;
+	test_substr* current = head->next;
+
+	while (current != NULL) {
+
+		if (current->length == length && current->start_index == index) {
+			previous->next = current->next;
+			free(current);
+			return 1;
+		}
+		previous = current;
+		current = current->next;
+	}
+	return 0;
+}
+
+START_TEST(test_max_repeats_randomized)
+{
+	srand(time(NULL));
+	char* test;
+	wavelet_tree* bwt;
+	int* suffix_array;
+	int length;
+	char* alphabet = "abcgdf";
+
+	for (int i = 0; i < 100; i++) {
+
+		test = generate_random_string(alphabet, rand() % 100 + 1);
+		bwt = s_to_BWT(test);
+		suffix_array = map_create_suffix_array_from_bwt(bwt);
+
+		test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
+		iterate(test, &search_maximal_repeats);
+		max_repeat_node* maxrep_fast = get_nodes();
+
+		int max_number_nodes = get_max_repeats_nodes_index();
+
+		for(int j = 0; j < max_number_nodes; j++){
+			for(int k = 0; k + maxrep_fast[j].normal.i <=  maxrep_fast[j].normal.j; k++){
+
+				fail_unless(find_and_remove_test_substr(maxrep_naive,
+						 suffix_array[maxrep_fast[j].normal.i + k], maxrep_fast[j].length));
+			}
+		}
+		print_substring_list(test, maxrep_naive);
+		fail_unless(maxrep_naive->next == NULL);
+
+	}
+}END_TEST
+
+START_TEST(test_max_repeats_randomized2)
+{
+	srand(time(NULL));
+	char* test;
+	wavelet_tree* bwt;
+	int* suffix_array;
+	int length;
+	char* alphabet = "aoskfdhebs";
+
+	for (int i = 0; i < 10; i++) {
+
+		test = generate_random_string(alphabet, rand() % 1000 + 100);
+		bwt = s_to_BWT(test);
+		suffix_array = map_create_suffix_array_from_bwt(bwt);
+
+		test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
+		iterate(test, &search_maximal_repeats);
+		max_repeat_node* maxrep_fast = get_nodes();
+
+		int max_number_nodes = get_max_repeats_nodes_index();
+
+		for(int j = 0; j < max_number_nodes; j++){
+			for(int k = 0; k + maxrep_fast[j].normal.i <=  maxrep_fast[j].normal.j; k++){
+
+				fail_unless(find_and_remove_test_substr(maxrep_naive,
+						 suffix_array[maxrep_fast[j].normal.i + k], maxrep_fast[j].length));
+			}
+		}
+		print_substring_list(test, maxrep_naive);
+		fail_unless(maxrep_naive->next == NULL);
+
+	}
+}END_TEST
+
+TCase * create_max_repeats_randomized_test_case(void) {
+	TCase * tc_randrep = tcase_create("max_repeats_randomized");
+	tcase_add_test(tc_randrep, test_max_repeats_randomized2);
+	tcase_add_test(tc_randrep, test_max_repeats_randomized);
+	tcase_set_timeout(tc_randrep, 100);
+	return tc_randrep;
+}
+
 TCase * create_maximal_repeats_test_case(void) {
 	TCase * tc_stack = tcase_create("maximal_repeat_test");
 	tcase_add_test(tc_stack, test_maximal_repeat2);
@@ -136,7 +236,9 @@ TCase * create_maximal_repeats_test_case(void) {
 Suite * test_suite(void) {
 	Suite *s = suite_create("testi");
 	TCase *tc_stack = create_maximal_repeats_test_case();
+	TCase *tc_randrep = create_max_repeats_randomized_test_case();
 	suite_add_tcase(s, tc_stack);
+	suite_add_tcase(s, tc_randrep);
 
 	return s;
 }
