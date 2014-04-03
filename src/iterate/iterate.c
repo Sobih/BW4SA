@@ -266,6 +266,7 @@ void double_iterate(char* string1, char* string2,
 
 	// WARNING WARNING, NOT GOOD
 	mum_initialize_bwts(bwt1, bwt2, rev_bwt1, rev_bwt2);
+	mem_initialize_bwts(bwt1, bwt2, rev_bwt1, rev_bwt2);
 
 	//Initialize first intervals. In the start both intervals are the whole bwt
 	interval* normal1 = &((interval ) { .i = 0, .j = bwt_length1 - 1 } );
