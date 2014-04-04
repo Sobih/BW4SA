@@ -6,7 +6,7 @@
  */
 
 #include "mum.h"
-#include "../core/mapper.h"
+#include "mapper.h"
 #include "../../include/utils.h"
 #include <stdio.h>
 #include <stdlib.h>

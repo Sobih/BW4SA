@@ -7,7 +7,7 @@
 
 #include "maximal_repeats.h"
 #include "map_bwt_to_s.h"
-#include "../core/mapper.h"
+#include "mapper.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
 #include <string.h>
