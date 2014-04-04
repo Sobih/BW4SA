@@ -77,13 +77,15 @@ void draw_suffix_tree(char* string, char* filename) {
 
 int is_child(substring* parent, substring* child);
 
-void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
+void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) {
 
-	printf("This one:");
-	print_node(substr);
-	printf("Last one:");
-	print_node(prev_substr);
-	printf("letter %c \n\n", c);
+	substring* substr = calloc(1, sizeof(substring));
+	substr->length = substr1->length;
+	substr->normal.i = substr1->normal.i;
+	substr->normal.j = substr1->normal.j;
+	substr->reverse.i = substr1->reverse.i;
+	substr->reverse.j = substr1->reverse.j;
+
 	//initialise the node to be inserted
 	internal_node* insert_node = calloc(1, sizeof(internal_node));
 	insert_node->substr = substr;
@@ -91,7 +93,6 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 	insert_node->id = node_id_index;
 	node_id_index++;
 	internal_node* prev_node = find_node_by_substring(prev_substr);
-
 	insert_node->c = c;
 
 	insert_node->weiner_node = prev_node;
@@ -108,18 +109,13 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 	while (1) {
 		if (is_child(temp_node->substr, insert_node->substr)) {
 			if (temp_node->first_child == NULL) {
-//				printf("is child. parent node %d, child node %d\n",
-//						temp_node->id, insert_node->id);
 				temp_node->first_child = insert_node;
 				insert_node->parent = temp_node;
 				break;
 			}
 			temp_node = temp_node->first_child;
-//			printf("moving to child...\n");
 		} else if (is_child(insert_node->substr, temp_node->substr)) {
 
-//			printf("is inverted child. parent node %d, child node %d\n",
-//					insert_node->id, temp_node->id);
 			insert_node->previous_sibling = temp_node->previous_sibling;
 			insert_node->next_sibling = temp_node->next_sibling;
 
@@ -132,7 +128,6 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 			insert_node->first_child = temp_node;
 			insert_node->parent = temp_node->parent;
 			if (temp_node->parent->first_child == temp_node) {
-//				printf("parent fixed\n");
 				temp_node->parent->first_child = insert_node;
 			}
 			temp_node->parent = insert_node;
@@ -141,15 +136,13 @@ void collect_internal_nodes(substring* substr, substring* prev_substr, char c) {
 			break;
 		} else {
 			if (temp_node->next_sibling == NULL) {
-//				printf("is sibling. node %d, sibling of %d\n", insert_node->id,
-//						temp_node->id);
 				temp_node->next_sibling = insert_node;
 				insert_node->previous_sibling = temp_node;
 				insert_node->parent = temp_node->parent;
 				break;
 			}
 			temp_node = temp_node->next_sibling;
-//			printf("moving to sibling...\n");
+
 		}
 	}
 }
@@ -243,9 +236,13 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 
 //function returns 1 if substr2 is inside (in other words a child) of substring 1, otherwise 0
 int is_child(substring* parent, substring* child) {
+
 	if (parent->normal.i <= child->normal.i
-			&& parent->normal.j >= child->normal.j)
+			&& parent->normal.j >= child->normal.j){
+
 		return 1;
+	}
+
 	return 0;
 }
 
