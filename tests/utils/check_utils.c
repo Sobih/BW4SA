@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../include/utils.h"
+#include "../../include/utils.h"
 
 START_TEST (test_quicksort) {
 	int* array = calloc(6, sizeof(int));

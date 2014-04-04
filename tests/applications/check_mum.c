@@ -5,13 +5,13 @@
  *      Author: lvapaaka
  */
 
-#include <check.h>
-#include "../../include/iterate.h"
-#include "../../include/mum.h"
-#include "../../include/mapper.h"
-#include "../../src/bwt/s_to_bwt.h"
-#include "../../include/bit_vector.h"
+#include "../../src/core/iterate.h"
+#include "../../src/core/s_to_bwt.h"
+#include "../../src/utils/bit_vector.h"
+#include "../../src/applications/mum.h"
+#include "../../src/applications/mapper.h"
 #include <stdlib.h>
+#include <check.h>
 
 START_TEST(test_mum1)
 	{

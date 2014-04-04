@@ -5,11 +5,11 @@
  *      Author: lvapaaka
  */
 
-#include "../../include/backward_search.h"
-#include "../../include/structs.h"
-#include "../../include/wavelet_tree.h"
-#include "../../src/bwt/s_to_bwt.h"
-#include "../../include/utils.h"
+#include "../../src/core/backward_search.h"
+#include "../../src/core/s_to_bwt.h"
+#include "../../src/utils/structs.h"
+#include "../../src/utils/wavelet_tree.h"
+#include "../../src/utils/utils.h"
 #include <check.h>
 #include <stdio.h>
 #include <stdlib.h>

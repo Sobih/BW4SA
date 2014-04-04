@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "../../include/backward_search.h"
-#include "../../include/c_array.h"
-#include "../../include/wavelet_tree.h"
-#include "../../include/structs.h"
-#include "../../include/utils.h"
+#include "../../src/core/backward_search.h"
+#include "../../src/core/c_array.h"
+#include "../../src/utils/wavelet_tree.h"
+#include "../../src/utils/structs.h"
+#include "../../src/utils/utils.h"
 
 char* generate_random_string(char* string, unsigned int length) {
 	if (length == 0)

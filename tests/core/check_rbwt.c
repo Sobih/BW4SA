@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <check.h>
 #include <math.h>
-#include "../../include/rbwt.h"
-#include "../../include/wavelet_tree.h"
+#include "../../src/core/rbwt.h"
+#include "../../src/utils/wavelet_tree.h"
 
 int wavelet_tree_matches_string(wavelet_tree* tree, char* string, int length) {
 	int i;

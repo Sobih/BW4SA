@@ -1,19 +1,16 @@
 
-#include <check.h>
-#include "../../include/iterate.h"
-#include "../../src/iterate/substring_stack.h"
-#include "../../include/bit_vector.h"
-#include "../../include/backward_search.h"
-#include "../../include/wavelet_tree.h"
-#include "../../include/structs.h"
+#include "../../src/core/iterate.h"
+#include "../../src/core/substring_stack.h"
+#include "../../src/core/backward_search.h"
+#include "../../src/core/rbwt.h"
+#include "../../src/core/s_to_bwt.h"
+#include "../../src/applications/map_bwt_to_s.h"
 #include "../../include/utils.h"
-#include "../../include/rbwt.h"
-#include "../utils_for_tests/utils_for_tests.h"
-#include "../../src/bwt/s_to_bwt.h"
-#include "../../src/bwt/map_bwt_to_s.h"
+#include "../utils_for_tests.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <check.h>
 
 substring** shared_list;
 int list_ptr = 0;

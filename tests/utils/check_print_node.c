@@ -1,8 +1,8 @@
 
 #include <check.h>
-#include "../../include/iterate.h"
-#include "../../include/structs.h"
-#include "../../src/iterate/print_node.h"
+#include "../../src/core/iterate.h"
+#include "../../src/utils/structs.h"
+#include "../../src/utils/print_node.h"
 #include <stdlib.h>
 
 substring* create_substr(void)

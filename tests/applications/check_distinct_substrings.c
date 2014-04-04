@@ -5,7 +5,7 @@
  #include <stdlib.h>
  #include <check.h>
  #include "../../include/utils.h"
- #include "../../include/distinct_substrings.h"
+ #include "../../src/applications/distinct_substrings.h"
  
 START_TEST (lcp_test)
 {

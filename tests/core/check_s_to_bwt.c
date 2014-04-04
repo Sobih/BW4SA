@@ -5,8 +5,8 @@
  *      Author: lvapaaka
  */
 
-#include "../../src/bwt/s_to_bwt.h"
-#include "../../include/wavelet_tree.h"
+#include "../../src/core/s_to_bwt.h"
+#include "../../src/utils/wavelet_tree.h"
 #include <check.h>
 #include <stdlib.h>
 

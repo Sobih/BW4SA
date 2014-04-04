@@ -13,8 +13,6 @@
 #include <stdio.h>
 #include <limits.h>
 #include "../../include/utils.h"
-#include "../../include/wavelet_tree.h"
-#include "../../include/bit_vector.h"
 
 void assert_node_internals(struct wavelet_node* node, const char* string, const char* alphabet,
 		unsigned int alphabet_length, unsigned int vec_length, unsigned int* correct_bits) {

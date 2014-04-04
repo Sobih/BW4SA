@@ -5,18 +5,17 @@
  *      Author: lvapaaka
  */
 
-#include <check.h>
-#include "../../include/iterate.h"
-#include "../../include/maximal_repeats.h"
-#include "../../include/mapper.h"
-#include "../../src/bwt/s_to_bwt.h"
+#include "../utils_for_tests.h"
+#include "../../src/core/iterate.h"
+#include "../../src/core/s_to_bwt.h"
+#include "../../src/applications/maximal_repeats.h"
+#include "../../src/applications/mapper.h"
+#include "../../src/applications/map_bwt_to_s.h"
+#include "../../src/utils/wavelet_tree.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "../utils_for_tests/utils_for_tests.h"
-#include "../../src/bwt/map_bwt_to_s.h"
-#include "../../include/wavelet_tree.h"
-
+#include <check.h>
 
 START_TEST(test_maximal_repeat2)
 	{

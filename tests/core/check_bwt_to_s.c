@@ -1,6 +1,6 @@
-#include "../../src/bwt/s_to_bwt.h"
-#include "../../include/bwt_to_s.h"
-#include "../../include/wavelet_tree.h"
+#include "../../src/core/s_to_bwt.h"
+#include "../../src/core/bwt_to_s.h"
+#include "../../src/utils/wavelet_tree.h"
 #include <check.h>
 #include <stdlib.h>
 

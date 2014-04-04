@@ -11,7 +11,6 @@
 #include <check.h>
 #include <math.h>
 #include "../../include/utils.h"
-#include "../../include/bit_vector.h"
 
 int contains(unsigned int* arr, unsigned int arr_size, unsigned int key) {
 	for (int i = 0; i < arr_size; ++i)
