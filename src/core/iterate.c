@@ -3,15 +3,17 @@
 #include "rbwt.h"
 #include "c_array.h"
 #include "s_to_bwt.h"
-#include "../utils/substring_stack.h"
+#include "substring_stack.h"
 #include "../../include/utils.h"
+#include "../applications/maximal_repeats.h"
+#include "../applications/mum.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 #define END_STRING '$'
 
-inline int is_reverse_interval_right_maximal(bit_vector* runs,
+int is_reverse_interval_right_maximal(bit_vector* runs,
 		interval* interval) {
 	return runs->rank(runs, (interval->i) + 1, interval->j) > 0 ? 1 : 0;
 }
