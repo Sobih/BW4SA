@@ -21,7 +21,15 @@
 
 #define END_STRING '$'
 
-inline int is_reverse_interval_right_maximal(bit_vector* runs,
+/**
+ * @brief 	A function that determines if given interval in given reverse BWT is right maximal.
+ * @param 	runs	Runs-vector of a reverse BWT.
+ * @param 	inter 	The interval that is to be checked.
+ * @return 			<code>1</code> if the interval is right maximal, <code>0</code> otherwise.
+ * @author 	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug 	No known bugs.
+ */
+int is_reverse_interval_right_maximal(bit_vector* runs,
 		interval* interval) {
 	return runs->rank(runs, (interval->i) + 1, interval->j) > 0 ? 1 : 0;
 }
