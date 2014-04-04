@@ -212,7 +212,7 @@ int two_substrings_from_different_strings_equal(char* string1, char* string2, in
 	}
 	
 	for (i = 0; i < substr_length; i++) {
-		if (string[string1_index] + i != string[second_index + i]) {
+		if (string1[string1_index  + i] != string2[string2_index + i]) {
 			return 0;
 		}
 	
@@ -258,7 +258,7 @@ int two_substrings_from_different_strings_left_maximal(char* string1, char* stri
 
 }
 
-int is_substring_in_two_strings_max_repeat(char* string1, char* string2, int string1_length, int string2_length, int string1_substr_start, int substr_length)
+int is_substring_maximal_exact_match(char* string1, char* string2, int string1_length, int string2_length, int string1_substr_start, int substr_length)
 {
 	int i, found = 0;
 	for (i = 0; i + substr_length <= string2_length; i++) {
@@ -286,7 +286,7 @@ void find_maximal_exact_match_naive(char* string1, char* string2)
 {
 	int length, i;
 	
-	
+	// is there need to iterate the string2 through?
 	test_substr* current = calloc(1, sizeof(test_substr));
 	test_substr* head = current;
 	test_substr* new;
@@ -296,7 +296,14 @@ void find_maximal_exact_match_naive(char* string1, char* string2)
 	
 	for (length = 1; length < string1_length; length++) {
 		for (i = 0; i + length <= string1_length; i++) {
+			if (is_substring_maximal_exact_match(string1, string2, string1_length, string2_length, i, length)) {
+				new = calloc(1, sizeof(test_substr));
+				new->start_index = i;
+				new->length = length;
+				current->next = new;
+				current = new;
 			
+			}
 		}
 	
 	}

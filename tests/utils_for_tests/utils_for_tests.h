@@ -25,4 +25,6 @@ void print_substring_list(char* string, test_substr* head);
 
 void print_substring_indices(test_substr* head);
 
+int is_substring_maximal_exact_match(char* string1, char* string2, int string1_length, int string2_length, int string1_substr_start, int substr_length);
+
 #endif /* UTILS_FOR_TESTS_H_ */
