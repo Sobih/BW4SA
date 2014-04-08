@@ -41,7 +41,16 @@ void iterate(char* string, void (*callback) (struct substring* substr));
  */
 void double_iterate(char* string1, char* string2, void (*callback)(struct substring* substr1, struct substring* substr2));
 
-//an additional iterate function. Works just like normal iterate, but passes few extra parameters to the callback function
+/**
+ * @brief	A version of iterate used for writing the suffix tree to a
+ * 			file in dot-format.
+ * @param	string		The string to be iterated over.
+ * @param	callback	The callback function to be called whenever a right maximal
+ * 						substring is found.
+ * @see		#iterate
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void iterate_for_tree_drawing(char* string, void (*callback)(struct substring* substr, struct substring* prev_substr, char c));
 
 #endif
