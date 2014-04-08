@@ -7,6 +7,7 @@
 #include "../../include/utils.h"
 #include "../applications/maximal_repeats.h"
 #include "../applications/mum.h"
+#include "../applications/mems.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -16,63 +17,6 @@
 int is_reverse_interval_right_maximal(bit_vector* runs,
 		interval* interval) {
 	return runs->rank(runs, (interval->i) + 1, interval->j) > 0 ? 1 : 0;
-}
-
-/**
- * Updates the interval in the BWT of the reverse of the string
- * @param reverse-BWT interval of the mother node
- * @param updated BWT interval in this node
- * @param alphabet in the interval
- * @param array C of the interval
- * @param extension character
- * @return a new updated Interval struct in the BWT of the reverse of the string
- */
-interval* update_reverse_interval(interval* inter, interval* normal,
-		const char* alphabet, unsigned int alphabet_length, const int* c_array,
-		const char c, interval* target) {
-
-	if (target == 0)
-		target = malloc(sizeof(interval));
-
-	int index_in_c_array = binary_search(alphabet, &c, sizeof(char),
-			alphabet_length, 0);
-	int char_index = c_array[index_in_c_array];
-	target->i = inter->i + char_index;
-
-	//length of the reverse interval is same as length of the normal interval
-	int normal_j = normal->j;
-	int normal_i = normal->i;
-
-	int new_j = target->i + (normal_j - normal_i);
-	target->j = new_j;
-	return target;
-}
-
-/**
- * @brief Creates a substring struct from interval and length.
- * @param interval in normal BWT
- * @param interval in the BWT of the reverse of the string
- * @param length of substring
- *
- * @return pointer to a new substring struct
- */
-substring* create_substring(interval* normal, interval* reverse, int length,
-		substring* target) {
-	if (target == 0)
-		target = malloc(sizeof(substring));
-
-	int normal_i = normal->i;
-	int normal_j = normal->j;
-
-	target->normal.i = normal_i;
-	target->normal.j = normal_j;
-
-	target->reverse.i = reverse->i;
-	target->reverse.j = reverse->j;
-
-	target->length = length;
-
-	return target;
 }
 
 void iterate(char* string, void (*callback)(substring* substr)) {

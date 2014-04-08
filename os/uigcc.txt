@@ -4,4 +4,4 @@ Alternate gcc with debug:
 gcc -std=c99 src/main.c -o main.o src/ui/ui.c src/bwt/*.c libs/DBWT/*.c -I libs/DBWT src/backward-search/*.c src/utils.c src/iterate/*.c src/array/bit_vector.c src/wavelet_tree/wavelet_tree.c src/distinct_substrings/distinct_substrings.c -lm -g
 
 New world order: 
-gcc -std=c99 src/main.c -o src/main.o -I libs/DBWT libs/DBWT/*.c src/utils/*.c src/core/*.c src/applications/mum.c src/applications/maximal_repeats.c src/applications/mapper.c src/applications/map_bwt_to_s.c tests/applications/check_mum.c `pkg-config --cflags --libs check` -lm
+gcc -std=c99 src/main.c -o src/main.o -I libs/DBWT libs/DBWT/*.c src/utils/*.c src/core/*.c src/applications/mems.c src/applications/mapper.c `pkg-config --cflags --libs check` -lm

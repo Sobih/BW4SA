@@ -11,6 +11,8 @@
 struct substring;
 struct bit_vector;
 struct wavelet_tree;
+struct alphabet_data;
+
 
 /**
  * @brief	Initialization function for mems, so the callback can be done without having all BWTs as parameters.

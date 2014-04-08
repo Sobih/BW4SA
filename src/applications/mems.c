@@ -6,6 +6,10 @@
  */
 
 #include "../../include/utils.h"
+#include "../../include/core.h"
+#include "../../include/applications.h"
+#include "../core/c_array.h"
+#include "../core/backward_search.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -38,24 +42,24 @@ void list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
 	interval normal;
 	interval reverse;
 	int i;
-	alphabet_data alpha_data = create_alphabet_interval(&node->normal,
+	alphabet_data* alpha_data = create_alphabet_interval(&node->normal,
 			bwt, alpha_data);
 	int* c_array = create_c_array(bwt, &node->normal, 0, 0, c_array);
 	int alphabet_length = alpha_data->length;
 	for (i = node->normal.i; i <= node->normal.j; i++) {
 		normal.i = i;
 		normal.j = i;
-		normal = backward_search_interval(bwt, normal,
-				bwt[i], normal);
-		reverse = update_reverse_interval(&node->reverse, normal,
+		normal = *backward_search_interval(bwt, &normal,
+				bwt->char_at(bwt,i), 0);
+		reverse = *update_reverse_interval(&node->reverse, &normal,
 				alpha_data->alphabet, alphabet_length, c_array,
-				bwt[i], reverse);
+				bwt->char_at(bwt,i), &reverse);
 
-		substring* new_substring = create_substring(normal, reverse,
+		substring* new_substring = create_substring(&normal, &reverse,
 				node->length + 1, new_substring);
 		mem_candidates[i].left_extension = *new_substring;
-		mem_candidates[i].first = bwt[i];
-		mem_candidates[i].last = rbwt[reverse.i];
+		mem_candidates[i].first = bwt->char_at(bwt,i);
+		mem_candidates[i].last = rbwt->char_at(rbwt,reverse.i);
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "bit_vector.h"
 #include "wavelet_tree.h"
+#include "structs.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -336,5 +337,45 @@ bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
 		if (string->char_at(string, i - 1) != string->char_at(string, i))
 			target->mark_bit(target, i);
 
+	return target;
+}
+
+substring* create_substring(interval* normal, interval* reverse, int length,
+		substring* target) {
+	if (target == 0)
+		target = malloc(sizeof(substring));
+
+	int normal_i = normal->i;
+	int normal_j = normal->j;
+
+	target->normal.i = normal_i;
+	target->normal.j = normal_j;
+
+	target->reverse.i = reverse->i;
+	target->reverse.j = reverse->j;
+
+	target->length = length;
+
+	return target;
+}
+
+interval* update_reverse_interval(interval* inter, interval* normal,
+		const char* alphabet, unsigned int alphabet_length, const int* c_array,
+		const char c, interval* target) {
+
+	if (target == 0)
+		target = malloc(sizeof(interval));
+
+	int index_in_c_array = binary_search(alphabet, &c, sizeof(char),
+			alphabet_length, 0);
+	int char_index = c_array[index_in_c_array];
+	target->i = inter->i + char_index;
+
+	//length of the reverse interval is same as length of the normal interval
+	int normal_j = normal->j;
+	int normal_i = normal->i;
+
+	int new_j = target->i + (normal_j - normal_i);
+	target->j = new_j;
 	return target;
 }
