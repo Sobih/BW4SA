@@ -46,19 +46,17 @@ void list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
 	int* c_array = create_c_array(bwt, &node->normal, 0, 0, 0);
 	int alphabet_length = alpha_data->length;
 //	int index;
-	for (int i = node->normal.i, index = 0; i <= node->normal.j; i++, index++) {
-		normal->i = i;
-		normal->j = i;
-		normal = backward_search_interval(bwt, normal, bwt->char_at(bwt, i), 0);
+	for (int i = 0, index = 0; i < alphabet_length; i++, index++) {
+		normal = backward_search_interval(bwt, node->normal, alpha_data->alphabet[i], 0);
 		reverse = update_reverse_interval(&node->reverse, normal,
 				alpha_data->alphabet, alphabet_length, c_array,
-				bwt->char_at(bwt, i), 0);
+				alpha_data->alphabet[i], 0);
 
 		substring* new_substring = create_substring(normal, reverse,
 				node->length, 0);
 		mem_candidates[index].left_extension = *new_substring;
-		mem_candidates[index].first = bwt->char_at(bwt, i);
-		mem_candidates[index].last = rbwt->char_at(rbwt, reverse->i);
+		mem_candidates[index].first = alpha_data->alphabet[i];
+		mem_candidates[index].last = 'c';
 	}
 }
 
