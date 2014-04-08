@@ -19,6 +19,48 @@ START_TEST(test_mem2) {
 }
 END_TEST
 
+START_TEST(test_mem_randomized) {
+
+
+	srand(time(NULL));
+	char* test1;
+	char* test2;
+	wavelet_tree* bwt;
+	int* suffix_array;
+	int length;
+	char* alphabet = "abcgdf";
+	
+	/*
+
+	for (int i = 0; i < 100; i++) {
+
+		test = generate_random_string(alphabet, rand() % 100 + 1);
+		bwt = s_to_BWT(test);
+		suffix_array = map_create_suffix_array_from_bwt(bwt);
+
+		test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
+		iterate(test, &search_maximal_repeats);
+		max_repeat_node* maxrep_fast = get_nodes();
+
+		int max_number_nodes = get_max_repeats_nodes_index();
+
+		for(int j = 0; j < max_number_nodes; j++){
+			for(int k = 0; k + maxrep_fast[j].normal.i <=  maxrep_fast[j].normal.j; k++){
+
+				fail_unless(find_and_remove_test_substr(maxrep_naive,
+						 suffix_array[maxrep_fast[j].normal.i + k], maxrep_fast[j].length));
+			}
+		}
+		print_substring_list(test, maxrep_naive);
+		fail_unless(maxrep_naive->next == NULL);
+
+	}
+
+
+
+*/
+}
+
 TCase * create_mems_test_case(void) {
 	TCase * tc_stack = tcase_create("mem_test");
 	tcase_add_test(tc_stack, test_mem1);
