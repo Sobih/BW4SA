@@ -2,6 +2,8 @@
 #include "mum.h"
 #include "maximal_repeats.h"
 #include "../../include/utils.h"
+#include "../../include/core.h"
+#include "../../include/applications.h"
 
 // swap function in utils.h
 

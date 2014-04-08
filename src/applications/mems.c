@@ -13,13 +13,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct mem_candidate
-{
+typedef struct mem_candidate {
 	substring left_extension;
 	char first;
 	char last;
 } mem_candidate;
-
 
 static wavelet_tree* mem_bwt1;
 static wavelet_tree* mem_bwt2;
@@ -38,36 +36,48 @@ void mem_initialize_bwts(wavelet_tree* bwt1, wavelet_tree* bwt2,
 	mem_triplets_index = 0;
 }
 
-void list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt, mem_candidate* mem_candidates) {
-	interval normal;
-	interval reverse;
-	int i;
-	alphabet_data* alpha_data = create_alphabet_interval(&node->normal,
-			bwt, alpha_data);
-	int* c_array = create_c_array(bwt, &node->normal, 0, 0, c_array);
-	int alphabet_length = alpha_data->length;
-	for (i = node->normal.i; i <= node->normal.j; i++) {
-		normal.i = i;
-		normal.j = i;
-		normal = *backward_search_interval(bwt, &normal,
-				bwt->char_at(bwt,i), 0);
-		reverse = *update_reverse_interval(&node->reverse, &normal,
-				alpha_data->alphabet, alphabet_length, c_array,
-				bwt->char_at(bwt,i), &reverse);
+void list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
+		mem_candidate* mem_candidates) {
+	interval* normal = malloc(sizeof(interval));
+	interval* reverse = malloc(sizeof(interval));
+//	int i;
 
-		substring* new_substring = create_substring(&normal, &reverse,
-				node->length + 1, new_substring);
-		mem_candidates[i].left_extension = *new_substring;
-		mem_candidates[i].first = bwt->char_at(bwt,i);
-		mem_candidates[i].last = rbwt->char_at(rbwt,reverse.i);
+	alphabet_data* alpha_data = create_alphabet_interval(&node->normal, bwt, 0);
+	int* c_array = create_c_array(bwt, &node->normal, 0, 0, 0);
+	int alphabet_length = alpha_data->length;
+//	int index;
+	for (int i = node->normal.i, index = 0; i <= node->normal.j; i++, index++) {
+		normal->i = i;
+		normal->j = i;
+		normal = backward_search_interval(bwt, normal, bwt->char_at(bwt, i), 0);
+		reverse = update_reverse_interval(&node->reverse, normal,
+				alpha_data->alphabet, alphabet_length, c_array,
+				bwt->char_at(bwt, i), 0);
+
+		substring* new_substring = create_substring(normal, reverse,
+				node->length, 0);
+		mem_candidates[index].left_extension = *new_substring;
+		mem_candidates[index].first = bwt->char_at(bwt, i);
+		mem_candidates[index].last = rbwt->char_at(rbwt, reverse->i);
 	}
 }
 
 void search_mems(substring* node1, substring* node2) {
-	mem_candidate* mem_candidates1 = calloc(node1->normal.j - node1->normal.j + 1, sizeof(mem_candidate));
-	mem_candidate* mem_candidates2 = calloc(node2->normal.j - node2->normal.j + 1, sizeof(mem_candidate));
+	printf("\n\nInput:\n");
+	print_node(node1);
+	print_node(node2);
+	mem_candidate* mem_candidates1 = calloc(
+			(node1->normal.j - node1->normal.i + 1), sizeof(mem_candidate));
+	mem_candidate* mem_candidates2 = calloc(
+			(node2->normal.j - node2->normal.i + 1), sizeof(mem_candidate));
 	list_mem_candidates(node1, mem_bwt1, mem_rbwt1, mem_candidates1);
 	list_mem_candidates(node2, mem_bwt2, mem_rbwt2, mem_candidates2);
+	printf("Output:\n");
+	for (int i = 0; i <= node1->normal.j - node1->normal.i + 1; i++) {
+		printf("%c", mem_candidates1[i].first);
+		printf("%c", mem_candidates1[i].first);
+		print_node(&mem_candidates1[i].left_extension);
+	}
 }
 
 triplet* get_mems() {

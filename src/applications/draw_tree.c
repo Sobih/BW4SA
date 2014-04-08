@@ -11,6 +11,7 @@
 #include "../core/backward_search.h"
 #include "../core/s_to_bwt.h"
 #include "../utils/bit_vector.h"
+#include "../../include/utils.h"
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>

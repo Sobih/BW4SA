@@ -1,27 +1,10 @@
-<<<<<<< HEAD:src/ui/ui.c
-#include "../bwt/s_to_bwt.h"
-#include "../../include/bwt_to_s.h"
-#include "../../include/rbwt.h"
-#include "../../include/c_array.h"
-#include "../../include/iterate.h"
-#include "../../include/structs.h"
-#include "../iterate/print_node.h"
-#include "../../include/bit_vector.h"
-#include "../../include/distinct_substrings.h"
-#include "../../include/maximal_repeats.h"
-#include "../../include/wavelet_tree.h"
-#include "../../include/mum.h"
-#include "../../include/mems.h"
-=======
 #include "ui.h"
 #include "distinct_substrings.h"
 #include "../core/s_to_bwt.h"
 #include "../core/bwt_to_s.h"
 #include "../core/rbwt.h"
 #include "../core/c_array.h"
-#include "../utils/triplet_sorter.h"
 #include "../../include/core.h"
->>>>>>> dd215460bb5a09eef31aadaa4530ba9c70e33694:src/applications/ui.c
 #include "../../include/utils.h"
 #include "../../include/applications.h"
 #include <stdio.h>
