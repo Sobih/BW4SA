@@ -94,8 +94,8 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	interval* reverse = &((interval ) { .i = 0, .j = bwt_length - 1 } );
 
 	//create starting substring
-	substring* new_substring = 0, *substr = create_substring(normal, reverse,
-			0, 0);
+	substring* new_substring = 0, *substr = create_substring(normal, reverse, 0,
+			0);
 
 	substring* temp;
 
@@ -107,8 +107,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		//if(substr->normal->i == substring->normal->j) continue;
 
 		// Determine characters that precede the interval
-		alpha_data = create_alphabet_interval(&substr->normal, bwt,
-				alpha_data);
+		alpha_data = create_alphabet_interval(&substr->normal, bwt, alpha_data);
 
 		c_array = create_c_array(bwt, &substr->normal, 0, 0, c_array);
 
@@ -137,8 +136,8 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		if (temp == NULL) {
 			break;
 		}
-		substr = create_substring(&temp->normal, &temp->reverse,
-				temp->length, substr);
+		substr = create_substring(&temp->normal, &temp->reverse, temp->length,
+				substr);
 	}
 
 	free(c_array);
@@ -147,61 +146,78 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 	free_stack(stack);
 }
 
-/*
- void iterate_for_tree_drawing(char* string, void (*callback)(substring* substr, substring* prev_substr, char c)) {
+void iterate_for_tree_drawing(char* string,
+		void (*callback)(substring* substr, substring* prev_substr, char c)) {
 
- unsigned char* bwt = s_to_BWT(string);
- bit_vector* runs = create_runs_vector(string);
+	wavelet_tree* bwt = s_to_BWT(string), *rev_bwt = reverse_bwt(string);
+	bit_vector* reverse_runs = create_runs_vector(rev_bwt, 0);
+	substring_stack* stack = create_stack(10);
+	int bwt_length = bwt->get_num_bits(bwt), i, alphabet_length =
+			bwt->get_alphabet_length(bwt);
+	unsigned int* c_array = malloc(
+			(alphabet_length + 1) * sizeof(unsigned int));
+	alphabet_data* alpha_data = malloc(sizeof(alphabet_data));
+	alpha_data->alphabet = malloc((alphabet_length + 1) * sizeof(char));
 
- substring_stack* stack = create_stack(10);
+	// WARNING WARNING, NOT GOOD
+	max_repeats_initialize_bwt(bwt);
 
- //Initialise first intervals. In the start both intervals are the whole bwt
- Interval* normal = &((Interval ) { .i = 0, .j = strlen(bwt) - 1 } );
- Interval* reverse = &((Interval ) { .i = 0, .j = strlen(bwt) - 1 } );
+	//Initialize first intervals. In the start both intervals are the whole bwt
+	interval* normal = &((interval ) { .i = 0, .j = bwt_length - 1 } );
+	interval* reverse = &((interval ) { .i = 0, .j = bwt_length - 1 } );
 
- //create starting substring
- substring* start = &((substring) { .normal = normal, .reverse = reverse, .length = 0 });
+	//create starting substring
+	substring* new_substring = 0, *substr = create_substring(normal, reverse, 0,
+			0);
 
- push(stack, start);
- substring* new_substring;
- substring* substring;
+	substring* temp;
 
- while (1) {
- substring = pop(stack);
+	while (1) {
+		if (substr == NULL)
+			break;
 
- if (substring == NULL)
- break;
+		//if size of the interval is 1, it cannot be a right-maximal string
+		//if(substr->normal->i == substring->normal->j) continue;
 
- //if size of the interval is 1, it cannot be a right-maximal string
- //if(substring->normal->i == substring->normal->j) continue;
+		// Determine characters that precede the interval
+		alpha_data = create_alphabet_interval(&substr->normal, bwt, alpha_data);
 
- // Determine characters that precede the interval
- char* alphabet = create_alphabet_interval(substring->normal, bwt);
- int* c_array = create_c_array_interval(substring->normal, bwt);
+		c_array = create_c_array(bwt, &substr->normal, 0, 0, c_array);
 
- int i;
- for (i = 0; i < strlen(alphabet); i++) {
+		alphabet_length = alpha_data->length;
 
- Interval* normal = backward_search_interval(bwt, substring->normal,
- alphabet[i]);
- Interval* reverse = update_reverse_interval(substring->reverse,substring->normal,
- normal, bwt, alphabet[i]);
+		for (i = 0; i < alphabet_length; i++) {
+			normal = backward_search_interval(bwt, &substr->normal,
+					alpha_data->alphabet[i], normal);
+			if (normal == NULL) {
+				continue;
+			}
+			reverse = update_reverse_interval(&substr->reverse, normal,
+					alpha_data->alphabet, alphabet_length, c_array,
+					alpha_data->alphabet[i], reverse);
 
- if (is_reverse_interval_right_maximal(runs, reverse)) {
- new_substring = create_substring(normal, reverse, substring->length + 1);
- // callback function pointers
- callback(new_substring, substring, alphabet[i]);
- push(stack, new_substring);
- } else {
- free(normal);
- free(reverse);
- }
- }
- free(alphabet);
- free(c_array);
- }
- }
- */
+			if (is_reverse_interval_right_maximal(reverse_runs, reverse)) {
+				new_substring = create_substring(normal, reverse,
+						substr->length + 1, new_substring);
+				// callback function pointers
+				callback(new_substring, substr, alpha_data->alphabet[i]);
+				push(stack, new_substring);
+			}
+		}
+
+		temp = pop(stack);
+		if (temp == NULL) {
+			break;
+		}
+		substr = create_substring(&temp->normal, &temp->reverse, temp->length,
+				substr);
+	}
+
+	free(c_array);
+	free(alpha_data->alphabet);
+	free(alpha_data);
+	free_stack(stack);
+}
 
 char* combine_alphabets_intersection(alphabet_data* alpha_data1,
 		alphabet_data* alpha_data2, char* common_alphabet) {
