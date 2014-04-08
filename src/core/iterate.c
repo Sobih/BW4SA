@@ -30,8 +30,8 @@
  * @bug 	No known bugs.
  */
 int is_reverse_interval_right_maximal(bit_vector* runs,
-		interval* interval) {
-	return runs->rank(runs, (interval->i) + 1, interval->j) > 0 ? 1 : 0;
+		interval* inter) {
+	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
 }
 
 /**
