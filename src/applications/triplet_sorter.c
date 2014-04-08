@@ -17,7 +17,7 @@ int compare_triplets_pos2(void* first, void* second) {
 	return f->pos2 - s->pos2;
 }
 
-<<<<<<< HEAD:src/iterate/triplet_sorter.c
+
 int compare_max_repeat_nodes(void* first, void* second) {
 	max_repeat_node* f = (max_repeat_node*)first;
 	max_repeat_node* s = (max_repeat_node*)second;
@@ -25,15 +25,8 @@ int compare_max_repeat_nodes(void* first, void* second) {
 		return f->normal->i - s->normal->i;
 	} else {
 		return f->normal->j - s->normal->j;
-=======
-int compare_max_repeat_nodes(max_repeat_node first, max_repeat_node second) {
-	if (first.normal.i != second.normal.i) {
-		return first.normal.i - second.normal.i;
-	} else {
-		return first.normal.j - second.normal.j;
->>>>>>> d535418ce771cf880c86f2a519d8c245f762e583:src/applications/triplet_sorter.c
-	}
-}
+
+
 
 
 

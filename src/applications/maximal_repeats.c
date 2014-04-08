@@ -18,6 +18,8 @@ static bit_vector* max_repeats_runs;
 static max_repeat_node* nodes;
 static int nodes_index;
 
+//bit_vector* max_repeats_in_bwt;
+
 void max_repeats_initialize_bwt(wavelet_tree* bwt) {
 	max_bwt = bwt;
 	max_repeats_runs = create_runs_vector(bwt,0);

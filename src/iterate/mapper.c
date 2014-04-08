@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 void map_maximal_repeats_to_string(max_repeat_node* nodes, char* bwt, int count) {
 	int i = 0;
 	long n = strlen(bwt);
@@ -72,4 +73,6 @@ void map_mum_triplets_to_string(triplet* nodes, char* bwt1, char* bwt2,
 	update_position_in_triplets(nodes, bwt1, count, 1);
 	update_position_in_triplets(nodes, bwt2, count, 2);
 }
+
+
 

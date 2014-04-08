@@ -13,6 +13,11 @@ struct max_repeat_node;
 struct triplet;
 struct wavelet_tree;
 
+typedef struct mapped_pair {
+	unsigned int orig_pos;
+	unsigned int bwt_pos;
+} mapped_pair;
+
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found maximal repeats.
  *
