@@ -1,4 +1,4 @@
 #!/bin/bash
-gcc -std=c99 -o src/iterate/stack_test.o src/iterate/substring_stack.c tests/iterate/check_substring_stack.c `pkg-config --cflags --libs check`
+gcc -std=c99 -o src/core/stack_test.o src/core/substring_stack.c tests/core/check_substring_stack.c `pkg-config --cflags --libs check` -lm
 
-./src/iterate/stack_test.o
+./src/core/stack_test.o

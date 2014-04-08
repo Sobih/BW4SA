@@ -1,3 +1,5 @@
-gcc -std=c99 -o src/distinct_substrings/substr.o src/distinct_substrings/distinct_substrings.c tests/distinct_substrings/check_distinct_substrings.c src/utils.c `pkg-config --cflags --libs check`
+#!/bin/bash
 
-src/distinct_substrings/substr.o
+gcc -std=c99 -o src/applications/substr.o src/applications/distinct_substrings.c tests/applications/check_distinct_substrings.c src/utils/utils.c src/utils/bit_vector.c `pkg-config --cflags --libs check` -lm
+
+src/applications/substr.o

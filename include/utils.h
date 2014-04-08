@@ -1,17 +1,14 @@
-/**
- * @file	utils.h
- * @brief	A collection of useful helper-functions.
+/*
+ * utils.h
  *
- * This file contains some useful generic helper functions, like sorting,
- * searching, etc.
- *
- * @author	Max Sandberg (REXiator), Paula Lehtola
- * @bug		No known bugs.
+ *  Created on: 4.4.2014
+ *      Author: maxsandb
  */
 
 #ifndef UTILS_H_
 #define UTILS_H_
 
+<<<<<<< HEAD
 struct wavelet_node;
 struct bit_vec;
 
@@ -147,5 +144,12 @@ void print_wavelet_tree(struct wavelet_node* node);
  * @bug		No known bugs.
  */
 char *substring_from_string(char *string, int position, int length);
+=======
+#include "../src/utils/bit_vector.h"
+#include "../src/utils/print_node.h"
+#include "../src/utils/structs.h"
+#include "../src/utils/utils.h"
+#include "../src/utils/wavelet_tree.h"
+>>>>>>> d535418ce771cf880c86f2a519d8c245f762e583
 
 #endif /* UTILS_H_ */
