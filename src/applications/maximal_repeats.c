@@ -1,8 +1,8 @@
-/*
- * maximal_repeats.c
- *
- *  Created on: 26.2.2014
- *      Author: lvapaaka
+/**
+ * @file	maximal_repeats.c
+ * @brief	Implementation of the functions related to maximal repeats.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include "maximal_repeats.h"
@@ -20,11 +20,19 @@ static int nodes_index;
 
 void max_repeats_initialize_bwt(wavelet_tree* bwt) {
 	max_bwt = bwt;
-	max_repeats_runs = create_runs_vector(bwt, 0);
-	nodes = calloc(10000,sizeof(max_repeat_node));
+	max_repeats_runs = create_runs_vector(bwt,0);
+	nodes = calloc(1000,sizeof(max_repeat_node));
 	nodes_index = 0;
 }
 
+/**
+ * @brief	A simple function for determining if an interval is right maximal.
+ * @param	inter	The interval to be checked.
+ * @return			<code>1</code> if the interval is a maximal repeat, <code>0</code>
+ * 					otherwise.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 int is_interval_left_maximal(interval inter) {
 	if (inter.i >= inter.j)
 		return 0;

@@ -194,6 +194,8 @@ int check_substrings_callback(substring* substr)
 			callback_flag = 0;
 		}
 	}
+
+	return 0;
 }
 
 START_TEST(test_iterate_randomized_small_alphabet)

@@ -1,8 +1,8 @@
-/*
- * map_bwt_to_s.c
- *
- *  Created on: 27.2.2014
- *      Author: lvapaaka
+/**
+ * @file	map_bwt_to_s.c
+ * @brief	Implementation of mapping between suffix arrays and BWT's.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include "map_bwt_to_s.h"

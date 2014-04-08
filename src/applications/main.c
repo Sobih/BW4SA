@@ -1,6 +1,6 @@
 //this main function is only for tree drawing
 
-#include "../../include/draw_tree.h"
+#include "draw_tree.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[])

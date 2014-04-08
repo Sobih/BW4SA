@@ -1,3 +1,9 @@
+/**
+ * @file	c_array.c
+ * @brief	Implementation of the algorithms related to the c-array.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 
 #include "c_array.h"
 #include "backward_search.h"
@@ -8,11 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-
-void print_alphabet(char* alphabet, unsigned int size) {
-	for (int i = 0; i < size; ++i)
-		printf("%c", alphabet[i]);
-}
 
 unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, const char* alphabet,
 		unsigned int alphabet_length, unsigned int* target) {

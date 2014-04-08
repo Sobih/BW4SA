@@ -1,8 +1,8 @@
-/*
- * mapper.c
- *
- *  Created on: 13.3.2014
- *      Author: lvapaaka
+/**
+ * @file	mapper.c
+ * @brief	Implementation of the mapping functions.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include "mapper.h"
@@ -40,6 +40,17 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 	free(target);
 }
 
+/**
+ * @brief	A function for mapping the indices inside the BWT to indices inside
+ * 			the original c-string.
+ * @param	nodes		A list of triplet-nodes.
+ * @param	bwt			The BWT of a string, represented as a wavelet tree.
+ * @param	count		Length of the array.
+ * @param	position	Determines which of the indices is to be updated.
+ * 						Has to be either <code>1</code> or <code>2</code>.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void update_position_in_triplets(triplet* nodes, wavelet_tree* bwt, int count,
 		int position) {
 	int i;

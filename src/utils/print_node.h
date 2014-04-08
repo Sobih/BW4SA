@@ -1,8 +1,8 @@
-/*
- * print_node.h
- *
- *  Created on: 7.2.2014
- *      Author: lvapaaka
+/**
+ * @file	print_node.h
+ * @brief	A collection of functions for printing substrings to stdout.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #ifndef PRINT_NODE_H_
@@ -11,11 +11,22 @@
 struct substring;
 
 /**
- * Prints all the information about the node in a readable form.
- *
- * @param node a substring struct to be printed
+ * @brief	Prints all the information about a substring in a readable form
+ * 			to stdout.
+ * @param 	node 	A substring-struct to be printed.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 void print_node(struct substring* node);
+
+/**
+ * @brief	Prints all the information of two substrings in a readable form
+ * 			to stdout.
+ * @param	node1	The first substring to be printed.
+ * @param	node2	The second substring to be printed.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void print_double_node(struct substring* node1, struct substring* node2);
 
 #endif /* PRINT_NODE_H_ */
