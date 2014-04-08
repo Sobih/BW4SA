@@ -42,6 +42,6 @@ void iterate(char* string, void (*callback) (struct substring* substr));
 void double_iterate(char* string1, char* string2, void (*callback)(struct substring* substr1, struct substring* substr2));
 
 //an additional iterate function. Works just like normal iterate, but passes few extra parameters to the callback function
-//void iterate_for_tree_drawing(char* string, void (*callback)(substring* substr, substring* prev_substr, char c));
+void iterate_for_tree_drawing(char* string, void (*callback)(struct substring* substr, struct substring* prev_substr, char c));
 
 #endif
