@@ -5,12 +5,16 @@
  *      Author: lvapaaka
  */
 
-#include "../../include/structs.h"
-#include "../../include/wavelet_tree.h"
-#include "../../include/mapper.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+typedef struct mem_candidate
+{
+	substring left_extension;
+	char first;
+	char last;
+} mem_candidate;
 
 
 static wavelet_tree* mem_bwt1;
@@ -30,25 +34,39 @@ void mem_initialize_bwts(wavelet_tree* bwt1, wavelet_tree* bwt2,
 	mem_triplets_index = 0;
 }
 
-void search_mems(substring* node1, substring* node2) {
-	int index1, index2;
-	for (index1 = node1->normal.i; index1 <= node1->normal.j; index1++) {
-		for (index2 = node2->normal.i; index2 <= node2->normal.j; index2++) {
-			if (mem_bwt1->char_at(mem_bwt1, index1) != mem_bwt2->char_at(mem_bwt2, index2)) {
-				if (mem_rbwt1->char_at(mem_rbwt1, index1) != mem_rbwt2->char_at(mem_rbwt2, index2)) {
-					triplet trip = *((triplet*) malloc(sizeof(triplet)));
-					trip.pos1 = index1;
-					trip.pos2 = index2;
-					trip.length = node1->length;
-					mems[mem_triplets_index] = trip;
-					mem_triplets_index++;
-				}
-			}
-		}
+void list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt, mem_candidate* mem_candidates) {
+	interval normal;
+	interval reverse;
+	int i;
+	alphabet_data alpha_data = create_alphabet_interval(&node->normal,
+			bwt, alpha_data);
+	int* c_array = create_c_array(bwt, &node->normal, 0, 0, c_array);
+	int alphabet_length = alpha_data->length;
+	for (i = node->normal.i; i <= node->normal.j; i++) {
+		normal.i = i;
+		normal.j = i;
+		normal = backward_search_interval(bwt, normal,
+				bwt[i], normal);
+		reverse = update_reverse_interval(&node->reverse, normal,
+				alpha_data->alphabet, alphabet_length, c_array,
+				bwt[i], reverse);
+
+		substring* new_substring = create_substring(normal, reverse,
+				node->length + 1, new_substring);
+		mem_candidates[i].left_extension = *new_substring;
+		mem_candidates[i].first = bwt[i];
+		mem_candidates[i].last = rbwt[reverse.i];
 	}
 }
 
-triplet* get_mems(){
+void search_mems(substring* node1, substring* node2) {
+	mem_candidate* mem_candidates1 = calloc(node1->normal.j - node1->normal.j + 1, sizeof(mem_candidate));
+	mem_candidate* mem_candidates2 = calloc(node2->normal.j - node2->normal.j + 1, sizeof(mem_candidate));
+	list_mem_candidates(node1, mem_bwt1, mem_rbwt1, mem_candidates1);
+	list_mem_candidates(node2, mem_bwt2, mem_rbwt2, mem_candidates2);
+}
+
+triplet* get_mems() {
 	return mems;
 }
 
@@ -72,6 +90,6 @@ void print_mems(char* string) {
 	}
 }
 
-int get_mems_amount(){
+int get_mems_amount() {
 	return mem_triplets_index;
 }
