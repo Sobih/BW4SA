@@ -1,8 +1,8 @@
-/*
- * draw_tree.c
- *
- *  Created on: 24.2.2014
- *      Author: topatopa
+/**
+ * @file	draw_tree.c
+ * @brief	Implementation of dot-tree drawing functions.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #include "draw_tree.h"
@@ -16,6 +16,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * @brief	A struct for storing a suffix tree node and its data.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 typedef struct i_node {
 	struct i_node* first_child;
 	struct i_node* next_sibling;
@@ -30,50 +35,75 @@ typedef struct i_node {
 internal_node* root;
 int node_id_index;
 
-//function for debugging
-void print_recursively(internal_node* node, int depth) {
-	if (depth == 0) {
-		printf("I AM THE ROOT in address %d\n", node->id);
-	} else {
-		printf(
-				"node %d, interval (%d, %d). My depth is %d and my parent is node %d\n",
-				node->id, node->substr->normal.i, node->substr->normal.j,
-				depth, node->parent->id);
+/**
+ * @brief	A function for checking if a substring is a substring of another substring.
+ * @param	parent	The suspected parent of the other substring.
+ * @param	child	The suspected child of the other substring.
+ * @return			Returns <code>1</code> if <code>child</code> is inside (in other words a child) of
+ * 					<code>parent</code>, otherwise returns <code>0</code>.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+int is_child(substring* parent, substring* child) {
+
+	if (parent->normal.i <= child->normal.i
+			&& parent->normal.j >= child->normal.j){
+
+		return 1;
 	}
-	if (node->first_child != NULL) {
-		print_recursively(node->first_child, depth + 1);
-	}
-	if (node->next_sibling != NULL) {
-		print_recursively(node->next_sibling, depth);
-	}
+
+	return 0;
 }
 
-void collect_internal_nodes(substring* substr, substring* prev_substr, char c);
-
-void print_tree_to_file(char* filename, int* suffix_array, char* orig_string);
-
-internal_node* find_node_by_substring(substring* substr);
-
-void print_node_label_to_file(FILE* f, internal_node* node);
-
-void draw_suffix_tree(char* string, char* filename) {
-	wavelet_tree* bwt = s_to_BWT(string);
-	int* suffix_array = map_create_suffix_array_from_bwt(bwt);
-
-	root = calloc(1, sizeof(internal_node));
-	root->id = 0;
-	root->substr = calloc(1, sizeof(substring));
-	root->substr->normal = ((interval ) { .i = 0, .j = strlen(string) } );
-	root->c = ' ';
-	node_id_index = 1;
-
-	iterate_for_tree_drawing(string, &collect_internal_nodes);
-	print_tree_to_file("suffix_tree.gv", suffix_array, string);
-
+/**
+ * @brief	A simple function that checks if a substring is the same as one stored in a node.
+ * @param	substr	The substring to be compared to the one stored in a node.
+ * @param	node	The node storing a substring to be compared to the other substring.
+ * @return			Returns <code>1</code> if the substrings are equals, <code>0</code>
+ * 					otherwise.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+int substring_and_node_equal(substring* substr, internal_node* node) {
+	if (substr->normal.i == node->substr->normal.i
+			&& substr->normal.j == node->substr->normal.j)
+		return 1;
+	return 0;
 }
 
-int is_child(substring* parent, substring* child);
+/**
+ * @brief	A function for finding a node inside the tree based on a substring.
+ * @param	substr	The substring to be searched for.
+ * @return			Returns the node containing the substring, or <code>NULL</code>
+ * 					if no node matching the substring could be found.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+internal_node* find_node_by_substring(substring* substr) {
+	internal_node* temp_node = root;
+	while (temp_node != NULL) {
 
+		if (substring_and_node_equal(substr, temp_node)) {
+			return temp_node;
+		} else if (is_child(temp_node->substr, substr)) {
+			temp_node = temp_node->first_child;
+		} else {
+			temp_node = temp_node->next_sibling;
+		}
+	}
+	return NULL;
+}
+
+/**
+ * @brief	Inserts a new node into the dot tree.
+ * @param	substr1		The substring to be inserted into the tree.
+ * @param	prev_substr	The previous substring that was inserted, used for
+ * 						finding the location for the new substring.
+ * @param	c			The character that was used to extend the previous
+ * 						substring.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) {
 
 	substring* substr = calloc(1, sizeof(substring));
@@ -144,27 +174,40 @@ void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) 
 	}
 }
 
-void print_normal_style_definitions(FILE* f) {
-	fprintf(f, "	edge [arrowhead=\"none\", color=\"black\"];\n");
-}
+/**
+ * @brief	Prints a label of a node to a file.
+ * @param	f		The file to be printed to.
+ * @param	node	The node to be printed to a file.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_node_label_to_file(FILE* f, internal_node* node) {
 
-void print_weiner_links(internal_node* node, FILE* f) {
-	if (node->weiner_node != NULL) {
-		fprintf(f, "	node%d->node%d;\n", node->weiner_node->id, node->id);
+	internal_node* temp_node = node;
+
+	int parent_label_length = 0;
+	if (node->parent->parent != NULL) {
+		parent_label_length = node->parent->substr->length;
+	}
+	int label_length = node->substr->length - parent_label_length;
+
+	int loop_index = 0;
+	while (temp_node != NULL) {
+		if (loop_index >= parent_label_length) {
+			fprintf(f, "%c", temp_node->c);
+		}
+		temp_node = temp_node->weiner_node;
+		loop_index++;
 	}
 }
 
-void print_weiner_links_recursively(FILE* f, internal_node* node) {
-	print_weiner_links(node, f);
-	if (node->next_sibling != NULL) {
-		print_weiner_links_recursively(f, node->next_sibling);
-	}
-	if (node->first_child != NULL) {
-		print_weiner_links_recursively(f, node->first_child);
-	}
-
-}
-
+/**
+ * @brief	Prints the outgoing arcs of a node to a file.
+ * @param	f		The file to be printed to.
+ * @param	node	The node to be printed to a file.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void print_arcs(FILE* f, internal_node* node) {
 	fprintf(f, "	node%d->node%d", node->parent->id, node->id);
 	fprintf(f, " 	[label=\"");
@@ -172,6 +215,14 @@ void print_arcs(FILE* f, internal_node* node) {
 	fprintf(f, "\"];\n");
 }
 
+/**
+ * @brief	A function for printing the arcs of an entire suffix tree to
+ * 			a file recursively.
+ * @param	f		The file to be printed to.
+ * @param	node	The root of the tree to be printed to a file.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void print_arcs_recursively(FILE* f, internal_node* node) {
 	print_arcs(f, node);
 	if (node->next_sibling != NULL) {
@@ -182,6 +233,18 @@ void print_arcs_recursively(FILE* f, internal_node* node) {
 	}
 }
 
+/**
+ * @brief	A function for printing leaf nodes of a suffix tree to a file recursively.
+ * @param	f				The file to be printed to.
+ * @param	node			A node that is to be checked if its a leaf node.
+ * @param	suffix_array	A suffix array for creating a substring.
+ * @param	orig_string		The entire original string that the tree was created of as
+ * 							a character sequence.
+ * @param	leaf_vec		A bit vector for checking which characters of the original
+ * 							string should be printed.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void print_leaves_recursively(FILE* f, internal_node* node, int* suffix_array, char* orig_string, bit_vector* leaf_vec)
 {
 	if(node->first_child != NULL){
@@ -204,7 +267,46 @@ void print_leaves_recursively(FILE* f, internal_node* node, int* suffix_array, c
 	}
 }
 
+/**
+ * @brief	Prints the Weiner-links of a node to a file.
+ * @param	node	The node whose Weiner-links are to be printed.
+ * @param	f		The file to be printed to.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_weiner_links(internal_node* node, FILE* f) {
+	if (node->weiner_node != NULL) {
+		fprintf(f, "	node%d->node%d;\n", node->weiner_node->id, node->id);
+	}
+}
 
+/**
+ * @brief	Prints all the Weiner-links of a suffix tree to a file recursively.
+ * @param	f		The file to be printed to.
+ * @param	node	The root of the tree to be printed to a file.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void print_weiner_links_recursively(FILE* f, internal_node* node) {
+	print_weiner_links(node, f);
+	if (node->next_sibling != NULL) {
+		print_weiner_links_recursively(f, node->next_sibling);
+	}
+	if (node->first_child != NULL) {
+		print_weiner_links_recursively(f, node->first_child);
+	}
+
+}
+
+/**
+ * @brief	Prints a suffix tree in dot-format to a file.
+ * @param	filename		The path to the file to be printed to.
+ * @param	suffix_array	The suffix array of the suffix tree.
+ * @param	orig_string		The original string used for creating the suffix
+ * 							tree.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 //	printf("starting printin'\n");
 	FILE* f = fopen(filename, "w");
@@ -231,56 +333,18 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 	fclose(f);
 }
 
-//function returns 1 if substr2 is inside (in other words a child) of substring 1, otherwise 0
-int is_child(substring* parent, substring* child) {
+void draw_suffix_tree(char* string, char* filename) {
+	wavelet_tree* bwt = s_to_BWT(string);
+	int* suffix_array = map_create_suffix_array_from_bwt(bwt);
 
-	if (parent->normal.i <= child->normal.i
-			&& parent->normal.j >= child->normal.j){
+	root = calloc(1, sizeof(internal_node));
+	root->id = 0;
+	root->substr = calloc(1, sizeof(substring));
+	root->substr->normal = ((interval ) { .i = 0, .j = strlen(string) } );
+	root->c = ' ';
+	node_id_index = 1;
 
-		return 1;
-	}
+	iterate_for_tree_drawing(string, &collect_internal_nodes);
+	print_tree_to_file("suffix_tree.gv", suffix_array, string);
 
-	return 0;
-}
-
-int substring_and_node_equal(substring* substr, internal_node* node) {
-	if (substr->normal.i == node->substr->normal.i
-			&& substr->normal.j == node->substr->normal.j)
-		return 1;
-	return 0;
-}
-
-internal_node* find_node_by_substring(substring* substr) {
-	internal_node* temp_node = root;
-	while (temp_node != NULL) {
-
-		if (substring_and_node_equal(substr, temp_node)) {
-			return temp_node;
-		} else if (is_child(temp_node->substr, substr)) {
-			temp_node = temp_node->first_child;
-		} else {
-			temp_node = temp_node->next_sibling;
-		}
-	}
-	return NULL;
-}
-
-void print_node_label_to_file(FILE* f, internal_node* node) {
-
-	internal_node* temp_node = node;
-
-	int parent_label_length = 0;
-	if (node->parent->parent != NULL) {
-		parent_label_length = node->parent->substr->length;
-	}
-	int label_length = node->substr->length - parent_label_length;
-
-	int loop_index = 0;
-	while (temp_node != NULL) {
-		if (loop_index >= parent_label_length) {
-			fprintf(f, "%c", temp_node->c);
-		}
-		temp_node = temp_node->weiner_node;
-		loop_index++;
-	}
 }

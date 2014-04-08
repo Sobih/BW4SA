@@ -1,21 +1,19 @@
-/*
- * draw_tree.h
- *
- *  Created on: 24.2.2014
- *      Author: topatopa
+/**
+ * @file	draw_tree.h
+ * @brief	A function for writing a suffix tree in dot-format to a file.
+ * @author	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
-#ifndef _PRINT_TREE_H_
-#define _PRINT_TREE_H_
+
+#ifndef DRAW_TREE_H_
+#define DRAW_TREE_H_
 
 /**
- * @brief draws a suffix tree of the given string
- *
- * @parameter string
- *
- * @parameter filename
- *
- * @author Topi Paavilainen
- *
+ * @brief	Writes a suffix tree of the given string in dot format to a file.
+ * @param	string		The string to be written.
+ * @param	filename	The path to the file to be written to.
+ * @author 	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 void draw_suffix_tree(char* string, char* filename);
 
