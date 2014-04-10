@@ -10,6 +10,7 @@
 #include "../../src/utils/bit_vector.h"
 #include "../../src/applications/mum.h"
 #include "../../src/applications/mapper.h"
+#include "../../src/utils/structs.h"
 #include <stdlib.h>
 #include <check.h>
 
