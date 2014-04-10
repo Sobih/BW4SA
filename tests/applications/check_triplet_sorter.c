@@ -1,10 +1,6 @@
 #include <check.h>
-#include "../../include/iterate.h"
-#include "../../include/maximal_repeats.h"
-#include "../../include/mapper.h"
-#include "../../include/mum.h"
+#include "../../include/core.h"
 #include "../../include/utils.h"
-#include "../../src/iterate/triplet_sorter.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
