@@ -195,7 +195,7 @@ START_TEST(test_iterate_randomized_small_alphabet)
 	srand(time(NULL));
 	char* alphabet = "acgt";
 	wavelet_tree* bwt;
-	for(int i= 0; i<1000; i++){
+	for(int i= 0; i<100; i++){
 
 		int length = (rand() % 200)+1;
 		char* rand_string = generate_random_string(alphabet, length);
@@ -218,7 +218,7 @@ START_TEST(test_iterate_randomized_big_alphabet)
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
 
 	wavelet_tree* bwt;
-	for(int i= 0; i<1000; i++){
+	for(int i= 0; i<100; i++){
 		int length = (rand() % 100) + 100;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
