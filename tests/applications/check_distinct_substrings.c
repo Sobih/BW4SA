@@ -84,11 +84,6 @@ START_TEST (distinct_substrings_test3)
 }
 END_TEST
 
-START_TEST (i_will_always_fail)
-{
-	fail_unless(1 == 0);
-}
-END_TEST
 
 Suite *count_suite (void)
 {
@@ -105,7 +100,6 @@ Suite *count_suite (void)
   tcase_add_test(tc_core, distinct_substrings_test);
   tcase_add_test(tc_core, distinct_substrings_test2);
   tcase_add_test(tc_core, distinct_substrings_test3);
-  tcase_add_test(tc_core, i_will_always_fail);
   suite_add_tcase (s, tc_core);
 
   return s;

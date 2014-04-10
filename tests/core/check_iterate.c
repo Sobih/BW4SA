@@ -25,7 +25,6 @@ static int* suffix_array2;
 
 START_TEST(simple_runs_test)
 {
-	printf("SIMPLE RUNS TEST\n");
 	char* string = "abracadabra";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -46,7 +45,6 @@ END_TEST
 
 START_TEST(another_simple_test)
 {
-	printf("ANOTHER SIMPLE TEST\n");
 	char* string = "HATTIVATTI";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -66,7 +64,6 @@ END_TEST
 
 START_TEST(test_interval_query)
 {
-	printf("TEST INTERVAL QUERY\n");
 	char* string = "ABRACADABRA";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -83,7 +80,6 @@ END_TEST
 
 START_TEST(test_wrong_intervals)
 {
-	printf("TEST WRONG INTERVALS\n");
 	char* string = "ABRACADABRA";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -135,7 +131,6 @@ int shared_list_contains(substring* comp)
 //this test tests nothing??
 START_TEST(test_iterate2)
 {
-	printf("TEST ITERATE 2\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
@@ -150,7 +145,6 @@ START_TEST(test_iterate2)
 
 START_TEST(test_iterate1)
 {
-	printf("TEST ITERATE 1\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
@@ -187,25 +181,19 @@ int check_list_contains_and_remove(int index_bwt, int length, test_substr* list,
 	return 0;
 }
 
-int check_substrings_callback(substring* substr)
+void check_substrings_callback(substring* substr)
 {
 	for(int i = substr->normal.i; i <= substr->normal.j; i++){
 		if(!check_list_contains_and_remove(i, substr->length, naive_rmaximals, suffix_array)){
 			callback_flag = 0;
 		}
 	}
-
-	return 0;
 }
 
 START_TEST(test_iterate_randomized_small_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "acgt";
-<<<<<<< HEAD:tests/iterate/check_iterate.c
-=======
-
->>>>>>> dd215460bb5a09eef31aadaa4530ba9c70e33694:tests/core/check_iterate.c
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
 
