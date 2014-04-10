@@ -88,6 +88,7 @@ START_TEST (i_will_always_fail)
 {
 	fail_unless(1 == 0);
 }
+END_TEST
 
 Suite *count_suite (void)
 {
