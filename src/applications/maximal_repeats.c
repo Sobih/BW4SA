@@ -8,21 +8,26 @@
 #include "maximal_repeats.h"
 #include "map_bwt_to_s.h"
 #include "mapper.h"
+#include "../core/iterate.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-static wavelet_tree* max_bwt;
-static bit_vector* max_repeats_runs;
-static max_repeat_node* nodes;
-static int nodes_index;
+parameter_struct* initialize_for_max_repeats(char* string) {
+	max_repeat_results* results = malloc(sizeof(max_repeat_results));
+	results->length = 0;
+	results->allocated_length = 10;
+	results->data = malloc(results->allocated_length * sizeof(max_repeat_node));
 
-void max_repeats_initialize_bwt(wavelet_tree* bwt) {
-	max_bwt = bwt;
-	max_repeats_runs = create_runs_vector(bwt,0);
-	nodes = calloc(1000,sizeof(max_repeat_node));
-	nodes_index = 0;
+	parameter_struct* params = malloc(sizeof(parameter_struct));
+	params->callback = &search_maximal_repeats;
+	params->iterate_type = MAX_REPEATS;
+	params->strings = malloc(sizeof(char*));
+	params->strings[0] = string;
+	params->ret_data = results;
+
+	return params;
 }
 
 /**
@@ -33,46 +38,40 @@ void max_repeats_initialize_bwt(wavelet_tree* bwt) {
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int is_interval_left_maximal(interval inter) {
-	if (inter.i >= inter.j)
-		return 0;
-
-	if (max_repeats_runs->rank(max_repeats_runs, (inter.i) + 1,
-			inter.j) > 0) {
-		return 1;
-	} else {
-		return 0;
-	}
+inline int is_interval_left_maximal(bit_vector* runs, interval inter) {
+	return (inter.i < inter.j) && (runs->rank(runs, inter.i + 1, inter.j) > 0) ? 1 : 0;
 }
 
-void search_maximal_repeats(substring* node) {
+void search_maximal_repeats(iterator_state* state, void* results) {
+	max_repeat_results* result = (max_repeat_results*) results;
+	substring* node = state->current;
+
+	//check if nodes-list is full, expand by 10 if it is
+	if (result->allocated_length == result->length) {
+		result->allocated_length += 10;
+		result->data = realloc(result->data, result->allocated_length * sizeof(max_repeat_node));
+	}
+
 	if (is_interval_left_maximal(node->normal)) {
-		max_repeat_node max_node = *((max_repeat_node*) malloc(sizeof(max_repeat_node)));
-		max_node.normal.i = node->normal.i;
-		max_node.normal.j = node->normal.j;
-		max_node.length = node->length;
-		nodes[nodes_index] = max_node;
-		nodes_index++;
+		max_repeat_node* res_node = &result->data[result->length];
+		res_node->normal.i = node->normal.i;
+		res_node->normal.j = node->normal.j;
+		res_node->length = node->length;
+		result->length++;
 	}
 }
 
-max_repeat_node* get_nodes() {
-	return nodes;
-}
+void print_maximal_repeat_substrings(char* string, max_repeat_results* results, iterator_state* state) {
+	max_repeat_node* nodes = results->data;
+	wavelet_tree* max_bwt = state->bwts;
+	unsigned int nodes_index = results->length;
 
-void print_maximal_repeat_substrings(char* string) {
 	map_maximal_repeats_to_string(nodes, max_bwt, nodes_index);
-	int i;
 
-	for (i = 0; i < nodes_index; i++) {
+	for (int i = 0; i < nodes_index; i++) {
 		printf("String: %s, starting position: %d, length of substring: %d \n", string, nodes[i].normal.i, nodes[i].length);
 		printf("Substring: %s index:%d length: %d \n",
 				substring_from_string(string, nodes[i].normal.i,
 						nodes[i].length), nodes[i].normal.i, nodes[i].length);
 	}
-}
-
-int get_max_repeats_nodes_index() {
-	return nodes_index;
-
 }

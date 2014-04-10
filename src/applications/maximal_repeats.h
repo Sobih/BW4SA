@@ -12,6 +12,8 @@
 #include "../utils/structs.h"
 
 struct wavelet_tree;
+struct parameter_struct;
+struct iterator_state;
 
 /**
  * @brief	A simple struct for storing data on a maximal repeat substring.
@@ -24,16 +26,13 @@ typedef struct max_repeat_node
 	int length;
 } max_repeat_node;
 
-/**
- * @brief 	Initializes the BWT for the file so that callback doesn't require passing it on.
- *
- * Has to be called before iteration can commence!
- *
- * @param 	bwt 	BWT of the string to be iterated upon.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-void max_repeats_initialize_bwt(struct wavelet_tree* bwt);
+typedef struct max_repeat_results {
+	max_repeat_node* data;
+	unsigned int length;
+	unsigned int allocated_length;
+} max_repeat_results;
+
+struct parameter_struct* initialize_for_max_repeats(char* string);
 
 /**
  * @brief	The function given as callback to iterate for finding maximal repeats.
@@ -45,16 +44,7 @@ void max_repeats_initialize_bwt(struct wavelet_tree* bwt);
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void search_maximal_repeats(substring* node);
-
-/**
- * @brief 	Returns the list of maximal repeat substrings.
- * @return	A list of found maximal repeat substrings as nodes that hold
- * 			a BWT interval and length of substring.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-max_repeat_node* get_nodes();
+void search_maximal_repeats(struct iterator_state* state, void* results);
 
 /**
  * @brief	Prints the substring the interval represents.
@@ -66,14 +56,6 @@ max_repeat_node* get_nodes();
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_maximal_repeat_substrings(char* string);
-
-/**
- * @brief 	Returns the size of the list of substrings.
- * @return	Size of the node list. Same as number of found maximal repeats.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-int get_max_repeats_nodes_index();
+void print_maximal_repeat_substrings(char* string, max_repeat_results* results, struct iterator_state* state);
 
 #endif /* MAXIMAL_REPEATS_H_ */

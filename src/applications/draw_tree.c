@@ -16,6 +16,11 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef struct tree_drawing_params {
+	substring* current, *prev;
+	char c;
+} tree_drawing_params;
+
 /**
  * @brief	A struct for storing a suffix tree node and its data.
  * @author	Topi Paavilainen, Max Sandberg (REXiator)
@@ -104,7 +109,8 @@ internal_node* find_node_by_substring(substring* substr) {
  * @author	Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) {
+void collect_internal_nodes(iterator_state* state, void* results) {
+	substring* substr1 = state->current;
 
 	substring* substr = calloc(1, sizeof(substring));
 	substr->length = substr1->length;
@@ -119,8 +125,8 @@ void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) 
 
 	insert_node->id = node_id_index;
 	node_id_index++;
-	internal_node* prev_node = find_node_by_substring(prev_substr);
-	insert_node->c = c;
+	internal_node* prev_node = find_node_by_substring(state->prev);
+	insert_node->c = state->current_extension;
 
 	insert_node->weiner_node = prev_node;
 	internal_node* temp_node = root->first_child;
