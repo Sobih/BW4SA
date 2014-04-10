@@ -13,7 +13,41 @@
 #ifndef ITERATE_H_
 #define ITERATE_H_
 
+#define		MAX_REPEATS		0
+#define		MUM				1
+#define		MEM				2
+#define		DOT_TREE		3
+
 struct substring;
+struct wavelet_tree;
+struct bit_vector;
+struct substring_stack;
+struct alphabet_data;
+struct interval;
+
+typedef 	unsigned int	iterate_t;
+
+typedef struct iterator_state {
+	char current_extension;
+	struct wavelet_tree* bwts;
+	struct wavelet_tree* reverse_bwts;
+	struct bit_vector* runs_vectors;
+	struct substring_stack* stacks;
+	struct alphabet_data* alpha_datas;
+	struct alphabet_data* common_alphabets;
+	struct interval* normals, *reverses;
+	struct substring* current, *prev;
+	unsigned int** c_arrays;
+} iterator_state;
+
+typedef struct parameter_struct {
+	iterate_t iterate_type;
+	void (*callback) (iterator_state* state, void* results);
+	void* ret_data;
+	char** strings;
+} parameter_struct;
+
+iterator_state* iterate(parameter_struct* parameters);
 
 /**
  * @brief 	A function for iterating through right maximal substrings of a string.
@@ -27,7 +61,8 @@ struct substring;
  * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void iterate(char* string, void (*callback) (struct substring* substr));
+void* single_iterate(iterator_state* state, void (*callback)(iterator_state* state, void* results),
+		void* result);
 
 /**
  * @brief	A function for simultaneously iterating over two strings.
@@ -39,18 +74,7 @@ void iterate(char* string, void (*callback) (struct substring* substr));
  * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void double_iterate(char* string1, char* string2, void (*callback)(struct substring* substr1, struct substring* substr2));
-
-/**
- * @brief	A version of iterate used for writing the suffix tree to a
- * 			file in dot-format.
- * @param	string		The string to be iterated over.
- * @param	callback	The callback function to be called whenever a right maximal
- * 						substring is found.
- * @see		#iterate
- * @author	Topi Paavilainen, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-void iterate_for_tree_drawing(char* string, void (*callback)(struct substring* substr, struct substring* prev_substr, char c));
+void* double_iterate(iterator_state* state, void (*callback)(iterator_state* state, void* results),
+		void* result);
 
 #endif
