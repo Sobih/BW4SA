@@ -1,41 +1,48 @@
 /**
  * @file	mapper.c
  * @brief	Implementation of the mapping functions.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator), Paula Lehtola
  * @bug		No known bugs.
  */
 
 #include "mapper.h"
 #include "maximal_repeats.h"
 #include "mum.h"
-#include "../utils/structs.h"
-#include "../utils/wavelet_tree.h"
+#include "triplet_sorter.h"
+#include "../../include/utils.h"
 #include "../core/backward_search.h"
 #include <stdlib.h>
 #include <string.h>
 
 void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
-		int count) {
-	int i;
+		int count, bit_vector bit_vec) {
+	int i;	
 	long n = bwt->get_num_bits(bwt);
 	int k;
+	mapped_pair* pairs = calloc(count, sizeof(mapped_pair));
 	interval* inter = malloc(sizeof(interval));
 	interval* target = malloc(sizeof(interval));
 	inter->i = 0;
 	inter->j = 0;
-	for (i = 0; i < count; i++) {
-		for (k = 0; k < n; k++) {
-			if (nodes[i].normal.i == inter->i) {
-				nodes[i].normal.i = (n - k) - 1;
-				break;
-			}
-			target = backward_search_interval(bwt, inter,
-					bwt->char_at(bwt, inter->i), target);
-			memcpy(inter, target, sizeof(interval));
+	
+	for (k = 0; k < n; k++) {
+		if (bit_vec->is_bit_marked(bit_vec, inter->i)) {
+			pairs[i].bwt_pos = inter->i;
+			pairs[i].orig_pos = (n - k) - 1;
+			i++;
 		}
-		inter->i = 0;
-		inter->j = 0;
+		target = backward_search_interval(bwt, inter,
+				bwt->char_at(bwt, inter->i), target);
+		memcpy(inter, target, sizeof(interval));
 	}
+
+	compare_quick_sort(pairs, i, sizeof(mapped_pair), &compare_mapped_pairs_by_bwt_pos);
+	compare_quick_sort(nodes, count, sizeof(max_repeat_node), &compare_max_repeat_nodes);
+	
+	for(int j = 0; j < count; j++){
+		nodes[j].normal.i = pairs[j].orig_pos;
+	}
+
 	free(inter);
 	free(target);
 }

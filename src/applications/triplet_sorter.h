@@ -44,6 +44,19 @@ int compare_triplets_pos2(void* first, void* second);
 int compare_max_repeat_nodes(void* first, void* second);
 
 /**
+ * @brief	
+ *	A compare function for compare_quick_sort. Compares mapped_pairs by the value of bwt_pos.
+ *
+ * @param	first	a void pointer which will be converted to a mapped_pair pointer
+ * @param	second	a void pointer which will be converted to a mapped_pair pointer
+ * @see		triplet_sorter.h#compare_quick_sort
+ * @author	Paula Lehtola
+ * @bug		No known bugs.
+ */
+
+int compare_mapped_pairs_by_bwt_pos(void* first, void* second);
+
+/**
  * @brief	A quicksort which uses a comparison function which has been given as a function pointer parameter.
  *
  *
@@ -54,7 +67,7 @@ int compare_max_repeat_nodes(void* first, void* second);
  * @return				Returns the sorted array.
  * @bug					No known bugs.
  */
-
+ 
 void compare_quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size, int (*compare)(void* first, void* second));
 
 #endif /* TRIPLET_SORTER_H_ */

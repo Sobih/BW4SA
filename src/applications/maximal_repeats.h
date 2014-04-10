@@ -12,6 +12,9 @@
 #include "../utils/structs.h"
 
 struct wavelet_tree;
+struct bit_vector;
+struct substring;
+struct interval;
 
 /**
  * @brief	A simple struct for storing data on a maximal repeat substring.
@@ -45,7 +48,7 @@ void max_repeats_initialize_bwt(struct wavelet_tree* bwt);
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void search_maximal_repeats(substring* node);
+void search_maximal_repeats(struct substring* node);
 
 /**
  * @brief 	Returns the list of maximal repeat substrings.
@@ -75,5 +78,7 @@ void print_maximal_repeat_substrings(char* string);
  * @bug		No known bugs.
  */
 int get_max_repeats_nodes_index();
+
+struct bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes);
 
 #endif /* MAXIMAL_REPEATS_H_ */

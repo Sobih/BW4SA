@@ -78,3 +78,17 @@ int get_max_repeats_nodes_index() {
 	return nodes_index;
 
 }
+
+
+bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes) {
+	bit_vector* bit_vec = malloc(sizeof(bit_vector));
+	init_bit_vector(bit_vec, max_bwt->num_nodes);
+	int i;
+	for (i = 0; i < triplets_index; i++) {
+		max_repeat_node max_node = nodes[i];
+		bit_vec->mark_bit(bit_vec, max_node.normal.i);
+	}
+
+	return bit_vec;
+}
+

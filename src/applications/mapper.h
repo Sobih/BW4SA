@@ -14,8 +14,9 @@ struct triplet;
 struct wavelet_tree;
 
 typedef struct mapped_pair {
-	unsigned int orig_pos;
 	unsigned int bwt_pos;
+	unsigned int orig_pos;
+
 } mapped_pair;
 
 /**

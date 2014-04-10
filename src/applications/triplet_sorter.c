@@ -1,6 +1,7 @@
 #include "triplet_sorter.h"
 #include "mum.h"
 #include "maximal_repeats.h"
+#include "mapper.h"
 #include "../../include/utils.h"
 #include <stdio.h>
 // swap function in utils.h
@@ -26,6 +27,13 @@ int compare_max_repeat_nodes(void* first, void* second) {
 	} else {
 		return f->normal->j - s->normal->j;
 	}
+
+}
+
+int compare_mapped_pairs_by_bwt_pos(void* first, void* second) {
+	mapped_pair* f = (mapped_pair*)first;
+	mapped_pair* s = (mapped_pair*)second;
+	return f->bwt_pos - s->bwt_pos;
 
 }
 

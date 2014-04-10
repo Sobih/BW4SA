@@ -202,10 +202,6 @@ START_TEST(test_iterate_randomized_small_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "acgt";
-<<<<<<< HEAD:tests/iterate/check_iterate.c
-=======
-
->>>>>>> dd215460bb5a09eef31aadaa4530ba9c70e33694:tests/core/check_iterate.c
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
 
@@ -228,15 +224,10 @@ START_TEST(test_iterate_randomized_big_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
-<<<<<<< HEAD:tests/iterate/check_iterate.c
-	wavelet_tree* bwt;
-	for(int i= 0; i<1000; i++){
 
-=======
 
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
->>>>>>> dd215460bb5a09eef31aadaa4530ba9c70e33694:tests/core/check_iterate.c
 		int length = (rand() % 100) + 100;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
