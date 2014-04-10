@@ -53,7 +53,6 @@ int compare_max_repeat_nodes(void* first, void* second);
  * @author	Paula Lehtola
  * @bug		No known bugs.
  */
-
 int compare_mapped_pairs_by_bwt_pos(void* first, void* second);
 
 /**

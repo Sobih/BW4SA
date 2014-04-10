@@ -22,10 +22,10 @@ int compare_triplets_pos2(void* first, void* second) {
 int compare_max_repeat_nodes(void* first, void* second) {
 	max_repeat_node* f = (max_repeat_node*)first;
 	max_repeat_node* s = (max_repeat_node*)second;
-	if (f->normal->i != s->normal->i) {
-		return f->normal->i - s->normal->i;
+	if (f->normal.i != s->normal.i) {
+		return f->normal.i - s->normal.i;
 	} else {
-		return f->normal->j - s->normal->j;
+		return f->normal.j - s->normal.j;
 	}
 
 }
@@ -34,7 +34,6 @@ int compare_mapped_pairs_by_bwt_pos(void* first, void* second) {
 	mapped_pair* f = (mapped_pair*)first;
 	mapped_pair* s = (mapped_pair*)second;
 	return f->bwt_pos - s->bwt_pos;
-
 }
 
 void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsigned int b, int (*compare)(void* first, void* second)) {

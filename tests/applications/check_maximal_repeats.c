@@ -34,7 +34,7 @@ START_TEST(test_maximal_repeat2_mapped)
 	{
 		iterate("abracadabra", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("abracadabra"),get_max_repeats_nodes_index());
+		map_maximal_repeats_to_string(nodes, s_to_BWT("abracadabra"),get_max_repeats_nodes_index(), max_repeat_make_bit_vector(nodes));
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
 		ck_assert_int_eq(10, nodes[0].normal.i);
 		ck_assert_int_eq(1, nodes[0].length);
@@ -59,7 +59,7 @@ START_TEST(test_maximal_repeat2b_mapped)
 	{
 		iterate("hattivatti", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("hattivatti"),get_max_repeats_nodes_index());
+		map_maximal_repeats_to_string(nodes, s_to_BWT("hattivatti"),get_max_repeats_nodes_index(), max_repeat_make_bit_vector(nodes));
 		ck_assert_int_eq(2, get_max_repeats_nodes_index());
 		ck_assert_int_eq(8, nodes[0].normal.i);
 		ck_assert_int_eq(1, nodes[0].length);
@@ -87,7 +87,7 @@ START_TEST(test_maximal_repeat3_mapped)
 	{
 		iterate("balalaikka", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("balalaikka"),get_max_repeats_nodes_index());
+		map_maximal_repeats_to_string(nodes, s_to_BWT("balalaikka"),get_max_repeats_nodes_index(),max_repeat_make_bit_vector(nodes));
 		ck_assert_int_eq(3, get_max_repeats_nodes_index());
 		ck_assert_int_eq(9, nodes[0].normal.i);
 		ck_assert_int_eq(1, nodes[0].length);
@@ -118,7 +118,7 @@ START_TEST(test_maximal_repeat1_mapped)
 	{
 		iterate("ilotalo", &search_maximal_repeats);
 		max_repeat_node* nodes = get_nodes();
-		map_maximal_repeats_to_string(nodes, s_to_BWT("ilotalo"),get_max_repeats_nodes_index());
+		map_maximal_repeats_to_string(nodes, s_to_BWT("ilotalo"),get_max_repeats_nodes_index(),max_repeat_make_bit_vector(nodes));
 		ck_assert_int_eq(1, get_max_repeats_nodes_index());
 		ck_assert_int_eq(5, nodes[0].normal.i);
 		ck_assert_int_eq(2, nodes[0].length);
@@ -233,7 +233,7 @@ TCase * create_maximal_repeats_test_case(void) {
 }
 
 Suite * test_suite(void) {
-	Suite *s = suite_create("testi");
+	Suite *s = suite_create("Maximal repeats tests");
 	TCase *tc_stack = create_maximal_repeats_test_case();
 	TCase *tc_randrep = create_max_repeats_randomized_test_case();
 	suite_add_tcase(s, tc_stack);

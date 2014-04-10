@@ -63,7 +63,7 @@ max_repeat_node* get_nodes() {
 }
 
 void print_maximal_repeat_substrings(char* string) {
-	map_maximal_repeats_to_string(nodes, max_bwt, nodes_index);
+	map_maximal_repeats_to_string(nodes, max_bwt, nodes_index,max_repeat_make_bit_vector(nodes));
 	int i;
 
 	for (i = 0; i < nodes_index; i++) {
@@ -82,9 +82,9 @@ int get_max_repeats_nodes_index() {
 
 bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes) {
 	bit_vector* bit_vec = malloc(sizeof(bit_vector));
-	init_bit_vector(bit_vec, max_bwt->num_nodes);
+	init_bit_vector(bit_vec, max_bwt->get_num_bits(max_bwt));
 	int i;
-	for (i = 0; i < triplets_index; i++) {
+	for (i = 0; i < nodes_index; i++) {
 		max_repeat_node max_node = nodes[i];
 		bit_vec->mark_bit(bit_vec, max_node.normal.i);
 	}
