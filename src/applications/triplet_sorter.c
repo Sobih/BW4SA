@@ -25,10 +25,9 @@ int compare_max_repeat_nodes(void* first, void* second) {
 		return f->normal->i - s->normal->i;
 	} else {
 		return f->normal->j - s->normal->j;
+	}
 
-
-
-
+}
 
 void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsigned int b, int (*compare)(void* first, void* second)) {
 	if (a >= b)
