@@ -16,7 +16,7 @@
 
 void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 		int count, bit_vector* bit_vec) {
-	int i;	
+	int i = 0;	
 	long n = bwt->get_num_bits(bwt);
 	int k;
 	mapped_pair* pairs = calloc(count, sizeof(mapped_pair));
@@ -27,7 +27,8 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 	
 	for (k = 0; k < n; k++) {
 		if (bit_vec->is_bit_marked(bit_vec, inter->i)) {
-			printf("marked bit! \n");
+			//printf("marked bit! \n");
+			
 			pairs[i].bwt_pos = inter->i;
 			pairs[i].orig_pos = (n - k) - 1;
 			i++;

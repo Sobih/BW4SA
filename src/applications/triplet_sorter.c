@@ -2,8 +2,9 @@
 #include "mum.h"
 #include "maximal_repeats.h"
 #include "mapper.h"
-#include "../../include/utils.h"
+#include "../utils/utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 // swap function in utils.h
 
 int compare_triplets_pos1(void* first, void* second) {
@@ -36,7 +37,7 @@ int compare_mapped_pairs_by_bwt_pos(void* first, void* second) {
 	return f->bwt_pos - s->bwt_pos;
 }
 
-void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsigned int b, int (*compare)(void* first, void* second)) {
+void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsigned int b, int (*compare)(void* first, void* second), void* swap_area) {
 	if (a >= b)
 		return;
 
@@ -58,18 +59,20 @@ void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsig
 
 	if (compare((arr + (a * entry_size)), (arr + (i * entry_size))) > 0) {
 
-		swap(arr, entry_size, a, i);
-		compare_quicksort(arr, entry_size, a, i-1, compare);
-		compare_quicksort(arr, entry_size, i + 1, b, compare);
+		swap(arr, entry_size, a, i, swap_area);
+		compare_quicksort(arr, entry_size, a, i-1, compare, swap_area);
+		compare_quicksort(arr, entry_size, i + 1, b, compare, swap_area);
 	} else {
-		compare_quicksort (arr, entry_size, a+1, b, compare);
+		compare_quicksort (arr, entry_size, a+1, b, compare, swap_area);
 	}
 }
 
 void compare_quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size, int (*compare)(void* first, void* second)) {
 	if (arr == 0 || arr_size == 0 || entry_size == 0)
 		return;
-
-	compare_quicksort(arr, entry_size, 0, arr_size-1, compare);
+	
+	void* tmp = malloc(entry_size);
+	compare_quicksort(arr, entry_size, 0, arr_size-1, compare, tmp);
+	free(tmp);
 
 }

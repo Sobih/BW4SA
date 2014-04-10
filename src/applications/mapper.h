@@ -28,7 +28,7 @@ typedef struct mapped_pair {
  * @param	nodes	An array of all maximal repeat substrings inside the BWT.
  * @param	bwt		The BWT of the original string, in wavelet tree form.
  * @param	count	Length of the nodes-array.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator), Paula Lehtola
  * @bug		No known bugs.
  */
 void map_maximal_repeats_to_string(struct max_repeat_node* nodes, struct wavelet_tree* bwt,
