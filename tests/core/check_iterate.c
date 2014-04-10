@@ -5,6 +5,7 @@
 #include "../../src/core/rbwt.h"
 #include "../../src/core/s_to_bwt.h"
 #include "../../src/applications/map_bwt_to_s.h"
+#include "../../src/applications/maximal_repeats.h"
 #include "../../include/utils.h"
 #include "../utils_for_tests.h"
 #include <stdio.h>
@@ -98,8 +99,10 @@ START_TEST(test_wrong_intervals)
 }
 END_TEST
 
-void put_substring_list(substring* substr)
+void put_substring_list(iterator_state* state, void* results)
 {
+	substring* substr = state->current;
+
 	shared_list[list_ptr] = malloc(sizeof(substring));
 	substring* tmp = shared_list[list_ptr];
 
@@ -145,7 +148,7 @@ START_TEST(test_iterate2)
 	interval reverse = (interval) {.i = 4, .j = 5};
 	substring* tti = &((substring) {.normal = normal, .reverse = reverse, .length = 3});
 
-	iterate(string, &put_substring_list);
+	single_iterate(string, &put_substring_list, 0);
 }END_TEST
 
 START_TEST(test_iterate1)
@@ -164,7 +167,7 @@ START_TEST(test_iterate1)
 	reverse = (interval) {.i = 4, .j = 5};
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
-	iterate(string, &put_substring_list);
+	single_iterate(string, &put_substring_list, 0);
 
 	fail_unless(shared_list_contains(abra) == 1);
 	fail_unless(shared_list_contains(ra) == 1);
@@ -187,8 +190,10 @@ int check_list_contains_and_remove(int index_bwt, int length, test_substr* list,
 	return 0;
 }
 
-int check_substrings_callback(substring* substr)
+int check_substrings_callback(iterator_state* state, void* results)
 {
+	substring* substr = state->current;
+
 	for(int i = substr->normal.i; i <= substr->normal.j; i++){
 		if(!check_list_contains_and_remove(i, substr->length, naive_rmaximals, suffix_array)){
 			callback_flag = 0;
@@ -202,10 +207,6 @@ START_TEST(test_iterate_randomized_small_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "acgt";
-<<<<<<< HEAD:tests/iterate/check_iterate.c
-=======
-
->>>>>>> dd215460bb5a09eef31aadaa4530ba9c70e33694:tests/core/check_iterate.c
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
 
@@ -217,7 +218,8 @@ START_TEST(test_iterate_randomized_small_alphabet)
 		naive_rmaximals = find_right_maximal_substrings(rand_string);
 		callback_flag = 1;
 
-		iterate(rand_string, &check_substrings_callback);
+
+		single_iterate(rand_string, &check_substrings_callback, 0);
 		fail_unless(naive_rmaximals->next == NULL);
 		fail_unless(callback_flag == 1);
 	}
@@ -228,15 +230,8 @@ START_TEST(test_iterate_randomized_big_alphabet)
 {
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
-<<<<<<< HEAD:tests/iterate/check_iterate.c
 	wavelet_tree* bwt;
 	for(int i= 0; i<1000; i++){
-
-=======
-
-	wavelet_tree* bwt;
-	for(int i= 0; i<1000; i++){
->>>>>>> dd215460bb5a09eef31aadaa4530ba9c70e33694:tests/core/check_iterate.c
 		int length = (rand() % 100) + 100;
 		char* rand_string = generate_random_string(alphabet, length);
 		bwt = s_to_BWT(rand_string);
@@ -244,7 +239,7 @@ START_TEST(test_iterate_randomized_big_alphabet)
 		naive_rmaximals = find_right_maximal_substrings(rand_string);
 		callback_flag = 1;
 
-		iterate(rand_string, &check_substrings_callback);
+		single_iterate(rand_string, &check_substrings_callback, 0);
 		fail_unless(naive_rmaximals->next == NULL);
 		fail_unless(callback_flag == 1);
 	}
@@ -264,14 +259,15 @@ START_TEST(test_iterate_randomized_one_long_string)
 	naive_rmaximals = find_right_maximal_substrings(rand_string);
 	callback_flag = 1;
 
-	iterate(rand_string, &check_substrings_callback);
+	single_iterate(rand_string, &check_substrings_callback, 0);
 	fail_unless(naive_rmaximals->next == NULL);
 	fail_unless(callback_flag == 1);
 
 }
 END_TEST
 
-void check_doubles_callback(substring* substr1, substring* substr2){
+void check_doubles_callback(iterator_state* state, void* results) {
+	substring* substr1 = &state->current[0], *substr2 = &state->current[1];
 
 	for(int i = substr1->normal.i; i <= substr1->normal.j; i++){
 		if(!check_list_contains_and_remove(i, substr1->length, naive_doubles[0], suffix_array)){
