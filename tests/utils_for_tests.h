@@ -15,6 +15,14 @@ typedef struct tests_substring
 	struct tests_substring* next;
 }test_substr;
 
+typedef struct substr_pair
+{
+	int index1;
+	int index2;
+	int length;
+	struct substr_pair* next;
+}substring_pair;
+
 char* generate_random_string(char* alphabet, int length);
 
 test_substr* find_maximal_repeat_substrings(char* string);
