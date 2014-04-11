@@ -1,3 +1,11 @@
+/**
+ * @file	iterate.c
+ * @brief	Implementation of the core of the library.
+ * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator),
+ * 			Paula Lehtola
+ * @bug		No known bugs.
+ */
+
 #include "iterate.h"
 #include "backward_search.h"
 #include "rbwt.h"
@@ -14,9 +22,17 @@
 
 #define END_STRING '$'
 
+/**
+ * @brief 	A function that determines if given interval in given reverse BWT is right maximal.
+ * @param 	runs	Runs-vector of a reverse BWT.
+ * @param 	inter 	The interval that is to be checked.
+ * @return 			<code>1</code> if the interval is right maximal, <code>0</code> otherwise.
+ * @author 	Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug 	No known bugs.
+ */
 int is_reverse_interval_right_maximal(bit_vector* runs,
-		interval* interval) {
-	return runs->rank(runs, (interval->i) + 1, interval->j) > 0 ? 1 : 0;
+		interval* inter) {
+	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
 }
 
 void iterate(char* string, void (*callback)(substring* substr)) {
@@ -60,9 +76,7 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		for (i = 0; i < alphabet_length; i++) {
 			normal = backward_search_interval(bwt, &substr->normal,
 					alpha_data->alphabet[i], normal);
-			if (normal == NULL) {
-				continue;
-			}
+
 			reverse = update_reverse_interval(&substr->reverse, normal,
 					alpha_data->alphabet, alphabet_length, c_array,
 					alpha_data->alphabet[i], reverse);
@@ -77,9 +91,10 @@ void iterate(char* string, void (*callback)(substring* substr)) {
 		}
 
 		temp = pop(stack);
-		if (temp == NULL) {
+
+		if (temp == NULL)
 			break;
-		}
+
 		substr = create_substring(&temp->normal, &temp->reverse, temp->length,
 				substr);
 	}
@@ -133,9 +148,10 @@ void iterate_for_tree_drawing(char* string,
 		for (i = 0; i < alphabet_length; i++) {
 			normal = backward_search_interval(bwt, &substr->normal,
 					alpha_data->alphabet[i], normal);
-			if (normal == NULL) {
+
+			if (normal == NULL)
 				continue;
-			}
+
 			reverse = update_reverse_interval(&substr->reverse, normal,
 					alpha_data->alphabet, alphabet_length, c_array,
 					alpha_data->alphabet[i], reverse);
@@ -150,9 +166,10 @@ void iterate_for_tree_drawing(char* string,
 		}
 
 		temp = pop(stack);
-		if (temp == NULL) {
+
+		if (temp == NULL)
 			break;
-		}
+
 		substr = create_substring(&temp->normal, &temp->reverse, temp->length,
 				substr);
 	}
@@ -163,6 +180,15 @@ void iterate_for_tree_drawing(char* string,
 	free_stack(stack);
 }
 
+/**
+ * @brief	Combines the intersection of the two alphabets into one common alphabet.
+ * @param	alpha_data1		The data for the first alphabet.
+ * @param	alpha_data2		The data for the second alphabet.
+ * @param	common_alphabet	The c-string where the result should be stored.
+ * @return					The intersection of the combined alphabets.
+ * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 char* combine_alphabets_intersection(alphabet_data* alpha_data1,
 		alphabet_data* alpha_data2, char* common_alphabet) {
 	char* alphabet1 = alpha_data1->alphabet;

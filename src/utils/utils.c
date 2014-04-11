@@ -99,33 +99,32 @@ void print_bits(unsigned int mask) {
  *
  * Swaps the position of two strings in an array.
  *
- * @param	a, b	pointers to pointers of strings to be swapped
+ * @param	a	Pointer to a pointer to a string to be swapped.
+ * @param	b	Pointer to a pointer to another string to be swapped.
  * @see		utils.h#string_quick_sort
- * @author	Paula Lehtola
+ * @author	Paula Lehtola, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-
-void string_swap(char **a, char **b) {
-	char *tmp = *a;
+void string_swap(char** a, char** b) {
+	char* tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
 
 /**
- * @brief	quicksort for an array of strings
- * @param	strings 	array of pointers of strings
- * @param	a	index of the first entry to be sorted
- * @param	b	index of the last entry to be sorted
+ * @brief	Quicksort for an array of strings.
+ * @param	strings 	Array of pointers to strings.
+ * @param	a			Index of the first entry to be sorted.
+ * @param	b			index of the last entry to be sorted.
  * @see		utils.h#quick_sort
- * @author	Paula Lehtola
+ * @author	Paula Lehtola, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-
-void string_quicksort(char **strings, unsigned int a, unsigned int b) {
+void string_quicksort(char** strings, unsigned int a, unsigned int b) {
 	if (a >= b)
 		return;
 
-	const char *key = strings[a];
+	const char* key = strings[a];
 	int i = a+1, j = b;
 
 	while (i < j) {
@@ -309,8 +308,8 @@ void print_wavelet_tree(wavelet_tree* tree) {
 	free(node_list);
 }
 
-char *substring_from_string(char *string, int position, int length) {
-	char *pointer;
+char* substring_from_string(char* string, int position, int length) {
+	char* pointer;
 	int i;
 	int pointer_index = 0;
 

@@ -1,5 +1,6 @@
 #include "ui.h"
 #include "distinct_substrings.h"
+#include "triplet_sorter.h"
 #include "../core/s_to_bwt.h"
 #include "../core/bwt_to_s.h"
 #include "../core/rbwt.h"
