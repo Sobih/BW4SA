@@ -18,7 +18,7 @@ struct substring;
  * @author	Topi Paavilainen, Max Sandberg (REXiator)
  * @bug 	No known bugs.
  */
-typedef struct substring_stack_struct
+typedef struct substring_stack
 {
 	struct substring* array;
 	int array_size;
