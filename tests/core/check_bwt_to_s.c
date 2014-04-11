@@ -6,7 +6,7 @@
 
 void test(char* input)
 {
-	wavelet_tree* bwt = s_to_BWT(input);
+	wavelet_tree* bwt = s_to_bwt(input);
 	char* result = bwt_to_s(bwt);
 	ck_assert_str_eq(input, result);
 }

@@ -346,7 +346,7 @@ START_TEST (test_interval_search_random) {
 
 	for (; run_counter <= runs; ++run_counter) {
 		string = generate_random_string(string, length);
-		tree = s_to_BWT(string);
+		tree = s_to_bwt(string);
 
 		for (int j = 0; j < tree->get_num_bits(tree); ++j)
 			bwt[j] = tree->char_at(tree, j);
