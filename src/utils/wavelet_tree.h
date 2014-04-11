@@ -120,6 +120,8 @@ typedef struct wavelet_tree {
  */
 wavelet_tree* create_wavelet_tree(const char* string);
 
+void free_wavelet_tree_internals(wavelet_tree* tree);
+
 /**
  * @brief	Frees the memory used by an entire wavelet tree.
  *
