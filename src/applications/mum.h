@@ -13,18 +13,7 @@
 struct substring;
 struct bit_vector;
 struct wavelet_tree;
-
-/**
- * @brief	A simple structure for storing the starting indices of a MUM inside
- * 			two BWTs and the length of the MUM.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-typedef struct triplet {
-	unsigned int pos1;
-	unsigned int pos2;
-	unsigned int length;
-} triplet;
+struct triplet;
 
 /**
  * @brief	Initialization function for MUMs, so the callback can be done without having all BWTs as parameters.
@@ -53,7 +42,7 @@ void search_mums(struct substring* node1, struct substring* node2);
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-triplet* get_mums();
+struct triplet* get_mums();
 
 /**
  * @brief	Returns the amount of MUMs found.
@@ -97,6 +86,6 @@ void mum_print_bit_vectors(char* string1, char* string2);
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-struct bit_vector** mum_make_bit_vectors(triplet* mapped_mums);
+struct bit_vector** mum_make_bit_vectors(struct triplet* mapped_mums);
 
 #endif /* MUM_H_ */
