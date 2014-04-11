@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-wavelet_tree* s_to_BWT (uchar* string) {
+wavelet_tree* s_to_bwt (uchar* string) {
 	unsigned int last;
 	long n = strlen(string);
 	uchar* d = malloc((n + 1) * sizeof(uchar));
