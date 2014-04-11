@@ -53,7 +53,7 @@ void compare_quicksort(void* arr, unsigned int entry_size, unsigned int a, unsig
 			i++;
 
 		if (i < j) 	
-			swap(arr, entry_size, i, j);
+			swap(arr, entry_size, i, j, swap_area);
 	}
 
 

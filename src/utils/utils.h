@@ -17,6 +17,23 @@ struct wavelet_node;
 struct bit_vector;
 
 /**
+ * @brief	Simple swap-function.
+ *
+ * Swaps the position of two entries in an array.
+ *
+ * @param	arr			Pointer to the array is to be manipulated.
+ * @param	entry_size	Size of the entries that are to be swapped.
+ * @param	i			Index of the first entry.
+ * @param	j			Index of the second entry.
+ * @see		utils.h#quick_sort
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void swap(void* arr, unsigned int entry_size, int i, int j, void* swap_area);
+
+
+
+/**
  * @brief	Standard generic quicksort-implementation.
  *
  * This is a standard quicksort-algorithm that can be used for any data-type.

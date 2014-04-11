@@ -61,11 +61,11 @@ START_TEST(test_mum2_mapped)
 		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
 				s_to_BWT("arbadacarba"), get_mums_amount());
 		ck_assert_int_eq(2, get_mums_amount());
-		ck_assert_int_eq(5, nodes[0].pos1);
-		ck_assert_int_eq(3, nodes[0].pos2);
+		ck_assert_int_eq(3, nodes[0].pos1);
+		ck_assert_int_eq(5, nodes[0].pos2);
 		ck_assert_int_eq(3, nodes[0].length);
-		ck_assert_int_eq(3, nodes[1].pos1);
-		ck_assert_int_eq(5, nodes[1].pos2);
+		ck_assert_int_eq(5, nodes[1].pos1);
+		ck_assert_int_eq(3, nodes[1].pos2);
 		ck_assert_int_eq(3, nodes[1].length);
 	}END_TEST
 
