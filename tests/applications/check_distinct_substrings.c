@@ -84,6 +84,7 @@ START_TEST (distinct_substrings_test3)
 }
 END_TEST
 
+
 Suite *count_suite (void)
 {
   Suite *s = suite_create ("Count_substrings");
