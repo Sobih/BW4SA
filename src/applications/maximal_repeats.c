@@ -38,7 +38,7 @@ parameter_struct* initialize_for_max_repeats(char* string) {
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-inline int is_interval_left_maximal(bit_vector* runs, interval inter) {
+int is_interval_left_maximal(bit_vector* runs, interval inter) {
 	return (inter.i < inter.j) && (runs->rank(runs, inter.i + 1, inter.j) > 0) ? 1 : 0;
 }
 
@@ -52,7 +52,7 @@ void search_maximal_repeats(iterator_state* state, void* results) {
 		result->data = realloc(result->data, result->allocated_length * sizeof(max_repeat_node));
 	}
 
-	if (is_interval_left_maximal(node->normal)) {
+	if (is_interval_left_maximal(state->runs_vectors, node->normal)) {
 		max_repeat_node* res_node = &result->data[result->length];
 		res_node->normal.i = node->normal.i;
 		res_node->normal.j = node->normal.j;
