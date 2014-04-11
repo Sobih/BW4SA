@@ -24,6 +24,10 @@ static int* suffix_array;
 static test_substr** naive_doubles;
 static int* suffix_array2;
 
+int is_interval_right_maximal_test(bit_vector* runs, interval* inter) {
+	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
+}
+
 START_TEST(simple_runs_test)
 {
 	printf("SIMPLE RUNS TEST\n");
@@ -42,6 +46,9 @@ START_TEST(simple_runs_test)
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 9));
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 10));
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 11));
+
+	free_wavelet_tree(tree);
+	free_bit_vector(runs);
 }
 END_TEST
 
@@ -62,6 +69,9 @@ START_TEST(another_simple_test)
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 8));
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 9));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 10));
+
+	free_wavelet_tree(tree);
+	free_bit_vector(runs);
 }
 END_TEST
 
@@ -77,8 +87,13 @@ START_TEST(test_interval_query)
 	interval* test2 = malloc(sizeof(interval));
 	test2->i = 1;
 	test2->j = 3;
-	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test1));
-	ck_assert_int_eq(1, is_reverse_interval_right_maximal(runs, test2));
+	ck_assert_int_eq(0, is_interval_right_maximal_test(runs, test1));
+	ck_assert_int_eq(1, is_interval_right_maximal_test(runs, test2));
+
+	free_wavelet_tree(tree);
+	free_bit_vector(runs);
+	free(test1);
+	free(test2);
 }
 END_TEST
 
@@ -94,8 +109,13 @@ START_TEST(test_wrong_intervals)
 	interval* test2 = malloc(sizeof(interval));
 	test2->i = 6;
 	test2->j = 6;
-	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test1));
-	ck_assert_int_eq(0, is_reverse_interval_right_maximal(runs, test2));
+	ck_assert_int_eq(0, is_interval_right_maximal_test(runs, test1));
+	ck_assert_int_eq(0, is_interval_right_maximal_test(runs, test2));
+
+	free_wavelet_tree(tree);
+	free_bit_vector(runs);
+	free(test1);
+	free(test2);
 }
 END_TEST
 
@@ -135,6 +155,13 @@ int shared_list_contains(substring* comp)
 	return 0;
 }
 
+void free_shared_list() {
+	for (int i = 0; i < list_ptr; ++i)
+		free(shared_list[i]);
+
+	free(shared_list);
+}
+
 //this test tests nothing??
 START_TEST(test_iterate2)
 {
@@ -142,13 +169,18 @@ START_TEST(test_iterate2)
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
-	char* string = "hattivatti";
+	char** strings = malloc(sizeof(char*));
+	strings[0] = "hattivatti";
 
 	interval normal = (interval) {.i = 8, .j = 9};
 	interval reverse = (interval) {.i = 4, .j = 5};
 	substring* tti = &((substring) {.normal = normal, .reverse = reverse, .length = 3});
 
-	single_iterate(string, &put_substring_list, 0);
+	iterator_state* state = initialize_iterator(strings, 1);
+	single_iterate(state, &put_substring_list, 0);
+	free_iterator_state(state);
+	free(strings);
+	free_shared_list();
 }END_TEST
 
 START_TEST(test_iterate1)
@@ -157,7 +189,8 @@ START_TEST(test_iterate1)
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
-	char* string = "abracadabra";
+	char** strings = malloc(sizeof(char*));
+	strings[0] = "abracadabra";
 
 	interval normal = (interval) {.i = 2, .j = 3};
 	interval reverse = (interval) {.i = 4, .j = 5};
@@ -167,10 +200,15 @@ START_TEST(test_iterate1)
 	reverse = (interval) {.i = 4, .j = 5};
 	substring* ra = &((substring) {.normal = normal, .reverse = reverse, .length = 2});
 
-	single_iterate(string, &put_substring_list, 0);
+	iterator_state* state = initialize_iterator(strings, 1);
+	single_iterate(state, &put_substring_list, 0);
+	free_iterator_state(state);
+	free(strings);
 
 	fail_unless(shared_list_contains(abra) == 1);
 	fail_unless(shared_list_contains(ra) == 1);
+
+	free_shared_list();
 }
 END_TEST
 
@@ -190,7 +228,7 @@ int check_list_contains_and_remove(int index_bwt, int length, test_substr* list,
 	return 0;
 }
 
-int check_substrings_callback(iterator_state* state, void* results)
+void check_substrings_callback(iterator_state* state, void* results)
 {
 	substring* substr = state->current;
 
@@ -199,70 +237,103 @@ int check_substrings_callback(iterator_state* state, void* results)
 			callback_flag = 0;
 		}
 	}
-
-	return 0;
 }
 
 START_TEST(test_iterate_randomized_small_alphabet)
 {
+	printf("TEST ITERATE SMALL RANDOM ALPHABET\n");
 	srand(time(NULL));
 	char* alphabet = "acgt";
+	char** strings = malloc(sizeof(char*));
 	wavelet_tree* bwt;
+	iterator_state* state;
 	for(int i= 0; i<1000; i++){
 
 		int length = (rand() % 200)+1;
-		char* rand_string = generate_random_string(alphabet, length);
-		bwt = s_to_BWT(rand_string);
+		strings[0] = generate_random_string(alphabet, length);
+		bwt = s_to_bwt(strings[0]);
 
 		suffix_array = map_create_suffix_array_from_bwt(bwt);
-		naive_rmaximals = find_right_maximal_substrings(rand_string);
+		naive_rmaximals = find_right_maximal_substrings(strings[0]);
 		callback_flag = 1;
 
+		state = initialize_iterator(strings, 1);
+		single_iterate(state, &check_substrings_callback, 0);
+		free_iterator_state(state);
+		free_wavelet_tree(bwt);
+		free(strings[0]);
 
-		single_iterate(rand_string, &check_substrings_callback, 0);
 		fail_unless(naive_rmaximals->next == NULL);
 		fail_unless(callback_flag == 1);
+
+		free(naive_rmaximals);
+		free(suffix_array);
 	}
+
+	free(strings);
 }
 END_TEST
 
 START_TEST(test_iterate_randomized_big_alphabet)
 {
+	printf("TEST ITERATE BIG RANDOM ALPHABET\n");
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
+	char** strings = malloc(sizeof(char*));
 	wavelet_tree* bwt;
+	iterator_state* state;
 	for(int i= 0; i<1000; i++){
 		int length = (rand() % 100) + 100;
-		char* rand_string = generate_random_string(alphabet, length);
-		bwt = s_to_BWT(rand_string);
+		strings[0] = generate_random_string(alphabet, length);
+		bwt = s_to_bwt(strings[0]);
 		suffix_array = map_create_suffix_array_from_bwt(bwt);
-		naive_rmaximals = find_right_maximal_substrings(rand_string);
+		naive_rmaximals = find_right_maximal_substrings(strings[0]);
 		callback_flag = 1;
 
-		single_iterate(rand_string, &check_substrings_callback, 0);
+		state = initialize_iterator(strings, 1);
+		single_iterate(state, &check_substrings_callback, 0);
+		free_iterator_state(state);
+		free_wavelet_tree(bwt);
+		free(strings[0]);
+
 		fail_unless(naive_rmaximals->next == NULL);
 		fail_unless(callback_flag == 1);
+
+		free(naive_rmaximals);
+		free(suffix_array);
 	}
+
+	free(strings);
 }
 END_TEST
 
 START_TEST(test_iterate_randomized_one_long_string)
 {
+	printf("TEST ITERATE LONG RANDOM STRING\n");
 	srand(time(NULL));
 	char* alphabet = "qwaesrdtfyguhijokplmnbvcxz";
+	char** strings = malloc(sizeof(char*));
 	wavelet_tree* bwt;
 
 	int length = (rand() % 1000) + 1000;
-	char* rand_string = generate_random_string(alphabet, length);
-	bwt = s_to_BWT(rand_string);
+	strings[0] = generate_random_string(alphabet, length);
+	bwt = s_to_bwt(strings[0]);
 	suffix_array = map_create_suffix_array_from_bwt(bwt);
-	naive_rmaximals = find_right_maximal_substrings(rand_string);
+	naive_rmaximals = find_right_maximal_substrings(strings[0]);
 	callback_flag = 1;
 
-	single_iterate(rand_string, &check_substrings_callback, 0);
+	iterator_state* state = initialize_iterator(strings, 1);
+	single_iterate(state, &check_substrings_callback, 0);
+	free_iterator_state(state);
+	free_wavelet_tree(bwt);
+	free(strings[0]);
+	free(strings);
+
 	fail_unless(naive_rmaximals->next == NULL);
 	fail_unless(callback_flag == 1);
 
+	free(naive_rmaximals);
+	free(suffix_array);
 }
 END_TEST
 
@@ -283,61 +354,95 @@ void check_doubles_callback(iterator_state* state, void* results) {
 
 START_TEST(test_double_iterate_randomized)
 {
+	printf("DOUBLE ITERATE RANDOM\n");
 	srand(time(NULL));
 	char* alphabet = "acgt";
-
+	char** strings = malloc(2 * sizeof(char*));
 	wavelet_tree* bwt1, *bwt2;
+	iterator_state* state;
+
 	for(int i= 0; i<1000; i++){
 
 		int length = (rand() % 200)+1;
-		char* rand_string1 = generate_random_string(alphabet, length);
-		bwt1 = s_to_BWT(rand_string1);
+		strings[0] = generate_random_string(alphabet, length);
+		bwt1 = s_to_bwt(strings[0]);
 
 		length = (rand() % 200)+1;
-		char* rand_string2 = generate_random_string(alphabet, length);
-		bwt2 = s_to_BWT(rand_string2);
+		strings[1] = generate_random_string(alphabet, length);
+		bwt2 = s_to_bwt(strings[1]);
 
 		suffix_array = map_create_suffix_array_from_bwt(bwt1);
 		suffix_array2 = map_create_suffix_array_from_bwt(bwt2);
 
-		naive_doubles = find_common_substrings(rand_string1, rand_string2);
+		naive_doubles = find_common_substrings(strings[0], strings[1]);
 		callback_flag = 1;
 
-		double_iterate(rand_string1, rand_string2, &check_doubles_callback);
+		state = initialize_iterator(strings, 2);
+		double_iterate(state, &check_doubles_callback, 0);
+		free_iterator_state(state);
+		free_wavelet_tree(bwt1);
+		free_wavelet_tree(bwt2);
+		free(strings[0]);
+		free(strings[1]);
 
 		fail_unless(naive_doubles[0]->next == NULL);
 		fail_unless(naive_doubles[1]->next == NULL);
+
+		free(naive_doubles[0]);
+		free(naive_doubles[1]);
+		free(naive_doubles);
+		free(suffix_array);
+		free(suffix_array2);
 	}
+
+	free(strings);
 }
 END_TEST
 
 START_TEST(test_double_iterate_randomized_long_alphabet)
 {
+	printf("DOUBLE ITERATE RANDOM LONG ALPHABET\n");
 	srand(time(NULL));
 	char* alphabet = "qazwsxedcrfvtgbyhnujmikol1234567890";
-
+	char** strings = malloc(2 * sizeof(char*));
 	wavelet_tree* bwt1, *bwt2;
+	iterator_state* state;
+
 	for(int i= 0; i<1000; i++){
 
 		int length = (rand() % 200)+1;
-		char* rand_string1 = generate_random_string(alphabet, length);
-		bwt1 = s_to_BWT(rand_string1);
+		strings[0] = generate_random_string(alphabet, length);
+		bwt1 = s_to_bwt(strings[0]);
 
 		length = (rand() % 200)+1;
-		char* rand_string2 = generate_random_string(alphabet, length);
-		bwt2 = s_to_BWT(rand_string2);
+		strings[1] = generate_random_string(alphabet, length);
+		bwt2 = s_to_bwt(strings[1]);
 
 		suffix_array = map_create_suffix_array_from_bwt(bwt1);
 		suffix_array2 = map_create_suffix_array_from_bwt(bwt2);
 
-		naive_doubles = find_common_substrings(rand_string1, rand_string2);
+		naive_doubles = find_common_substrings(strings[0], strings[1]);
 		callback_flag = 1;
 
-		double_iterate(rand_string1, rand_string2, &check_doubles_callback);
+		state = initialize_iterator(strings, 2);
+		double_iterate(state, &check_doubles_callback, 0);
+		free_iterator_state(state);
+		free_wavelet_tree(bwt1);
+		free_wavelet_tree(bwt2);
+		free(strings[0]);
+		free(strings[1]);
 
 		fail_unless(naive_doubles[0]->next == NULL);
 		fail_unless(naive_doubles[1]->next == NULL);
+
+		free(naive_doubles[0]);
+		free(naive_doubles[1]);
+		free(naive_doubles);
+		free(suffix_array);
+		free(suffix_array2);
 	}
+
+	free(strings);
 }
 END_TEST
 
