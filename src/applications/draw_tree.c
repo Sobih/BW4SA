@@ -16,11 +16,6 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct tree_drawing_params {
-	substring* current, *prev;
-	char c;
-} tree_drawing_params;
-
 /**
  * @brief	A struct for storing a suffix tree node and its data.
  * @author	Topi Paavilainen, Max Sandberg (REXiator)
@@ -340,7 +335,7 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 }
 
 void draw_suffix_tree(char* string, char* filename) {
-	wavelet_tree* bwt = s_to_BWT(string);
+	wavelet_tree* bwt = s_to_bwt(string);
 	int* suffix_array = map_create_suffix_array_from_bwt(bwt);
 
 	root = calloc(1, sizeof(internal_node));
