@@ -16,12 +16,6 @@ struct wavelet_tree;
 struct parameter_struct;
 struct iterator_state;
 
-typedef struct mum_results {
-	triplet* data;
-	unsigned int length;
-	unsigned int allocated_length;
-} mum_results;
-
 /**
  * @brief	A simple structure for storing the starting indices of a MUM inside
  * 			two BWTs and the length of the MUM.
@@ -33,6 +27,12 @@ typedef struct triplet {
 	unsigned int pos2;
 	unsigned int length;
 } triplet;
+
+typedef struct mum_results {
+	triplet* data;
+	unsigned int length;
+	unsigned int allocated_length;
+} mum_results;
 
 struct parameter_struct* initialize_for_mums(char** strings);
 
