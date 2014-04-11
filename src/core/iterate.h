@@ -28,13 +28,15 @@ struct interval;
 typedef 	unsigned int	iterate_t;
 
 typedef struct iterator_state {
+	unsigned int num_strings;
 	char current_extension;
 	struct wavelet_tree* bwts;
 	struct wavelet_tree* reverse_bwts;
 	struct bit_vector* runs_vectors;
+	struct bit_vector* reverse_runs_vectors;
 	struct substring_stack* stacks;
 	struct alphabet_data* alpha_datas;
-	struct alphabet_data* common_alphabets;
+	struct alphabet_data* common_alphabet;
 	struct interval* normals, *reverses;
 	struct substring* current, *prev;
 	unsigned int** c_arrays;
@@ -46,6 +48,12 @@ typedef struct parameter_struct {
 	void* ret_data;
 	char** strings;
 } parameter_struct;
+
+iterator_state* initialize_iterator(char** strings, unsigned int num_strings);
+
+void free_iterator_state(iterator_state* state);
+
+void free_parameter_struct(parameter_struct* params);
 
 iterator_state* iterate(parameter_struct* parameters);
 

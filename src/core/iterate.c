@@ -10,8 +10,8 @@
 #include "backward_search.h"
 #include "rbwt.h"
 #include "c_array.h"
-#include "s_to_bwt.h"
 #include "substring_stack.h"
+#include "s_to_bwt.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
 #include <string.h>
@@ -103,24 +103,26 @@ substring* create_substring(interval* normal, interval* reverse, int length,
 
 void* single_iterate(iterator_state* state, void (*callback)(iterator_state* state, void* results),
 		void* result) {
-	wavelet_tree* bwt = state->bwts, *reverse_bwt = state->reverse_bwts;
-	bit_vector* reverse_runs = state->runs_vectors;
-	substring_stack* stack = state->stacks;
+	wavelet_tree* bwt = &state->bwts[0], *reverse_bwt = &state->reverse_bwts[0];
+	bit_vector* reverse_runs = &state->reverse_runs_vectors[0];
+	substring_stack* stack = &state->stacks[0];
 	unsigned int* c_array = state->c_arrays[0];
-	interval* normal = state->normals, *reverse = state->reverses;
-	alphabet_data* alpha_data = state->alpha_datas;
+	interval* normal = &state->normals[0], *reverse = &state->reverses[0];
+	alphabet_data* alpha_data = &state->alpha_datas[0];
 
 	int bwt_length = bwt->get_num_bits(bwt), i;
 
 	//Initialize first intervals. In the start both intervals are the whole bwt
-	normal.i = 0;
-	normal.j = bwt_length - 1;
-	reverse.i = 0;
-	reverse.j = bwt_length - 1;
+	normal->i = 0;
+	normal->j = bwt_length - 1;
+	reverse->i = 0;
+	reverse->j = bwt_length - 1;
 
 	//create starting substring
 	substring* substr = create_substring(normal, reverse, 0, 0);
 	substring* temp, *new_substring = state->current;
+
+	//printf("Variables initialized, commencing iteration\n");
 
 	while (1) {
 		if (substr == NULL)
@@ -132,7 +134,11 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 		// Determine characters that precede the interval
 		alpha_data = create_alphabet_interval(&substr->normal, bwt, alpha_data);
 
+		//printf("Created alphabet interval\n");
+
 		c_array = create_c_array(bwt, &substr->normal, 0, 0, c_array);
+
+		//printf("Created C-array\n");
 
 		for (i = 0; i < alpha_data->length; i++) {
 			state->current_extension = alpha_data->alphabet[i];
@@ -140,20 +146,37 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 			normal = backward_search_interval(bwt, &substr->normal,
 					state->current_extension, normal);
 
+			//printf("Updated normal interval\n");
+
 			reverse = update_reverse_interval(&substr->reverse, normal,
 					alpha_data->alphabet, alpha_data->length, c_array,
 					state->current_extension, reverse);
 
+			//printf("Updated reverse interval\n");
+
+			//printf("Alphabet length: %d\n", alpha_data->length);
+
 			if (is_reverse_interval_right_maximal(reverse_runs, reverse)) {
+				//printf("Found right maximal\n");
+
 				new_substring = create_substring(normal, reverse, substr->length + 1,
 						new_substring);
+
+				/*printf("New substring:\n");
+				printf("\tNormal: %d.%d\n", normal->i, normal->j);
+				printf("\tReverse: %d.%d\n", reverse->i, reverse->j);
+				printf("\tLength: %d\n", new_substring->length);*/
 
 				// callback function pointers
 				callback(state, result);
 				push(stack, new_substring);
 
-				state->prev = create_substring(new_substring->normal, new_substring->reverse,
+				//printf("Callbacked and pushed\n");
+
+				state->prev = create_substring(&new_substring->normal, &new_substring->reverse,
 						new_substring->length, state->prev);
+
+				//printf("Updated as prev in state\n");
 			}
 		}
 
@@ -164,6 +187,8 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 
 		substr = create_substring(&temp->normal, &temp->reverse, temp->length,
 				substr);
+
+		//printf("New substring popped\n");
 	}
 
 	return result;
@@ -219,13 +244,13 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 
 	wavelet_tree* bwt1 = &state->bwts[0], *bwt2 = &state->bwts[1];
 	wavelet_tree* rev_bwt1 = &state->reverse_bwts[0], *rev_bwt2 = &state->reverse_bwts[1];
-	bit_vector* rev_runs1 = &state->runs_vectors[0], *rev_runs2 = &state->runs_vectors[1];
+	bit_vector* rev_runs1 = &state->reverse_runs_vectors[0], *rev_runs2 = &state->reverse_runs_vectors[1];
 	substring_stack* stack1 = &state->stacks[0], *stack2 = &state->stacks[1];
 	unsigned int* c_array1 = state->c_arrays[0], *c_array2 = state->c_arrays[1];
 	interval* normal1 = &state->normals[0], *normal2 = &state->normals[1];
 	interval* reverse1 = &state->reverses[0], *reverse2 = &state->reverses[1];
 	alphabet_data* alpha_data1 = &state->alpha_datas[0], *alpha_data2 = &state->alpha_datas[1];
-	alphabet_data* common_alphabet = state->common_alphabets;
+	alphabet_data* common_alphabet = state->common_alphabet;
 
 	int bwt_length1 = bwt1->get_num_bits(bwt1), bwt_length2 = bwt2->get_num_bits(bwt2), i;
 
@@ -303,10 +328,10 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 			push(stack1, new_substring1);
 			push(stack2, new_substring2);
 
-			create_substring(new_substring1->normal, new_substring1->reverse,
+			create_substring(&new_substring1->normal, &new_substring1->reverse,
 					new_substring1->length, &state->prev[0]);
 
-			create_substring(new_substring2->normal, new_substring2->reverse,
+			create_substring(&new_substring2->normal, &new_substring2->reverse,
 					new_substring2->length, &state->prev[1]);
 		}
 
@@ -330,48 +355,125 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 	return result;
 }
 
+iterator_state* initialize_iterator(char** strings, unsigned int num_strings) {
+	iterator_state* state = malloc(sizeof(iterator_state));
+
+	state->num_strings = num_strings;
+	state->bwts = malloc(num_strings * sizeof(wavelet_tree));
+	state->reverse_bwts = malloc(num_strings * sizeof(wavelet_tree));
+	state->runs_vectors = malloc(num_strings * sizeof(bit_vector));
+	state->reverse_runs_vectors = malloc(num_strings * sizeof(bit_vector));
+	state->stacks = malloc(num_strings * sizeof(substring_stack));
+	state->alpha_datas = malloc(num_strings * sizeof(alphabet_data));
+	state->normals = malloc(num_strings * sizeof(interval));
+	state->reverses = malloc(num_strings * sizeof(interval));
+	state->current = malloc(num_strings * sizeof(substring));
+	state->prev = malloc(num_strings * sizeof(substring));
+	state->c_arrays = malloc(num_strings * sizeof(unsigned int*));
+
+	unsigned int common_alpha_length = 1;
+
+	for (int i = 0; i < num_strings; ++i) {
+		state->alpha_datas[i].alphabet = 0;
+		state->bwts[i] = *s_to_bwt(strings[i]);
+		state->reverse_bwts[i] = *reverse_bwt(strings[i]);
+		state->runs_vectors[i] = *create_runs_vector(&state->bwts[i], 0);
+		state->reverse_runs_vectors[i] = *create_runs_vector(&state->reverse_bwts[i], 0);
+		state->stacks[i] = *create_stack(10);
+		state->c_arrays[i] = malloc((state->bwts->get_alphabet_length(&state->bwts[i]) + 1) *
+				sizeof(unsigned int));
+		common_alpha_length += state->bwts->get_alphabet_length(&state->bwts[i]);
+	}
+
+	if (num_strings > 1) {
+		state->common_alphabet = malloc(sizeof(alphabet_data));
+		state->common_alphabet->alphabet = malloc(common_alpha_length * sizeof(char));
+	}
+	else
+		state->common_alphabet = 0;
+
+	/*printf("State initialized:\n");
+	printf("\tNum strings: %u\n", state->num_strings);
+	printf("\tBwts:");
+	for (int i = 0; i < num_strings; ++i) {
+		printf(" ");
+
+		for (int j = 0; j < state->bwts[i].get_num_bits(&state->bwts[i]); ++j)
+			printf("%c", state->bwts[i].char_at(&state->bwts[i], j));
+	}
+	printf("\n\tReverse bwts:");
+	for (int i = 0; i < num_strings; ++i) {
+		printf(" ");
+
+		for (int j = 0; j < state->reverse_bwts[i].get_num_bits(&state->reverse_bwts[i]); ++j)
+			printf("%c", state->reverse_bwts[i].char_at(&state->reverse_bwts[i], j));
+	}
+	printf("\n\tRuns vectors:\n");
+	for (int i = 0; i < num_strings; ++i)
+		print_bit_vector(&state->runs_vectors[i]);*/
+
+	return state;
+}
+
+void free_parameter_struct(parameter_struct* params) {
+	free(params->ret_data);
+
+	switch (params->iterate_type) {
+	case MUM: //do the same as for MEM
+	case MEM:
+		free(params->strings[0]);
+		free(params->strings[1]);
+		break;
+	case DOT_TREE: //do the same as for MAX_REPEATS
+	case MAX_REPEATS: //do the same as default
+	default:
+		//free(params->strings[0]);
+		break;
+	}
+
+	free(params->strings);
+}
+
+void free_iterator_state(iterator_state* state) {
+	for (int i = 0; i < state->num_strings; ++i) {
+		free_wavelet_tree_internals(&state->bwts[i]);
+		free_wavelet_tree_internals(&state->reverse_bwts[i]);
+		free(state->stacks[i].array);
+		free(state->runs_vectors[i].vector);
+		free(state->reverse_runs_vectors[i].vector);
+		free(state->alpha_datas[i].alphabet);
+		free(state->c_arrays[i]);
+	}
+
+	free(state->normals);
+	free(state->reverses);
+	free(state->current);
+	free(state->prev);
+	free(state->alpha_datas);
+	free(state->c_arrays);
+	free(state->common_alphabet);
+	free(state->stacks);
+	free(state->runs_vectors);
+	free(state->reverse_runs_vectors);
+	free(state->bwts);
+	free(state->reverse_bwts);
+
+	free(state);
+}
+
 iterator_state* iterate(parameter_struct* parameters) {
 	if (parameters == 0 ||
 			parameters->callback == 0 ||
 			parameters->strings == 0)
 		return 0;
 
-	iterator_state* state = malloc(sizeof(iterator_state));
+	iterator_state* state;
 
 	switch (parameters->iterate_type) {
 	case MUM: //do the same as for mem
 	case MEM:
-		//initialize iterator state
-		state->bwts = malloc(2 * sizeof(wavelet_tree));
-		state->bwts[0] = *s_to_BWT(parameters->strings[0]);
-		state->bwts[1] = *s_to_BWT(parameters->strings[1]);
-
-		state->reverse_bwts = malloc(2 * sizeof(wavelet_tree));
-		state->reverse_bwts[0] = *reverse_bwt(parameters->strings[0]);
-		state->reverse_bwts[1] = *reverse_bwt(parameters->strings[1]);
-
-		state->runs_vectors = malloc(2 * sizeof(bit_vector));
-		state->runs_vectors[0] = *create_runs_vector(&state->reverse_bwts[0], 0);
-		state->runs_vectors[1] = *create_runs_vector(&state->reverse_bwts[1], 0);
-
-		state->stacks = malloc(2 * sizeof(substring_stack));
-		state->stacks[0] = *create_stack(10);
-		state->stacks[1] = *create_stack(10);
-
-		int length = state->bwts->get_alphabet_length(state->bwts) + 1;
-		state->c_arrays = malloc(2 * sizeof(unsigned int*));
-		state->c_arrays[0] = malloc(length * sizeof(unsigned int));
-		state->c_arrays[1] = malloc(length * sizeof(unsigned int));
-
-		state->common_alphabets = malloc(sizeof(alphabet_data));
-		state->common_alphabets->alphabet = malloc((state->bwts[0].get_alphabet_length(&state->bwts[0]) +
-				state->bwts[1].get_alphabet_length(&state->bwts[1]) + 1) * sizeof(char));
-
-		state->alpha_datas = malloc(2 * sizeof(alphabet_data));
-		state->normals = malloc(2 * sizeof(interval));
-		state->reverses = malloc(2 * sizeof(interval));
-		state->current = malloc(2 * sizeof(substring));
-		state->prev = malloc(2 * sizeof(substring));
+		//initialize iterator state for using double iterate
+		state = initialize_iterator(parameters->strings, 2);
 
 		parameters->ret_data = double_iterate(state, parameters->callback, parameters->ret_data);
 
@@ -385,8 +487,8 @@ iterator_state* iterate(parameter_struct* parameters) {
 		free_bit_vector(&state->runs_vectors[0]);
 		free_bit_vector(&state->runs_vectors[1]);
 
-		free_substring_stack(&state->stacks[0]);
-		free_substring_stack(&state->stacks[1]);
+		free_stack(&state->stacks[0]);
+		free_stack(&state->stacks[1]);
 
 		free(state->normals);
 		free(state->reverses);
@@ -406,21 +508,8 @@ iterator_state* iterate(parameter_struct* parameters) {
 	case DOT_TREE: //do the same as for max repeats
 	case MAX_REPEATS: //do the same as default
 	default:
-		//initialize iterator state
-		state->bwts = s_to_BWT(parameters->strings[0]);
-		state->reverse_bwts = reverse_bwt(parameters->strings[0]);
-		state->runs_vectors = create_runs_vector(state->reverse_bwts, 0);
-		state->stacks = create_stack(10);
-		state->alpha_datas = malloc(sizeof(alphabet_data));
-		state->normals = malloc(sizeof(interval));
-		state->reverses = malloc(sizeof(interval));
-		state->current = malloc(sizeof(substring));
-		state->prev = malloc(sizeof(substring));
-		state->c_arrays = malloc(sizeof(unsigned int*));
-		state->c_arrays[0] = malloc((state->bwts->get_alphabet_length(state->bwts) + 1) *
-						sizeof(unsigned int));
-
-		state->common_alphabets = 0;
+		//initialize iterator state for using single iterate
+		state = initialize_iterator(parameters->strings, 1);
 
 		parameters->ret_data = single_iterate(state, parameters->callback, parameters->ret_data);
 
@@ -428,7 +517,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 		/*free_wavelet_tree(state->bwts);
 		free_wavelet_tree(state->reverse_bwts);
 		free_bit_vector(state->runs_vectors);
-		free_substring_stack(state->stacks);
+		free_stack(state->stacks);
 		free(state->normals);
 		free(state->reverses);
 		free(state->current);
