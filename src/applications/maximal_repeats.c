@@ -83,10 +83,12 @@ int get_max_repeats_nodes_index() {
 bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes) {
 	bit_vector* bit_vec = malloc(sizeof(bit_vector));
 	init_bit_vector(bit_vec, max_bwt->get_num_bits(max_bwt));
-	int i;
+	int i, j;
 	for (i = 0; i < nodes_index; i++) {
 		max_repeat_node max_node = nodes[i];
-		bit_vec->mark_bit(bit_vec, max_node.normal.i);
+		for (j = max_node.normal.i; j <= max_node.normal.j; j++) {
+			bit_vec->mark_bit(bit_vec, j);
+		}
 	}
 
 	return bit_vec;
