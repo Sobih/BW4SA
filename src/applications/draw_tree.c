@@ -95,12 +95,10 @@ internal_node* find_node_by_substring(substring* substr) {
 }
 
 /**
- * @brief	Inserts a new node into the dot tree.
- * @param	substr1		The substring to be inserted into the tree.
- * @param	prev_substr	The previous substring that was inserted, used for
- * 						finding the location for the new substring.
- * @param	c			The character that was used to extend the previous
- * 						substring.
+ * @brief	Inserts a new node into the dot tree as a callback-function to iterate.
+ * @param	state		The internal state of the iterator.
+ * @param	results		A pointer to a region of memory containing any previous
+ * 						results stored by this callback (not used in this function).
  * @author	Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */

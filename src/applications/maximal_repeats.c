@@ -32,6 +32,7 @@ parameter_struct* initialize_for_max_repeats(char* string) {
 
 /**
  * @brief	A simple function for determining if an interval is right maximal.
+ * @param	runs	The runs vector for the BWT of a string.
  * @param	inter	The interval to be checked.
  * @return			<code>1</code> if the interval is a maximal repeat, <code>0</code>
  * 					otherwise.

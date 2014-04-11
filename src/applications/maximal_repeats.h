@@ -26,12 +26,28 @@ typedef struct max_repeat_node
 	int length;
 } max_repeat_node;
 
+/**
+ * @brief	A struct for storing the results of the callback function given
+ * 			to iterate.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 typedef struct max_repeat_results {
 	max_repeat_node* data;
 	unsigned int length;
 	unsigned int allocated_length;
 } max_repeat_results;
 
+/**
+ * @brief	An initialization function that creates a parameter struct that
+ * 			instructs iterate to search for maximal repeats.
+ * @param	string	The string that should be iterated over.
+ * @return			An initialized parameter struct ready to be passed to
+ * 					iterate.
+ * @see		iterate.h#parameter_struct
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 struct parameter_struct* initialize_for_max_repeats(char* string);
 
 /**
@@ -39,8 +55,11 @@ struct parameter_struct* initialize_for_max_repeats(char* string);
  *
  * Determines if a node is a maximal repeat and adds it to a list.
  *
- * @param 	node	A substring node that contains the intervals inside the BWT
- * 					and the BWT of the reverse of the string.
+ * @param 	state		The internal state of the iterator.
+ * @param	results		A pointer to a region of memory where previous results for
+ * 						this function can be found. Can safely be cast to <code>max_repeat_results</code>
+ * 						if iterate was initialized using <code>initialize_for_max_repeats()</code>.
+ * @see		#initialize_for_max_repeats
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
@@ -52,7 +71,9 @@ void search_maximal_repeats(struct iterator_state* state, void* results);
  * First uses the mapper-function <code>map_maximal_repeats_to_string()</code> and then prints
  * the substring based on the mapped index to stdout.
  *
- * @param	string	The original c-string.
+ * @param	string		The original c-string.
+ * @param	results		Results of iterating over the c-string to find maximal repeats.
+ * @param	state		The internal state of the iterator performing the search.
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
