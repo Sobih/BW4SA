@@ -14,9 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
+max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 		int count, bit_vector* bit_vec) {
-	int i = 0;	
 	long n = bwt->get_num_bits(bwt);
 	int k, l;
 	int marked_bits = 0;
@@ -32,9 +31,9 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 	inter->i = 0;
 	inter->j = 0;
 	
+	int i = 0;	
 	for (k = 0; k < n; k++) {
 		if (bit_vec->is_bit_marked(bit_vec, inter->i)) {
-			
 			pairs[i].bwt_pos = inter->i;
 			pairs[i].orig_pos = (n - k) - 1;
 			i++;
@@ -51,8 +50,8 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 	for(int j = 0; j < count; j++){
 		max_indexes[j].length = nodes[j].length;
 		max_indexes[j].interval_size = (nodes[j].normal.j - nodes[j].normal.i) + 1;
-		unsigned int* list = calloc(interval_size, sizeof(unsigned int));
-		for (k = nodes[j].normal.i, l = 0; k <= nodes[j].normal.j; k++, l++) {
+		unsigned int* list = calloc(max_indexes[j].interval_size, sizeof(unsigned int));
+		for (l = 0; l < max_indexes[j].interval_size; l++) {
 			list[l] = pairs[i].orig_pos;
 			i++;
 		}
@@ -62,6 +61,8 @@ void map_maximal_repeats_to_string(max_repeat_node* nodes, wavelet_tree* bwt,
 
 	free(inter);
 	free(target);
+	/*free(pairs);*/
+	return max_indexes;
 }
 
 
@@ -118,9 +119,11 @@ void map_mum_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
 	mapped_pair* pairs2 = update_position_in_triplets(bwt2, count, vecs[1]);
 	compare_quick_sort(pairs2, count, sizeof(mapped_pair), &compare_mapped_pairs_by_bwt_pos);
 	compare_quick_sort(nodes, count, sizeof(triplet), &compare_triplets_pos2);
-	
-		for(int j = 0; j < count; j++){
+	for(int j = 0; j < count; j++){
 		nodes[j].pos2 = pairs2[j].orig_pos;
 	}
+	free(vecs);
+	free(pairs1);
+	free(pairs2);
 }
 

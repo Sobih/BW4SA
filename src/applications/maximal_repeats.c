@@ -63,14 +63,18 @@ max_repeat_node* get_nodes() {
 }
 
 void print_maximal_repeat_substrings(char* string) {
-	map_maximal_repeats_to_string(nodes, max_bwt, nodes_index,max_repeat_make_bit_vector(nodes));
-	int i;
+	max_repeat_with_indexes* max_repeats = map_maximal_repeats_to_string(nodes, max_bwt, nodes_index,max_repeat_make_bit_vector(nodes));
+	int i, j;
 
 	for (i = 0; i < nodes_index; i++) {
-		printf("String: %s, starting position: %d, length of substring: %d \n", string, nodes[i].normal.i, nodes[i].length);
+		printf("Positions: ");
+		for(j = 0; j < max_repeats[i].interval_size; j++){
+			printf("%d, ", max_repeats[i].indexes[j]);
+		}
+		printf("\n");
 		printf("Substring: %s index:%d length: %d \n",
-				substring_from_string(string, nodes[i].normal.i,
-						nodes[i].length), nodes[i].normal.i, nodes[i].length);
+				substring_from_string(string, max_repeats[i].indexes[0],
+						max_repeats[i].length), max_repeats[i].indexes[0], max_repeats[i].length);
 	}
 }
 

@@ -22,7 +22,6 @@ struct bit_vector;
 typedef struct mapped_pair {
 	unsigned int bwt_pos;
 	unsigned int orig_pos;
-
 } mapped_pair;
 
 /**
@@ -31,13 +30,11 @@ typedef struct mapped_pair {
  * @bugs No known bugs.
 */
 
-typedef struct max_repeat_indexes {
+typedef struct max_repeat_with_indexes {
 	unsigned int* indexes;
 	unsigned int length;
 	unsigned int interval_size; 
-
-
-} max_repeat_indexes;
+} max_repeat_with_indexes;
 
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found maximal repeats.
@@ -47,11 +44,12 @@ typedef struct max_repeat_indexes {
  * @param	nodes	An array of all maximal repeat substrings inside the BWT.
  * @param	bwt		The BWT of the original string, in wavelet tree form.
  * @param	count	Length of the nodes-array.
+ * @param	bit_vec	Bit vector which tells where the maximals repeats start
+ * @return	A list of maximal repeats with all occurrences
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator), Paula Lehtola
  * @bug		No known bugs.
  */
-void map_maximal_repeats_to_string(struct max_repeat_node* nodes, struct wavelet_tree* bwt,
-		int count, struct bit_vector* bit_vec);
+max_repeat_with_indexes* map_maximal_repeats_to_string(struct max_repeat_node* nodes, struct wavelet_tree* bwt, int count, struct bit_vector* bit_vec);
 
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found MUMs.
