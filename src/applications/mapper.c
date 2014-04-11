@@ -24,7 +24,6 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes, w
 		if (bit_vec->is_bit_marked(bit_vec, k)) marked_bits++;
 	}
 	
-	
 	mapped_pair* pairs = calloc(marked_bits, sizeof(mapped_pair));
 	interval* inter = malloc(sizeof(interval));
 	interval* target = malloc(sizeof(interval));
@@ -49,7 +48,9 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes, w
 	i = 0;
 	for(int j = 0; j < count; j++){
 		max_indexes[j].length = nodes[j].length;
+		printf("Nodes length: %d:\n", max_indexes[j].length);
 		max_indexes[j].interval_size = (nodes[j].normal.j - nodes[j].normal.i) + 1;
+		printf("Nodes interval_size: %d:\n", max_indexes[j].interval_size);
 		unsigned int* list = calloc(max_indexes[j].interval_size, sizeof(unsigned int));
 		for (l = 0; l < max_indexes[j].interval_size; l++) {
 			list[l] = pairs[i].orig_pos;
