@@ -244,7 +244,7 @@ int are_two_substrings_mems(int index1, int index2, int length, char* string1,
 	return left_okay & right_okay;
 }
 
-substring_pair* find_maximal_exact_match_naive(char* string1, char* string2, int threshold) {
+substring_pair* find_maximal_exact_matches(char* string1, char* string2, int threshold) {
 	int length, i;
 
 	// is there need to iterate the string2 through?
@@ -255,7 +255,7 @@ substring_pair* find_maximal_exact_match_naive(char* string1, char* string2, int
 	int string1_length = strlen(string1);
 	int string2_length = strlen(string2);
 
-	for (length = threshold; length < string1_length; length++) {
+	for (length = threshold; length <= string1_length; length++) {
 		for (i = 0; i + length <= string1_length; i++) {
 
 			for (int j = 0; j + length <= string2_length; j++) {
@@ -355,12 +355,12 @@ void print_substring_pairs(substring_pair* head, char* string){
 		current = current->next;
 	}
 }
-//
+
 //int main(){
 //
-//	char* test1 = "falkjhölsjfoldskfjsöldfkjsalifdusaliuhfsalikufhsaöref";
-//	char* test2 = "fdsaökjhfrsakuhewlkjhfedsakjhfedsakjhölkjherlkjfedölkjäfedsalkjäfea";
-//	substring_pair* head = find_maximal_exact_match_naive(test1, test2, 3);
+//	char* test1 = "apin";
+//	char* test2 = "apin";
+//	substring_pair* head = find_maximal_exact_matches(test1, test2, 3);
 //	print_substring_pairs(head, test1);
 //	return 0;
 //}

@@ -10,6 +10,7 @@
 #include "../../include/applications.h"
 #include "../core/c_array.h"
 #include "../core/backward_search.h"
+#include "mapper.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -32,7 +33,7 @@ void mem_initialize_bwts(wavelet_tree* bwt1, wavelet_tree* bwt2,
 	mem_bwt2 = bwt2;
 	mem_rbwt1 = rbwt1;
 	mem_rbwt2 = rbwt2;
-	mems = calloc(1000, sizeof(triplet));
+	mems = calloc(1000000, sizeof(triplet));
 	mem_triplets_index = 0;
 }
 
