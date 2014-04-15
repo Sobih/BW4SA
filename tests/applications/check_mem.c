@@ -41,153 +41,164 @@ int search_and_remove(triplet trip, substring_pair* head)
 }
 
 START_TEST(test_mems_randomized_big_alphabet) {
-
-
 	srand(time(NULL));
-	char* test1;
-	char* test2;
-	wavelet_tree* bwt;
-	int* suffix_array;
-	int length;
+	char** strings = malloc(2 * sizeof(char*));
 	char* alphabet = "qwaesrdtfywugihoijokjplkplcznbvcxznbvm";
+	substring_pair* naive_mems;
+	parameter_struct* params;
+	iterator_state* state;
 
-	for (int i = 0; i < 10; i++){
-		test1 = generate_random_string(alphabet, rand() % 100 + 1);
-		test2 = generate_random_string(alphabet, rand() % 100 + 1);
-		int len1 = strlen(test1);
-		int len2 = strlen(test2);
+	for (int i = 0; i < 10; i++) {
+		int len1 = rand() % 100 + 1;
+		int len2 = rand() % 100 + 1;
 
-		substring_pair* naive_mems = find_maximal_exact_matches(test1, test2, 1);
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
 
-		double_iterate(test1, test2, &search_mems);
-		triplet* fast_mems = get_mems();
-		int num_mems = get_mems_amount();
+		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
 
-
+		params = initialize_for_mems(strings);
+		state = iterate(params);
+		mem_results* results = (mem_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mems = results->length;
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems);
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
 
-		for(int i = 0; i < num_mems; i++){
-
+		for(int i = 0; i < num_mems; i++) {
 			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1){
+			if(fast_mems[i].pos1 == len1+1)
 				fast_mems[i].pos1 = 0;
-			}
+
 			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1){
+			if(fast_mems[i].pos2 == len2+1)
 				fast_mems[i].pos2 = 0;
-			}
 		}
-		for(int h = 0; h <num_mems; h++){
-		}
-		for(int j = 0; j < num_mems; j++){
-			if(!search_and_remove(fast_mems[j], naive_mems)){
-				fail_unless(1 == 0);
-			}
-		}
+
+		for(int j = 0; j < num_mems; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mems));
+
 		fail_unless(naive_mems->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results->params);
+		free(results);
+		free(params);
+		free(naive_mems);
+		free_iterator_state(state);
 	}
+
+	free(strings);
 }
 END_TEST
 
 START_TEST(test_mems_randomized_small_alphabet) {
-
-
 	srand(time(NULL));
-	char* test1;
-	char* test2;
-	wavelet_tree* bwt;
-	int* suffix_array;
-	int length;
+	char** strings = malloc(2 * sizeof(char*));
 	char* alphabet = "abcgdf";
+	substring_pair* naive_mems;
+	parameter_struct* params;
+	iterator_state* state;
 	
-	for (int i = 0; i < 10; i++){
-		test1 = generate_random_string(alphabet, rand() % 20 + 1);
-		test2 = generate_random_string(alphabet, rand() % 20 + 1);
-		int len1 = strlen(test1);
-		int len2 = strlen(test2);
+	for (int i = 0; i < 10; i++) {
+		int len1 = rand() % 20 + 1;
+		int len2 = rand() % 20 + 1;
 
-		substring_pair* naive_mems = find_maximal_exact_matches(test1, test2, 1);
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
 
-		double_iterate(test1, test2, &search_mems);
-		triplet* fast_mems = get_mems();
-		int num_mems = get_mems_amount();
+		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
 
-
+		params = initialize_for_mems(strings);
+		state = iterate(params);
+		mem_results* results = (mem_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mems = results->length;
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems);
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
 
 		for(int i = 0; i < num_mems; i++){
-
 			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1){
+			if(fast_mems[i].pos1 == len1+1)
 				fast_mems[i].pos1 = 0;
-			}
+
 			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1){
+			if(fast_mems[i].pos2 == len2+1)
 				fast_mems[i].pos2 = 0;
-			}
 		}
-		for(int h = 0; h <num_mems; h++){
-		}
-		for(int j = 0; j < num_mems; j++){
-			if(!search_and_remove(fast_mems[j], naive_mems)){
-				fail_unless(1 == 0);
-			}
-		}
+
+		for(int j = 0; j < num_mems; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mems));
+
 		fail_unless(naive_mems->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results->params);
+		free(results);
+		free(params);
+		free(naive_mems);
+		free_iterator_state(state);
 	}
+
+	free(strings);
 }
 END_TEST
 
 START_TEST(test_mems_randomized_few_long_strings) {
-
-
 	srand(time(NULL));
-	char* test1;
-	char* test2;
-	wavelet_tree* bwt;
-	int* suffix_array;
-	int length;
+	char** strings = malloc(2 * sizeof(char*));
 	char* alphabet = "abcgdf";
+	substring_pair* naive_mems;
+	parameter_struct* params;
+	iterator_state* state;
 
 	for (int i = 0; i < 2; i++){
-		test1 = generate_random_string(alphabet, rand() % 300 + 1);
-		test2 = generate_random_string(alphabet, rand() % 300 + 1);
-		int len1 = strlen(test1);
-		int len2 = strlen(test2);
+		int len1 = rand() % 300 + 1;
+		int len2 = rand() % 300 + 1;
 
-		substring_pair* naive_mems = find_maximal_exact_matches(test1, test2, 1);
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
 
-		double_iterate(test1, test2, &search_mems);
-		triplet* fast_mems = get_mems();
-		int num_mems = get_mems_amount();
+		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
+
+		params = initialize_for_mems(strings);
+		state = iterate(params);
+		mem_results* results = (mem_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mems = results->length;
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems);
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
 
 		for(int i = 0; i < num_mems; i++){
-
 			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1){
+			if(fast_mems[i].pos1 == len1+1)
 				fast_mems[i].pos1 = 0;
-			}
+
 			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1){
+			if(fast_mems[i].pos2 == len2+1)
 				fast_mems[i].pos2 = 0;
-			}
 		}
-		for(int h = 0; h <num_mems; h++){
-		}
-		for(int j = 0; j < num_mems; j++){
-			if(!search_and_remove(fast_mems[j], naive_mems)){
-				fail_unless(1 == 0);
-			}
-		}
+
+		for(int j = 0; j < num_mems; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mems));
+
 		fail_unless(naive_mems->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results->params);
+		free(results);
+		free(params);
+		free(naive_mems);
+		free_iterator_state(state);
 	}
+
+	free(strings);
 }
 END_TEST
 

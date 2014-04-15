@@ -15,133 +15,229 @@
 #include <check.h>
 
 START_TEST(test_mum1)
-	{
-		double_iterate("laatikko", "mehukatti", &search_mums);
-		triplet* nodes = get_mums();
-		ck_assert_int_eq(2, get_mums_amount());
-		ck_assert_int_eq(2, nodes[0].pos1);
-		ck_assert_int_eq(1, nodes[0].pos2);
-		ck_assert_int_eq(2, nodes[0].length);
-		ck_assert_int_eq(8, nodes[1].pos1);
-		ck_assert_int_eq(7, nodes[1].pos2);
-		ck_assert_int_eq(2, nodes[1].length);
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "laatikko";
+	strings[1] = "mehukatti";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	triplet* nodes = results->data;
+	ck_assert_int_eq(2, results->length);
+	ck_assert_int_eq(2, nodes[0].pos1);
+	ck_assert_int_eq(1, nodes[0].pos2);
+	ck_assert_int_eq(2, nodes[0].length);
+	ck_assert_int_eq(8, nodes[1].pos1);
+	ck_assert_int_eq(7, nodes[1].pos2);
+	ck_assert_int_eq(2, nodes[1].length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum1_mapped)
-	{
-		double_iterate("laatikko", "mehukatti", &search_mums);
-		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
-				s_to_BWT("mehukatti"), get_mums_amount());
-		ck_assert_int_eq(2, get_mums_amount());
-		ck_assert_int_eq(2, nodes[0].pos1);
-		ck_assert_int_eq(5, nodes[0].pos2);
-		ck_assert_int_eq(2, nodes[0].length);
-		ck_assert_int_eq(3, nodes[1].pos1);
-		ck_assert_int_eq(7, nodes[1].pos2);
-		ck_assert_int_eq(2, nodes[1].length);
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "laatikko";
+	strings[1] = "mehukatti";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	triplet* nodes = results->data;
+	map_mum_triplets_to_string(nodes, s_to_bwt("laatikko"), s_to_bwt("mehukatti"), results->length);
+	ck_assert_int_eq(2, results->length);
+	ck_assert_int_eq(2, nodes[0].pos1);
+	ck_assert_int_eq(5, nodes[0].pos2);
+	ck_assert_int_eq(2, nodes[0].length);
+	ck_assert_int_eq(3, nodes[1].pos1);
+	ck_assert_int_eq(7, nodes[1].pos2);
+	ck_assert_int_eq(2, nodes[1].length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum2)
-	{
-		double_iterate("abracadabra", "arbadacarba", &search_mums);
-		triplet* nodes = get_mums();
-		ck_assert_int_eq(2, get_mums_amount());
-		ck_assert_int_eq(5, nodes[0].pos1);
-		ck_assert_int_eq(3, nodes[0].pos2);
-		ck_assert_int_eq(3, nodes[0].length);
-		ck_assert_int_eq(4, nodes[1].pos1);
-		ck_assert_int_eq(2, nodes[1].pos2);
-		ck_assert_int_eq(3, nodes[1].length);
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "abracadabra";
+	strings[1] = "arbadacarba";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	triplet* nodes = results->data;
+	ck_assert_int_eq(2, results->length);
+	ck_assert_int_eq(5, nodes[0].pos1);
+	ck_assert_int_eq(3, nodes[0].pos2);
+	ck_assert_int_eq(3, nodes[0].length);
+	ck_assert_int_eq(4, nodes[1].pos1);
+	ck_assert_int_eq(2, nodes[1].pos2);
+	ck_assert_int_eq(3, nodes[1].length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum2_mapped)
-	{
-		double_iterate("abracadabra", "arbadacarba", &search_mums);
-		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_mums_amount());
-		ck_assert_int_eq(2, get_mums_amount());
-		ck_assert_int_eq(5, nodes[0].pos1);
-		ck_assert_int_eq(3, nodes[0].pos2);
-		ck_assert_int_eq(3, nodes[0].length);
-		ck_assert_int_eq(3, nodes[1].pos1);
-		ck_assert_int_eq(5, nodes[1].pos2);
-		ck_assert_int_eq(3, nodes[1].length);
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "abracadabra";
+	strings[1] = "arbadacarba";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	triplet* nodes = results->data;
+	map_mum_triplets_to_string(nodes, s_to_bwt("abracadabra"), s_to_bwt("arbadacarba"), results->length);
+	ck_assert_int_eq(2, results->length);
+	ck_assert_int_eq(5, nodes[0].pos1);
+	ck_assert_int_eq(3, nodes[0].pos2);
+	ck_assert_int_eq(3, nodes[0].length);
+	ck_assert_int_eq(3, nodes[1].pos1);
+	ck_assert_int_eq(5, nodes[1].pos2);
+	ck_assert_int_eq(3, nodes[1].length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum_empty)
-	{
-		double_iterate("qwertyui", "asdfghjkl", &search_mums);
-		triplet* nodes = get_mums();
-		ck_assert_int_eq(0, get_mums_amount());
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "qwertyui";
+	strings[1] = "asdfghjkl";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	ck_assert_int_eq(0, results->length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum3)
-	{
-		double_iterate("qwertnmyuiop", "asdfgnmhjkl", &search_mums);
-		triplet* nodes = get_mums();
-		ck_assert_int_eq(1, get_mums_amount());
-		ck_assert_int_eq(2, nodes[0].length);
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "qwertnmyuiop";
+	strings[1] = "asdfgnmhjkl";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	triplet* nodes = results->data;
+	ck_assert_int_eq(1, results->length);
+	ck_assert_int_eq(2, nodes[0].length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum3_mapped)
-	{
-		double_iterate("qwertnmyuiop", "asdfgnmhjkl", &search_mums);
-		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("qwertnmyuiop"),
-				s_to_BWT("asdfgnmhjkl"), get_mums_amount());
-		ck_assert_int_eq(1, get_mums_amount());
-		ck_assert_int_eq(5, nodes[0].pos1);
-		ck_assert_int_eq(5, nodes[0].pos2);
-		ck_assert_int_eq(2, nodes[0].length);
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "qwertnmyuiop";
+	strings[1] = "asdfgnmhjkl";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	triplet* nodes = results->data;
+	map_mum_triplets_to_string(nodes, s_to_bwt("qwertnmyuiop"), s_to_bwt("asdfgnmhjkl"), results->length);
+	ck_assert_int_eq(1, results->length);
+	ck_assert_int_eq(5, nodes[0].pos1);
+	ck_assert_int_eq(5, nodes[0].pos2);
+	ck_assert_int_eq(2, nodes[0].length);
+
+	free(strings);
+	free(results->data);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum1_bitvector)
-	{
-		double_iterate("laatikko", "mehukatti", &search_mums);
-		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
-				s_to_BWT("mehukatti"), get_mums_amount());
-		bit_vector** vectors = mum_make_bit_vectors(nodes);
-		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 2));
-		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
-		ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 5));
-		ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 7));
-		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
-		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 7));
-		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 2));
-		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 3));
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "laatikko";
+	strings[1] = "mehukatti";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	map_mum_triplets_to_string(results->data, s_to_bwt("laatikko"), s_to_bwt("mehukatti"), results->length);
+	bit_vector** vectors = mum_make_bit_vectors(results, state);
+	ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 2));
+	ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
+	ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 5));
+	ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 7));
+	ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
+	ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 7));
+	ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 2));
+	ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 3));
+
+	free(strings);
+	free(results->data);
+	free_bit_vector(vectors[0]);
+	free_bit_vector(vectors[1]);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum2_bitvector)
-	{
-		double_iterate("abracadabra", "arbadacarba", &search_mums);
-		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_mums_amount());
-		bit_vector** vectors = mum_make_bit_vectors(nodes);
-		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
-		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 5));
-		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 3));
-		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "abracadabra";
+	strings[1] = "arbadacarba";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"), s_to_bwt("arbadacarba"), results->length);
+	bit_vector** vectors = mum_make_bit_vectors(results, state);
+	ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
+	ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 5));
+	ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 3));
+	ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
+
+	free(strings);
+	free(results->data);
+	free_bit_vector(vectors[0]);
+	free_bit_vector(vectors[1]);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 START_TEST(test_mum3_bitvector_no_mums)
-	{
-		double_iterate("abracadabra", "vzxmneytymn", &search_mums);
-		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_mums_amount());
-		bit_vector** vectors = mum_make_bit_vectors(nodes);
-		int i;
-		for (i = 0; i < vectors[0]->length; i++) {
-			ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], i));
-		}
-		for (i = 0; i < vectors[1]->length; i++) {
-			ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], i));
-		}
-	}END_TEST
+{
+	char** strings = malloc(2 * sizeof(char*));
+	strings[0] = "abracadabra";
+	strings[1] = "vzxmneytymn";
+	parameter_struct* params = initialize_for_mums(strings);
+	iterator_state* state = iterate(params);
+	mum_results* results = (mum_results*) params->ret_data;
+	map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"),s_to_bwt("arbadacarba"), results->length);
+	bit_vector** vectors = mum_make_bit_vectors(results, state);
+	int i;
+	for (i = 0; i < vectors[0]->length; i++) {
+		ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], i));
+	}
+	for (i = 0; i < vectors[1]->length; i++) {
+		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], i));
+	}
+
+	free(strings);
+	free(results->data);
+	free_bit_vector(vectors[0]);
+	free_bit_vector(vectors[1]);
+	free_iterator_state(state);
+	//free_parameter_struct(params);
+}END_TEST
 
 TCase * create_mums_test_case(void) {
 	TCase * tc_stack = tcase_create("mum_test");

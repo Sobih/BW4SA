@@ -397,7 +397,7 @@ wavelet_tree* create_wavelet_tree(const char* string) {
  * This algorithm frees a wavelet node and all of it's
  * descendants. It does not free the alphabet used by the
  * wavelet tree but it does break the link between the
- * parent node and the subtree that is being free, so it
+ * parent node and the subtree that is being freed, so it
  * should be used with caution.
  *
  * @param	tree	The wavelet tree where the subtree resides.
@@ -422,7 +422,7 @@ void free_subtree(wavelet_tree* tree, unsigned int node) {
 	}
 }
 
-void free_wavelet_tree(wavelet_tree* tree) {
+void free_wavelet_tree_internals(wavelet_tree* tree) {
 	if (tree == NULL)
 		return;
 
@@ -439,5 +439,9 @@ void free_wavelet_tree(wavelet_tree* tree) {
 	free(tree->nodes[0].vector.vector);
 
 	free(tree->nodes);
+}
+
+void free_wavelet_tree(wavelet_tree* tree) {
+	free_wavelet_tree_internals(tree);
 	free(tree);
 }

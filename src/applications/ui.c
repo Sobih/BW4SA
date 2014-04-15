@@ -85,7 +85,7 @@ void ui()
 	if (choice == 1) {
 		iterate(input, &print_node);
 	} else if (choice == 2) {
-		res_root = s_to_BWT(input);
+		res_root = s_to_bwt(input);
 		print_wavelet_tree(res_root);
 	} else if (choice == 3) {
 		res = bwt_to_s(root);
