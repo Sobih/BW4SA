@@ -103,7 +103,7 @@ END_TEST
 START_TEST(alphabet_interval) {
 	srand(time(NULL));
 
-	int length = (rand() % 500) + 1, runs = 500, start, end, counter, index, correct_length;
+	int length = (rand() % 250) + 1, runs = 500, start, end, counter, index, correct_length;
 	char* string = malloc(length * sizeof(char));
 	interval* inter = malloc(sizeof(interval));
 	wavelet_tree* tree;

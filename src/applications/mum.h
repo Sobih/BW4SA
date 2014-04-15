@@ -15,18 +15,7 @@ struct bit_vector;
 struct wavelet_tree;
 struct parameter_struct;
 struct iterator_state;
-
-/**
- * @brief	A simple structure for storing the starting indices of a MUM inside
- * 			two BWTs and the length of the MUM.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-typedef struct triplet {
-	unsigned int pos1;
-	unsigned int pos2;
-	unsigned int length;
-} triplet;
+struct triplet;
 
 /**
  * @brief	A structure for storing the results of an iteration when finding

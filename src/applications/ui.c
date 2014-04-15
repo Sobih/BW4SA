@@ -27,6 +27,7 @@ void print_choices()
 	printf("8 Make a DOT tree\n");
 	printf("9 Count distinct substrings\n");
 	printf("10 Display maximal repeats\n");
+	printf("11 Find MEMs\n");
 }
 
 void print_int_array(int* array, int len)
@@ -117,7 +118,13 @@ void ui()
 		//maximals_print_nodes(input);
 		print_maximal_repeat_substrings(input);
 		//compare_quick_sort()
-	} else {
+	} else if (choice == 11) {
+		printf("Give the second input string: ");
+		char* input2 = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
+		scanf("%s", input2);
+		double_iterate(input, input2, &search_mems);
+		print_mems(input);
+	}else {
 		printf("Invalid choice\n");
 	}
 

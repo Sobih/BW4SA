@@ -32,4 +32,16 @@ typedef struct substring
 	int length;
 } substring;
 
+/**
+ * @brief	A simple structure for storing the starting indices of a MUM inside
+ * 			two BWTs and the length of the MUM.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+typedef struct triplet {
+	unsigned int pos1;
+	unsigned int pos2;
+	unsigned int length;
+} triplet;
+
 #endif /* STRUCTS_H_ */

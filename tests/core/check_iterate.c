@@ -30,7 +30,6 @@ int is_interval_right_maximal_test(bit_vector* runs, interval* inter) {
 
 START_TEST(simple_runs_test)
 {
-	printf("SIMPLE RUNS TEST\n");
 	char* string = "abracadabra";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -54,7 +53,6 @@ END_TEST
 
 START_TEST(another_simple_test)
 {
-	printf("ANOTHER SIMPLE TEST\n");
 	char* string = "HATTIVATTI";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -77,7 +75,6 @@ END_TEST
 
 START_TEST(test_interval_query)
 {
-	printf("TEST INTERVAL QUERY\n");
 	char* string = "ABRACADABRA";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -99,7 +96,6 @@ END_TEST
 
 START_TEST(test_wrong_intervals)
 {
-	printf("TEST WRONG INTERVALS\n");
 	char* string = "ABRACADABRA";
 	wavelet_tree* tree = reverse_bwt(string);
 	bit_vector* runs = create_runs_vector(tree, 0);
@@ -165,7 +161,6 @@ void free_shared_list() {
 //this test tests nothing??
 START_TEST(test_iterate2)
 {
-	printf("TEST ITERATE 2\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
@@ -185,7 +180,6 @@ START_TEST(test_iterate2)
 
 START_TEST(test_iterate1)
 {
-	printf("TEST ITERATE 1\n");
 	list_ptr = 0;
 	int max_size = 20;
 	shared_list = malloc(sizeof(substring*)*max_size);
@@ -247,7 +241,7 @@ START_TEST(test_iterate_randomized_small_alphabet)
 	char** strings = malloc(sizeof(char*));
 	wavelet_tree* bwt;
 	iterator_state* state;
-	for(int i= 0; i<1000; i++){
+	for(int i= 0; i<100; i++){
 
 		int length = (rand() % 200)+1;
 		strings[0] = generate_random_string(alphabet, length);
@@ -282,7 +276,7 @@ START_TEST(test_iterate_randomized_big_alphabet)
 	char** strings = malloc(sizeof(char*));
 	wavelet_tree* bwt;
 	iterator_state* state;
-	for(int i= 0; i<1000; i++){
+	for(int i= 0; i<100; i++){
 		int length = (rand() % 100) + 100;
 		strings[0] = generate_random_string(alphabet, length);
 		bwt = s_to_bwt(strings[0]);
