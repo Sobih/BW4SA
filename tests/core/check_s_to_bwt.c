@@ -29,6 +29,10 @@ START_TEST(test_abracadabra_bwt)
 		ck_assert(result->char_at(result, 9) == expected_BWT->char_at(expected_BWT, 9));
 		ck_assert(result->char_at(result, 10) == expected_BWT->char_at(expected_BWT, 10));
 		ck_assert(result->char_at(result, 11) == expected_BWT->char_at(expected_BWT, 11));
+
+		free(result->nodes[0].string);
+		free_wavelet_tree(expected_BWT);
+		free_wavelet_tree(result);
 	}END_TEST
 
 START_TEST(test_hattivatti_bwt)
@@ -49,6 +53,10 @@ START_TEST(test_hattivatti_bwt)
 		ck_assert(result->char_at(result, 8) == expected_BWT->char_at(expected_BWT, 8));
 		ck_assert(result->char_at(result, 9) == expected_BWT->char_at(expected_BWT, 9));
 		ck_assert(result->char_at(result, 10) == expected_BWT->char_at(expected_BWT, 10));
+
+		free(result->nodes[0].string);
+		free_wavelet_tree(expected_BWT);
+		free_wavelet_tree(result);
 	}END_TEST
 
 START_TEST(test_lol_bwt)
@@ -62,6 +70,10 @@ START_TEST(test_lol_bwt)
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
 		ck_assert(result->char_at(result, 2) == expected_BWT->char_at(expected_BWT, 2));
 		ck_assert(result->char_at(result, 3) == expected_BWT->char_at(expected_BWT, 3));
+
+		free(result->nodes[0].string);
+		free_wavelet_tree(expected_BWT);
+		free_wavelet_tree(result);
 	}END_TEST
 
 START_TEST(test_hei_bwt)
@@ -75,6 +87,10 @@ START_TEST(test_hei_bwt)
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
 		ck_assert(result->char_at(result, 2) == expected_BWT->char_at(expected_BWT, 2));
 		ck_assert(result->char_at(result, 3) == expected_BWT->char_at(expected_BWT, 3));
+
+		free(result->nodes[0].string);
+		free_wavelet_tree(expected_BWT);
+		free_wavelet_tree(result);
 	}END_TEST
 
 START_TEST(test_a_bwt)
@@ -86,6 +102,10 @@ START_TEST(test_a_bwt)
 
 		ck_assert(result->char_at(result, 0) == expected_BWT->char_at(expected_BWT, 0));
 		ck_assert(result->char_at(result, 1) == expected_BWT->char_at(expected_BWT, 1));
+
+		free(result->nodes[0].string);
+		free_wavelet_tree(expected_BWT);
+		free_wavelet_tree(result);
 	}END_TEST
 
 START_TEST(test_laatikko_bwt)
@@ -104,6 +124,10 @@ START_TEST(test_laatikko_bwt)
 		ck_assert(result->char_at(result, 6) == expected_BWT->char_at(expected_BWT, 6));
 		ck_assert(result->char_at(result, 7) == expected_BWT->char_at(expected_BWT, 7));
 		ck_assert(result->char_at(result, 8) == expected_BWT->char_at(expected_BWT, 8));
+
+		free(result->nodes[0].string);
+		free_wavelet_tree(expected_BWT);
+		free_wavelet_tree(result);
 	}END_TEST
 
 TCase * create_carray_test_case(void) {
