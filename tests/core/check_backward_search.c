@@ -379,6 +379,12 @@ START_TEST (test_interval_search_random) {
 
 		free_wavelet_tree(tree);
 	}
+
+	free(inter);
+	free(complex);
+	free(naive);
+	free(string);
+	free(bwt);
 }
 END_TEST
 
