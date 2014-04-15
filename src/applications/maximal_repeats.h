@@ -15,6 +15,7 @@ struct wavelet_tree;
 struct bit_vector;
 struct substring;
 struct interval;
+struct max_repeat_node_with_indexes;
 
 /**
  * @brief	A simple struct for storing data on a maximal repeat substring.
@@ -58,6 +59,8 @@ void search_maximal_repeats(struct substring* node);
  * @bug		No known bugs.
  */
 max_repeat_node* get_nodes();
+
+struct max_repeat_with_indexes* get_max_repeats_with_indexes();
 
 /**
  * @brief	Prints the substring the interval represents.

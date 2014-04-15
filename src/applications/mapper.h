@@ -41,15 +41,15 @@ typedef struct max_repeat_with_indexes {
  *
  * Updates the normal.i value to index in the original string.
  *
- * @param	nodes	An array of all maximal repeat substrings inside the BWT.
- * @param	bwt		The BWT of the original string, in wavelet tree form.
- * @param	count	Length of the nodes-array.
- * @param	bit_vec	Bit vector which tells where the maximals repeats start
- * @return	A list of maximal repeats with all occurrences
+ * @param	nodes			An array of all maximal repeat substrings inside the BWT.
+ * @param	bwt				The BWT of the original string, in wavelet tree form.
+ * @param	nodes_length	Length of the nodes-array.
+ * @param	bit_vec			Bit vector which tells where the maximals repeats start
+ * @return					A list of maximal repeats with all occurrences
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator), Paula Lehtola
  * @bug		No known bugs.
  */
-max_repeat_with_indexes* map_maximal_repeats_to_string(struct max_repeat_node* nodes, struct wavelet_tree* bwt, int count, struct bit_vector* bit_vec);
+max_repeat_with_indexes* map_maximal_repeats_to_string(struct max_repeat_node* nodes, struct wavelet_tree* bwt, int nodes_length, struct bit_vector* bit_vec);
 
 /**
  * @brief	Maps the BWT indexes to indexes in the original string in all found MUMs.
@@ -64,6 +64,6 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(struct max_repeat_node* n
  * @bug		No known bugs.
  */
 void map_mum_triplets_to_string(struct triplet* nodes,
-		struct wavelet_tree* bwt1, struct wavelet_tree* bwt2, int count);
+		struct wavelet_tree* bwt1, struct wavelet_tree* bwt2, int nodes_length);
 
 #endif /* MAPPER_H_ */

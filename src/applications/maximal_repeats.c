@@ -22,8 +22,8 @@ static int nodes_index;
 
 void max_repeats_initialize_bwt(wavelet_tree* bwt) {
 	max_bwt = bwt;
-	max_repeats_runs = create_runs_vector(bwt,0);
-	nodes = calloc(1000,sizeof(max_repeat_node));
+	max_repeats_runs = create_runs_vector(bwt, 0);
+	nodes = calloc(1000, sizeof(max_repeat_node));
 	nodes_index = 0;
 }
 
@@ -39,8 +39,7 @@ int is_interval_left_maximal(interval inter) {
 	if (inter.i >= inter.j)
 		return 0;
 
-	if (max_repeats_runs->rank(max_repeats_runs, (inter.i) + 1,
-			inter.j) > 0) {
+	if (max_repeats_runs->rank(max_repeats_runs, (inter.i) + 1, inter.j) > 0) {
 		return 1;
 	} else {
 		return 0;
@@ -49,7 +48,8 @@ int is_interval_left_maximal(interval inter) {
 
 void search_maximal_repeats(substring* node) {
 	if (is_interval_left_maximal(node->normal)) {
-		max_repeat_node max_node = *((max_repeat_node*) malloc(sizeof(max_repeat_node)));
+		max_repeat_node max_node = *((max_repeat_node*) malloc(
+				sizeof(max_repeat_node)));
 		max_node.normal.i = node->normal.i;
 		max_node.normal.j = node->normal.j;
 		max_node.length = node->length;
@@ -62,19 +62,26 @@ max_repeat_node* get_nodes() {
 	return nodes;
 }
 
+max_repeat_with_indexes* get_max_repeats_with_indexes() {
+	return map_maximal_repeats_to_string(nodes, max_bwt, nodes_index,
+			max_repeat_make_bit_vector(nodes));
+}
+
 void print_maximal_repeat_substrings(char* string) {
-	max_repeat_with_indexes* max_repeats = map_maximal_repeats_to_string(nodes, max_bwt, nodes_index,max_repeat_make_bit_vector(nodes));
+	max_repeat_with_indexes* max_repeats = map_maximal_repeats_to_string(nodes,
+			max_bwt, nodes_index, max_repeat_make_bit_vector(nodes));
 	int i, j;
 
 	for (i = 0; i < nodes_index; i++) {
 		printf("Positions: ");
-		for(j = 0; j < max_repeats[i].interval_size; j++){
+		for (j = 0; j < max_repeats[i].interval_size; j++) {
 			printf("%d, ", max_repeats[i].indexes[j]);
 		}
 		printf("\n");
 		printf("Substring: %s index:%d length: %d \n",
 				substring_from_string(string, max_repeats[i].indexes[0],
-						max_repeats[i].length), max_repeats[i].indexes[0], max_repeats[i].length);
+						max_repeats[i].length), max_repeats[i].indexes[0],
+				max_repeats[i].length);
 	}
 }
 
@@ -82,7 +89,6 @@ int get_max_repeats_nodes_index() {
 	return nodes_index;
 
 }
-
 
 bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes) {
 	bit_vector* bit_vec = malloc(sizeof(bit_vector));
