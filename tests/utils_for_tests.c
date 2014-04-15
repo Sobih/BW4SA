@@ -112,7 +112,6 @@ void print_substr(char* string, int start_index, int length) {
 	for (int i = 0; i < length; i++) {
 		printf("%c", string[start_index + i]);
 	}
-	printf("\n");
 }
 
 test_substr* find_maximal_repeat_substrings(char* string) {
@@ -201,6 +200,85 @@ void print_substring_indices(test_substr* head) {
 
 }
 
+
+int two_substrings_from_different_strings_equal(char* string1, char* string2,
+		int string1_length, int string2_length, int string1_index, int string2_index, int substr_length)
+{
+	int i;
+
+	if (string1_index + substr_length > string1_length || string2_index + substr_length > string2_length) {
+		return 0;
+	}
+	
+	for (i = 0; i < substr_length; i++) {
+		if (string1[string1_index  + i] != string2[string2_index + i]) {
+			return 0;
+		}
+	
+	}
+	
+	return 1;
+
+}
+
+
+int are_two_substrings_mems(int index1, int index2, int length, char* string1,
+		int str_length1, char* string2, int str_length2) {
+	if (!two_substrings_from_different_strings_equal(string1, string2,
+			str_length1, str_length2, index1, index2, length)) {
+		return 0;
+	}
+	int left_okay = 0;
+	int right_okay = 0;
+
+	if (index1 == 0 || index2 == 0) {
+		left_okay = 1;
+	} else if (string1[index1 - 1] != string2[index2 - 1]) {
+		left_okay = 1;
+	}
+	if (index1 + length == str_length1 || index2 + length == str_length2) {
+		right_okay = 1;
+	} else if (string1[index1 + length] != string2[index2 + length]) {
+		right_okay = 1;
+	}
+	return left_okay & right_okay;
+}
+
+substring_pair* find_maximal_exact_matches(char* string1, char* string2, int threshold) {
+	int length, i;
+
+	// is there need to iterate the string2 through?
+	substring_pair* current = calloc(1, sizeof(substring_pair));
+	substring_pair* head = current;
+	substring_pair* new;
+
+	int string1_length = strlen(string1);
+	int string2_length = strlen(string2);
+
+	for (length = threshold; length <= string1_length; length++) {
+		for (i = 0; i + length <= string1_length; i++) {
+
+			for (int j = 0; j + length <= string2_length; j++) {
+
+				if (are_two_substrings_mems(i, j, length, string1,
+						string1_length, string2, string2_length)) {
+
+					new = calloc(1, sizeof(substring_pair));
+					new->index1 = i;
+					new->index2 = j;
+					new->length = length;
+					current->next = new;
+					current = new;
+
+				}
+			}
+		}
+
+	}
+	return head;
+}
+
+
 int two_substrings_equal2(char* first, int first_index, char* second, int second_index, int length)
 {
 	for(int i = 0; i < length; i++){
@@ -265,19 +343,25 @@ test_substr** find_common_substrings(char* first, char* second) {
 
 	return list;
 }
-//
+
+void print_substring_pairs(substring_pair* head, char* string){
+	substring_pair* current = head->next;
+
+	while(current != NULL){
+		printf("pair [%d, %d], length %d \"",
+				current->index1, current->index2, current->length);
+		print_substr(string, current->index1, current->length);
+		printf("\"\n");
+		current = current->next;
+	}
+}
+
 //int main(){
 //
-//	//char* test = generate_random_string("acgt", 100);
-//	srand(time(NULL));
-//	char* test1 = generate_random_string("acgt", 100);
-//	char* test2 = generate_random_string("acgt", 100);
-//	printf("%s\n", test1);
-//	printf("%s", test2);
-//	test_substr** doubles = find_common_substrings(test1, test2);
-//	print_substring_list(test1, doubles[0]);
-//	printf("\n");
-//	print_substring_list(test2, doubles[1]);
+//	char* test1 = "apin";
+//	char* test2 = "apin";
+//	substring_pair* head = find_maximal_exact_matches(test1, test2, 3);
+//	print_substring_pairs(head, test1);
 //	return 0;
 //}
 
