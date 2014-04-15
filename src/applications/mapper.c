@@ -22,7 +22,7 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes,
 
 	max_repeat_with_indexes* max_indexes = calloc(nodes_length,
 			sizeof(max_repeat_with_indexes));
-	for (k = 0; k < bwt->get_num_bits; k++) {
+	for (k = 0; k < bwt->get_num_bits(bwt); k++) {
 		if (bit_vec->is_bit_marked(bit_vec, k))
 			marked_bits++;
 	}
@@ -116,9 +116,12 @@ mapped_pair* update_position_in_triplets(wavelet_tree* bwt, int nodes_length,
 	return pairs;
 }
 
-void map_mum_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
-		wavelet_tree* bwt2, int nodes_length) {
-	bit_vector** vecs = mum_make_bit_vectors(nodes);
+void map_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
+		wavelet_tree* bwt2, int nodes_length, bit_vector** vecs) {
+
+	print_bit_vector(vecs[0]);
+	print_bit_vector(vecs[1]);
+
 	mapped_pair* pairs1 = update_position_in_triplets(bwt1, nodes_length, vecs[0]);
 	compare_quick_sort(pairs1, nodes_length, sizeof(mapped_pair),
 			&compare_mapped_pairs_by_bwt_pos);

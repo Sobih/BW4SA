@@ -10,6 +10,7 @@
 #include "../../src/utils/bit_vector.h"
 #include "../../src/applications/mum.h"
 #include "../../src/applications/mapper.h"
+#include "../../src/utils/structs.h"
 #include <stdlib.h>
 #include <check.h>
 
@@ -30,8 +31,8 @@ START_TEST(test_mum1_mapped)
 	{
 		double_iterate("laatikko", "mehukatti", &search_mums);
 		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
-				s_to_BWT("mehukatti"), get_mums_amount());
+		map_triplets_to_string(nodes, s_to_BWT("laatikko"),
+				s_to_BWT("mehukatti"), get_mums_amount(), mum_make_bit_vectors(nodes));
 		ck_assert_int_eq(2, get_mums_amount());
 		ck_assert_int_eq(2, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -58,8 +59,8 @@ START_TEST(test_mum2_mapped)
 	{
 		double_iterate("abracadabra", "arbadacarba", &search_mums);
 		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_mums_amount());
+		map_triplets_to_string(nodes, s_to_BWT("abracadabra"),
+				s_to_BWT("arbadacarba"), get_mums_amount(), mum_make_bit_vectors(nodes));
 		ck_assert_int_eq(2, get_mums_amount());
 		ck_assert_int_eq(3, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -88,8 +89,8 @@ START_TEST(test_mum3_mapped)
 	{
 		double_iterate("qwertnmyuiop", "asdfgnmhjkl", &search_mums);
 		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("qwertnmyuiop"),
-				s_to_BWT("asdfgnmhjkl"), get_mums_amount());
+		map_triplets_to_string(nodes, s_to_BWT("qwertnmyuiop"),
+				s_to_BWT("asdfgnmhjkl"), get_mums_amount(), mum_make_bit_vectors(nodes));
 		ck_assert_int_eq(1, get_mums_amount());
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -100,8 +101,8 @@ START_TEST(test_mum1_bitvector)
 	{
 		double_iterate("laatikko", "mehukatti", &search_mums);
 		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("laatikko"),
-				s_to_BWT("mehukatti"), get_mums_amount());
+		map_triplets_to_string(nodes, s_to_BWT("laatikko"),
+				s_to_BWT("mehukatti"), get_mums_amount(), mum_make_bit_vectors(nodes));
 		bit_vector** vectors = mum_make_bit_vectors(nodes);
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 2));
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
@@ -117,8 +118,8 @@ START_TEST(test_mum2_bitvector)
 	{
 		double_iterate("abracadabra", "arbadacarba", &search_mums);
 		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_mums_amount());
+		map_triplets_to_string(nodes, s_to_BWT("abracadabra"),
+				s_to_BWT("arbadacarba"), get_mums_amount(), mum_make_bit_vectors(nodes));
 		bit_vector** vectors = mum_make_bit_vectors(nodes);
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 5));
@@ -130,8 +131,8 @@ START_TEST(test_mum3_bitvector_no_mums)
 	{
 		double_iterate("abracadabra", "vzxmneytymn", &search_mums);
 		triplet* nodes = get_mums();
-		map_mum_triplets_to_string(nodes, s_to_BWT("abracadabra"),
-				s_to_BWT("arbadacarba"), get_mums_amount());
+		map_triplets_to_string(nodes, s_to_BWT("abracadabra"),
+				s_to_BWT("arbadacarba"), get_mums_amount(), mum_make_bit_vectors(nodes));
 		bit_vector** vectors = mum_make_bit_vectors(nodes);
 		int i;
 		for (i = 0; i < vectors[0]->length; i++) {

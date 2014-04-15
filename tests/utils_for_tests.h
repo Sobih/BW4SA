@@ -15,6 +15,14 @@ typedef struct tests_substring
 	struct tests_substring* next;
 }test_substr;
 
+typedef struct substr_pair
+{
+	int index1;
+	int index2;
+	int length;
+	struct substr_pair* next;
+}substring_pair;
+
 char* generate_random_string(char* alphabet, int length);
 
 test_substr* find_maximal_repeat_substrings(char* string);
@@ -23,7 +31,11 @@ test_substr* find_right_maximal_substrings(char* string);
 
 test_substr** find_common_substrings(char* first, char* second);
 
+substring_pair* find_maximal_exact_matches(char* string1, char* string2, int threshold);
+
 void print_substring_list(char* string, test_substr* head);
+
+void print_substring_pairs(substring_pair* head, char* string);
 
 void print_substring_indices(test_substr* head);
 

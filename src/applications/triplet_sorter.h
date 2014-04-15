@@ -66,7 +66,6 @@ int compare_mapped_pairs_by_bwt_pos(void* first, void* second);
  * @return				Returns the sorted array.
  * @bug					No known bugs.
  */
- 
 void compare_quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size, int (*compare)(void* first, void* second));
 
 #endif /* TRIPLET_SORTER_H_ */

@@ -63,7 +63,7 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(struct max_repeat_node* n
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void map_mum_triplets_to_string(struct triplet* nodes,
-		struct wavelet_tree* bwt1, struct wavelet_tree* bwt2, int nodes_length);
+void map_triplets_to_string(struct triplet* nodes,
+		struct wavelet_tree* bwt1, struct wavelet_tree* bwt2, int nodes_length, struct bit_vector** vecs);
 
 #endif /* MAPPER_H_ */

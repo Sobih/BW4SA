@@ -24,7 +24,7 @@ void mum_initialize_bwts(wavelet_tree* bwt1, wavelet_tree* bwt2, wavelet_tree* r
 	mum_bwt2 = bwt2;
 	mum_rbwt1 = rbwt1;
 	mum_rbwt2 = rbwt2;
-	mums = calloc(100, sizeof(triplet));
+	mums = calloc(1000, sizeof(triplet));
 	triplets_index = 0;
 }
 
@@ -62,7 +62,7 @@ void print_mums(char* string) {
 				"Index in the BWT first string: %d\nIndex in the BWT second string: %d\nLength: %d \n",
 				trip.pos1, trip.pos2, trip.length);
 	}
-	map_mum_triplets_to_string(mums, mum_bwt1, mum_bwt2, triplets_index);
+	map_triplets_to_string(mums, mum_bwt1, mum_bwt2, triplets_index, mum_make_bit_vectors(mums));
 	for (i = 0; i < triplets_index; i++) {
 		triplet trip = mums[i];
 		printf(
@@ -74,11 +74,11 @@ void print_mums(char* string) {
 }
 
 bit_vector** mum_make_bit_vectors(triplet* mapped_mums) {
-	bit_vector** vectors = calloc(sizeof(bit_vector),2);
+	bit_vector** vectors = calloc(2, sizeof(bit_vector));
 	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
-	init_bit_vector(bit_vector1, mum_bwt1->num_nodes);
+	init_bit_vector(bit_vector1, mum_bwt1->get_num_bits(mum_bwt1));
 	bit_vector* bit_vector2 = malloc(sizeof(bit_vector));
-	init_bit_vector(bit_vector2, mum_bwt2->num_nodes);
+	init_bit_vector(bit_vector2, mum_bwt2->get_num_bits(mum_bwt2));
 	int i;
 	for (i = 0; i < triplets_index; i++) {
 		triplet trip = mums[i];
