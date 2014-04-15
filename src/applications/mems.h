@@ -1,56 +1,51 @@
-/*
- * mems.h
- *
- *  Created on: 3.4.2014
- *      Author: lvapaaka
+/**
+ * @file	mems.h
+ * @brief	A collection of functions for finding Maximal Exact Matches (=MEMs) using iterate.
+ * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator)
+ * @bug		No known bugs.
  */
 
 #ifndef MEMS_H_
 #define MEMS_H_
 
-struct substring;
-struct bit_vector;
-struct wavelet_tree;
-struct alphabet_data;
-
+struct parameter_struct;
+struct iterator_state;
 
 /**
- * @brief	Initialization function for mems, so the callback can be done without having all BWTs as parameters.
- * @param	bwt1			The normal BWT of the first string
- * @param	bwt2			The normal BWT of the second string
- * @param	rbwt1			The BWT of the reverse of the first string
- * @param	rbwt2			The BWT of the reverse of the second string
+ * @brief	A structure for storing the results of an iteration when finding
+ * 			maximal exact matches.
+ * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void mem_initialize_bwts(struct wavelet_tree* bwt1, struct wavelet_tree* bwt2,
-		struct wavelet_tree* rbwt1, struct wavelet_tree* rbwt2);
+typedef struct mem_results {
+	triplet* data;
+	unsigned int length;
+	unsigned int allocated_length;
+	void* params;
+} mem_results;
+
+struct parameter_struct* initialize_for_mems(char** strings);
 
 /**
  * @brief	Callback function given to double_iterate that determines if a substring is a MEM (Maximal Exact Match)
- * @param	node1			The intervals of a substring in the first string
- * @param	node2			The intervals of a substring in the second string
- * @bug		Doesn't differentiate between the $-characters
- */
-void search_mems(struct substring* node1, struct substring* node2);
-
-/**
- * @brief	Return the list of found MEMs as a list of triplet structs.
- * @return	List of found MEMs
+ * @param	state		The internal state of the iterator.
+ * @param	results		A pointer to a region of memory containing the previous results of
+ * 						this callback function. Can safely be cast to <code>mem_results</code>
+ * 						if iterate was initialized using <code>initialize_for_mems()</code>.
+ * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-struct triplet* get_mems();
+void search_mems(struct iterator_state* state, void* results);
 
 /**
- * @brief	Return the amount of MEMs found.
- * @return	The number of MEMs, i.e. the size of the list.
+ * @brief	Prints the indexes of the MEM in both strings, as well as the substring itself,
+ * 			to stdout.
+ * @param	string		The string that is to be searched inside the MEM.
+ * @param	results		Results of the iteration over a set of strings.
+ * @param	state		The internal state of the iterator that performed the search.
+ * @author	Lassi Vapaakallio, Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int get_mems_amount();
-
-/**
- * @brief	Prints the indexes the MUM occurs in both strings and the substring itself.
- * @bug		No known bugs.
- */
-void print_mems(char* string);
+void print_mems(char* string, mem_results* results, iterator_state* state);
 
 #endif /* MEMS_H_ */
