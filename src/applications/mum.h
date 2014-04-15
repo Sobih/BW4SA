@@ -10,9 +10,7 @@
 #ifndef MUM_H_
 #define MUM_H_
 
-struct substring;
 struct bit_vector;
-struct wavelet_tree;
 struct parameter_struct;
 struct iterator_state;
 struct triplet;
