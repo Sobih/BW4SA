@@ -51,7 +51,7 @@ START_TEST(test_mems_randomized_big_alphabet) {
 	int length;
 	char* alphabet = "qwaesrdtfywugihoijokjplkplcznbvcxznbvm";
 
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 10; i++){
 		test1 = generate_random_string(alphabet, rand() % 100 + 1);
 		test2 = generate_random_string(alphabet, rand() % 100 + 1);
 		int len1 = strlen(test1);
@@ -102,7 +102,7 @@ START_TEST(test_mems_randomized_small_alphabet) {
 	int length;
 	char* alphabet = "abcgdf";
 	
-	for (int i = 0; i < 20; i++){
+	for (int i = 0; i < 10; i++){
 		test1 = generate_random_string(alphabet, rand() % 20 + 1);
 		test2 = generate_random_string(alphabet, rand() % 20 + 1);
 		int len1 = strlen(test1);
@@ -153,9 +153,9 @@ START_TEST(test_mems_randomized_few_long_strings) {
 	int length;
 	char* alphabet = "abcgdf";
 
-	for (int i = 0; i < 10; i++){
-		test1 = generate_random_string(alphabet, rand() % 1000 + 1);
-		test2 = generate_random_string(alphabet, rand() % 1000 + 1);
+	for (int i = 0; i < 2; i++){
+		test1 = generate_random_string(alphabet, rand() % 300 + 1);
+		test2 = generate_random_string(alphabet, rand() % 300 + 1);
 		int len1 = strlen(test1);
 		int len2 = strlen(test2);
 
@@ -164,8 +164,6 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		double_iterate(test1, test2, &search_mems);
 		triplet* fast_mems = get_mems();
 		int num_mems = get_mems_amount();
-
-
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
 		map_mum_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems);
@@ -198,6 +196,7 @@ TCase * create_mems_test_case(void) {
 	tcase_add_test(tc_mems, test_mems_randomized_big_alphabet);
 	tcase_add_test(tc_mems, test_mems_randomized_small_alphabet);
 	tcase_add_test(tc_mems, test_mems_randomized_few_long_strings);
+	tcase_set_timeout(tc_mems, 120);
 	return tc_mems;
 }
 
