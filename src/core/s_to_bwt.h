@@ -20,6 +20,6 @@ struct wavelet_tree;
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-struct wavelet_tree* s_to_BWT(uchar* string);
+struct wavelet_tree* s_to_bwt(uchar* string);
 
 #endif /* S_TO_BWT_H_ */

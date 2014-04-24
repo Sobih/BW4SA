@@ -96,16 +96,15 @@ internal_node* find_node_by_substring(substring* substr) {
 }
 
 /**
- * @brief	Inserts a new node into the dot tree.
- * @param	substr1		The substring to be inserted into the tree.
- * @param	prev_substr	The previous substring that was inserted, used for
- * 						finding the location for the new substring.
- * @param	c			The character that was used to extend the previous
- * 						substring.
+ * @brief	Inserts a new node into the dot tree as a callback-function to iterate.
+ * @param	state		The internal state of the iterator.
+ * @param	results		A pointer to a region of memory containing any previous
+ * 						results stored by this callback (not used in this function).
  * @author	Topi Paavilainen, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) {
+void collect_internal_nodes(iterator_state* state, void* results) {
+	substring* substr1 = state->current;
 
 	substring* substr = calloc(1, sizeof(substring));
 	substr->length = substr1->length;
@@ -120,8 +119,8 @@ void collect_internal_nodes(substring* substr1, substring* prev_substr, char c) 
 
 	insert_node->id = node_id_index;
 	node_id_index++;
-	internal_node* prev_node = find_node_by_substring(prev_substr);
-	insert_node->c = c;
+	internal_node* prev_node = find_node_by_substring(state->prev);
+	insert_node->c = state->current_extension;
 
 	insert_node->weiner_node = prev_node;
 	internal_node* temp_node = root->first_child;
@@ -335,7 +334,7 @@ void print_tree_to_file(char* filename, int* suffix_array, char* orig_string) {
 }
 
 void draw_suffix_tree(char* string, char* filename) {
-	wavelet_tree* bwt = s_to_BWT(string);
+	wavelet_tree* bwt = s_to_bwt(string);
 	int* suffix_array = map_create_suffix_array_from_bwt(bwt);
 
 	root = calloc(1, sizeof(internal_node));

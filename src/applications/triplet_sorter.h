@@ -7,7 +7,6 @@
 #ifndef TRIPLET_SORTER_H_
 #define TRIPLET_SORTER_H_
 
-<<<<<<< HEAD
 /**
  * @brief	
  *	A compare function for compare_quick_sort. Compares triplets by the value of pos1.
@@ -55,15 +54,6 @@ int compare_max_repeat_nodes(void* first, void* second);
  * @return				Returns the sorted array.
  * @bug					No known bugs.
  */
-=======
-struct triplet;
-struct max_repeat_node;
-
-int compare_triplets_pos1(struct triplet first, struct triplet second);
-int compare_triplets_pos2(struct triplet first, struct triplet second);
-int compare_max_repeat_nodes(struct max_repeat_node first, struct max_repeat_node second);
->>>>>>> 70d6579bd97be91c8b0bcfc3f23b7d1eebb202bc
-
 void compare_quick_sort(void* arr, unsigned int arr_size, unsigned int entry_size, int (*compare)(void* first, void* second));
 
 #endif /* TRIPLET_SORTER_H_ */

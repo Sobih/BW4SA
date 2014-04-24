@@ -244,6 +244,7 @@ void print_bit_vector(bit_vector* vector) {
 	}
 
 	printf("\tVector length: %u\n", vector->length);
+	printf("\tVector bits: %u\n", vector->get_length(vector));
 
 	for (int i = 0; i < vector->length; ++i) {
 		printf("\t%u, ", vector->vector[i]);
