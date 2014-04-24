@@ -4,6 +4,7 @@
 #include "mapper.h"
 #include "../utils/utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "../../include/core.h"
 #include "../../include/applications.h"
 
