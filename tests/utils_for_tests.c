@@ -402,14 +402,14 @@ void print_substring_pairs(substring_pair* head, char* string){
 	}
 }
 
-int main(){
-
-	char* test2 = "dafkjdsaijdsaqrakkikoiranfdfkjhgfdskjhg";
-	char* test1 = "dsalkjhdsalkjhdsaurakkikoiraekjnbgfdkjh";
-	printf("%s\n", test1);
-	printf("%s\n", test2);
-	substring_pair* head = find_maximal_unique_matches(test1, test2, 1);
-	print_substring_pairs(head, test1);
-	return 0;
-}
+//int main(){
+//
+//	char* test2 = "dafkjdsaijdsaqrakkikoiranfdfkjhgfdskjhg";
+//	char* test1 = "dsalkjhdsalkjhdsaurakkikoiraekjnbgfdkjh";
+//	printf("%s\n", test1);
+//	printf("%s\n", test2);
+//	substring_pair* head = find_maximal_unique_matches(test1, test2, 1);
+//	print_substring_pairs(head, test1);
+//	return 0;
+//}
 

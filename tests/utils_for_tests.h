@@ -33,6 +33,8 @@ test_substr** find_common_substrings(char* first, char* second);
 
 substring_pair* find_maximal_exact_matches(char* string1, char* string2, int threshold);
 
+substring_pair* find_maximal_unique_matches(char* string1, char* string2, int threshold);
+
 void print_substring_list(char* string, test_substr* head);
 
 void print_substring_pairs(substring_pair* head, char* string);
