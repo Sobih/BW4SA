@@ -278,7 +278,7 @@ START_TEST(test_mums_randomized_small_alphabet) {
 
 		naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
 
-		params = initialize_for_mums(strings);
+		params = initialize_for_mums(strings, 100);
 		state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* fast_mems = results->data;
@@ -321,7 +321,7 @@ START_TEST(test_mums_randomized_big_alphabet) {
 
 		naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
 
-		params = initialize_for_mums(strings);
+		params = initialize_for_mums(strings, 100);
 		state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* fast_mems = results->data;

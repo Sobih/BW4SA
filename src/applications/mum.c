@@ -14,10 +14,10 @@
 #include <string.h>
 
 
-parameter_struct* initialize_for_mums(char** strings) {
+parameter_struct* initialize_for_mums(char** strings, int max_number_mums) {
 	mum_results* results = malloc(sizeof(mum_results));
 	results->length = 0;
-	results->allocated_length = 10;
+	results->allocated_length = max_number_mums;
 	results->data = malloc(results->allocated_length * sizeof(triplet));
 
 	parameter_struct* params = malloc(sizeof(parameter_struct));

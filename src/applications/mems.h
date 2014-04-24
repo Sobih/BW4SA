@@ -27,7 +27,7 @@ typedef struct mem_results {
 	void* params;
 } mem_results;
 
-struct parameter_struct* initialize_for_mems(char** strings);
+struct parameter_struct* initialize_for_mems(char** strings, int max_number_mems);
 
 /**
  * @brief	Callback function given to double_iterate that determines if a substring is a MEM (Maximal Exact Match)

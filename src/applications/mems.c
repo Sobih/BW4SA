@@ -35,10 +35,10 @@ typedef struct mem_parameters {
 	alphabet_data alpha_data_left, alpha_data_right;
 } mem_parameters;
 
-parameter_struct* initialize_for_mems(char** strings) {
+parameter_struct* initialize_for_mems(char** strings, int max_number_mems) {
 	mem_results* results = malloc(sizeof(mem_results));
 	results->length = 0;
-	results->allocated_length = 10;
+	results->allocated_length = max_number_mems;
 	results->data = malloc(results->allocated_length * sizeof(triplet));
 
 	mem_parameters* mem_params = malloc(sizeof(mem_parameters));

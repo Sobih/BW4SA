@@ -50,15 +50,15 @@ START_TEST(test_mems_randomized_big_alphabet) {
 	iterator_state* state;
 
 	for (int i = 0; i < 10; i++) {
-		int len1 = rand() % 100 + 1;
-		int len2 = rand() % 100 + 1;
+		int len1 = rand() % 20 + 1;
+		int len2 = rand() % 20 + 1;
 
 		strings[0] = generate_random_string(alphabet, len1);
 		strings[1] = generate_random_string(alphabet, len2);
 
 		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
 
-		params = initialize_for_mems(strings);
+		params = initialize_for_mems(strings, 10000);
 		state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* fast_mems = results->data;
@@ -112,7 +112,7 @@ START_TEST(test_mems_randomized_small_alphabet) {
 
 		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
 
-		params = initialize_for_mems(strings);
+		params = initialize_for_mems(strings, 10000);
 		state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* fast_mems = results->data;
@@ -166,7 +166,7 @@ START_TEST(test_mems_randomized_few_long_strings) {
 
 		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
 
-		params = initialize_for_mems(strings);
+		params = initialize_for_mems(strings, 10000);
 		state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* fast_mems = results->data;
