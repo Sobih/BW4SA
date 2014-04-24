@@ -8,11 +8,15 @@
 #include "../../src/core/iterate.h"
 #include "../../src/core/s_to_bwt.h"
 #include "../../src/utils/bit_vector.h"
+#include "../../include/utils.h"
 #include "../../src/applications/mum.h"
 #include "../../src/applications/mapper.h"
 #include "../../src/utils/structs.h"
+#include "../utils_for_tests.h"
+
 #include <stdlib.h>
 #include <check.h>
+#include <time.h>
 
 START_TEST(test_mum1)
 {
@@ -239,25 +243,138 @@ START_TEST(test_mum3_bitvector_no_mums)
 	//free_parameter_struct(params);
 }END_TEST
 
-TCase * create_mums_test_case(void) {
-	TCase * tc_stack = tcase_create("mum_test");
-	tcase_add_test(tc_stack, test_mum1);
-	tcase_add_test(tc_stack, test_mum1_mapped);
-	tcase_add_test(tc_stack, test_mum2);
-	tcase_add_test(tc_stack, test_mum2_mapped);
-	tcase_add_test(tc_stack, test_mum3);
-	tcase_add_test(tc_stack, test_mum3_mapped);
-	tcase_add_test(tc_stack, test_mum_empty);
-	tcase_add_test(tc_stack, test_mum1_bitvector);
-	tcase_add_test(tc_stack, test_mum2_bitvector);
-	tcase_add_test(tc_stack, test_mum3_bitvector_no_mums);
-	return tc_stack;
+
+	int search_and_remove(triplet trip, substring_pair* head) {
+		substring_pair* previous = head;
+		substring_pair* current = head->next;
+		while (current != NULL) {
+			if (trip.pos1 == current->index1 && trip.pos2 == current->index2
+					&& trip.length == current->length) {
+				previous->next = current->next;
+				free(current);
+				return 1;
+			}
+			previous = previous->next;
+			current = current->next;
+		}
+		return 0;
+	}
+
+
+START_TEST(test_mums_randomized_small_alphabet) {
+	srand(time(NULL));
+	char** strings = malloc(2 * sizeof(char*));
+	char* alphabet = "abcgdf";
+	substring_pair* naive_mums;
+	parameter_struct* params;
+	iterator_state* state;
+
+	for (int i = 0; i < 100; i++) {
+		int len1 = rand() % 100 + 1;
+		int len2 = rand() % 100 + 1;
+
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
+
+		naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
+
+		params = initialize_for_mums(strings, 100);
+		state = iterate(params);
+		mum_results* results = (mum_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mums = results->length;
+
+		//custom mapping for mems. This has to be changed when real mapping is ready.
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mums);
+
+		for(int j = 0; j < num_mums; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mums));
+
+		fail_unless(naive_mums->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results);
+		free(params);
+		free(naive_mums);
+		free_iterator_state(state);
+	}
+
+	free(strings);
 }
+END_TEST
+
+START_TEST(test_mums_randomized_big_alphabet) {
+	srand(time(NULL));
+	char** strings = malloc(2 * sizeof(char*));
+	char* alphabet = "q1a2s3d4xtc6v7ghun8j9km0plo";
+	substring_pair* naive_mums;
+	parameter_struct* params;
+	iterator_state* state;
+
+	for (int i = 0; i < 100; i++) {
+		int len1 = rand() % 100 + 1;
+		int len2 = rand() % 100 + 1;
+
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
+
+		naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
+
+		params = initialize_for_mums(strings, 100);
+		state = iterate(params);
+		mum_results* results = (mum_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mums = results->length;
+
+		//custom mapping for mems. This has to be changed when real mapping is ready.
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mums);
+
+		for(int j = 0; j < num_mums; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mums));
+
+		fail_unless(naive_mums->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results);
+		free(params);
+		free(naive_mums);
+		free_iterator_state(state);
+	}
+
+	free(strings);
+}
+END_TEST
+
+
+TCase * create_mums_test_case(void) {
+	TCase * tc_mums = tcase_create("mum_test");
+	tcase_add_test(tc_mums, test_mum1);
+	tcase_add_test(tc_mums, test_mum1_mapped);
+	tcase_add_test(tc_mums, test_mum2);
+	tcase_add_test(tc_mums, test_mum2_mapped);
+	tcase_add_test(tc_mums, test_mum3);
+	tcase_add_test(tc_mums, test_mum3_mapped);
+	tcase_add_test(tc_mums, test_mum_empty);
+	tcase_add_test(tc_mums, test_mum1_bitvector);
+	tcase_add_test(tc_mums, test_mum2_bitvector);
+	tcase_add_test(tc_mums, test_mum3_bitvector_no_mums);
+	return tc_mums;
+}
+
+TCase * create_mums_randomized_test_case(void){
+	TCase * tc_random_mums = tcase_create("random_mums");
+	tcase_add_test(tc_random_mums, test_mums_randomized_small_alphabet);
+	tcase_add_test(tc_random_mums, test_mums_randomized_big_alphabet);
+	return tc_random_mums;
+}
+
 
 Suite * test_suite(void) {
 	Suite *s = suite_create("testi");
-	TCase *tc_stack = create_mums_test_case();
-	suite_add_tcase(s, tc_stack);
+	suite_add_tcase(s, create_mums_test_case());
+	suite_add_tcase(s, create_mums_randomized_test_case());
 
 	return s;
 }

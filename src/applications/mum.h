@@ -10,6 +10,8 @@
 #ifndef MUM_H_
 #define MUM_H_
 
+#include "../utils/structs.h"
+
 struct bit_vector;
 struct parameter_struct;
 struct iterator_state;
@@ -32,12 +34,15 @@ typedef struct mum_results {
  * 			instructs iterate to search for maximal unique matches.
  * @param	strings		An array of pointers to strings that are to be
  * 						iterated over.
+ * @param	max_number_mums
+ * 						number of slots of memory allocated for triplets. This number has
+ * 						to be at least as large as expected number of MUMs.
  * @return				An initialized parameter struct ready to be passed
  * 						to iterate.
- * @author	Max Sandberg (REXiator)
+ * @author	Max Sandberg (REXiator), Topi Paavilainen
  * @bug		No known bugs.
  */
-struct parameter_struct* initialize_for_mums(char** strings);
+struct parameter_struct* initialize_for_mums(char** strings, int max_number_mums);
 
 /**
  * @brief	Callback function given to double_iterate that determines if a substring is a MUM.
