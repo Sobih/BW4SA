@@ -85,6 +85,6 @@ struct max_repeat_with_indexes* get_max_repeats_with_indexes();
  */
 void print_maximal_repeat_substrings(char* string, max_repeat_results* results, struct iterator_state* state);
 
-struct bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes);
+struct bit_vector* max_repeat_make_bit_vector(max_repeat_results* results, struct iterator_state* state);
 
 #endif /* MAXIMAL_REPEATS_H_ */

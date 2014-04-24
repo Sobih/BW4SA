@@ -51,7 +51,7 @@ START_TEST(test_mems_randomized_big_alphabet) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -94,7 +94,7 @@ START_TEST(test_mems_randomized_small_alphabet) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
 
 
 		for(int j = 0; j < num_mems; j++)
@@ -138,7 +138,7 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));

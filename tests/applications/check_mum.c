@@ -51,7 +51,7 @@ START_TEST(test_mum1_mapped)
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
 		map_mum_triplets_to_string(nodes, s_to_bwt("laatikko"),
-				s_to_bwt("mehukatti"), results->length);
+				s_to_bwt("mehukatti"), results->length, mum_make_bit_vectors(results,state));
 		ck_assert_int_eq(2, results->length);
 		ck_assert_int_eq(2, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -99,8 +99,8 @@ START_TEST(test_mum2_mapped)
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
 		map_mum_triplets_to_string(nodes, s_to_bwt("abracadabra"),
-				s_to_bwt("arbadacarba"), results->length);
-		ck_assert_int_eq(2, get_mums_amount());
+				s_to_bwt("arbadacarba"), results->length, mum_make_bit_vectors(results,state));
+		ck_assert_int_eq(2, results->length);
 		ck_assert_int_eq(3, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
 		ck_assert_int_eq(3, nodes[0].length);
@@ -158,7 +158,7 @@ START_TEST(test_mum3_mapped)
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
 		map_mum_triplets_to_string(nodes, s_to_bwt("qwertnmyuiop"),
-				s_to_bwt("asdfgnmhjkl"), results->length);
+				s_to_bwt("asdfgnmhjkl"), results->length, mum_make_bit_vectors(results,state));
 		ck_assert_int_eq(1, results->length);
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -179,7 +179,7 @@ START_TEST(test_mum1_bitvector)
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		map_mum_triplets_to_string(results->data, s_to_bwt("laatikko"),
-				s_to_bwt("mehukatti"), results->length);
+				s_to_bwt("mehukatti"), results->length, mum_make_bit_vectors(results,state));
 		bit_vector** vectors = mum_make_bit_vectors(results, state);
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 2));
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
@@ -207,7 +207,7 @@ START_TEST(test_mum2_bitvector)
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"),
-				s_to_bwt("arbadacarba"), results->length);
+				s_to_bwt("arbadacarba"), results->length, mum_make_bit_vectors(results,state));
 		bit_vector** vectors = mum_make_bit_vectors(results, state);
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 5));
@@ -231,7 +231,7 @@ START_TEST(test_mum3_bitvector_no_mums)
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"),
-				s_to_bwt("arbadacarba"), results->length);
+				s_to_bwt("arbadacarba"), results->length, mum_make_bit_vectors(results,state));
 		bit_vector** vectors = mum_make_bit_vectors(results, state);
 		int i;
 		for (i = 0; i < vectors[0]->length; i++) {
@@ -291,7 +291,7 @@ START_TEST(test_mums_randomized_small_alphabet)
 
 			//custom mapping for mems. This has to be changed when real mapping is ready.
 			map_mum_triplets_to_string(fast_mems, &state->bwts[0],
-					&state->bwts[1], num_mums);
+					&state->bwts[1], num_mums, mum_make_bit_vectors(results,state));
 
 			for (int j = 0; j < num_mums; j++)
 				fail_unless(search_and_remove(fast_mems[j], naive_mums));
@@ -335,7 +335,7 @@ START_TEST(test_mums_randomized_big_alphabet)
 
 			//custom mapping for mems. This has to be changed when real mapping is ready.
 			map_mum_triplets_to_string(fast_mems, &state->bwts[0],
-					&state->bwts[1], num_mums);
+					&state->bwts[1], num_mums, mum_make_bit_vectors(results,state));
 
 			for (int j = 0; j < num_mums; j++)
 				fail_unless(search_and_remove(fast_mems[j], naive_mums));

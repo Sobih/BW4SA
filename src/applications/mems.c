@@ -182,7 +182,7 @@ void print_mems(char* string, mem_results* results, iterator_state* state) {
 				trip.pos1, trip.pos2, trip.length);
 	}
 
-	map_mum_triplets_to_string(mems, &state->bwts[0], &state->bwts[1], results->length, mem_make_bit_vectors(results,state));
+	map_mem_triplets_to_string(mems, &state->bwts[0], &state->bwts[1], results->length, mem_make_bit_vectors(results, state));
 
 	for (i = 0; i < results->length; i++) {
 		triplet trip = mems[i];
@@ -195,7 +195,7 @@ void print_mems(char* string, mem_results* results, iterator_state* state) {
 	}
 }
 
-bit_vector** mem_make_bit_vectors(mum_results* results, iterator_state* state) {
+bit_vector** mem_make_bit_vectors(mem_results* results, iterator_state* state) {
 	bit_vector** vectors = calloc(sizeof(bit_vector),2);
 	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
 	init_bit_vector(bit_vector1, state->bwts[0].get_num_bits(&state->bwts[0]));

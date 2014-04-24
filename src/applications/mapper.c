@@ -14,6 +14,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+int marked_bits_on_bit_vector(bit_vector* vec, int vector_length) {
+	int marked_bits = 0;
+	for (int i = 0; i < vector_length; i++) {
+		if (vec->is_bit_marked(vec, i))
+			marked_bits++;
+	}
+	return marked_bits;
+}
+
 max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes,
 		wavelet_tree* bwt, int nodes_length, bit_vector* bit_vec) {
 	long n = bwt->get_num_bits(bwt);
@@ -114,20 +123,8 @@ mapped_pair* update_position_in_triplets(wavelet_tree* bwt, int nodes_length,
 	return pairs;
 }
 
-int marked_bits_on_bit_vector(bit_vector* vec, int vector_length) {
-	int marked_bits = 0;
-	for (int i = 0; i < vector_length; i++) {
-		if (vec->is_bit_marked(vec, i))
-			marked_bits++;
-	}
-	return marked_bits;
-}
-
 void map_mum_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
 		wavelet_tree* bwt2, int nodes_length, bit_vector** vecs) {
-
-	print_bit_vector(vecs[0]);
-	print_bit_vector(vecs[1]);
 
 	int bits = marked_bits_on_bit_vector(vecs[0], bwt1->get_num_bits(bwt1));
 
@@ -160,9 +157,6 @@ void map_mum_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
 
 void map_mem_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
 		wavelet_tree* bwt2, int nodes_length, bit_vector** vecs) {
-
-	print_bit_vector(vecs[0]);
-	print_bit_vector(vecs[1]);
 
 	int bits = marked_bits_on_bit_vector(vecs[0], bwt1->get_num_bits(bwt1));
 
