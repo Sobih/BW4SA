@@ -42,7 +42,7 @@ parameter_struct* initialize_for_mems(char** strings) {
 	results->data = malloc(results->allocated_length * sizeof(triplet));
 
 	mem_parameters* mem_params = malloc(sizeof(mem_parameters));
-	mem_params->alpha_data_left->alphabet = mem_params->alpha_data_right->alphabet = 0;
+	mem_params->alpha_data_left.alphabet = mem_params->alpha_data_right.alphabet = 0;
 	results->params = mem_params;
 
 	parameter_struct* params = malloc(sizeof(parameter_struct));
@@ -139,8 +139,8 @@ void search_mems(iterator_state* state, void* results) {
 	mem_candidate* mem_candidates1 = malloc((node1->normal.j - node1->normal.i + 1) * sizeof(mem_candidate));
 	mem_candidate* mem_candidates2 = malloc((node2->normal.j - node2->normal.i + 1) * sizeof(mem_candidate));
 
-	int index1 = list_mem_candidates(node1, &state->bwts[0], &state->reverse_bwts[0], mem_candidates1);
-	int index2 = list_mem_candidates(node2, &state->bwts[1], &state->reverse_bwts[1], mem_candidates2);
+	int index1 = list_mem_candidates(node1, &state->bwts[0], &state->reverse_bwts[0], mem_candidates1, params);
+	int index2 = list_mem_candidates(node2, &state->bwts[1], &state->reverse_bwts[1], mem_candidates2, params);
 
 	for (int i = 0; i < index1; i++) {
 		for (int j = 0; j < index2; j++) {
@@ -150,7 +150,7 @@ void search_mems(iterator_state* state, void* results) {
 						k <= mem_candidates1[i].extension.normal.j; k++) {
 					for (int l = mem_candidates2[j].extension.normal.i;
 							l <= mem_candidates2[j].extension.normal.j; l++) {
-						triplet* trip = mems[result->length];
+						triplet* trip = &mems[result->length];
 						trip->pos1 = k;
 						trip->pos2 = l;
 						trip->length = node1->length;

@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 parameter_struct* initialize_for_mums(char** strings) {
 	mum_results* results = malloc(sizeof(mum_results));
 	results->length = 0;
@@ -42,9 +43,12 @@ void search_mums(iterator_state* state, void* results) {
 
 	if (node1->normal.i == node1->normal.j) {
 		if (node2->normal.i == node2->normal.j) {
-			if (mum_bwt1->char_at(mum_bwt1,node1->normal.i) != mum_bwt2->char_at(mum_bwt2,node2->normal.i)) {
-				if (mum_rbwt1->char_at(mum_rbwt1,node1->reverse.i)
-						!= mum_rbwt2->char_at(mum_rbwt2,node2->reverse.i)) {
+			if ((mum_bwt1->char_at(mum_bwt1,node1->normal.i) != mum_bwt2->char_at(mum_bwt2,node2->normal.i))||
+					mum_bwt1->char_at(mum_bwt1, node1->normal.i) == '$') {
+				if ((mum_rbwt1->char_at(mum_rbwt1,node1->reverse.i)
+						!= mum_rbwt2->char_at(mum_rbwt2,node2->reverse.i)) ||
+						mum_rbwt1->char_at(mum_rbwt1, node1->reverse.i) == '$') {
+
 					triplet* trip = &result->data[result->length];
 					trip->pos1 = node1->normal.i;
 					trip->pos2 = node2->normal.i;

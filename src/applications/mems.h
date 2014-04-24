@@ -8,6 +8,9 @@
 #ifndef MEMS_H_
 #define MEMS_H_
 
+#include "../utils/structs.h"
+#include "../core/iterate.h"
+
 struct parameter_struct;
 struct iterator_state;
 

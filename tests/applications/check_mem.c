@@ -5,6 +5,7 @@
 #include "../../src/core/s_to_bwt.h"
 #include "../../src/applications/mapper.h"
 #include "../utils_for_tests.h"
+#include "../../src/utils/structs.h"
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>

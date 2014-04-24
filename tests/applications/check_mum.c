@@ -260,40 +260,90 @@ START_TEST(test_mum3_bitvector_no_mums)
 		return 0;
 	}
 
-START_TEST(test_mums_randomized)
-{
+
+START_TEST(test_mums_randomized_small_alphabet) {
 	srand(time(NULL));
-	char* test1;
-	char* test2;
-	wavelet_tree* bwt;
-	int* suffix_array;
-	int length;
-	char* alphabet = "qwaesrdtfywugihoijokjplkplcznbvcxznbvm";
+	char** strings = malloc(2 * sizeof(char*));
+	char* alphabet = "abcgdf";
+	substring_pair* naive_mums;
+	parameter_struct* params;
+	iterator_state* state;
 
-	for (int i = 0; i < 100; i++){
-//		test1 = generate_random_string(alphabet, rand() % 100 + 1);
-//		test2 = generate_random_string(alphabet, rand() % 100 + 1);
-		test1 = "battikatti";
-		test2 = "mehukatti";
-		int len1 = strlen(test1);
-		int len2 = strlen(test2);
-		printf("%s\n%s\n\n",test1,test2);
+	for (int i = 0; i < 100; i++) {
+		int len1 = rand() % 100 + 1;
+		int len2 = rand() % 100 + 1;
 
-		substring_pair* naive_mums = find_maximal_unique_matches(test1, test2, 1);
-		print_substring_pairs(naive_mums, test1);
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
 
-		double_iterate(test1, test2, &search_mums);
-		triplet* fast_mums = get_mums();
-		int num_mums = get_mums_amount();
+		naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
 
-		//custom mapping for mums. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mums, s_to_BWT(test1), s_to_BWT(test2), num_mums);
+		params = initialize_for_mums(strings);
+		state = iterate(params);
+		mum_results* results = (mum_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mums = results->length;
 
-		for(int j = 0; j < num_mums; j++){
-			fail_unless(search_and_remove(fast_mums[j], naive_mums));
-		}
+		//custom mapping for mems. This has to be changed when real mapping is ready.
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mums);
+
+		for(int j = 0; j < num_mums; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mums));
+
 		fail_unless(naive_mums->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results);
+		free(params);
+		free(naive_mums);
+		free_iterator_state(state);
 	}
+
+	free(strings);
+}
+END_TEST
+
+START_TEST(test_mums_randomized_big_alphabet) {
+	srand(time(NULL));
+	char** strings = malloc(2 * sizeof(char*));
+	char* alphabet = "q1a2s3d4xtc6v7ghun8j9km0plo";
+	substring_pair* naive_mums;
+	parameter_struct* params;
+	iterator_state* state;
+
+	for (int i = 0; i < 100; i++) {
+		int len1 = rand() % 100 + 1;
+		int len2 = rand() % 100 + 1;
+
+		strings[0] = generate_random_string(alphabet, len1);
+		strings[1] = generate_random_string(alphabet, len2);
+
+		naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
+
+		params = initialize_for_mums(strings);
+		state = iterate(params);
+		mum_results* results = (mum_results*) params->ret_data;
+		triplet* fast_mems = results->data;
+		int num_mums = results->length;
+
+		//custom mapping for mems. This has to be changed when real mapping is ready.
+		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mums);
+
+		for(int j = 0; j < num_mums; j++)
+			fail_unless(search_and_remove(fast_mems[j], naive_mums));
+
+		fail_unless(naive_mums->next == NULL);
+
+		free(strings[0]);
+		free(strings[1]);
+		free(results);
+		free(params);
+		free(naive_mums);
+		free_iterator_state(state);
+	}
+
+	free(strings);
 }
 END_TEST
 
@@ -315,7 +365,8 @@ TCase * create_mums_test_case(void) {
 
 TCase * create_mums_randomized_test_case(void){
 	TCase * tc_random_mums = tcase_create("random_mums");
-	tcase_add_test(tc_random_mums, test_mums_randomized);
+	tcase_add_test(tc_random_mums, test_mums_randomized_small_alphabet);
+	tcase_add_test(tc_random_mums, test_mums_randomized_big_alphabet);
 	return tc_random_mums;
 }
 

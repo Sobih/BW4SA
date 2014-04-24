@@ -10,6 +10,8 @@
 #ifndef MUM_H_
 #define MUM_H_
 
+#include "../utils/structs.h"
+
 struct bit_vector;
 struct parameter_struct;
 struct iterator_state;
