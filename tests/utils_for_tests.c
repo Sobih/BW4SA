@@ -247,7 +247,6 @@ int are_two_substrings_mems(int index1, int index2, int length, char* string1,
 substring_pair* find_maximal_exact_matches(char* string1, char* string2, int threshold) {
 	int length, i;
 
-	// is there need to iterate the string2 through?
 	substring_pair* current = calloc(1, sizeof(substring_pair));
 	substring_pair* head = current;
 	substring_pair* new;
@@ -275,6 +274,53 @@ substring_pair* find_maximal_exact_matches(char* string1, char* string2, int thr
 		}
 
 	}
+	return head;
+}
+
+int is_substring_unique(int index, int length, char* string, int str_length){
+	int differs;
+	for(int i = 0; i+length <= str_length; i++){
+		if(i == index) continue;
+		for(int j = 0; j < length; j++){
+			if(string[i+j] != string[index+j]){
+				differs = 1;
+				break;
+			}
+		}
+		if(!differs){
+			return 0;
+		}
+		differs = 0;
+	}
+	return 1;
+}
+
+substring_pair* find_maximal_unique_matches(char* string1, char* string2, int threshold){
+
+	substring_pair* current = calloc(1, sizeof(substring_pair));
+	substring_pair* head = current;
+	substring_pair* new;
+
+	int str1length = strlen(string1);
+	int str2length = strlen(string2);
+
+	for(int length = threshold; length <= str1length; length++){
+		for(int i = 0; i+length <= str1length; i++){
+			for(int j = 0; j+length <= str2length; j++){
+				if(are_two_substrings_mems(i, j, length, string1, str1length, string2, str2length) &&
+						is_substring_unique(i, length, string1, str1length) &&
+						is_substring_unique(j, length, string2, str2length)){
+						new = calloc(1, sizeof(substring_pair));
+						new->index1 = i;
+						new->index2 = j;
+						new->length = length;
+						current->next = new;
+						current = current->next;
+				}
+			}
+		}
+	}
+
 	return head;
 }
 
@@ -358,9 +404,11 @@ void print_substring_pairs(substring_pair* head, char* string){
 
 //int main(){
 //
-//	char* test1 = "apin";
-//	char* test2 = "apin";
-//	substring_pair* head = find_maximal_exact_matches(test1, test2, 3);
+//	char* test2 = "dafkjdsaijdsaqrakkikoiranfdfkjhgfdskjhg";
+//	char* test1 = "dsalkjhdsalkjhdsaurakkikoiraekjnbgfdkjh";
+//	printf("%s\n", test1);
+//	printf("%s\n", test2);
+//	substring_pair* head = find_maximal_unique_matches(test1, test2, 1);
 //	print_substring_pairs(head, test1);
 //	return 0;
 //}

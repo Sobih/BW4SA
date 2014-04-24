@@ -8,66 +8,64 @@
 #include "maximal_repeats.h"
 #include "map_bwt_to_s.h"
 #include "mapper.h"
+#include "../core/iterate.h"
 #include "../../include/utils.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-static wavelet_tree* max_bwt;
-static bit_vector* max_repeats_runs;
-static max_repeat_node* nodes;
-static int nodes_index;
+parameter_struct* initialize_for_max_repeats(char* string) {
+	max_repeat_results* results = malloc(sizeof(max_repeat_results));
+	results->length = 0;
+	results->allocated_length = 10;
+	results->data = malloc(results->allocated_length * sizeof(max_repeat_node));
+	parameter_struct* params = malloc(sizeof(parameter_struct));
+	params->callback = &search_maximal_repeats;
+	params->iterate_type = MAX_REPEATS;
+	params->strings = malloc(sizeof(char*));
+	params->strings[0] = string;
+	params->ret_data = results;
 
-//bit_vector* max_repeats_in_bwt;
-
-void max_repeats_initialize_bwt(wavelet_tree* bwt) {
-	max_bwt = bwt;
-	max_repeats_runs = create_runs_vector(bwt, 0);
-	nodes = calloc(1000, sizeof(max_repeat_node));
-	nodes_index = 0;
+	return params;
 }
 
 /**
  * @brief	A simple function for determining if an interval is right maximal.
+ * @param	runs	The runs vector for the BWT of a string.
  * @param	inter	The interval to be checked.
  * @return			<code>1</code> if the interval is a maximal repeat, <code>0</code>
  * 					otherwise.
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-int is_interval_left_maximal(interval inter) {
-	if (inter.i >= inter.j)
-		return 0;
+int is_interval_left_maximal(bit_vector* runs, interval inter) {
+	return (inter.i < inter.j) && (runs->rank(runs, inter.i + 1, inter.j) > 0) ? 1 : 0;
+}
 
-	if (max_repeats_runs->rank(max_repeats_runs, (inter.i) + 1, inter.j) > 0) {
-		return 1;
-	} else {
-		return 0;
+void search_maximal_repeats(iterator_state* state, void* results) {
+	max_repeat_results* result = (max_repeat_results*) results;
+	substring* node = state->current;
+
+	//check if nodes-list is full, expand by 10 if it is
+	if (result->allocated_length == result->length) {
+		result->allocated_length += 10;
+		result->data = realloc(result->data, result->allocated_length * sizeof(max_repeat_node));
+	}
+
+	if (is_interval_left_maximal(state->runs_vectors, node->normal)) {
+		max_repeat_node* res_node = &result->data[result->length];
+		res_node->normal.i = node->normal.i;
+		res_node->normal.j = node->normal.j;
+		res_node->length = node->length;
+		result->length++;
 	}
 }
 
-void search_maximal_repeats(substring* node) {
-	if (is_interval_left_maximal(node->normal)) {
-		max_repeat_node max_node = *((max_repeat_node*) malloc(
-				sizeof(max_repeat_node)));
-		max_node.normal.i = node->normal.i;
-		max_node.normal.j = node->normal.j;
-		max_node.length = node->length;
-		nodes[nodes_index] = max_node;
-		nodes_index++;
-	}
-}
+void print_maximal_repeat_substrings(char* string, max_repeat_results* results, iterator_state* state) {
+	max_repeat_node* nodes = results->data;
+	wavelet_tree* max_bwt = state->bwts;
+	unsigned int nodes_index = results->length;
 
-max_repeat_node* get_nodes() {
-	return nodes;
-}
-
-max_repeat_with_indexes* get_max_repeats_with_indexes() {
-	return map_maximal_repeats_to_string(nodes, max_bwt, nodes_index,
-			max_repeat_make_bit_vector(nodes));
-}
-
-void print_maximal_repeat_substrings(char* string) {
 	max_repeat_with_indexes* max_repeats = map_maximal_repeats_to_string(nodes,
 			max_bwt, nodes_index, max_repeat_make_bit_vector(nodes));
 	int i, j;
@@ -78,16 +76,6 @@ void print_maximal_repeat_substrings(char* string) {
 			printf("%d, ", max_repeats[i].indexes[j]);
 		}
 		printf("\n");
-		printf("Substring: %s index:%d length: %d \n",
-				substring_from_string(string, max_repeats[i].indexes[0],
-						max_repeats[i].length), max_repeats[i].indexes[0],
-				max_repeats[i].length);
-	}
-}
-
-int get_max_repeats_nodes_index() {
-	return nodes_index;
-
 }
 
 bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes) {
@@ -103,4 +91,3 @@ bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes) {
 
 	return bit_vec;
 }
-

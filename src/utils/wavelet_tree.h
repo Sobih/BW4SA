@@ -121,6 +121,15 @@ typedef struct wavelet_tree {
 wavelet_tree* create_wavelet_tree(const char* string);
 
 /**
+ * @brief	A function for freeing the internal variables used by a
+ * 			wavelet tree without freeing the tree itself.
+ * @param	tree	The tree whose internals should be freed.
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+void free_wavelet_tree_internals(wavelet_tree* tree);
+
+/**
  * @brief	Frees the memory used by an entire wavelet tree.
  *
  * This algorithm frees an entire wavelet tree. It also frees

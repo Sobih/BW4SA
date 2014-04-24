@@ -16,6 +16,8 @@ struct bit_vector;
 struct substring;
 struct interval;
 struct max_repeat_node_with_indexes;
+struct parameter_struct;
+struct iterator_state;
 
 /**
  * @brief	A simple struct for storing data on a maximal repeat substring.
@@ -29,36 +31,43 @@ typedef struct max_repeat_node
 } max_repeat_node;
 
 /**
- * @brief 	Initializes the BWT for the file so that callback doesn't require passing it on.
- *
- * Has to be called before iteration can commence!
- *
- * @param 	bwt 	BWT of the string to be iterated upon.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @brief	A struct for storing the results of the callback function given
+ * 			to iterate.
+ * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void max_repeats_initialize_bwt(struct wavelet_tree* bwt);
+typedef struct max_repeat_results {
+	max_repeat_node* data;
+	unsigned int length;
+	unsigned int allocated_length;
+} max_repeat_results;
+
+/**
+ * @brief	An initialization function that creates a parameter struct that
+ * 			instructs iterate to search for maximal repeats.
+ * @param	string	The string that should be iterated over.
+ * @return			An initialized parameter struct ready to be passed to
+ * 					iterate.
+ * @see		iterate.h#parameter_struct
+ * @author	Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
+struct parameter_struct* initialize_for_max_repeats(char* string);
 
 /**
  * @brief	The function given as callback to iterate for finding maximal repeats.
  *
  * Determines if a node is a maximal repeat and adds it to a list.
  *
- * @param 	node	A substring node that contains the intervals inside the BWT
- * 					and the BWT of the reverse of the string.
+ * @param 	state		The internal state of the iterator.
+ * @param	results		A pointer to a region of memory where previous results for
+ * 						this function can be found. Can safely be cast to <code>max_repeat_results</code>
+ * 						if iterate was initialized using <code>initialize_for_max_repeats()</code>.
+ * @see		#initialize_for_max_repeats
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void search_maximal_repeats(struct substring* node);
-
-/**
- * @brief 	Returns the list of maximal repeat substrings.
- * @return	A list of found maximal repeat substrings as nodes that hold
- * 			a BWT interval and length of substring.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-max_repeat_node* get_nodes();
+void search_maximal_repeats(struct iterator_state* state, void* results);
 
 struct max_repeat_with_indexes* get_max_repeats_with_indexes();
 
@@ -68,19 +77,13 @@ struct max_repeat_with_indexes* get_max_repeats_with_indexes();
  * First uses the mapper-function <code>map_maximal_repeats_to_string()</code> and then prints
  * the substring based on the mapped index to stdout.
  *
- * @param	string	The original c-string.
+ * @param	string		The original c-string.
+ * @param	results		Results of iterating over the c-string to find maximal repeats.
+ * @param	state		The internal state of the iterator performing the search.
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_maximal_repeat_substrings(char* string);
-
-/**
- * @brief 	Returns the size of the list of substrings.
- * @return	Size of the node list. Same as number of found maximal repeats.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-int get_max_repeats_nodes_index();
+void print_maximal_repeat_substrings(char* string, max_repeat_results* results, struct iterator_state* state);
 
 struct bit_vector* max_repeat_make_bit_vector(max_repeat_node* nodes);
 

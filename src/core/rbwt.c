@@ -25,7 +25,7 @@ wavelet_tree* reverse_bwt(const char* string) {
 	unsigned int length = strlen(string);
 	uchar* rev = malloc((length + 1) * sizeof(uchar));
 	rev = reverse_string(string, rev, length);
-	wavelet_tree* bwt = s_to_BWT(rev);
+	wavelet_tree* bwt = s_to_bwt(rev);
 	free(rev);
 	return bwt;
 }
