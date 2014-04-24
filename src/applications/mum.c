@@ -62,7 +62,7 @@ void print_mums(char* string) {
 				"Index in the BWT first string: %d\nIndex in the BWT second string: %d\nLength: %d \n",
 				trip.pos1, trip.pos2, trip.length);
 	}
-	map_triplets_to_string(mums, mum_bwt1, mum_bwt2, triplets_index, mum_make_bit_vectors(mums));
+	map_mum_triplets_to_string(mums, mum_bwt1, mum_bwt2, triplets_index, mum_make_bit_vectors(mums));
 	for (i = 0; i < triplets_index; i++) {
 		triplet trip = mums[i];
 		printf(

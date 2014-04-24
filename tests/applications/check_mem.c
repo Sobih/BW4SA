@@ -53,19 +53,7 @@ START_TEST(test_mems_randomized_big_alphabet) {
 
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems, mem_make_bit_vectors(fast_mems));
-
-		for(int i = 0; i < num_mems; i++){
-
-			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1){
-				fast_mems[i].pos1 = 0;
-			}
-			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1){
-				fast_mems[i].pos2 = 0;
-			}
-		}
+		map_mem_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems, mem_make_bit_vectors(fast_mems));
 
 		for(int h = 0; h <num_mems; h++){
 		}
@@ -105,19 +93,8 @@ START_TEST(test_mems_randomized_small_alphabet) {
 
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems, mem_make_bit_vectors(fast_mems));
+		map_mem_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems, mem_make_bit_vectors(fast_mems));
 
-		for(int i = 0; i < num_mems; i++){
-
-			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1){
-				fast_mems[i].pos1 = 0;
-			}
-			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1){
-				fast_mems[i].pos2 = 0;
-			}
-		}
 		for(int h = 0; h <num_mems; h++){
 		}
 		for(int j = 0; j < num_mems; j++){
@@ -154,19 +131,8 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		int num_mems = get_mems_amount();
 
 		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems, mem_make_bit_vectors(fast_mems));
+		map_mem_triplets_to_string(fast_mems, s_to_BWT(test1), s_to_BWT(test2), num_mems, mem_make_bit_vectors(fast_mems));
 
-		for(int i = 0; i < num_mems; i++){
-
-			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1){
-				fast_mems[i].pos1 = 0;
-			}
-			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1){
-				fast_mems[i].pos2 = 0;
-			}
-		}
 		for(int h = 0; h <num_mems; h++){
 		}
 		for(int j = 0; j < num_mems; j++){

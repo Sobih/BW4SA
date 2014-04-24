@@ -88,8 +88,10 @@ void search_mems(substring* node1, substring* node2) {
 			mem_candidates2);
 	for (int i = 0; i < index1; i++) {
 		for (int j = 0; j < index2; j++) {
-			if ((mem_candidates1[i].first != mem_candidates2[j].first || mem_candidates1[i].first == '$')
-					&& (mem_candidates1[i].last != mem_candidates2[j].last || mem_candidates1[i].last == '$')) {
+			if ((mem_candidates1[i].first != mem_candidates2[j].first
+					|| mem_candidates1[i].first == '$')
+					&& (mem_candidates1[i].last != mem_candidates2[j].last
+							|| mem_candidates1[i].last == '$')) {
 				for (int k = mem_candidates1[i].extension.normal.i;
 						k <= mem_candidates1[i].extension.normal.j; k++) {
 					for (int l = mem_candidates2[j].extension.normal.i;
@@ -123,13 +125,8 @@ void print_mems(char* string) {
 				"Index in the BWT first string: %d\nIndex in the BWT second string: %d\nLength: %d \n",
 				trip.pos1, trip.pos2, trip.length);
 	}
-	map_triplets_to_string(mems, mem_bwt1, mem_bwt2, mem_triplets_index, mem_make_bit_vectors(mems));
-
-	for(int i = 0; i < mem_triplets_index; i++){
-		mems[i].pos1 = mems[i].pos1 + 1;
-		mems[i].pos2 = mems[i].pos2 + 1;
-	}
-
+	map_mem_triplets_to_string(mems, mem_bwt1, mem_bwt2, mem_triplets_index,
+			mem_make_bit_vectors(mems));
 
 	for (i = 0; i < mem_triplets_index; i++) {
 		triplet trip = mems[i];
@@ -147,7 +144,7 @@ int get_mems_amount() {
 }
 
 bit_vector** mem_make_bit_vectors(triplet* mems) {
-	bit_vector** vectors = calloc(2,sizeof(bit_vector));
+	bit_vector** vectors = calloc(2, sizeof(bit_vector));
 	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
 	init_bit_vector(bit_vector1, mem_bwt1->get_num_bits(mem_bwt1));
 	bit_vector* bit_vector2 = malloc(sizeof(bit_vector));
