@@ -23,7 +23,7 @@ START_TEST(test_mum1)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "laatikko";
 	strings[1] = "mehukatti";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	triplet* nodes = results->data;
@@ -46,7 +46,7 @@ START_TEST(test_mum1_mapped)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "laatikko";
 	strings[1] = "mehukatti";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	triplet* nodes = results->data;
@@ -70,7 +70,7 @@ START_TEST(test_mum2)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "abracadabra";
 	strings[1] = "arbadacarba";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	triplet* nodes = results->data;
@@ -93,7 +93,7 @@ START_TEST(test_mum2_mapped)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "abracadabra";
 	strings[1] = "arbadacarba";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	triplet* nodes = results->data;
@@ -117,7 +117,7 @@ START_TEST(test_mum_empty)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "qwertyui";
 	strings[1] = "asdfghjkl";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	ck_assert_int_eq(0, results->length);
@@ -133,7 +133,7 @@ START_TEST(test_mum3)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "qwertnmyuiop";
 	strings[1] = "asdfgnmhjkl";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	triplet* nodes = results->data;
@@ -151,7 +151,7 @@ START_TEST(test_mum3_mapped)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "qwertnmyuiop";
 	strings[1] = "asdfgnmhjkl";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	triplet* nodes = results->data;
@@ -172,7 +172,7 @@ START_TEST(test_mum1_bitvector)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "laatikko";
 	strings[1] = "mehukatti";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	map_mum_triplets_to_string(results->data, s_to_bwt("laatikko"), s_to_bwt("mehukatti"), results->length);
@@ -199,7 +199,7 @@ START_TEST(test_mum2_bitvector)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "abracadabra";
 	strings[1] = "arbadacarba";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"), s_to_bwt("arbadacarba"), results->length);
@@ -222,7 +222,7 @@ START_TEST(test_mum3_bitvector_no_mums)
 	char** strings = malloc(2 * sizeof(char*));
 	strings[0] = "abracadabra";
 	strings[1] = "vzxmneytymn";
-	parameter_struct* params = initialize_for_mums(strings);
+	parameter_struct* params = initialize_for_mums(strings, 10);
 	iterator_state* state = iterate(params);
 	mum_results* results = (mum_results*) params->ret_data;
 	map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"),s_to_bwt("arbadacarba"), results->length);
