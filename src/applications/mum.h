@@ -42,7 +42,7 @@ typedef struct mum_results {
  * @author	Max Sandberg (REXiator), Topi Paavilainen
  * @bug		No known bugs.
  */
-struct parameter_struct* initialize_for_mums(char** strings, int max_number_mums);
+struct parameter_struct* initialize_for_mums(char** strings, int threshold);
 
 /**
  * @brief	Callback function given to double_iterate that determines if a substring is a MUM.

@@ -280,10 +280,10 @@ START_TEST(test_mums_randomized_small_alphabet)
 
 			strings[0] = generate_random_string(alphabet, len1);
 			strings[1] = generate_random_string(alphabet, len2);
+			int threshold = rand()%5+1;
+			naive_mums = find_maximal_unique_matches(strings[0], strings[1], threshold);
 
-			naive_mums = find_maximal_unique_matches(strings[0], strings[1], 1);
-
-			params = initialize_for_mums(strings, 1);
+			params = initialize_for_mums(strings, threshold);
 			state = iterate(params);
 			mum_results* results = (mum_results*) params->ret_data;
 			triplet* fast_mems = results->data;
