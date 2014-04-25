@@ -111,7 +111,7 @@ void ui()
 
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
-	} else if (choice == 9) {		 
+	} else if (choice == 9) {
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
 		iterate(input, &search_maximal_repeats);
