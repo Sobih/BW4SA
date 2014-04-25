@@ -14,6 +14,7 @@
  * @param	first	a void pointer which will be converted to a triplet pointer
  * @param	second	a void pointer which will be converted to a triplet pointer
  * @see		triplet_sorter.h#compare_quick_sort
+ * @return	negative if first is smaller, positive if second is smaller
  * @author	Paula Lehtola
  * @bug		No known bugs.
  */
@@ -26,6 +27,7 @@ int compare_triplets_pos1(void* first, void* second);
  * @param	first	a void pointer which will be converted to a triplet pointer
  * @param	second	a void pointer which will be converted to a triplet pointer
  * @see		triplet_sorter.h#compare_quick_sort
+ * @return	negative if first is smaller, positive if second is smaller
  * @author	Paula Lehtola
  * @bug		No known bugs.
  */
@@ -38,6 +40,7 @@ int compare_triplets_pos2(void* first, void* second);
  * @param	first	a void pointer which will be converted to a max_repeat_node pointer
  * @param	second	a void pointer which will be converted to a max_repeat_node pointer
  * @see		triplet_sorter.h#compare_quick_sort
+ * @return	negative if first is smaller, positive if second is smaller
  * @author	Paula Lehtola
  * @bug		No known bugs.
  */
@@ -50,6 +53,7 @@ int compare_max_repeat_nodes(void* first, void* second);
  * @param	first	a void pointer which will be converted to a mapped_pair pointer
  * @param	second	a void pointer which will be converted to a mapped_pair pointer
  * @see		triplet_sorter.h#compare_quick_sort
+ * @return	negative if first is smaller, positive if second is smaller
  * @author	Paula Lehtola
  * @bug		No known bugs.
  */
