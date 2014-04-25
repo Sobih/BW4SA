@@ -122,6 +122,8 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 		//printf("New substring popped\n");
 	}
 
+	free(substr);
+
 	return result;
 }
 
@@ -283,6 +285,9 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 				temp->length, substring2);
 	}
 
+	free(substring1);
+	free(substring2);
+
 	return result;
 }
 
@@ -304,15 +309,36 @@ iterator_state* initialize_iterator(char** strings, unsigned int num_strings) {
 
 	unsigned int common_alpha_length = 1;
 
+	wavelet_tree* tree;
+	bit_vector* vector;
+	substring_stack* stack;
+
 	for (int i = 0; i < num_strings; ++i) {
 		state->alpha_datas[i].alphabet = 0;
-		state->bwts[i] = *s_to_bwt(strings[i]);
-		state->reverse_bwts[i] = *reverse_bwt(strings[i]);
-		state->runs_vectors[i] = *create_runs_vector(&state->bwts[i], 0);
-		state->reverse_runs_vectors[i] = *create_runs_vector(&state->reverse_bwts[i], 0);
-		state->stacks[i] = *create_stack(10);
+
+		tree = s_to_bwt(strings[i]);
+		memcpy(&state->bwts[i], tree, sizeof(wavelet_tree));
+		free(tree);
+
+		tree = reverse_bwt(strings[i]);
+		memcpy(&state->reverse_bwts[i], tree, sizeof(wavelet_tree));
+		free(tree);
+
+		vector = create_runs_vector(&state->bwts[i], 0);
+		memcpy(&state->runs_vectors[i], vector, sizeof(bit_vector));
+		free(vector);
+
+		vector = create_runs_vector(&state->reverse_bwts[i], 0);
+		memcpy(&state->reverse_runs_vectors[i], vector, sizeof(bit_vector));
+		free(vector);
+
+		stack = create_stack(10);
+		memcpy(&state->stacks[i], stack, sizeof(substring_stack));
+		free(stack);
+
 		state->c_arrays[i] = malloc((state->bwts->get_alphabet_length(&state->bwts[i]) + 1) *
 				sizeof(unsigned int));
+
 		common_alpha_length += state->bwts->get_alphabet_length(&state->bwts[i]);
 	}
 
