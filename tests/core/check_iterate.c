@@ -46,6 +46,7 @@ START_TEST(simple_runs_test)
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 10));
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 11));
 
+	free(tree->nodes[0].string);
 	free_wavelet_tree(tree);
 	free_bit_vector(runs);
 }
@@ -68,6 +69,7 @@ START_TEST(another_simple_test)
 	ck_assert_int_eq(0, runs->is_bit_marked(runs, 9));
 	ck_assert_int_eq(1, runs->is_bit_marked(runs, 10));
 
+	free(tree->nodes[0].string);
 	free_wavelet_tree(tree);
 	free_bit_vector(runs);
 }
@@ -87,6 +89,7 @@ START_TEST(test_interval_query)
 	ck_assert_int_eq(0, is_interval_right_maximal_test(runs, test1));
 	ck_assert_int_eq(1, is_interval_right_maximal_test(runs, test2));
 
+	free(tree->nodes[0].string);
 	free_wavelet_tree(tree);
 	free_bit_vector(runs);
 	free(test1);
@@ -108,6 +111,7 @@ START_TEST(test_wrong_intervals)
 	ck_assert_int_eq(0, is_interval_right_maximal_test(runs, test1));
 	ck_assert_int_eq(0, is_interval_right_maximal_test(runs, test2));
 
+	free(tree->nodes[0].string);
 	free_wavelet_tree(tree);
 	free_bit_vector(runs);
 	free(test1);
