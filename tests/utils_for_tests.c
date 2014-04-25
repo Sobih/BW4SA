@@ -114,7 +114,7 @@ void print_substr(char* string, int start_index, int length) {
 	}
 }
 
-test_substr* find_maximal_repeat_substrings(char* string) {
+test_substr* find_maximal_repeat_substrings(char* string, int threshold) {
 
 	test_substr* current = calloc(1, sizeof(test_substr));
 	test_substr* head = current;
@@ -122,7 +122,7 @@ test_substr* find_maximal_repeat_substrings(char* string) {
 
 	int string_length = strlen(string);
 
-	for (int length = 1; length < string_length; length++) {
+	for (int length = threshold; length < string_length; length++) {
 		for (int i = 0; i + length <= string_length; i++) {
 
 			if (is_substring_max_repeat(string, string_length, i, length)) {

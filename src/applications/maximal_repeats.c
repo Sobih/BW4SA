@@ -14,7 +14,7 @@
 #include <string.h>
 #include <stdio.h>
 
-parameter_struct* initialize_for_max_repeats(char* string) {
+parameter_struct* initialize_for_max_repeats(char* string, int threshold) {
 	max_repeat_results* results = malloc(sizeof(max_repeat_results));
 	results->length = 0;
 	results->allocated_length = 10;
@@ -25,6 +25,7 @@ parameter_struct* initialize_for_max_repeats(char* string) {
 	params->strings = malloc(sizeof(char*));
 	params->strings[0] = string;
 	params->ret_data = results;
+	params->threshold = threshold;
 
 	return params;
 }
@@ -45,6 +46,10 @@ int is_interval_left_maximal(bit_vector* runs, interval inter) {
 void search_maximal_repeats(iterator_state* state, void* results) {
 	max_repeat_results* result = (max_repeat_results*) results;
 	substring* node = state->current;
+
+	if(node->length< state->threshold){
+		return;
+	}
 
 	//check if nodes-list is full, expand by 10 if it is
 	if (result->allocated_length == result->length) {

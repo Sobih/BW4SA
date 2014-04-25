@@ -15,10 +15,10 @@
 
 
 
-parameter_struct* initialize_for_mums(char** strings, int max_number_mums) {
+parameter_struct* initialize_for_mums(char** strings, int threshold) {
 	mum_results* results = malloc(sizeof(mum_results));
 	results->length = 0;
-	results->allocated_length = max_number_mums;
+	results->allocated_length = 10;
 	results->data = malloc(results->allocated_length * sizeof(triplet));
 
 	parameter_struct* params = malloc(sizeof(parameter_struct));
@@ -26,13 +26,18 @@ parameter_struct* initialize_for_mums(char** strings, int max_number_mums) {
 	params->iterate_type = MUM;
 	params->strings = strings;
 	params->ret_data = results;
+	params->threshold = threshold;
 
 	return params;
 }
 
 void search_mums(iterator_state* state, void* results) {
+
 	mum_results* result = (mum_results*) results;
 	substring* node1 = &state->current[0], *node2 = &state->current[1];
+	if(node1->length < state->threshold){
+		return;
+	}
 	wavelet_tree* mum_bwt1 = &state->bwts[0], *mum_bwt2 = &state->bwts[1];
 	wavelet_tree* mum_rbwt1 = &state->reverse_bwts[0], *mum_rbwt2 = &state->reverse_bwts[1];
 

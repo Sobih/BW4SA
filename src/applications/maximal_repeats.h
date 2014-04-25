@@ -52,7 +52,7 @@ typedef struct max_repeat_results {
  * @author	Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-struct parameter_struct* initialize_for_max_repeats(char* string);
+struct parameter_struct* initialize_for_max_repeats(char* string, int threshold);
 
 /**
  * @brief	The function given as callback to iterate for finding maximal repeats.
