@@ -25,7 +25,7 @@ typedef struct substr_pair
 
 char* generate_random_string(char* alphabet, int length);
 
-test_substr* find_maximal_repeat_substrings(char* string);
+test_substr* find_maximal_repeat_substrings(char* string, int threshold);
 
 test_substr* find_right_maximal_substrings(char* string);
 

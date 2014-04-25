@@ -172,11 +172,13 @@ struct substring* create_substring(struct interval* normal, struct interval* rev
 
 /**
  * Updates the interval in the BWT of the reverse of the string
- * @param reverse-BWT interval of the mother node
- * @param updated BWT interval in this node
- * @param alphabet in the interval
- * @param array C of the interval
- * @param extension character
+ * @param inter 			interval of the mother node
+ * @param normal 			updated BWT interval in this node
+ * @param alphabet			alphabet of the interval
+ * @param alphabet_length 	length of the alphabet in the interval
+ * @param c_array 			C array of the interval
+ * @param c 				extension character
+ * @param target			A interval where the results should be stored. If <code>NULL</code>, a new interval will be created and returned.
  * @return a new updated Interval struct in the BWT of the reverse of the string
  */
 struct interval* update_reverse_interval(struct interval* inter, struct interval* normal,

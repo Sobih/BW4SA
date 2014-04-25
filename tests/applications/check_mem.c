@@ -45,7 +45,7 @@ START_TEST(test_mems_randomized_big_alphabet) {
 
 		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
 
-		params = initialize_for_mems(strings, 10000);
+		params = initialize_for_mems(strings, 1);
 		state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* fast_mems = results->data;
@@ -83,19 +83,20 @@ START_TEST(test_mems_randomized_small_alphabet) {
 		int len1 = rand() % 20 + 1;
 		int len2 = rand() % 20 + 1;
 
+		int threshold = rand()%5 +1;
+
 		strings[0] = generate_random_string(alphabet, len1);
 		strings[1] = generate_random_string(alphabet, len2);
 
-		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
+		naive_mems = find_maximal_exact_matches(strings[0], strings[1], threshold);
 
-		params = initialize_for_mems(strings, 10000);
+		params = initialize_for_mems(strings, threshold);
 		state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
 		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
-
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -130,9 +131,9 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		strings[0] = generate_random_string(alphabet, len1);
 		strings[1] = generate_random_string(alphabet, len2);
 
-		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 1);
+		naive_mems = find_maximal_exact_matches(strings[0], strings[1], 2);
 
-		params = initialize_for_mems(strings, 10000);
+		params = initialize_for_mems(strings, 2);
 		state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* fast_mems = results->data;

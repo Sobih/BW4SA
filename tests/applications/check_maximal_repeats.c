@@ -19,7 +19,7 @@
 
 START_TEST(test_maximal_repeat2)
 	{
-		parameter_struct* params = initialize_for_max_repeats("abracadabra");
+		parameter_struct* params = initialize_for_max_repeats("abracadabra",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		ck_assert_int_eq(2, results->length);
@@ -37,7 +37,7 @@ START_TEST(test_maximal_repeat2)
 
 START_TEST(test_maximal_repeat2_mapped)
 	{
-		parameter_struct* params = initialize_for_max_repeats("abracadabra");
+		parameter_struct* params = initialize_for_max_repeats("abracadabra",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_node* nodes = results->data;
@@ -57,7 +57,7 @@ START_TEST(test_maximal_repeat2_mapped)
 
 START_TEST(test_maximal_repeat2b)
 	{
-		parameter_struct* params = initialize_for_max_repeats("hattivatti");
+		parameter_struct* params = initialize_for_max_repeats("hattivatti",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_node* nodes = results->data;
@@ -76,7 +76,7 @@ START_TEST(test_maximal_repeat2b)
 
 START_TEST(test_maximal_repeat2b_mapped)
 	{
-		parameter_struct* params = initialize_for_max_repeats("hattivatti");
+		parameter_struct* params = initialize_for_max_repeats("hattivatti",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_with_indexes* nodes = map_maximal_repeats_to_string(
@@ -95,7 +95,7 @@ START_TEST(test_maximal_repeat2b_mapped)
 
 START_TEST(test_maximal_repeat3)
 	{
-		parameter_struct* params = initialize_for_max_repeats("balalaikka");
+		parameter_struct* params = initialize_for_max_repeats("balalaikka",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_node* nodes = results->data;
@@ -117,7 +117,7 @@ START_TEST(test_maximal_repeat3)
 
 START_TEST(test_maximal_repeat3_mapped)
 	{
-		parameter_struct* params = initialize_for_max_repeats("balalaikka");
+		parameter_struct* params = initialize_for_max_repeats("balalaikka",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_with_indexes* nodes = map_maximal_repeats_to_string(
@@ -138,7 +138,7 @@ START_TEST(test_maximal_repeat3_mapped)
 
 START_TEST(test_maximal_repeat_empty)
 	{
-		parameter_struct* params = initialize_for_max_repeats("abc");
+		parameter_struct* params = initialize_for_max_repeats("abc",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		ck_assert_int_eq(0, results->length);
@@ -150,7 +150,7 @@ START_TEST(test_maximal_repeat_empty)
 
 START_TEST(test_maximal_repeat1)
 	{
-		parameter_struct* params = initialize_for_max_repeats("ilotalo");
+		parameter_struct* params = initialize_for_max_repeats("ilotalo",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_node* nodes = results->data;
@@ -166,7 +166,7 @@ START_TEST(test_maximal_repeat1)
 
 START_TEST(test_maximal_repeat1_mapped)
 	{
-		parameter_struct* params = initialize_for_max_repeats("ilotalo");
+		parameter_struct* params = initialize_for_max_repeats("ilotalo",1);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		max_repeat_with_indexes* nodes = map_maximal_repeats_to_string(
@@ -214,8 +214,9 @@ START_TEST(test_max_repeats_randomized)
 			bwt = s_to_bwt(test);
 			suffix_array = map_create_suffix_array_from_bwt(bwt);
 
-			test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
-			parameter_struct* params = initialize_for_max_repeats(test);
+
+			test_substr* maxrep_naive = find_maximal_repeat_substrings(test,1);
+			parameter_struct* params = initialize_for_max_repeats(test,1);
 			iterator_state* state = iterate(params);
 			max_repeat_results* results = (max_repeat_results*) params->ret_data;
 			max_repeat_node* maxrep_fast = results->data;
@@ -258,9 +259,10 @@ START_TEST(test_max_repeats_randomized2)
 			test = generate_random_string(alphabet, rand() % 1000 + 100);
 			bwt = s_to_bwt(test);
 			suffix_array = map_create_suffix_array_from_bwt(bwt);
+			int threshold = rand()%5+1;
 
-			test_substr* maxrep_naive = find_maximal_repeat_substrings(test);
-			parameter_struct* params = initialize_for_max_repeats(test);
+			test_substr* maxrep_naive = find_maximal_repeat_substrings(test,threshold);
+			parameter_struct* params = initialize_for_max_repeats(test,threshold);
 			iterator_state* state = iterate(params);
 			max_repeat_results* results = (max_repeat_results*) params->ret_data;
 			max_repeat_node* maxrep_fast = results->data;

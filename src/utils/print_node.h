@@ -14,7 +14,8 @@ struct iterator_state;
 /**
  * @brief	Prints all the information about a substring in a readable form
  * 			to stdout.
- * @param 	node 	A substring-struct to be printed.
+ * @param 	state 		Internal state of the iterator where the current node is pulled from
+ * @param 	results		Not used, just there to conform to callback
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */

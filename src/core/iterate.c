@@ -433,6 +433,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 	case MEM:
 		//initialize iterator state for using double iterate
 		state = initialize_iterator(parameters->strings, 2);
+		state->threshold = parameters->threshold;
 
 		parameters->ret_data = double_iterate(state, parameters->callback, parameters->ret_data);
 
@@ -469,7 +470,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 	default:
 		//initialize iterator state for using single iterate
 		state = initialize_iterator(parameters->strings, 1);
-
+		state->threshold = parameters->threshold;
 		parameters->ret_data = single_iterate(state, parameters->callback, parameters->ret_data);
 
 		//free all resources

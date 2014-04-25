@@ -35,7 +35,7 @@ typedef struct mem_parameters {
 	alphabet_data alpha_data_left, alpha_data_right;
 } mem_parameters;
 
-parameter_struct* initialize_for_mems(char** strings, int max_number_mems) {
+parameter_struct* initialize_for_mems(char** strings, int threshold) {
 	mem_results* results = malloc(sizeof(mem_results));
 	results->length = 0;
 	results->allocated_length = 10;
@@ -50,6 +50,7 @@ parameter_struct* initialize_for_mems(char** strings, int max_number_mems) {
 	params->iterate_type = MEM;
 	params->strings = strings;
 	params->ret_data = results;
+	params->threshold = threshold;
 
 	return params;
 }
@@ -126,9 +127,11 @@ void search_mems(iterator_state* state, void* results) {
 	mem_results* result = (mem_results*) results;
 	mem_parameters* params = (mem_parameters*) result->params;
 
-	triplet* mems = result->data;
-
 	substring* node1 = &state->current[0], *node2 = &state->current[1];
+
+	if(node1->length< state->threshold){
+		return;
+	}
 
 	mem_candidate* mem_candidates1 = malloc((node1->normal.j - node1->normal.i + 1) * sizeof(mem_candidate));
 	mem_candidate* mem_candidates2 = malloc((node2->normal.j - node2->normal.i + 1) * sizeof(mem_candidate));
@@ -157,6 +160,11 @@ void search_mems(iterator_state* state, void* results) {
 						trip->pos2 = l;
 						trip->length = node1->length;
 						result->length++;
+						//check if triplet-list is full, expand by 10 if it is
+						if (result->allocated_length == result->length) {
+							result->allocated_length += 10;
+							result->data = realloc(result->data, result->allocated_length * sizeof(triplet));
+						}
 					}
 				}
 			}

@@ -52,6 +52,16 @@ void search_mems(struct iterator_state* state, void* results);
  */
 void print_mems(char* string, mem_results* results, iterator_state* state);
 
+/**
+ * @brief	Creates a list of two bit vectors based on the given strings, where marked bits
+ * 			correspond to starting indexes of MEM's inside the strings.
+ *
+ * @param	results		The results of an iteration over a set of strings.
+ * @param	state		Internal state of the iterator that performed the search.
+ * @return 				Bit vectors with starts of MEMs marked.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 struct bit_vector** mem_make_bit_vectors(mem_results* results, struct iterator_state* state);
 
 #endif /* MEMS_H_ */

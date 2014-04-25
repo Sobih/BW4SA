@@ -42,7 +42,7 @@ typedef struct mum_results {
  * @author	Max Sandberg (REXiator), Topi Paavilainen
  * @bug		No known bugs.
  */
-struct parameter_struct* initialize_for_mums(char** strings, int max_number_mums);
+struct parameter_struct* initialize_for_mums(char** strings, int threshold);
 
 /**
  * @brief	Callback function given to double_iterate that determines if a substring is a MUM.
@@ -83,9 +83,6 @@ void mum_print_bit_vectors(char* string1, char* string2, mum_results* results, s
 /**
  * @brief	Creates a list of two bit vectors based on the given strings, where marked bits
  * 			correspond to starting indexes of MUM's inside the strings.
- *
- * Takes in a list of triplets where the positions have been updated to point to
- * the original string.
  *
  * @param	results		The results of an iteration over a set of strings.
  * @param	state		Internal state of the iterator that performed the search.
