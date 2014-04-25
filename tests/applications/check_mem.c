@@ -35,6 +35,7 @@ START_TEST(test_mems_randomized_big_alphabet) {
 	substring_pair* naive_mems;
 	parameter_struct* params;
 	iterator_state* state;
+	bit_vector** vectors;
 
 	for (int i = 0; i < 10; i++) {
 		int len1 = rand() % 20 + 1;
@@ -51,7 +52,8 @@ START_TEST(test_mems_randomized_big_alphabet) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
+		vectors = mem_make_bit_vectors(results, state);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, vectors);
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -61,10 +63,14 @@ START_TEST(test_mems_randomized_big_alphabet) {
 		free(strings[0]);
 		free(strings[1]);
 		free(results->params);
+		free(results->data);
 		free(results);
 		free(params);
 		free(naive_mems);
 		free_iterator_state(state);
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
 	}
 
 	free(strings);
@@ -78,6 +84,7 @@ START_TEST(test_mems_randomized_small_alphabet) {
 	substring_pair* naive_mems;
 	parameter_struct* params;
 	iterator_state* state;
+	bit_vector** vectors;
 	
 	for (int i = 0; i < 10; i++) {
 		int len1 = rand() % 20 + 1;
@@ -96,7 +103,8 @@ START_TEST(test_mems_randomized_small_alphabet) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
+		vectors = mem_make_bit_vectors(results, state);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, vectors);
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -106,10 +114,14 @@ START_TEST(test_mems_randomized_small_alphabet) {
 		free(strings[0]);
 		free(strings[1]);
 		free(results->params);
+		free(results->data);
 		free(results);
 		free(params);
 		free(naive_mems);
 		free_iterator_state(state);
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
 	}
 
 	free(strings);
@@ -123,6 +135,7 @@ START_TEST(test_mems_randomized_few_long_strings) {
 	substring_pair* naive_mems;
 	parameter_struct* params;
 	iterator_state* state;
+	bit_vector** vectors;
 
 	for (int i = 0; i < 2; i++){
 		int len1 = rand() % 300 + 1;
@@ -139,7 +152,8 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
+		vectors = mem_make_bit_vectors(results, state);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, vectors);
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -149,10 +163,14 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		free(strings[0]);
 		free(strings[1]);
 		free(results->params);
+		free(results->data);
 		free(results);
 		free(params);
 		free(naive_mems);
 		free_iterator_state(state);
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
 	}
 
 	free(strings);
