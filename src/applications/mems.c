@@ -126,15 +126,14 @@ void search_mems(iterator_state* state, void* results) {
 	mem_results* result = (mem_results*) results;
 	mem_parameters* params = (mem_parameters*) result->params;
 
-	//check if triplet-list is full, expand by 10 if it is
-	if (result->allocated_length == result->length) {
-		result->allocated_length += 10;
-		result->data = realloc(result->data, result->allocated_length * sizeof(triplet));
-	}
 
 	triplet* mems = result->data;
 
 	substring* node1 = &state->current[0], *node2 = &state->current[1];
+
+	if(node1->length< state->threshold){
+		return;
+	}
 
 	mem_candidate* mem_candidates1 = malloc((node1->normal.j - node1->normal.i + 1) * sizeof(mem_candidate));
 	mem_candidate* mem_candidates2 = malloc((node2->normal.j - node2->normal.i + 1) * sizeof(mem_candidate));
@@ -157,6 +156,11 @@ void search_mems(iterator_state* state, void* results) {
 						trip->pos2 = l;
 						trip->length = node1->length;
 						result->length++;
+						//check if triplet-list is full, expand by 10 if it is
+						if (result->allocated_length == result->length) {
+							result->allocated_length += 10;
+							result->data = realloc(result->data, result->allocated_length * sizeof(triplet));
+						}
 					}
 				}
 			}

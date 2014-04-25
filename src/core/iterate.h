@@ -95,6 +95,10 @@ typedef struct iterator_state {
 	 * @brief	All the c-arrays used by the iterator in this iteration.
 	 */
 	unsigned int** c_arrays;
+	/**
+	 * @brief	Length of the shortest string the callback function will process
+	 */
+	int threshold;
 } iterator_state;
 
 /**
@@ -106,6 +110,7 @@ typedef struct parameter_struct {
 	void (*callback) (iterator_state* state, void* results);
 	void* ret_data;
 	char** strings;
+	int threshold;
 } parameter_struct;
 
 /**
