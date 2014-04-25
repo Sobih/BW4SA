@@ -378,8 +378,8 @@ void free_parameter_struct(parameter_struct* params) {
 	switch (params->iterate_type) {
 	case MUM: //do the same as for MEM
 	case MEM:
-		free(params->strings[0]);
-		free(params->strings[1]);
+		//free(params->strings[0]);
+		//free(params->strings[1]);
 		break;
 	case DOT_TREE: //do the same as for MAX_REPEATS
 	case MAX_REPEATS: //do the same as default
@@ -393,7 +393,9 @@ void free_parameter_struct(parameter_struct* params) {
 
 void free_iterator_state(iterator_state* state) {
 	for (int i = 0; i < state->num_strings; ++i) {
+		free(state->bwts[i].nodes[0].string);
 		free_wavelet_tree_internals(&state->bwts[i]);
+		free(state->reverse_bwts[i].nodes[0].string);
 		free_wavelet_tree_internals(&state->reverse_bwts[i]);
 		free(state->stacks[i].array);
 		free(state->runs_vectors[i].vector);
