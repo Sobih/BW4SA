@@ -17,7 +17,6 @@ struct bit_vector;
 /**
  * @brief A struct for mapping the bwt positions to original positions.
  * @author Paula Lehtola
- * @bugs No known bugs.
 */
 typedef struct mapped_pair {
 	unsigned int bwt_pos;
@@ -27,7 +26,6 @@ typedef struct mapped_pair {
 /**
  * @brief A struct for listing all occurrences of maximal repeats.
  * @author Paula Lehtola, Lassi Vapaakallio
- * @bugs No known bugs.
 */
 
 typedef struct max_repeat_with_indexes {
@@ -56,16 +54,30 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(struct max_repeat_node* n
  *
  * Updates the position values in both strings to indexes in the original string.
  *
- * @param	nodes	An array of all triplets returned after iteration.
- * @param	bwt1	BWT of the first string.
- * @param	bwt2	BWT of the second string.
- * @param	count	Length of the array of nodes.
+ * @param	nodes			An array of all triplets returned after iteration.
+ * @param	bwt1			BWT of the first string.
+ * @param	bwt2			BWT of the second string.
+ * @param	nodes_length	Length of the array of nodes.
+ * @param 	vecs			Bit vector containing the starting position of MUMs in both strings
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
 void map_mum_triplets_to_string(struct triplet* nodes,
 		struct wavelet_tree* bwt1, struct wavelet_tree* bwt2, int nodes_length, struct bit_vector** vecs);
 
+/**
+ * @brief	Maps the BWT indexes to indexes in the original string in all found MEMs.
+ *
+ * Updates the position values in both strings to indexes in the original string.
+ *
+ * @param	nodes			An array of all triplets returned after iteration.
+ * @param	bwt1			BWT of the first string.
+ * @param	bwt2			BWT of the second string.
+ * @param	nodes_length	Length of the array of nodes.
+ * @param 	vecs			Bit vector containing the starting position of MEMs in both strings
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 void map_mem_triplets_to_string(struct triplet* nodes,
 		struct wavelet_tree* bwt1, struct wavelet_tree* bwt2, int nodes_length, struct bit_vector** vecs);
 

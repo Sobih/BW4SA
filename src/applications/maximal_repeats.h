@@ -69,8 +69,6 @@ struct parameter_struct* initialize_for_max_repeats(char* string, int threshold)
  */
 void search_maximal_repeats(struct iterator_state* state, void* results);
 
-struct max_repeat_with_indexes* get_max_repeats_with_indexes();
-
 /**
  * @brief	Prints the substring the interval represents.
  *
@@ -85,6 +83,16 @@ struct max_repeat_with_indexes* get_max_repeats_with_indexes();
  */
 void print_maximal_repeat_substrings(char* string, max_repeat_results* results, struct iterator_state* state);
 
+/**
+ * @brief	Creates a bit vectors based on the given string, where marked bits
+ * 			correspond to starting indexes of maximal repeats inside the string.
+ *
+ * @param	results		The results of an iteration over a set of strings.
+ * @param	state		Internal state of the iterator that performed the search.
+ * @return 				Bit vectors with starts of Maximal repeats marked.
+ * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
+ * @bug		No known bugs.
+ */
 struct bit_vector* max_repeat_make_bit_vector(max_repeat_results* results, struct iterator_state* state);
 
 #endif /* MAXIMAL_REPEATS_H_ */

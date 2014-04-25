@@ -14,6 +14,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief	A function that counts the number of marked bits.
+ * @param	vector_length	Length of the bit vector.
+ * @param 	bit_vec			Bit vector to be counted from
+ * @author	Lassi Vapaakallio, Paula Lehtola
+ * @bug		No known bugs.
+ */
 int marked_bits_on_bit_vector(bit_vector* vec, int vector_length) {
 	int marked_bits = 0;
 	for (int i = 0; i < vector_length; i++) {
@@ -89,11 +96,10 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes,
 /**
  * @brief	A function for mapping the indices inside the BWT to indices inside
  * 			the original c-string.
- * @param	nodes		A list of triplet-nodes.
- * @param	bwt			The BWT of a string, represented as a wavelet tree.
- * @param	count		Length of the array.
- * @param	position	Determines which of the indices is to be updated.
- * 						Has to be either <code>1</code> or <code>2</code>.
+ * @param	bwt				The BWT of a string, represented as a wavelet tree.
+ * @param	nodes_length	Length of the array.
+ * @param 	bit_vec			Bit vector containing the mappable indexes
+ * @param	marked_bits		number of bits marked in the vector
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
