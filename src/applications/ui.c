@@ -83,7 +83,12 @@ void ui()
 	wavelet_tree* res_root;
 
 	if (choice == 1) {
-		iterate(input, &print_node);
+		char** strings = malloc(sizeof(char*));
+		strings[0] = input;
+		iterator_state* state = initialize_iterator(strings, 1);
+		single_iterate(state, &print_node, 0);
+		free_iterator_state(state);
+		free(strings);
 	} else if (choice == 2) {
 		res_root = s_to_bwt(input);
 		print_wavelet_tree(res_root);
@@ -105,25 +110,51 @@ void ui()
 		printf("Give the second input string: ");
 		char* input2 = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
 		scanf("%s", input2);
-		double_iterate(input, input2, &search_mums);
-		print_mums(input);
-		mum_print_bit_vectors(input,input2);
+
+		char** strings = malloc(2 * sizeof(char*));
+		strings[0] = input;
+		strings[1] = input2;
+		parameter_struct* params = initialize_for_mums(strings, 1000);
+		iterator_state* state = iterate(params);
+		mum_results* results = (mum_results*) params->ret_data;
+		triplet* nodes = results->data;
+
+		print_mums(input, results, state);
+		mum_print_bit_vectors(input,input2, results, state);
+
+		free(strings);
+		free(results->data);
+		free_iterator_state(state);
 
 	} else if (choice == 8) {
 		printf("Not supported yet\n");
 	} else if (choice == 9) {
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
-		iterate(input, &search_maximal_repeats);
+		parameter_struct* params = initialize_for_max_repeats(input);
+		iterator_state* state = iterate(params);
+		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		//maximals_print_nodes(input);
-		print_maximal_repeat_substrings(input);
+		print_maximal_repeat_substrings(input, results, state);
 		//compare_quick_sort()
 	} else if (choice == 11) {
 		printf("Give the second input string: ");
 		char* input2 = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
 		scanf("%s", input2);
-		double_iterate(input, input2, &search_mems);
-		print_mems(input);
+
+		char** strings = malloc(2 * sizeof(char*));
+		strings[0] = input;
+		strings[1] = input2;
+		parameter_struct* params = initialize_for_mems(strings, 1000);
+		iterator_state* state = iterate(params);
+		mem_results* results = (mem_results*) params->ret_data;
+		triplet* nodes = results->data;
+
+		print_mems(input, results, state);
+
+		free(strings);
+		free(results->data);
+		free_iterator_state(state);
 	}else {
 		printf("Invalid choice\n");
 	}
