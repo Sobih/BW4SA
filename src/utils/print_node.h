@@ -9,6 +9,7 @@
 #define PRINT_NODE_H_
 
 struct substring;
+struct iterator_state;
 
 /**
  * @brief	Prints all the information about a substring in a readable form
@@ -17,16 +18,6 @@ struct substring;
  * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
  * @bug		No known bugs.
  */
-void print_node(struct substring* node);
-
-/**
- * @brief	Prints all the information of two substrings in a readable form
- * 			to stdout.
- * @param	node1	The first substring to be printed.
- * @param	node2	The second substring to be printed.
- * @author	Lassi Vapaakallio, Max Sandberg (REXiator)
- * @bug		No known bugs.
- */
-void print_double_node(struct substring* node1, struct substring* node2);
+void print_node(struct iterator_state* state, void* results);
 
 #endif /* PRINT_NODE_H_ */

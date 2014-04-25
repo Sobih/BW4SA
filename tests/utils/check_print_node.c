@@ -17,13 +17,15 @@ substring* create_substr(void)
 
 START_TEST(test_print)
 {
+	iterator_state* state = initialize_iterator(0, 0);
 	substring* new = create_substr();
 	new->normal.i = 5;
 	new->normal.j = 8;
 	new->reverse.i = 6;
 	new->reverse.j = 9;
 	new->length = 3;
-	print_node(new);
+	state->current = new;
+	print_node(state,0);
 }
 END_TEST
 
