@@ -410,12 +410,16 @@ void free_iterator_state(iterator_state* state) {
 	free(state->prev);
 	free(state->alpha_datas);
 	free(state->c_arrays);
-	free(state->common_alphabet);
 	free(state->stacks);
 	free(state->runs_vectors);
 	free(state->reverse_runs_vectors);
 	free(state->bwts);
 	free(state->reverse_bwts);
+
+	if (state->common_alphabet != 0) {
+		free(state->common_alphabet->alphabet);
+		free(state->common_alphabet);
+	}
 
 	free(state);
 }
