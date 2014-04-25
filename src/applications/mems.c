@@ -144,8 +144,10 @@ void search_mems(iterator_state* state, void* results) {
 
 	for (int i = 0; i < index1; i++) {
 		for (int j = 0; j < index2; j++) {
-			if ((mem_candidates1[i].first != mem_candidates2[j].first || mem_candidates1[i].first == '$')
-					&& (mem_candidates1[i].last != mem_candidates2[j].last || mem_candidates1[i].last == '$')) {
+			if ((mem_candidates1[i].first != mem_candidates2[j].first
+					|| mem_candidates1[i].first == '$')
+					&& (mem_candidates1[i].last != mem_candidates2[j].last
+							|| mem_candidates1[i].last == '$')) {
 				for (int k = mem_candidates1[i].extension.normal.i;
 						k <= mem_candidates1[i].extension.normal.j; k++) {
 					for (int l = mem_candidates2[j].extension.normal.i;
@@ -180,12 +182,7 @@ void print_mems(char* string, mem_results* results, iterator_state* state) {
 				trip.pos1, trip.pos2, trip.length);
 	}
 
-	map_mum_triplets_to_string(mems, &state->bwts[0], &state->bwts[1], results->length);
-
-	for(int i = 0; i < results->length; i++){
-		mems[i].pos1 = mems[i].pos1 + 1;
-		mems[i].pos2 = mems[i].pos2 + 1;
-	}
+	map_mem_triplets_to_string(mems, &state->bwts[0], &state->bwts[1], results->length, mem_make_bit_vectors(results, state));
 
 	for (i = 0; i < results->length; i++) {
 		triplet trip = mems[i];
@@ -197,3 +194,21 @@ void print_mems(char* string, mem_results* results, iterator_state* state) {
 		printf("\n\n");
 	}
 }
+
+bit_vector** mem_make_bit_vectors(mem_results* results, iterator_state* state) {
+	bit_vector** vectors = calloc(sizeof(bit_vector),2);
+	bit_vector* bit_vector1 = malloc(sizeof(bit_vector));
+	init_bit_vector(bit_vector1, state->bwts[0].get_num_bits(&state->bwts[0]));
+	bit_vector* bit_vector2 = malloc(sizeof(bit_vector));
+	init_bit_vector(bit_vector2, state->bwts[1].get_num_bits(&state->bwts[1]));
+	int i;
+	for (i = 0; i < results->length; i++) {
+		triplet trip = results->data[i];
+		bit_vector1->mark_bit(bit_vector1, trip.pos1);
+		bit_vector2->mark_bit(bit_vector2, trip.pos2);
+	}
+	vectors[0] = bit_vector1;
+	vectors[1] = bit_vector2;
+	return vectors;
+}
+

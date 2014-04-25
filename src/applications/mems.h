@@ -8,6 +8,7 @@
 #ifndef MEMS_H_
 #define MEMS_H_
 
+
 #include "../utils/structs.h"
 #include "../core/iterate.h"
 
@@ -50,5 +51,7 @@ void search_mems(struct iterator_state* state, void* results);
  * @bug		No known bugs.
  */
 void print_mems(char* string, mem_results* results, iterator_state* state);
+
+struct bit_vector** mem_make_bit_vectors(mem_results* results, struct iterator_state* state);
 
 #endif /* MEMS_H_ */

@@ -9,19 +9,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-//START_TEST(test_mem1) {
-//
-//	ck_assert_int_eq(is_substring_maximal_exact_match("laatikko", "mehukatti", 8, 9, 2, 2), 1);
-//}
-//END_TEST
-//
-//
-//START_TEST(test_mem2) {
-//
-//  ck_assert_int_eq(is_substring_maximal_exact_match("abracadabra", "abracadabra", 11, 14, 0, 4), 1);
-//
-//}
-//END_TEST
 
 int search_and_remove(triplet trip, substring_pair* head)
 {
@@ -64,18 +51,7 @@ START_TEST(test_mems_randomized_big_alphabet) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
-
-		for(int i = 0; i < num_mems; i++) {
-			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1)
-				fast_mems[i].pos1 = 0;
-
-			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1)
-				fast_mems[i].pos2 = 0;
-		}
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -118,18 +94,8 @@ START_TEST(test_mems_randomized_small_alphabet) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
 
-		for(int i = 0; i < num_mems; i++){
-			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1)
-				fast_mems[i].pos1 = 0;
-
-			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1)
-				fast_mems[i].pos2 = 0;
-		}
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));
@@ -172,18 +138,7 @@ START_TEST(test_mems_randomized_few_long_strings) {
 		triplet* fast_mems = results->data;
 		int num_mems = results->length;
 
-		//custom mapping for mems. This has to be changed when real mapping is ready.
-		map_mum_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems);
-
-		for(int i = 0; i < num_mems; i++){
-			fast_mems[i].pos1 = fast_mems[i].pos1 + 1;
-			if(fast_mems[i].pos1 == len1+1)
-				fast_mems[i].pos1 = 0;
-
-			fast_mems[i].pos2 = fast_mems[i].pos2 + 1;
-			if(fast_mems[i].pos2 == len2+1)
-				fast_mems[i].pos2 = 0;
-		}
+		map_mem_triplets_to_string(fast_mems, &state->bwts[0], &state->bwts[1], num_mems, mem_make_bit_vectors(results, state));
 
 		for(int j = 0; j < num_mems; j++)
 			fail_unless(search_and_remove(fast_mems[j], naive_mems));

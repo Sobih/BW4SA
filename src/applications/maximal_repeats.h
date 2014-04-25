@@ -12,6 +12,10 @@
 #include "../utils/structs.h"
 
 struct wavelet_tree;
+struct bit_vector;
+struct substring;
+struct interval;
+struct max_repeat_node_with_indexes;
 struct parameter_struct;
 struct iterator_state;
 
@@ -65,6 +69,8 @@ struct parameter_struct* initialize_for_max_repeats(char* string);
  */
 void search_maximal_repeats(struct iterator_state* state, void* results);
 
+struct max_repeat_with_indexes* get_max_repeats_with_indexes();
+
 /**
  * @brief	Prints the substring the interval represents.
  *
@@ -78,5 +84,7 @@ void search_maximal_repeats(struct iterator_state* state, void* results);
  * @bug		No known bugs.
  */
 void print_maximal_repeat_substrings(char* string, max_repeat_results* results, struct iterator_state* state);
+
+struct bit_vector* max_repeat_make_bit_vector(max_repeat_results* results, struct iterator_state* state);
 
 #endif /* MAXIMAL_REPEATS_H_ */

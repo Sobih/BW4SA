@@ -8,7 +8,6 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-
 #include "../src/utils/bit_vector.h"
 #include "../src/utils/print_node.h"
 #include "../src/utils/structs.h"

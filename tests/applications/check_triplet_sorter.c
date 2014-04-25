@@ -1,10 +1,8 @@
 #include <check.h>
-#include "../../include/iterate.h"
-#include "../../include/maximal_repeats.h"
-#include "../../include/mapper.h"
-#include "../../include/mum.h"
+#include "../../include/core.h"
 #include "../../include/utils.h"
-#include "../../src/iterate/triplet_sorter.h"
+#include "../../src/applications/triplet_sorter.h"
+#include "../../src/applications/maximal_repeats.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -92,17 +90,14 @@ max_repeat_node* generate_random_max_repeat_array(int size)
 	for (i = 0; i < size; i++) {
 		r1 = rand() % 10000;
 		r2 = rand() % 10000;
-		Interval* ival = malloc(sizeof(Interval*));
+		interval ival;
 		if (r1 < r2) {
-			ival->i = r1;
-			ival->j = r2;				
+			ival = (interval) {.i = r1, .j = r2};
 		} else {
-			ival->i = r2;
-			ival->j = r1;
+			ival = (interval) {.i = r2, .j = r1};
 		}
 		
-		max_repeat_node* m = &((max_repeat_node) {.normal = ival, .length = rand()});
-		array[i] = *m;	
+		array[i] = (max_repeat_node) {.normal = ival, .length = rand()};
 	}
 
 	return array;
@@ -117,7 +112,7 @@ START_TEST (test_max_repeat_nodes)
 		max_repeat_node* array = generate_random_max_repeat_array(size);
 		compare_quick_sort(array, size, sizeof(max_repeat_node), &compare_max_repeat_nodes);
 		for (int j = 0; j < size-1; j++) {
-			fail_unless((array[j].normal->i < array[j+1].normal->i) || (array[j].normal->i == array[j+1].normal->i && array[j].normal->j <= array[j+1].normal->j) );
+			fail_unless((array[j].normal.i < array[j+1].normal.i) || (array[j].normal.i == array[j+1].normal.i && array[j].normal.j <= array[j+1].normal.j) );
 		}
 	}
 

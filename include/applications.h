@@ -10,6 +10,7 @@
 
 #include "../src/applications/maximal_repeats.h"
 #include "../src/applications/mum.h"
+#include "../src/applications/mapper.h"
 #include "../src/applications/mems.h"
 
 #endif /* APPLICATIONS_H_ */

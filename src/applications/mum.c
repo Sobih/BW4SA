@@ -14,6 +14,7 @@
 #include <string.h>
 
 
+
 parameter_struct* initialize_for_mums(char** strings, int max_number_mums) {
 	mum_results* results = malloc(sizeof(mum_results));
 	results->length = 0;
@@ -68,7 +69,7 @@ void print_mums(char* string, mum_results* results, iterator_state* state) {
 				"Index in the BWT first string: %d\nIndex in the BWT second string: %d\nLength: %d \n",
 				trip.pos1, trip.pos2, trip.length);
 	}
-	map_mum_triplets_to_string(results->data, &state->bwts[0], &state->bwts[1], results->length);
+	map_mum_triplets_to_string(results->data, &state->bwts[0], &state->bwts[1], results->length, mum_make_bit_vectors(results,state));
 	for (i = 0; i < results->length; i++) {
 		triplet trip = results->data[i];
 		printf(
@@ -78,6 +79,7 @@ void print_mums(char* string, mum_results* results, iterator_state* state) {
 		printf("The substring itself: %s \n", subs);
 	}
 }
+
 
 bit_vector** mum_make_bit_vectors(mum_results* results, iterator_state* state) {
 	bit_vector** vectors = calloc(sizeof(bit_vector),2);
