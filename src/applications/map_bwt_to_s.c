@@ -28,5 +28,7 @@ int* map_create_suffix_array_from_bwt(const wavelet_tree* bwt)
 		interval = c_array[index] + bwt->rank(bwt, current, 0, interval - 1);
 	}
 
+	free(c_array);
+
 	return suffix_array;
 }

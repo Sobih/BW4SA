@@ -35,10 +35,10 @@ typedef struct mem_parameters {
 	alphabet_data alpha_data_left, alpha_data_right;
 } mem_parameters;
 
-parameter_struct* initialize_for_mems(char** strings, int max_number_mems) {
+parameter_struct* initialize_for_mems(char** strings, int threshold) {
 	mem_results* results = malloc(sizeof(mem_results));
 	results->length = 0;
-	results->allocated_length = max_number_mems;
+	results->allocated_length = 10;
 	results->data = malloc(results->allocated_length * sizeof(triplet));
 
 	mem_parameters* mem_params = malloc(sizeof(mem_parameters));
@@ -50,6 +50,7 @@ parameter_struct* initialize_for_mems(char** strings, int max_number_mems) {
 	params->iterate_type = MEM;
 	params->strings = strings;
 	params->ret_data = results;
+	params->threshold = threshold;
 
 	return params;
 }
@@ -81,7 +82,7 @@ int list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
 	int alphabet_length = alpha_data_left->length;
 
 	unsigned int* c_array_left = create_c_array(bwt, &node->normal, 0, 0, 0);
-	unsigned int* c_array_right = malloc((alphabet_length + 1) * sizeof(unsigned int));
+	unsigned int* c_array_right = malloc((bwt->get_alphabet_length(bwt) + 1) * sizeof(unsigned int));
 
 	int index = 0;
 
@@ -126,9 +127,6 @@ void search_mems(iterator_state* state, void* results) {
 	mem_results* result = (mem_results*) results;
 	mem_parameters* params = (mem_parameters*) result->params;
 
-
-	triplet* mems = result->data;
-
 	substring* node1 = &state->current[0], *node2 = &state->current[1];
 
 	if(node1->length< state->threshold){
@@ -151,7 +149,13 @@ void search_mems(iterator_state* state, void* results) {
 						k <= mem_candidates1[i].extension.normal.j; k++) {
 					for (int l = mem_candidates2[j].extension.normal.i;
 							l <= mem_candidates2[j].extension.normal.j; l++) {
-						triplet* trip = &mems[result->length];
+						//check if triplet-list is full, expand by 10 if it is
+						if (result->allocated_length == result->length) {
+							result->allocated_length += 10;
+							result->data = realloc(result->data, result->allocated_length * sizeof(triplet));
+						}
+
+						triplet* trip = &result->data[result->length];
 						trip->pos1 = k;
 						trip->pos2 = l;
 						trip->length = node1->length;
