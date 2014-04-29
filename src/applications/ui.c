@@ -131,7 +131,7 @@ void ui()
 	} else if (choice == 9) {
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
-		parameter_struct* params = initialize_for_max_repeats(input);
+		parameter_struct* params = initialize_for_max_repeats(input, 1000);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		//maximals_print_nodes(input);
