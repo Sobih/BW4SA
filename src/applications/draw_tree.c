@@ -6,6 +6,7 @@
  */
 
 #include "draw_tree.h"
+#include "map_bwt_to_s.h"
 #include "../core/iterate.h"
 #include "../core/c_array.h"
 #include "../core/backward_search.h"
