@@ -119,6 +119,8 @@ void ui()
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
 
+		printf("Results length: %d\n", results->length);
+
 		print_mums(input, results, state);
 		mum_print_bit_vectors(input,input2, results, state);
 
@@ -135,6 +137,8 @@ void ui()
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		//maximals_print_nodes(input);
+
+		printf("Results length: %d\n", results->length);
 		print_maximal_repeat_substrings(input, results, state);
 		//compare_quick_sort()
 	} else if (choice == 11) {
@@ -150,6 +154,7 @@ void ui()
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* nodes = results->data;
 
+		printf("Results length: %d\n", results->length);
 		print_mems(input, results, state);
 
 		free(strings);

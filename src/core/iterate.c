@@ -439,7 +439,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 		state = initialize_iterator(parameters->strings, 2);
 		state->threshold = parameters->threshold;
 
-		parameters->ret_data = double_iterate(state, parameters->callback, parameters->ret_data);
+		/*parameters->ret_data = */double_iterate(state, parameters->callback, parameters->ret_data);
 
 		//free all resources
 		/*free_wavelet_tree(&state->bwts[0]);
@@ -475,7 +475,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 		//initialize iterator state for using single iterate
 		state = initialize_iterator(parameters->strings, 1);
 		state->threshold = parameters->threshold;
-		parameters->ret_data = single_iterate(state, parameters->callback, parameters->ret_data);
+		/*parameters->ret_data = */single_iterate(state, parameters->callback, parameters->ret_data);
 
 		//free all resources
 		/*free_wavelet_tree(state->bwts);
