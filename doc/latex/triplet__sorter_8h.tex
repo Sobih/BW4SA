@@ -1,0 +1,179 @@
+\hypertarget{triplet__sorter_8h}{\section{src/applications/triplet\-\_\-sorter.h \-File \-Reference}
+\label{triplet__sorter_8h}\index{src/applications/triplet\-\_\-sorter.\-h@{src/applications/triplet\-\_\-sorter.\-h}}
+}
+
+
+\-Quicksort that takes compare function as a parameter. \-Compare functions are made for triplets (for pos1 and pos2) and for max\-\_\-repeat\-\_\-nodes.  
+
+
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{triplet__sorter_8h_a2e80837283c7328ed2727638272fb674}{compare\-\_\-triplets\-\_\-pos1} (void $\ast$first, void $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares triplets by the value of pos1. \end{DoxyCompactList}\item 
+int \hyperlink{triplet__sorter_8h_af790fd4baa2dea63a935f514dde74e55}{compare\-\_\-triplets\-\_\-pos2} (void $\ast$first, void $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares triplets by the value of pos2. \end{DoxyCompactList}\item 
+int \hyperlink{triplet__sorter_8h_a5db5d770e9936f9cf466391d52b83e3e}{compare\-\_\-max\-\_\-repeat\-\_\-nodes} (void $\ast$first, void $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares max\-\_\-repeat\-\_\-nodes by comparing first the i values of the interval, and if they are equal, compares the j values. \end{DoxyCompactList}\item 
+int \hyperlink{triplet__sorter_8h_a8f6267835f9bab57d99557970119f321}{compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos} (void $\ast$first, void $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares mapped\-\_\-pairs by the value of bwt\-\_\-pos. \end{DoxyCompactList}\item 
+void \hyperlink{triplet__sorter_8h_aff525ad95c387f4fc94d710aae057c52}{compare\-\_\-quick\-\_\-sort} (void $\ast$arr, unsigned int arr\-\_\-size, unsigned int entry\-\_\-size, int($\ast$compare)(void $\ast$first, void $\ast$second))
+\begin{DoxyCompactList}\small\item\em \-A quicksort which uses a comparison function which has been given as a function pointer parameter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Quicksort that takes compare function as a parameter. \-Compare functions are made for triplets (for pos1 and pos2) and for max\-\_\-repeat\-\_\-nodes. \begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000057}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{triplet__sorter_8h_a8f6267835f9bab57d99557970119f321}{\index{triplet\-\_\-sorter.\-h@{triplet\-\_\-sorter.\-h}!compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos@{compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos}}
+\index{compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos@{compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos}!triplet_sorter.h@{triplet\-\_\-sorter.\-h}}
+\subsubsection[{compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf compare\-\_\-mapped\-\_\-pairs\-\_\-by\-\_\-bwt\-\_\-pos} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{first, }
+\item[{void $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{triplet__sorter_8h_a8f6267835f9bab57d99557970119f321}
+
+
+\-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares mapped\-\_\-pairs by the value of bwt\-\_\-pos. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & a void pointer which will be converted to a \hyperlink{mapper_8h_structmapped__pair}{mapped\-\_\-pair} pointer \\
+\hline
+{\em second} & a void pointer which will be converted to a \hyperlink{mapper_8h_structmapped__pair}{mapped\-\_\-pair} pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+triplet\-\_\-sorter.\-h\-::compare\-\_\-quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{\-Returns}
+negative if first is smaller, positive if second is smaller 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000061}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{triplet__sorter_8h_a5db5d770e9936f9cf466391d52b83e3e}{\index{triplet\-\_\-sorter.\-h@{triplet\-\_\-sorter.\-h}!compare\-\_\-max\-\_\-repeat\-\_\-nodes@{compare\-\_\-max\-\_\-repeat\-\_\-nodes}}
+\index{compare\-\_\-max\-\_\-repeat\-\_\-nodes@{compare\-\_\-max\-\_\-repeat\-\_\-nodes}!triplet_sorter.h@{triplet\-\_\-sorter.\-h}}
+\subsubsection[{compare\-\_\-max\-\_\-repeat\-\_\-nodes}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf compare\-\_\-max\-\_\-repeat\-\_\-nodes} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{first, }
+\item[{void $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{triplet__sorter_8h_a5db5d770e9936f9cf466391d52b83e3e}
+
+
+\-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares max\-\_\-repeat\-\_\-nodes by comparing first the i values of the interval, and if they are equal, compares the j values. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & a void pointer which will be converted to a \hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node} pointer \\
+\hline
+{\em second} & a void pointer which will be converted to a \hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node} pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+triplet\-\_\-sorter.\-h\-::compare\-\_\-quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{\-Returns}
+negative if first is smaller, positive if second is smaller 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000060}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{triplet__sorter_8h_aff525ad95c387f4fc94d710aae057c52}{\index{triplet\-\_\-sorter.\-h@{triplet\-\_\-sorter.\-h}!compare\-\_\-quick\-\_\-sort@{compare\-\_\-quick\-\_\-sort}}
+\index{compare\-\_\-quick\-\_\-sort@{compare\-\_\-quick\-\_\-sort}!triplet_sorter.h@{triplet\-\_\-sorter.\-h}}
+\subsubsection[{compare\-\_\-quick\-\_\-sort}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf compare\-\_\-quick\-\_\-sort} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arr, }
+\item[{unsigned int}]{arr\-\_\-size, }
+\item[{unsigned int}]{entry\-\_\-size, }
+\item[{int($\ast$)(void $\ast$first, void $\ast$second)}]{compare}
+\end{DoxyParamCaption}
+)}}\label{triplet__sorter_8h_aff525ad95c387f4fc94d710aae057c52}
+
+
+\-A quicksort which uses a comparison function which has been given as a function pointer parameter. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arr} & \-Pointer to the array to be sorted. \\
+\hline
+{\em arr\-\_\-size} & \-Size of the array to be sorted. \\
+\hline
+{\em entry\-\_\-size} & \-Size of the individual entries in the array. \\
+\hline
+{\em compare} & \-A function pointer for the comparison functions. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns the sorted array. 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000062}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{triplet__sorter_8h_a2e80837283c7328ed2727638272fb674}{\index{triplet\-\_\-sorter.\-h@{triplet\-\_\-sorter.\-h}!compare\-\_\-triplets\-\_\-pos1@{compare\-\_\-triplets\-\_\-pos1}}
+\index{compare\-\_\-triplets\-\_\-pos1@{compare\-\_\-triplets\-\_\-pos1}!triplet_sorter.h@{triplet\-\_\-sorter.\-h}}
+\subsubsection[{compare\-\_\-triplets\-\_\-pos1}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf compare\-\_\-triplets\-\_\-pos1} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{first, }
+\item[{void $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{triplet__sorter_8h_a2e80837283c7328ed2727638272fb674}
+
+
+\-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares triplets by the value of pos1. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & a void pointer which will be converted to a triplet pointer \\
+\hline
+{\em second} & a void pointer which will be converted to a triplet pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+triplet\-\_\-sorter.\-h\-::compare\-\_\-quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{\-Returns}
+negative if first is smaller, positive if second is smaller 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000058}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{triplet__sorter_8h_af790fd4baa2dea63a935f514dde74e55}{\index{triplet\-\_\-sorter.\-h@{triplet\-\_\-sorter.\-h}!compare\-\_\-triplets\-\_\-pos2@{compare\-\_\-triplets\-\_\-pos2}}
+\index{compare\-\_\-triplets\-\_\-pos2@{compare\-\_\-triplets\-\_\-pos2}!triplet_sorter.h@{triplet\-\_\-sorter.\-h}}
+\subsubsection[{compare\-\_\-triplets\-\_\-pos2}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf compare\-\_\-triplets\-\_\-pos2} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{first, }
+\item[{void $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{triplet__sorter_8h_af790fd4baa2dea63a935f514dde74e55}
+
+
+\-A compare function for compare\-\_\-quick\-\_\-sort. \-Compares triplets by the value of pos2. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & a void pointer which will be converted to a triplet pointer \\
+\hline
+{\em second} & a void pointer which will be converted to a triplet pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+triplet\-\_\-sorter.\-h\-::compare\-\_\-quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{\-Returns}
+negative if first is smaller, positive if second is smaller 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000059}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}

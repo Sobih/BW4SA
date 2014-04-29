@@ -1,0 +1,238 @@
+\hypertarget{mum_8c}{\section{src/applications/mum.c \-File \-Reference}
+\label{mum_8c}\index{src/applications/mum.\-c@{src/applications/mum.\-c}}
+}
+
+
+\-Implementation of the algorithms related to maximal unique matches.  
+
+
+{\ttfamily \#include \char`\"{}mum.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}mapper.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/iterate.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../../include/utils.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$ \hyperlink{mum_8c_a23ee7d8c86001e107bb2edf0d90219fe}{initialize\-\_\-for\-\_\-mums} (char $\ast$$\ast$strings, int threshold)
+\begin{DoxyCompactList}\small\item\em \-An initialization function that creates a parameter struct that instructs iterate to search for maximal unique matches. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8c_a15f215725bf22c2d29fc76ac9fd6106a}{search\-\_\-mums} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results)
+\begin{DoxyCompactList}\small\item\em \-Callback function given to double\-\_\-iterate that determines if a substring is a \-M\-U\-M. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8c_af248f6270c759dbddce363f2cba7faaa}{print\-\_\-mums} (char $\ast$string, \hyperlink{mum_8h_structmum__results}{mum\-\_\-results} $\ast$results, \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Prints the indexes of the \-M\-U\-M in both strings, as well as the substring itself, to stdout. \end{DoxyCompactList}\item 
+\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$ \hyperlink{mum_8c_aa90c9f2dbc252cfabd15840f2c87bf28}{mum\-\_\-make\-\_\-bit\-\_\-vectors} (\hyperlink{mum_8h_structmum__results}{mum\-\_\-results} $\ast$results, \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Creates a list of two bit vectors based on the given strings, where marked bits correspond to starting indexes of \-M\-U\-M's inside the strings. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8c_ae4a3fe245a534ee64e3aa78768294006}{print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string} (char $\ast$string1, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector)
+\begin{DoxyCompactList}\small\item\em \-A simple function for printing a bit vector with the c-\/string that is related to it to stdout. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8c_aefd87b18c805bfd3c90a2e9096925f5c}{mum\-\_\-print\-\_\-bit\-\_\-vectors} (char $\ast$string1, char $\ast$string2, \hyperlink{mum_8h_structmum__results}{mum\-\_\-results} $\ast$results, \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Prints the bit vectors of the strings which show where \-M\-U\-Ms occur to stdout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the algorithms related to maximal unique matches. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000048}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{mum_8c_a23ee7d8c86001e107bb2edf0d90219fe}{\index{mum.\-c@{mum.\-c}!initialize\-\_\-for\-\_\-mums@{initialize\-\_\-for\-\_\-mums}}
+\index{initialize\-\_\-for\-\_\-mums@{initialize\-\_\-for\-\_\-mums}!mum.c@{mum.\-c}}
+\subsubsection[{initialize\-\_\-for\-\_\-mums}]{\setlength{\rightskip}{0pt plus 5cm}{\bf parameter\-\_\-struct}$\ast$ {\bf initialize\-\_\-for\-\_\-mums} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{int}]{threshold}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{mum_8c_a23ee7d8c86001e107bb2edf0d90219fe}
+
+
+\-An initialization function that creates a parameter struct that instructs iterate to search for maximal unique matches. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-An array of pointers to strings that are to be iterated over. \\
+\hline
+{\em max\-\_\-number\-\_\-mums} & number of slots of memory allocated for triplets. \-This number has to be at least as large as expected number of \-M\-U\-Ms. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An initialized parameter struct ready to be passed to iterate. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator), \-Topi \-Paavilainen 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000052}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References search\-\_\-mums().
+
+\hypertarget{mum_8c_aa90c9f2dbc252cfabd15840f2c87bf28}{\index{mum.\-c@{mum.\-c}!mum\-\_\-make\-\_\-bit\-\_\-vectors@{mum\-\_\-make\-\_\-bit\-\_\-vectors}}
+\index{mum\-\_\-make\-\_\-bit\-\_\-vectors@{mum\-\_\-make\-\_\-bit\-\_\-vectors}!mum.c@{mum.\-c}}
+\subsubsection[{mum\-\_\-make\-\_\-bit\-\_\-vectors}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bit\-\_\-vector}$\ast$$\ast$ {\bf mum\-\_\-make\-\_\-bit\-\_\-vectors} (
+\begin{DoxyParamCaption}
+\item[{{\bf mum\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{mum_8c_aa90c9f2dbc252cfabd15840f2c87bf28}
+
+
+\-Creates a list of two bit vectors based on the given strings, where marked bits correspond to starting indexes of \-M\-U\-M's inside the strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em results} & \-The results of an iteration over a set of strings. \\
+\hline
+{\em state} & \-Internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Bit vectors with starts of \-M\-U\-Ms marked. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000056}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, init\-\_\-bit\-\_\-vector(), and bit\-\_\-vector\-::mark\-\_\-bit.
+
+
+
+\-Referenced by mum\-\_\-print\-\_\-bit\-\_\-vectors(), and print\-\_\-mums().
+
+\hypertarget{mum_8c_aefd87b18c805bfd3c90a2e9096925f5c}{\index{mum.\-c@{mum.\-c}!mum\-\_\-print\-\_\-bit\-\_\-vectors@{mum\-\_\-print\-\_\-bit\-\_\-vectors}}
+\index{mum\-\_\-print\-\_\-bit\-\_\-vectors@{mum\-\_\-print\-\_\-bit\-\_\-vectors}!mum.c@{mum.\-c}}
+\subsubsection[{mum\-\_\-print\-\_\-bit\-\_\-vectors}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf mum\-\_\-print\-\_\-bit\-\_\-vectors} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string1, }
+\item[{char $\ast$}]{string2, }
+\item[{{\bf mum\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{mum_8c_aefd87b18c805bfd3c90a2e9096925f5c}
+
+
+\-Prints the bit vectors of the strings which show where \-M\-U\-Ms occur to stdout. 
+
+\-Every time a \-M\-U\-M is found, the \-B\-W\-T index of the \-M\-U\-M is marked on both strings' bit vectors.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string1} & \-The first string for which a bit vector is to be printed. \\
+\hline
+{\em string2} & \-The first string for which a bit vector is to be printed. \\
+\hline
+{\em results} & \-The results of the iteration over the two strings. \\
+\hline
+{\em state} & \-Internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000055}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References mum\-\_\-make\-\_\-bit\-\_\-vectors(), and print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string().
+
+\hypertarget{mum_8c_ae4a3fe245a534ee64e3aa78768294006}{\index{mum.\-c@{mum.\-c}!print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string@{print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string}}
+\index{print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string@{print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string}!mum.c@{mum.\-c}}
+\subsubsection[{print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string1, }
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector}
+\end{DoxyParamCaption}
+)}}\label{mum_8c_ae4a3fe245a534ee64e3aa78768294006}
+
+
+\-A simple function for printing a bit vector with the c-\/string that is related to it to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string1} & \-The string related to the vector. \\
+\hline
+{\em vector} & \-The bit vector to be printed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000049}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked.
+
+
+
+\-Referenced by mum\-\_\-print\-\_\-bit\-\_\-vectors().
+
+\hypertarget{mum_8c_af248f6270c759dbddce363f2cba7faaa}{\index{mum.\-c@{mum.\-c}!print\-\_\-mums@{print\-\_\-mums}}
+\index{print\-\_\-mums@{print\-\_\-mums}!mum.c@{mum.\-c}}
+\subsubsection[{print\-\_\-mums}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-mums} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{{\bf mum\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{mum_8c_af248f6270c759dbddce363f2cba7faaa}
+
+
+\-Prints the indexes of the \-M\-U\-M in both strings, as well as the substring itself, to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string that is to be searched inside the \-M\-U\-M. \\
+\hline
+{\em results} & \-Results of the iteration over a set of strings. \\
+\hline
+{\em state} & \-The internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000054}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string(), mum\-\_\-make\-\_\-bit\-\_\-vectors(), and substring\-\_\-from\-\_\-string().
+
+\hypertarget{mum_8c_a15f215725bf22c2d29fc76ac9fd6106a}{\index{mum.\-c@{mum.\-c}!search\-\_\-mums@{search\-\_\-mums}}
+\index{search\-\_\-mums@{search\-\_\-mums}!mum.c@{mum.\-c}}
+\subsubsection[{search\-\_\-mums}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf search\-\_\-mums} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void $\ast$}]{results}
+\end{DoxyParamCaption}
+)}}\label{mum_8c_a15f215725bf22c2d29fc76ac9fd6106a}
+
+
+\-Callback function given to double\-\_\-iterate that determines if a substring is a \-M\-U\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal state of the iterator. \\
+\hline
+{\em results} & \-A pointer to a region of memory containing the previous results of this callback function. \-Can safely be cast to {\ttfamily \hyperlink{mum_8h_structmum__results}{mum\-\_\-results}} if iterate was initialized using {\ttfamily \hyperlink{mum_8c_a23ee7d8c86001e107bb2edf0d90219fe}{initialize\-\_\-for\-\_\-mums()}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000053}{\-Bug}]\-Doesn't differentiate between the \$-\/characters. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, wavelet\-\_\-tree\-::char\-\_\-at, iterator\-\_\-state\-::current, iterator\-\_\-state\-::reverse\-\_\-bwts, and iterator\-\_\-state\-::threshold.
+
+
+
+\-Referenced by initialize\-\_\-for\-\_\-mums().
+

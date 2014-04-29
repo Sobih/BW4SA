@@ -1,0 +1,92 @@
+\hypertarget{rbwt_8h}{\section{src/core/rbwt.h \-File \-Reference}
+\label{rbwt_8h}\index{src/core/rbwt.\-h@{src/core/rbwt.\-h}}
+}
+
+
+\-A collection of functions for creating the \-B\-W\-T of the reverse of a string.  
+
+
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{rbwt_8h_ad75d80871f1d6223682ac2199db5cf05}{reverse\-\_\-string} (const char $\ast$string, char $\ast$target, unsigned int length)
+\begin{DoxyCompactList}\small\item\em \-Reverses the direction of a string. \end{DoxyCompactList}\item 
+struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$ \hyperlink{rbwt_8h_adc12534541e624312c1ba985740b430f}{reverse\-\_\-bwt} (const char $\ast$string)
+\begin{DoxyCompactList}\small\item\em \-Creates the \-B\-W\-T of the reverse of the given string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of functions for creating the \-B\-W\-T of the reverse of a string. \begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000086}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{rbwt_8h_adc12534541e624312c1ba985740b430f}{\index{rbwt.\-h@{rbwt.\-h}!reverse\-\_\-bwt@{reverse\-\_\-bwt}}
+\index{reverse\-\_\-bwt@{reverse\-\_\-bwt}!rbwt.h@{rbwt.\-h}}
+\subsubsection[{reverse\-\_\-bwt}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf wavelet\-\_\-tree}$\ast$ {\bf reverse\-\_\-bwt} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{string}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{rbwt_8h_adc12534541e624312c1ba985740b430f}
+
+
+\-Creates the \-B\-W\-T of the reverse of the given string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The c-\/string to be reversed and have a \-B\-W\-T created for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The \-B\-W\-T of the reversed string represented as a wavelet tree. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000088}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References reverse\-\_\-string(), and s\-\_\-to\-\_\-bwt().
+
+
+
+\-Referenced by initialize\-\_\-iterator(), and single\-\_\-iterate().
+
+\hypertarget{rbwt_8h_ad75d80871f1d6223682ac2199db5cf05}{\index{rbwt.\-h@{rbwt.\-h}!reverse\-\_\-string@{reverse\-\_\-string}}
+\index{reverse\-\_\-string@{reverse\-\_\-string}!rbwt.h@{rbwt.\-h}}
+\subsubsection[{reverse\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf reverse\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{string, }
+\item[{char $\ast$}]{target, }
+\item[{unsigned int}]{length}
+\end{DoxyParamCaption}
+)}}\label{rbwt_8h_ad75d80871f1d6223682ac2199db5cf05}
+
+
+\-Reverses the direction of a string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The c-\/string to be reversed. \\
+\hline
+{\em target} & \-A c-\/string where the result should be stored. \-If {\ttfamily \-N\-U\-L\-L}, a new c-\/string will be allocated and returned. \\
+\hline
+{\em length} & \-Length of the string to be reversed (and thus also the length of the reversed string). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The reversed string. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000087}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by reverse\-\_\-bwt().
+

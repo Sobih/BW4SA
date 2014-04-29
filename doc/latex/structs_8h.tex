@@ -1,0 +1,160 @@
+\hypertarget{structs_8h}{\section{src/utils/structs.h \-File \-Reference}
+\label{structs_8h}\index{src/utils/structs.\-h@{src/utils/structs.\-h}}
+}
+
+
+\-A collection of structs used widely in the library.  
+
+
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structs_8h_structinterval}{interval}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing an arbitrary two-\/parameter interval.  \hyperlink{structs_8h_structinterval}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{structs_8h_structsubstring}{substring}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing intervals of an arbitrary substring inside a string as well as the length of the substring.  \hyperlink{structs_8h_structsubstring}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{structs_8h_structtriplet}{triplet}
+\begin{DoxyCompactList}\small\item\em \-A simple structure for storing the starting indices of a \-M\-U\-M inside two \-B\-W\-Ts and the length of the \-M\-U\-M.  \hyperlink{structs_8h_structtriplet}{\-More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structs_8h_structinterval}{interval} \hyperlink{structs_8h_ac905f60f9ceb1dfc7a8be0fd07f27d46}{interval}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing an arbitrary two-\/parameter interval. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structs_8h_structsubstring}{substring} \hyperlink{structs_8h_ab219fa1db724d31cb3e7cebbae554c17}{substring}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing intervals of an arbitrary substring inside a string as well as the length of the substring. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structs_8h_structtriplet}{triplet} \hyperlink{structs_8h_a1b1a20456aed1a6d4f220ec78ed3b0e5}{triplet}
+\begin{DoxyCompactList}\small\item\em \-A simple structure for storing the starting indices of a \-M\-U\-M inside two \-B\-W\-Ts and the length of the \-M\-U\-M. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of structs used widely in the library. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000118}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{interval@{interval}}\label{structinterval}
+\hypertarget{structs_8h_structinterval}{}
+\subsubsection{struct interval}
+\-A struct for storing an arbitrary two-\/parameter interval. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000119}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{structs_8h_ac5d7a3b54e2f69d0dbfed69d00e0b4c8}{int}\label{structs_8h_ac5d7a3b54e2f69d0dbfed69d00e0b4c8}
+&
+i&
+\\
+\hline
+
+\hypertarget{structs_8h_a5f07c2ec8b551ad69ebaaf7deea94c5a}{int}\label{structs_8h_a5f07c2ec8b551ad69ebaaf7deea94c5a}
+&
+j&
+\\
+\hline
+
+\end{DoxyFields}
+\index{substring@{substring}}\label{structsubstring}
+\hypertarget{structs_8h_structsubstring}{}
+\subsubsection{struct substring}
+\-A struct for storing intervals of an arbitrary substring inside a string as well as the length of the substring. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000120}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{structs_8h_a0c2c7858fd1cf654d344da3ec00ebc6b}{int}\label{structs_8h_a0c2c7858fd1cf654d344da3ec00ebc6b}
+&
+length&
+\\
+\hline
+
+\hypertarget{structs_8h_ad24f152a6848afa84d639e72838c2638}{\hyperlink{structs_8h_structinterval}{interval}}\label{structs_8h_ad24f152a6848afa84d639e72838c2638}
+&
+normal&
+\\
+\hline
+
+\hypertarget{structs_8h_a61dc73b564c625ee3e23f6d2e226a0f9}{\hyperlink{structs_8h_structinterval}{interval}}\label{structs_8h_a61dc73b564c625ee3e23f6d2e226a0f9}
+&
+reverse&
+\\
+\hline
+
+\end{DoxyFields}
+\index{triplet@{triplet}}\label{structtriplet}
+\hypertarget{structs_8h_structtriplet}{}
+\subsubsection{struct triplet}
+\-A simple structure for storing the starting indices of a \-M\-U\-M inside two \-B\-W\-Ts and the length of the \-M\-U\-M. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000121}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{structs_8h_a96684eb86a5d66bdf64aa6abd89fca4f}{unsigned int}\label{structs_8h_a96684eb86a5d66bdf64aa6abd89fca4f}
+&
+length&
+\\
+\hline
+
+\hypertarget{structs_8h_a7ddad1c9578ceacbb76d345d975c29c6}{unsigned int}\label{structs_8h_a7ddad1c9578ceacbb76d345d975c29c6}
+&
+pos1&
+\\
+\hline
+
+\hypertarget{structs_8h_a106a746b49c6d6e11e35e788f9eb1dd5}{unsigned int}\label{structs_8h_a106a746b49c6d6e11e35e788f9eb1dd5}
+&
+pos2&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{structs_8h_ac905f60f9ceb1dfc7a8be0fd07f27d46}{\index{structs.\-h@{structs.\-h}!interval@{interval}}
+\index{interval@{interval}!structs.h@{structs.\-h}}
+\subsubsection[{interval}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf interval}  {\bf interval}}}\label{structs_8h_ac905f60f9ceb1dfc7a8be0fd07f27d46}
+
+
+\-A struct for storing an arbitrary two-\/parameter interval. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000119}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{structs_8h_ab219fa1db724d31cb3e7cebbae554c17}{\index{structs.\-h@{structs.\-h}!substring@{substring}}
+\index{substring@{substring}!structs.h@{structs.\-h}}
+\subsubsection[{substring}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf substring}  {\bf substring}}}\label{structs_8h_ab219fa1db724d31cb3e7cebbae554c17}
+
+
+\-A struct for storing intervals of an arbitrary substring inside a string as well as the length of the substring. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000120}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{structs_8h_a1b1a20456aed1a6d4f220ec78ed3b0e5}{\index{structs.\-h@{structs.\-h}!triplet@{triplet}}
+\index{triplet@{triplet}!structs.h@{structs.\-h}}
+\subsubsection[{triplet}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf triplet}  {\bf triplet}}}\label{structs_8h_a1b1a20456aed1a6d4f220ec78ed3b0e5}
+
+
+\-A simple structure for storing the starting indices of a \-M\-U\-M inside two \-B\-W\-Ts and the length of the \-M\-U\-M. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000121}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}

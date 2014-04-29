@@ -1,8 +1,8 @@
 #!/bin/bash
 
-gcc -std=c99 -o src/iterate/iterate_test.o -I libs/DBWT libs/DBWT/*.c src/utils.c src/bwt/*.c src/array/bit_vector.c src/backward-search/*.c  src/iterate/*.c tests/iterate/check_iterate.c tests/utils_for_tests/utils_for_tests.c src/wavelet_tree/wavelet_tree.c  `pkg-config --cflags --libs check` -lm
+gcc -std=c99 -o src/core/iterate_test.o -I libs/DBWT libs/DBWT/*.c src/utils/*.c src/core/*.c src/applications/mum.c src/applications/maximal_repeats.c src/applications/mapper.c src/applications/map_bwt_to_s.c src/applications/mems.c src/applications/triplet_sorter.c tests/core/check_iterate.c tests/utils_for_tests.c `pkg-config --cflags --libs check` -lm -g
 
 
-./src/iterate/iterate_test.o
+./src/core/iterate_test.o
 
 

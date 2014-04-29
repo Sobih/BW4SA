@@ -1,0 +1,248 @@
+\hypertarget{mapper_8h}{\section{src/applications/mapper.h \-File \-Reference}
+\label{mapper_8h}\index{src/applications/mapper.\-h@{src/applications/mapper.\-h}}
+}
+
+
+\-A collection of functions for mapping iteration results onto their original strings.  
+
+
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{mapper_8h_structmapped__pair}{mapped\-\_\-pair}
+\begin{DoxyCompactList}\small\item\em \-A struct for mapping the bwt positions to original positions.  \hyperlink{mapper_8h_structmapped__pair}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{mapper_8h_structmax__repeat__with__indexes}{max\-\_\-repeat\-\_\-with\-\_\-indexes}
+\begin{DoxyCompactList}\small\item\em \-A struct for listing all occurrences of maximal repeats.  \hyperlink{mapper_8h_structmax__repeat__with__indexes}{\-More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{mapper_8h_structmapped__pair}{mapped\-\_\-pair} \hyperlink{mapper_8h_a8e0b81d64a45ffa974dc7940e288a2fb}{mapped\-\_\-pair}
+\begin{DoxyCompactList}\small\item\em \-A struct for mapping the bwt positions to original positions. \end{DoxyCompactList}\item 
+typedef struct \*
+\hyperlink{mapper_8h_structmax__repeat__with__indexes}{max\-\_\-repeat\-\_\-with\-\_\-indexes} \hyperlink{mapper_8h_a205a8afdb7faccb2968f059747bf514f}{max\-\_\-repeat\-\_\-with\-\_\-indexes}
+\begin{DoxyCompactList}\small\item\em \-A struct for listing all occurrences of maximal repeats. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{mapper_8h_structmax__repeat__with__indexes}{max\-\_\-repeat\-\_\-with\-\_\-indexes} $\ast$ \hyperlink{mapper_8h_ac86f077fa1236cb9bd69e924cfda19fa}{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string} (struct \hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node} $\ast$nodes, struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, int nodes\-\_\-length, struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$bit\-\_\-vec)
+\begin{DoxyCompactList}\small\item\em \-Maps the \-B\-W\-T indexes to indexes in the original string in all found maximal repeats. \end{DoxyCompactList}\item 
+void \hyperlink{mapper_8h_a1d65aaab60aa5f8f498802d3641127f9}{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string} (struct \hyperlink{structs_8h_structtriplet}{triplet} $\ast$nodes, struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt1, struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt2, int nodes\-\_\-length, struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$vecs)
+\begin{DoxyCompactList}\small\item\em \-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-U\-Ms. \end{DoxyCompactList}\item 
+void \hyperlink{mapper_8h_acc14d9377d8003547e74776817972298}{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string} (struct \hyperlink{structs_8h_structtriplet}{triplet} $\ast$nodes, struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt1, struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt2, int nodes\-\_\-length, struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$vecs)
+\begin{DoxyCompactList}\small\item\em \-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-E\-Ms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of functions for mapping iteration results onto their original strings. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator), \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000027}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{mapped\-\_\-pair@{mapped\-\_\-pair}}\label{structmapped__pair}
+\hypertarget{mapper_8h_structmapped__pair}{}
+\subsubsection{struct mapped\-\_\-pair}
+\-A struct for mapping the bwt positions to original positions. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{mapper_8h_aad04e8a66b49530e2c7c5849193f6c85}{unsigned int}\label{mapper_8h_aad04e8a66b49530e2c7c5849193f6c85}
+&
+bwt\-\_\-pos&
+\\
+\hline
+
+\hypertarget{mapper_8h_af807121817b465aa543ca13a74ffee7a}{unsigned int}\label{mapper_8h_af807121817b465aa543ca13a74ffee7a}
+&
+orig\-\_\-pos&
+\\
+\hline
+
+\end{DoxyFields}
+\index{max\-\_\-repeat\-\_\-with\-\_\-indexes@{max\-\_\-repeat\-\_\-with\-\_\-indexes}}\label{structmax__repeat__with__indexes}
+\hypertarget{mapper_8h_structmax__repeat__with__indexes}{}
+\subsubsection{struct max\-\_\-repeat\-\_\-with\-\_\-indexes}
+\-A struct for listing all occurrences of maximal repeats. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Lassi \-Vapaakallio 
+\end{DoxyAuthor}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{mapper_8h_a0169e772acaf3bbe55e1690fb3607d8e}{unsigned int $\ast$}\label{mapper_8h_a0169e772acaf3bbe55e1690fb3607d8e}
+&
+indexes&
+\\
+\hline
+
+\hypertarget{mapper_8h_ad0e37afceb844fa6e97761e1c4b3bc7a}{unsigned int}\label{mapper_8h_ad0e37afceb844fa6e97761e1c4b3bc7a}
+&
+interval\-\_\-size&
+\\
+\hline
+
+\hypertarget{mapper_8h_ac8f9df474f604a3d7585e1bb5be443ae}{unsigned int}\label{mapper_8h_ac8f9df474f604a3d7585e1bb5be443ae}
+&
+length&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{mapper_8h_a8e0b81d64a45ffa974dc7940e288a2fb}{\index{mapper.\-h@{mapper.\-h}!mapped\-\_\-pair@{mapped\-\_\-pair}}
+\index{mapped\-\_\-pair@{mapped\-\_\-pair}!mapper.h@{mapper.\-h}}
+\subsubsection[{mapped\-\_\-pair}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf mapped\-\_\-pair}  {\bf mapped\-\_\-pair}}}\label{mapper_8h_a8e0b81d64a45ffa974dc7940e288a2fb}
+
+
+\-A struct for mapping the bwt positions to original positions. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\hypertarget{mapper_8h_a205a8afdb7faccb2968f059747bf514f}{\index{mapper.\-h@{mapper.\-h}!max\-\_\-repeat\-\_\-with\-\_\-indexes@{max\-\_\-repeat\-\_\-with\-\_\-indexes}}
+\index{max\-\_\-repeat\-\_\-with\-\_\-indexes@{max\-\_\-repeat\-\_\-with\-\_\-indexes}!mapper.h@{mapper.\-h}}
+\subsubsection[{max\-\_\-repeat\-\_\-with\-\_\-indexes}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf max\-\_\-repeat\-\_\-with\-\_\-indexes}  {\bf max\-\_\-repeat\-\_\-with\-\_\-indexes}}}\label{mapper_8h_a205a8afdb7faccb2968f059747bf514f}
+
+
+\-A struct for listing all occurrences of maximal repeats. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Lassi \-Vapaakallio 
+\end{DoxyAuthor}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{mapper_8h_ac86f077fa1236cb9bd69e924cfda19fa}{\index{mapper.\-h@{mapper.\-h}!map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string@{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string}}
+\index{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string@{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string}!mapper.h@{mapper.\-h}}
+\subsubsection[{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}{\bf max\-\_\-repeat\-\_\-with\-\_\-indexes}$\ast$ {\bf map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf max\-\_\-repeat\-\_\-node} $\ast$}]{nodes, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{struct {\bf bit\-\_\-vector} $\ast$}]{bit\-\_\-vec}
+\end{DoxyParamCaption}
+)}}\label{mapper_8h_ac86f077fa1236cb9bd69e924cfda19fa}
+
+
+\-Maps the \-B\-W\-T indexes to indexes in the original string in all found maximal repeats. 
+
+\-Updates the normal.\-i value to index in the original string.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em nodes} & \-An array of all maximal repeat substrings inside the \-B\-W\-T. \\
+\hline
+{\em bwt} & \-The \-B\-W\-T of the original string, in wavelet tree form. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the nodes-\/array. \\
+\hline
+{\em bit\-\_\-vec} & \-Bit vector which tells where the maximals repeats start \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A list of maximal repeats with all occurrences 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator), \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000028}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References backward\-\_\-search\-\_\-interval(), wavelet\-\_\-tree\-::char\-\_\-at, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked, marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), and quick\-\_\-sort().
+
+
+
+\-Referenced by print\-\_\-maximal\-\_\-repeat\-\_\-substrings().
+
+\hypertarget{mapper_8h_acc14d9377d8003547e74776817972298}{\index{mapper.\-h@{mapper.\-h}!map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string}}
+\index{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string}!mapper.h@{mapper.\-h}}
+\subsubsection[{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf triplet} $\ast$}]{nodes, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt1, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt2, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{struct {\bf bit\-\_\-vector} $\ast$$\ast$}]{vecs}
+\end{DoxyParamCaption}
+)}}\label{mapper_8h_acc14d9377d8003547e74776817972298}
+
+
+\-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-E\-Ms. 
+
+\-Updates the position values in both strings to indexes in the original string.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em nodes} & \-An array of all triplets returned after iteration. \\
+\hline
+{\em bwt1} & \-B\-W\-T of the first string. \\
+\hline
+{\em bwt2} & \-B\-W\-T of the second string. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the array of nodes. \\
+\hline
+{\em vecs} & \-Bit vector containing the starting position of \-M\-E\-Ms in both strings \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000030}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), and update\-\_\-position\-\_\-in\-\_\-triplets().
+
+
+
+\-Referenced by print\-\_\-mems().
+
+\hypertarget{mapper_8h_a1d65aaab60aa5f8f498802d3641127f9}{\index{mapper.\-h@{mapper.\-h}!map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string}}
+\index{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string}!mapper.h@{mapper.\-h}}
+\subsubsection[{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf triplet} $\ast$}]{nodes, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt1, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt2, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{struct {\bf bit\-\_\-vector} $\ast$$\ast$}]{vecs}
+\end{DoxyParamCaption}
+)}}\label{mapper_8h_a1d65aaab60aa5f8f498802d3641127f9}
+
+
+\-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-U\-Ms. 
+
+\-Updates the position values in both strings to indexes in the original string.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em nodes} & \-An array of all triplets returned after iteration. \\
+\hline
+{\em bwt1} & \-B\-W\-T of the first string. \\
+\hline
+{\em bwt2} & \-B\-W\-T of the second string. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the array of nodes. \\
+\hline
+{\em vecs} & \-Bit vector containing the starting position of \-M\-U\-Ms in both strings \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000029}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), and update\-\_\-position\-\_\-in\-\_\-triplets().
+
+
+
+\-Referenced by print\-\_\-mums().
+

@@ -1,0 +1,32 @@
+\hypertarget{backward__search_8c}{\section{src/core/backward\-\_\-search.c \-File \-Reference}
+\label{backward__search_8c}\index{src/core/backward\-\_\-search.\-c@{src/core/backward\-\_\-search.\-c}}
+}
+
+
+\-Implementation of backwards search.  
+
+
+{\ttfamily \#include \char`\"{}backward\-\_\-search.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}c\-\_\-array.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/wavelet\-\_\-tree.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/structs.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/utils.\-h\char`\"{}}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{backward__search_8c_abc9d18330f141981b34426e27d6a7666}{\hyperlink{structs_8h_structinterval}{interval} $\ast$ {\bfseries backward\-\_\-search} (const \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, const \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$string, \hyperlink{structs_8h_structinterval}{interval} $\ast$target)}\label{backward__search_8c_abc9d18330f141981b34426e27d6a7666}
+
+\item 
+\hypertarget{backward__search_8c_ac62b0129e54c77adf99190066ef7ae1d}{\hyperlink{structs_8h_structinterval}{interval} $\ast$ {\bfseries backward\-\_\-search\-\_\-interval} (const \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, const \hyperlink{structs_8h_structinterval}{interval} $\ast$inter, char c, \hyperlink{structs_8h_structinterval}{interval} $\ast$target)}\label{backward__search_8c_ac62b0129e54c77adf99190066ef7ae1d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of backwards search. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000063}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}

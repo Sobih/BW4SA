@@ -1,0 +1,154 @@
+\hypertarget{c__array_8h}{\section{src/core/c\-\_\-array.h \-File \-Reference}
+\label{c__array_8h}\index{src/core/c\-\_\-array.\-h@{src/core/c\-\_\-array.\-h}}
+}
+
+
+\-A collection of functions for creating c-\/arrays and shortened alphabets.  
+
+
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data}
+\begin{DoxyCompactList}\small\item\em \-A simple struct for storing an alphabet as a string and its length.  \hyperlink{c__array_8h_structalphabet__data}{\-More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} \hyperlink{c__array_8h_a6eeade4acdf24596d8c423cbbea98a7e}{alphabet\-\_\-data}
+\begin{DoxyCompactList}\small\item\em \-A simple struct for storing an alphabet as a string and its length. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int $\ast$ \hyperlink{c__array_8h_aaad8d5d1594c7616ad01cd6e34c0338d}{create\-\_\-c\-\_\-array} (const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$string, const struct \hyperlink{structs_8h_structinterval}{interval} $\ast$inter, const char $\ast$alphabet, unsigned int alphabet\-\_\-length, unsigned int $\ast$target)
+\begin{DoxyCompactList}\small\item\em \-Generates array \-C of given string in wavelet tree form. \end{DoxyCompactList}\item 
+\hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$ \hyperlink{c__array_8h_a86350f667c65e60db6f9e29211fb24c9}{create\-\_\-alphabet\-\_\-interval} (const struct \hyperlink{structs_8h_structinterval}{interval} $\ast$inter, const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$string, \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$target)
+\begin{DoxyCompactList}\small\item\em \-Generates the alphabet of a substring of a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of functions for creating c-\/arrays and shortened alphabets. \begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000071}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{alphabet\-\_\-data@{alphabet\-\_\-data}}\label{structalphabet__data}
+\hypertarget{c__array_8h_structalphabet__data}{}
+\subsubsection{struct alphabet\-\_\-data}
+\-A simple struct for storing an alphabet as a string and its length. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000072}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{c__array_8h_a3a0b35421ab555c5e1f67aa6e1647232}{char $\ast$}\label{c__array_8h_a3a0b35421ab555c5e1f67aa6e1647232}
+&
+alphabet&
+\\
+\hline
+
+\hypertarget{c__array_8h_a69253957cfa4b7bc383e61a28c6cf016}{unsigned int}\label{c__array_8h_a69253957cfa4b7bc383e61a28c6cf016}
+&
+length&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{c__array_8h_a6eeade4acdf24596d8c423cbbea98a7e}{\index{c\-\_\-array.\-h@{c\-\_\-array.\-h}!alphabet\-\_\-data@{alphabet\-\_\-data}}
+\index{alphabet\-\_\-data@{alphabet\-\_\-data}!c_array.h@{c\-\_\-array.\-h}}
+\subsubsection[{alphabet\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf alphabet\-\_\-data}  {\bf alphabet\-\_\-data}}}\label{c__array_8h_a6eeade4acdf24596d8c423cbbea98a7e}
+
+
+\-A simple struct for storing an alphabet as a string and its length. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000072}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{c__array_8h_a86350f667c65e60db6f9e29211fb24c9}{\index{c\-\_\-array.\-h@{c\-\_\-array.\-h}!create\-\_\-alphabet\-\_\-interval@{create\-\_\-alphabet\-\_\-interval}}
+\index{create\-\_\-alphabet\-\_\-interval@{create\-\_\-alphabet\-\_\-interval}!c_array.h@{c\-\_\-array.\-h}}
+\subsubsection[{create\-\_\-alphabet\-\_\-interval}]{\setlength{\rightskip}{0pt plus 5cm}{\bf alphabet\-\_\-data}$\ast$ {\bf create\-\_\-alphabet\-\_\-interval} (
+\begin{DoxyParamCaption}
+\item[{const struct {\bf interval} $\ast$}]{inter, }
+\item[{const struct {\bf wavelet\-\_\-tree} $\ast$}]{string, }
+\item[{{\bf alphabet\-\_\-data} $\ast$}]{target}
+\end{DoxyParamCaption}
+)}}\label{c__array_8h_a86350f667c65e60db6f9e29211fb24c9}
+
+
+\-Generates the alphabet of a substring of a string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em inter} & \-The starting and ending indices of the substring inside the string, stored in an {\ttfamily interval}-\/struct. \\
+\hline
+{\em string} & \-The string, in wavelet tree form, from which the substring is to be determined. \\
+\hline
+{\em target} & \-The structure where the results should be stored. \-If {\ttfamily \-N\-U\-L\-L}, a new {\ttfamily \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data}}-\/struct will be allocated and returned. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The alphabet used by the substring. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000074}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by double\-\_\-iterate(), list\-\_\-mem\-\_\-candidates(), and single\-\_\-iterate().
+
+\hypertarget{c__array_8h_aaad8d5d1594c7616ad01cd6e34c0338d}{\index{c\-\_\-array.\-h@{c\-\_\-array.\-h}!create\-\_\-c\-\_\-array@{create\-\_\-c\-\_\-array}}
+\index{create\-\_\-c\-\_\-array@{create\-\_\-c\-\_\-array}!c_array.h@{c\-\_\-array.\-h}}
+\subsubsection[{create\-\_\-c\-\_\-array}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int$\ast$ {\bf create\-\_\-c\-\_\-array} (
+\begin{DoxyParamCaption}
+\item[{const struct {\bf wavelet\-\_\-tree} $\ast$}]{string, }
+\item[{const struct {\bf interval} $\ast$}]{inter, }
+\item[{const char $\ast$}]{alphabet, }
+\item[{unsigned int}]{alphabet\-\_\-length, }
+\item[{unsigned int $\ast$}]{target}
+\end{DoxyParamCaption}
+)}}\label{c__array_8h_aaad8d5d1594c7616ad01cd6e34c0338d}
+
+
+\-Generates array \-C of given string in wavelet tree form. 
+
+\-A c-\/array is an array of indexes to the starting location inside a \-B\-W\-T of each distinct character used by the \-B\-W\-T, ordered lexicographically.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string in wavelet tree form from which a c-\/array should be generated. \\
+\hline
+{\em inter} & \-An interval of the substring from which the c-\/array should be generated. \-If {\ttfamily \-N\-U\-L\-L}, the entire string is used. \\
+\hline
+{\em alphabet} & \-The alphabet used by the string. \-If {\ttfamily \-N\-U\-L\-L}, the alphabet of the wavelet tree is used. \\
+\hline
+{\em alphabet\-\_\-length} & \-Length of the alphabet supplied as parameter. \-If the alphabet is {\ttfamily \-N\-U\-L\-L}, this parameter will be disregarded. \\
+\hline
+{\em target} & \-An unsigned integer array where the results should be stored. \-If target is {\ttfamily \-N\-U\-L\-L}, a new array will be allocated and returned instead. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Array \-C which contains starting indexes of each distinct character used in the alphabet. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000073}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by double\-\_\-iterate(), list\-\_\-mem\-\_\-candidates(), and single\-\_\-iterate().
+

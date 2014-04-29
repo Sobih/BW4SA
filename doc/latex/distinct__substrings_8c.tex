@@ -1,0 +1,172 @@
+\hypertarget{distinct__substrings_8c}{\section{src/applications/distinct\-\_\-substrings.c \-File \-Reference}
+\label{distinct__substrings_8c}\index{src/applications/distinct\-\_\-substrings.\-c@{src/applications/distinct\-\_\-substrings.\-c}}
+}
+
+
+counts distincts substrings  
+
+
+{\ttfamily \#include \char`\"{}distinct\-\_\-substrings.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/utils.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{distinct__substrings_8c_aea39863acccec4651283ed7081946880}{lcp} (char $\ast$string1, char $\ast$string2)
+\begin{DoxyCompactList}\small\item\em longest common prefix \end{DoxyCompactList}\item 
+char $\ast$$\ast$ \hyperlink{distinct__substrings_8c_a0204def60a80954e683554c2a0b4b0d1}{create\-\_\-suffixes} (char $\ast$string)
+\begin{DoxyCompactList}\small\item\em creates an array with a pointer to every suffix of a string \end{DoxyCompactList}\item 
+int \hyperlink{distinct__substrings_8c_af983404ec56a40677237b95feadbc82c}{compare\-\_\-pairs} (char $\ast$strings\mbox{[}$\,$\mbox{]}, int len)
+\begin{DoxyCompactList}\small\item\em compares lexicographically adjacent strings to determine amount of distinct substrings for each suffix \end{DoxyCompactList}\item 
+int \hyperlink{distinct__substrings_8c_ac89231add0184a22b253fe71ed8f15d6}{distinct\-\_\-substrings} (char $\ast$string)
+\begin{DoxyCompactList}\small\item\em collects together functions needed to count distinct substrings \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+counts distincts substrings \begin{DoxySeeAlso}{\-See also}
+\hyperlink{distinct__substrings_8h_source}{distinct\-\_\-substrings.\-h} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000001}{\-Bug}]\-No known bugs.\end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{distinct__substrings_8c_af983404ec56a40677237b95feadbc82c}{\index{distinct\-\_\-substrings.\-c@{distinct\-\_\-substrings.\-c}!compare\-\_\-pairs@{compare\-\_\-pairs}}
+\index{compare\-\_\-pairs@{compare\-\_\-pairs}!distinct_substrings.c@{distinct\-\_\-substrings.\-c}}
+\subsubsection[{compare\-\_\-pairs}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf compare\-\_\-pairs} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{strings\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{len}
+\end{DoxyParamCaption}
+)}}\label{distinct__substrings_8c_af983404ec56a40677237b95feadbc82c}
+
+
+compares lexicographically adjacent strings to determine amount of distinct substrings for each suffix 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em $\ast$strings\mbox{[}$\,$\mbox{]}} & an array of pointers of lexicographically ordered suffixes \\
+\hline
+{\em len} & the length of the array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+count of distinct substrings 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+distinct\-\_\-substrings.\-h\-::compare\-\_\-pairs 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000004}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References lcp().
+
+
+
+\-Referenced by distinct\-\_\-substrings().
+
+\hypertarget{distinct__substrings_8c_a0204def60a80954e683554c2a0b4b0d1}{\index{distinct\-\_\-substrings.\-c@{distinct\-\_\-substrings.\-c}!create\-\_\-suffixes@{create\-\_\-suffixes}}
+\index{create\-\_\-suffixes@{create\-\_\-suffixes}!distinct_substrings.c@{distinct\-\_\-substrings.\-c}}
+\subsubsection[{create\-\_\-suffixes}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$$\ast$ {\bf create\-\_\-suffixes} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{distinct__substrings_8c_a0204def60a80954e683554c2a0b4b0d1}
+
+
+creates an array with a pointer to every suffix of a string 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em $\ast$string} & char pointer to a string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+a pointer array of suffixes 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+distinct\-\_\-substrings.\-h\-::create\-\_\-suffixes 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000003}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by distinct\-\_\-substrings().
+
+\hypertarget{distinct__substrings_8c_ac89231add0184a22b253fe71ed8f15d6}{\index{distinct\-\_\-substrings.\-c@{distinct\-\_\-substrings.\-c}!distinct\-\_\-substrings@{distinct\-\_\-substrings}}
+\index{distinct\-\_\-substrings@{distinct\-\_\-substrings}!distinct_substrings.c@{distinct\-\_\-substrings.\-c}}
+\subsubsection[{distinct\-\_\-substrings}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf distinct\-\_\-substrings} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{distinct__substrings_8c_ac89231add0184a22b253fe71ed8f15d6}
+
+
+collects together functions needed to count distinct substrings 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em $\ast$string} & pointer to string whose distinct substrings are to be counted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+amount of distinct substrings 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+distinct\-\_\-substrings.\-h\-::distinct\-\_\-substrings 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000005}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References compare\-\_\-pairs(), create\-\_\-suffixes(), and string\-\_\-quick\-\_\-sort().
+
+\hypertarget{distinct__substrings_8c_aea39863acccec4651283ed7081946880}{\index{distinct\-\_\-substrings.\-c@{distinct\-\_\-substrings.\-c}!lcp@{lcp}}
+\index{lcp@{lcp}!distinct_substrings.c@{distinct\-\_\-substrings.\-c}}
+\subsubsection[{lcp}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf lcp} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string1, }
+\item[{char $\ast$}]{string2}
+\end{DoxyParamCaption}
+)}}\label{distinct__substrings_8c_aea39863acccec4651283ed7081946880}
+
+
+longest common prefix 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em $\ast$string1} & char pointer to the first string to compare \\
+\hline
+{\em $\ast$string2} & har pointer to the second string to compare \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+how long is the lcp 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+distinct\-\_\-substrings.\-h\-::lcp 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000002}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by compare\-\_\-pairs().
+

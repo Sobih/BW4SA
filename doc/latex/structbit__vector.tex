@@ -1,0 +1,182 @@
+\hypertarget{structbit__vector}{\section{bit\-\_\-vector \-Struct \-Reference}
+\label{structbit__vector}\index{bit\-\_\-vector@{bit\-\_\-vector}}
+}
+
+
+\-A structure for storing the bit vector and its manipulation-\/functions.  
+
+
+
+
+{\ttfamily \#include $<$bit\-\_\-vector.\-h$>$}
+
+\subsection*{\-Data \-Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{structbit__vector_a5cb75e67c85fc78ba820c8502b996904}{unsigned int $\ast$ {\bfseries vector}}\label{structbit__vector_a5cb75e67c85fc78ba820c8502b996904}
+
+\item 
+\hypertarget{structbit__vector_ab51b1a5df35a82705c077da561247770}{unsigned int {\bfseries length}}\label{structbit__vector_ab51b1a5df35a82705c077da561247770}
+
+\item 
+\hypertarget{structbit__vector_a08db70e17d134b962a58b3a28d96696b}{unsigned int {\bfseries filler\-\_\-bits}}\label{structbit__vector_a08db70e17d134b962a58b3a28d96696b}
+
+\item 
+struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$($\ast$ \hyperlink{structbit__vector_afa480cad95d28f925a48ef49a26f83d8}{mark\-\_\-bit} )(struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int pos)
+\begin{DoxyCompactList}\small\item\em \-Function pointer to a function that flags the bit at position {\ttfamily pos} inside the bit vector {\ttfamily vector}. \end{DoxyCompactList}\item 
+struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$($\ast$ \hyperlink{structbit__vector_a63fceb0ab2c93f5d73f71bf156496716}{unmark\-\_\-bit} )(struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int pos)
+\begin{DoxyCompactList}\small\item\em \-Function pointer to a function that unflags the bit at position {\ttfamily pos} inside the bit vector {\ttfamily vector}. \end{DoxyCompactList}\item 
+int($\ast$ \hyperlink{structbit__vector_ad8ffb52bc86612775cdca0d9d02dbf1a}{is\-\_\-bit\-\_\-marked} )(const struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int pos)
+\begin{DoxyCompactList}\small\item\em \-Function pointer to a function that checks if the bit at position {\ttfamily pos} is marked inside the bit vector {\ttfamily vector}. \end{DoxyCompactList}\item 
+unsigned int($\ast$ \hyperlink{structbit__vector_a0cb7e47ff1bfefaf8e2cc0d5b4a361c3}{rank} )(const struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int start, unsigned int end)
+\begin{DoxyCompactList}\small\item\em \-Function pointer to a function that counts the number of set bits inside a vector inside the interval start -\/$>$ end. \end{DoxyCompactList}\item 
+unsigned int($\ast$ \hyperlink{structbit__vector_a4dd635a7181b451d8a708d152202a9f9}{get\-\_\-length} )(const struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector)
+\begin{DoxyCompactList}\small\item\em \-Function pointer to a function that returns the number of bits used by the bit vector supplied as parameter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A structure for storing the bit vector and its manipulation-\/functions. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000107}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{structbit__vector_a4dd635a7181b451d8a708d152202a9f9}{\index{bit\-\_\-vector@{bit\-\_\-vector}!get\-\_\-length@{get\-\_\-length}}
+\index{get\-\_\-length@{get\-\_\-length}!bit_vector@{bit\-\_\-vector}}
+\subsubsection[{get\-\_\-length}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int($\ast$ {\bf bit\-\_\-vector\-::get\-\_\-length})(const struct {\bf bit\-\_\-vector} $\ast$vector)}}\label{structbit__vector_a4dd635a7181b451d8a708d152202a9f9}
+
+
+\-Function pointer to a function that returns the number of bits used by the bit vector supplied as parameter. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector for which a length should be determined. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The number of bits used by the vector supplied as parameter. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000114}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by determine\-\_\-substrings(), get\-\_\-num\-\_\-bits\-\_\-tree(), init\-\_\-bit\-\_\-vector(), print\-\_\-bit\-\_\-vector(), and rank\-\_\-query().
+
+\hypertarget{structbit__vector_ad8ffb52bc86612775cdca0d9d02dbf1a}{\index{bit\-\_\-vector@{bit\-\_\-vector}!is\-\_\-bit\-\_\-marked@{is\-\_\-bit\-\_\-marked}}
+\index{is\-\_\-bit\-\_\-marked@{is\-\_\-bit\-\_\-marked}!bit_vector@{bit\-\_\-vector}}
+\subsubsection[{is\-\_\-bit\-\_\-marked}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ {\bf bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked})(const struct {\bf bit\-\_\-vector} $\ast$vector, unsigned int pos)}}\label{structbit__vector_ad8ffb52bc86612775cdca0d9d02dbf1a}
+
+
+\-Function pointer to a function that checks if the bit at position {\ttfamily pos} is marked inside the bit vector {\ttfamily vector}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-A bit vector that is to be checked. \\
+\hline
+{\em pos} & \-Position of the bit whose state is to be checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+{\ttfamily 1} if the bit is set, {\ttfamily 0} otherwise. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000112}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by determine\-\_\-substrings(), init\-\_\-bit\-\_\-vector(), map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string(), marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string(), print\-\_\-leaves\-\_\-recursively(), rank\-\_\-query(), update\-\_\-position\-\_\-in\-\_\-triplets(), and wavelet\-\_\-char\-\_\-at().
+
+\hypertarget{structbit__vector_afa480cad95d28f925a48ef49a26f83d8}{\index{bit\-\_\-vector@{bit\-\_\-vector}!mark\-\_\-bit@{mark\-\_\-bit}}
+\index{mark\-\_\-bit@{mark\-\_\-bit}!bit_vector@{bit\-\_\-vector}}
+\subsubsection[{mark\-\_\-bit}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf bit\-\_\-vector}$\ast$($\ast$ {\bf bit\-\_\-vector\-::mark\-\_\-bit})(struct {\bf bit\-\_\-vector} $\ast$vector, unsigned int pos)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{structbit__vector_afa480cad95d28f925a48ef49a26f83d8}
+
+
+\-Function pointer to a function that flags the bit at position {\ttfamily pos} inside the bit vector {\ttfamily vector}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-A bit vector that is to be manipulated. \\
+\hline
+{\em pos} & \-The position of the bit that is to be flagged. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The manipulated bit vector. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000110}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-bit\-\_\-vector(), init\-\_\-bit\-\_\-vector(), max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector(), mem\-\_\-make\-\_\-bit\-\_\-vectors(), mum\-\_\-make\-\_\-bit\-\_\-vectors(), and print\-\_\-leaves\-\_\-recursively().
+
+\hypertarget{structbit__vector_a0cb7e47ff1bfefaf8e2cc0d5b4a361c3}{\index{bit\-\_\-vector@{bit\-\_\-vector}!rank@{rank}}
+\index{rank@{rank}!bit_vector@{bit\-\_\-vector}}
+\subsubsection[{rank}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int($\ast$ {\bf bit\-\_\-vector\-::rank})(const struct {\bf bit\-\_\-vector} $\ast$vector, unsigned int start, unsigned int end)}}\label{structbit__vector_a0cb7e47ff1bfefaf8e2cc0d5b4a361c3}
+
+
+\-Function pointer to a function that counts the number of set bits inside a vector inside the interval start -\/$>$ end. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector whose set bits is to be counted. \\
+\hline
+{\em start} & \-The index inside the vector from which the count should start. \\
+\hline
+{\em end} & \-The index inside the vector where the count should end. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The number of set bits between start and end, or 0 if start $>$ end or {\ttfamily vector} is uninitialized. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000113}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by determine\-\_\-substrings(), init\-\_\-bit\-\_\-vector(), is\-\_\-interval\-\_\-left\-\_\-maximal(), is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal(), wavelet\-\_\-char\-\_\-at(), and wavelet\-\_\-rank\-\_\-query().
+
+\hypertarget{structbit__vector_a63fceb0ab2c93f5d73f71bf156496716}{\index{bit\-\_\-vector@{bit\-\_\-vector}!unmark\-\_\-bit@{unmark\-\_\-bit}}
+\index{unmark\-\_\-bit@{unmark\-\_\-bit}!bit_vector@{bit\-\_\-vector}}
+\subsubsection[{unmark\-\_\-bit}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf bit\-\_\-vector}$\ast$($\ast$ {\bf bit\-\_\-vector\-::unmark\-\_\-bit})(struct {\bf bit\-\_\-vector} $\ast$vector, unsigned int pos)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{structbit__vector_a63fceb0ab2c93f5d73f71bf156496716}
+
+
+\-Function pointer to a function that unflags the bit at position {\ttfamily pos} inside the bit vector {\ttfamily vector}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-A bit vector that is to be manipulated. \\
+\hline
+{\em pos} & \-The position of the bit that is to be unflagged. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The manipulated bit vector. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000111}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by init\-\_\-bit\-\_\-vector().
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/utils/\hyperlink{bit__vector_8h}{bit\-\_\-vector.\-h}\end{DoxyCompactItemize}

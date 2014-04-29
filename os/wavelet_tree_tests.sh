@@ -1,5 +1,5 @@
 #!/bin/bash
 
-gcc -std=c99 -o src/wavelet_tree/wavelet_tree.o src/wavelet_tree/wavelet_tree.c src/array/bit_vector.c src/utils.c tests/wavelet_tree/check_wavelet_tree.c `pkg-config --cflags --libs check` -lm
+gcc -std=c99 -o src/utils/wavelet_tree.o src/utils/wavelet_tree.c src/utils/bit_vector.c src/utils/utils.c tests/utils/check_wavelet_tree.c `pkg-config --cflags --libs check` -lm
 
-./src/wavelet_tree/wavelet_tree.o
+./src/utils/wavelet_tree.o

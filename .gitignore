@@ -21,3 +21,6 @@
 input.txt
 output.bw
 output.lst
+
+# generated documentation
+doc/*

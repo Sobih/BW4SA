@@ -1,0 +1,239 @@
+\hypertarget{mapper_8c}{\section{src/applications/mapper.c \-File \-Reference}
+\label{mapper_8c}\index{src/applications/mapper.\-c@{src/applications/mapper.\-c}}
+}
+
+
+\-Implementation of the mapping functions.  
+
+
+{\ttfamily \#include \char`\"{}mapper.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}maximal\-\_\-repeats.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}mum.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}triplet\-\_\-sorter.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../../include/utils.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/backward\-\_\-search.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{mapper_8c_a6f6a16a59a5ecbfb8217256285113615}{marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vec, int vector\-\_\-length)
+\begin{DoxyCompactList}\small\item\em \-A function that counts the number of marked bits. \end{DoxyCompactList}\item 
+\hyperlink{mapper_8h_structmax__repeat__with__indexes}{max\-\_\-repeat\-\_\-with\-\_\-indexes} $\ast$ \hyperlink{mapper_8c_af64bb40830b3d417933e2c2463f34739}{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string} (\hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node} $\ast$nodes, \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, int nodes\-\_\-length, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$bit\-\_\-vec)
+\begin{DoxyCompactList}\small\item\em \-Maps the \-B\-W\-T indexes to indexes in the original string in all found maximal repeats. \end{DoxyCompactList}\item 
+\hyperlink{mapper_8h_structmapped__pair}{mapped\-\_\-pair} $\ast$ \hyperlink{mapper_8c_a2b654721729230e70414b1f109a03a11}{update\-\_\-position\-\_\-in\-\_\-triplets} (\hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, int nodes\-\_\-length, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$bit\-\_\-vec, int marked\-\_\-bits)
+\begin{DoxyCompactList}\small\item\em \-A function for mapping the indices inside the \-B\-W\-T to indices inside the original c-\/string. \end{DoxyCompactList}\item 
+void \hyperlink{mapper_8c_a7bc9c9bac0bb4ebebaa5bcac2b3279a2}{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string} (\hyperlink{structs_8h_structtriplet}{triplet} $\ast$nodes, \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt1, \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt2, int nodes\-\_\-length, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$vecs)
+\begin{DoxyCompactList}\small\item\em \-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-U\-Ms. \end{DoxyCompactList}\item 
+void \hyperlink{mapper_8c_abb34baf0f81ce5609d306cce898f3922}{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string} (\hyperlink{structs_8h_structtriplet}{triplet} $\ast$nodes, \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt1, \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt2, int nodes\-\_\-length, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$vecs)
+\begin{DoxyCompactList}\small\item\em \-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-E\-Ms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the mapping functions. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator), \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000024}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{mapper_8c_af64bb40830b3d417933e2c2463f34739}{\index{mapper.\-c@{mapper.\-c}!map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string@{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string}}
+\index{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string@{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string}!mapper.c@{mapper.\-c}}
+\subsubsection[{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}{\bf max\-\_\-repeat\-\_\-with\-\_\-indexes}$\ast$ {\bf map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf max\-\_\-repeat\-\_\-node} $\ast$}]{nodes, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{struct {\bf bit\-\_\-vector} $\ast$}]{bit\-\_\-vec}
+\end{DoxyParamCaption}
+)}}\label{mapper_8c_af64bb40830b3d417933e2c2463f34739}
+
+
+\-Maps the \-B\-W\-T indexes to indexes in the original string in all found maximal repeats. 
+
+\-Updates the normal.\-i value to index in the original string.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em nodes} & \-An array of all maximal repeat substrings inside the \-B\-W\-T. \\
+\hline
+{\em bwt} & \-The \-B\-W\-T of the original string, in wavelet tree form. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the nodes-\/array. \\
+\hline
+{\em bit\-\_\-vec} & \-Bit vector which tells where the maximals repeats start \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A list of maximal repeats with all occurrences 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator), \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000028}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References backward\-\_\-search\-\_\-interval(), wavelet\-\_\-tree\-::char\-\_\-at, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked, marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), and quick\-\_\-sort().
+
+
+
+\-Referenced by print\-\_\-maximal\-\_\-repeat\-\_\-substrings().
+
+\hypertarget{mapper_8c_abb34baf0f81ce5609d306cce898f3922}{\index{mapper.\-c@{mapper.\-c}!map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string}}
+\index{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string}!mapper.c@{mapper.\-c}}
+\subsubsection[{map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf triplet} $\ast$}]{nodes, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt1, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt2, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{struct {\bf bit\-\_\-vector} $\ast$$\ast$}]{vecs}
+\end{DoxyParamCaption}
+)}}\label{mapper_8c_abb34baf0f81ce5609d306cce898f3922}
+
+
+\-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-E\-Ms. 
+
+\-Updates the position values in both strings to indexes in the original string.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em nodes} & \-An array of all triplets returned after iteration. \\
+\hline
+{\em bwt1} & \-B\-W\-T of the first string. \\
+\hline
+{\em bwt2} & \-B\-W\-T of the second string. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the array of nodes. \\
+\hline
+{\em vecs} & \-Bit vector containing the starting position of \-M\-E\-Ms in both strings \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000030}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), and update\-\_\-position\-\_\-in\-\_\-triplets().
+
+
+
+\-Referenced by print\-\_\-mems().
+
+\hypertarget{mapper_8c_a7bc9c9bac0bb4ebebaa5bcac2b3279a2}{\index{mapper.\-c@{mapper.\-c}!map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string}}
+\index{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string@{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string}!mapper.c@{mapper.\-c}}
+\subsubsection[{map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf triplet} $\ast$}]{nodes, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt1, }
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt2, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{struct {\bf bit\-\_\-vector} $\ast$$\ast$}]{vecs}
+\end{DoxyParamCaption}
+)}}\label{mapper_8c_a7bc9c9bac0bb4ebebaa5bcac2b3279a2}
+
+
+\-Maps the \-B\-W\-T indexes to indexes in the original string in all found \-M\-U\-Ms. 
+
+\-Updates the position values in both strings to indexes in the original string.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em nodes} & \-An array of all triplets returned after iteration. \\
+\hline
+{\em bwt1} & \-B\-W\-T of the first string. \\
+\hline
+{\em bwt2} & \-B\-W\-T of the second string. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the array of nodes. \\
+\hline
+{\em vecs} & \-Bit vector containing the starting position of \-M\-U\-Ms in both strings \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000029}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector(), and update\-\_\-position\-\_\-in\-\_\-triplets().
+
+
+
+\-Referenced by print\-\_\-mums().
+
+\hypertarget{mapper_8c_a6f6a16a59a5ecbfb8217256285113615}{\index{mapper.\-c@{mapper.\-c}!marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector@{marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector}}
+\index{marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector@{marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector}!mapper.c@{mapper.\-c}}
+\subsubsection[{marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf marked\-\_\-bits\-\_\-on\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vec, }
+\item[{int}]{vector\-\_\-length}
+\end{DoxyParamCaption}
+)}}\label{mapper_8c_a6f6a16a59a5ecbfb8217256285113615}
+
+
+\-A function that counts the number of marked bits. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector\-\_\-length} & \-Length of the bit vector. \\
+\hline
+{\em bit\-\_\-vec} & \-Bit vector to be counted from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000025}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked.
+
+
+
+\-Referenced by map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string(), map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string(), and map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string().
+
+\hypertarget{mapper_8c_a2b654721729230e70414b1f109a03a11}{\index{mapper.\-c@{mapper.\-c}!update\-\_\-position\-\_\-in\-\_\-triplets@{update\-\_\-position\-\_\-in\-\_\-triplets}}
+\index{update\-\_\-position\-\_\-in\-\_\-triplets@{update\-\_\-position\-\_\-in\-\_\-triplets}!mapper.c@{mapper.\-c}}
+\subsubsection[{update\-\_\-position\-\_\-in\-\_\-triplets}]{\setlength{\rightskip}{0pt plus 5cm}{\bf mapped\-\_\-pair}$\ast$ {\bf update\-\_\-position\-\_\-in\-\_\-triplets} (
+\begin{DoxyParamCaption}
+\item[{{\bf wavelet\-\_\-tree} $\ast$}]{bwt, }
+\item[{int}]{nodes\-\_\-length, }
+\item[{{\bf bit\-\_\-vector} $\ast$}]{bit\-\_\-vec, }
+\item[{int}]{marked\-\_\-bits}
+\end{DoxyParamCaption}
+)}}\label{mapper_8c_a2b654721729230e70414b1f109a03a11}
+
+
+\-A function for mapping the indices inside the \-B\-W\-T to indices inside the original c-\/string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em bwt} & \-The \-B\-W\-T of a string, represented as a wavelet tree. \\
+\hline
+{\em nodes\-\_\-length} & \-Length of the array. \\
+\hline
+{\em bit\-\_\-vec} & \-Bit vector containing the mappable indexes \\
+\hline
+{\em marked\-\_\-bits} & number of bits marked in the vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000026}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References backward\-\_\-search\-\_\-interval(), wavelet\-\_\-tree\-::char\-\_\-at, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, and bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked.
+
+
+
+\-Referenced by map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string(), and map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string().
+
