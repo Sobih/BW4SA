@@ -37,8 +37,9 @@ START_TEST(test_mum1)
 
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum1_mapped)
@@ -50,8 +51,9 @@ START_TEST(test_mum1_mapped)
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
-		map_mum_triplets_to_string(nodes, s_to_bwt("laatikko"),
-				s_to_bwt("mehukatti"), results->length, mum_make_bit_vectors(results,state));
+		bit_vector** vectors = mum_make_bit_vectors(results,state);
+		wavelet_tree* tree1 = s_to_bwt("laatikko"), *tree2 = s_to_bwt("mehukatti");
+		map_mum_triplets_to_string(nodes, tree1, tree2, results->length, vectors);
 		ck_assert_int_eq(2, results->length);
 		ck_assert_int_eq(2, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -60,10 +62,18 @@ START_TEST(test_mum1_mapped)
 		ck_assert_int_eq(7, nodes[1].pos2);
 		ck_assert_int_eq(2, nodes[1].length);
 
+		free(tree1->nodes[0].string);
+		free(tree2->nodes[0].string);
+		free_wavelet_tree(tree1);
+		free_wavelet_tree(tree2);
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum2)
@@ -85,8 +95,9 @@ START_TEST(test_mum2)
 
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum2_mapped)
@@ -98,8 +109,9 @@ START_TEST(test_mum2_mapped)
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
-		map_mum_triplets_to_string(nodes, s_to_bwt("abracadabra"),
-				s_to_bwt("arbadacarba"), results->length, mum_make_bit_vectors(results,state));
+		bit_vector** vectors = mum_make_bit_vectors(results, state);
+		wavelet_tree* tree1 = s_to_bwt("abracadabra"), *tree2 = s_to_bwt("arbadacarba");
+		map_mum_triplets_to_string(nodes, tree1, tree2, results->length, vectors);
 		ck_assert_int_eq(2, results->length);
 		ck_assert_int_eq(3, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
@@ -108,10 +120,18 @@ START_TEST(test_mum2_mapped)
 		ck_assert_int_eq(3, nodes[1].pos2);
 		ck_assert_int_eq(3, nodes[1].length);
 
+		free(tree1->nodes[0].string);
+		free(tree2->nodes[0].string);
+		free_wavelet_tree(tree1);
+		free_wavelet_tree(tree2);
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum_empty)
@@ -126,8 +146,9 @@ START_TEST(test_mum_empty)
 
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum3)
@@ -144,8 +165,9 @@ START_TEST(test_mum3)
 
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum3_mapped)
@@ -157,17 +179,26 @@ START_TEST(test_mum3_mapped)
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
-		map_mum_triplets_to_string(nodes, s_to_bwt("qwertnmyuiop"),
-				s_to_bwt("asdfgnmhjkl"), results->length, mum_make_bit_vectors(results,state));
+		bit_vector** vectors = mum_make_bit_vectors(results, state);
+		wavelet_tree* tree1 = s_to_bwt("qwertnmyuiop"), *tree2 = s_to_bwt("asdfgnmhjkl");
+		map_mum_triplets_to_string(nodes, tree1, tree2, results->length, vectors);
 		ck_assert_int_eq(1, results->length);
 		ck_assert_int_eq(5, nodes[0].pos1);
 		ck_assert_int_eq(5, nodes[0].pos2);
 		ck_assert_int_eq(2, nodes[0].length);
 
+		free(tree1->nodes[0].string);
+		free(tree2->nodes[0].string);
+		free_wavelet_tree(tree1);
+		free_wavelet_tree(tree2);
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
 		free(strings);
 		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum1_bitvector)
@@ -178,9 +209,15 @@ START_TEST(test_mum1_bitvector)
 		parameter_struct* params = initialize_for_mums(strings, 1);
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
-		map_mum_triplets_to_string(results->data, s_to_bwt("laatikko"),
-				s_to_bwt("mehukatti"), results->length, mum_make_bit_vectors(results,state));
 		bit_vector** vectors = mum_make_bit_vectors(results, state);
+		wavelet_tree* tree1 = s_to_bwt("laatikko"), *tree2 = s_to_bwt("mehukatti");
+		map_mum_triplets_to_string(results->data, tree1, tree2, results->length, vectors);
+
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
+		vectors = mum_make_bit_vectors(results, state);
+
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 2));
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
 		ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], 5));
@@ -190,12 +227,18 @@ START_TEST(test_mum1_bitvector)
 		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 2));
 		ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], 3));
 
-		free(strings);
-		free(results->data);
+		free(tree1->nodes[0].string);
+		free(tree2->nodes[0].string);
+		free_wavelet_tree(tree1);
+		free_wavelet_tree(tree2);
 		free_bit_vector(vectors[0]);
 		free_bit_vector(vectors[1]);
+		free(vectors);
+		free(strings);
+		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum2_bitvector)
@@ -206,20 +249,32 @@ START_TEST(test_mum2_bitvector)
 		parameter_struct* params = initialize_for_mums(strings, 1);
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
-		map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"),
-				s_to_bwt("arbadacarba"), results->length, mum_make_bit_vectors(results,state));
 		bit_vector** vectors = mum_make_bit_vectors(results, state);
+		wavelet_tree* tree1 = s_to_bwt("abracadabra"), *tree2 = s_to_bwt("arbadacarba");
+		map_mum_triplets_to_string(results->data, tree1, tree2, results->length, vectors);
+
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
+		vectors = mum_make_bit_vectors(results, state);
+
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 3));
 		ck_assert_int_eq(1, vectors[0]->is_bit_marked(vectors[0], 5));
 		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 3));
 		ck_assert_int_eq(1, vectors[1]->is_bit_marked(vectors[1], 5));
 
-		free(strings);
-		free(results->data);
+		free(tree1->nodes[0].string);
+		free(tree2->nodes[0].string);
+		free_wavelet_tree(tree1);
+		free_wavelet_tree(tree2);
 		free_bit_vector(vectors[0]);
 		free_bit_vector(vectors[1]);
+		free(vectors);
+		free(strings);
+		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 START_TEST(test_mum3_bitvector_no_mums)
@@ -230,9 +285,15 @@ START_TEST(test_mum3_bitvector_no_mums)
 		parameter_struct* params = initialize_for_mums(strings, 1);
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
-		map_mum_triplets_to_string(results->data, s_to_bwt("abracadabra"),
-				s_to_bwt("arbadacarba"), results->length, mum_make_bit_vectors(results,state));
 		bit_vector** vectors = mum_make_bit_vectors(results, state);
+		wavelet_tree* tree1 = s_to_bwt("abracadabra"), *tree2 = s_to_bwt("vzxmneytymn");
+		map_mum_triplets_to_string(results->data, tree1, tree2, results->length, vectors);
+
+		free_bit_vector(vectors[0]);
+		free_bit_vector(vectors[1]);
+		free(vectors);
+		vectors = mum_make_bit_vectors(results, state);
+
 		int i;
 		for (i = 0; i < vectors[0]->length; i++) {
 			ck_assert_int_eq(0, vectors[0]->is_bit_marked(vectors[0], i));
@@ -241,12 +302,18 @@ START_TEST(test_mum3_bitvector_no_mums)
 			ck_assert_int_eq(0, vectors[1]->is_bit_marked(vectors[1], i));
 		}
 
-		free(strings);
-		free(results->data);
+		free(tree1->nodes[0].string);
+		free(tree2->nodes[0].string);
+		free_wavelet_tree(tree1);
+		free_wavelet_tree(tree2);
 		free_bit_vector(vectors[0]);
 		free_bit_vector(vectors[1]);
+		free(vectors);
+		free(strings);
+		free(results->data);
+		free(results);
 		free_iterator_state(state);
-		//free_parameter_struct(params);
+		free(params);
 	}END_TEST
 
 int search_and_remove(triplet trip, substring_pair* head) {
@@ -273,6 +340,7 @@ START_TEST(test_mums_randomized_small_alphabet)
 		substring_pair* naive_mums;
 		parameter_struct* params;
 		iterator_state* state;
+		bit_vector** vectors;
 
 		for (int i = 0; i < 100; i++) {
 			int len1 = rand() % 100 + 1;
@@ -290,14 +358,18 @@ START_TEST(test_mums_randomized_small_alphabet)
 			int num_mums = results->length;
 
 			//custom mapping for mems. This has to be changed when real mapping is ready.
+			vectors = mum_make_bit_vectors(results,state);
 			map_mum_triplets_to_string(fast_mems, &state->bwts[0],
-					&state->bwts[1], num_mums, mum_make_bit_vectors(results,state));
+					&state->bwts[1], num_mums, vectors);
 
 			for (int j = 0; j < num_mums; j++)
 				fail_unless(search_and_remove(fast_mems[j], naive_mums));
 
 			fail_unless(naive_mums->next == NULL);
 
+			free_bit_vector(vectors[0]);
+			free_bit_vector(vectors[1]);
+			free(vectors);
 			free(strings[0]);
 			free(strings[1]);
 			free(results);
@@ -317,6 +389,7 @@ START_TEST(test_mums_randomized_big_alphabet)
 		substring_pair* naive_mums;
 		parameter_struct* params;
 		iterator_state* state;
+		bit_vector** vectors;
 
 		for (int i = 0; i < 100; i++) {
 			int len1 = rand() % 100 + 1;
@@ -334,14 +407,18 @@ START_TEST(test_mums_randomized_big_alphabet)
 			int num_mums = results->length;
 
 			//custom mapping for mems. This has to be changed when real mapping is ready.
+			vectors = mum_make_bit_vectors(results,state);
 			map_mum_triplets_to_string(fast_mems, &state->bwts[0],
-					&state->bwts[1], num_mums, mum_make_bit_vectors(results,state));
+					&state->bwts[1], num_mums, vectors);
 
 			for (int j = 0; j < num_mums; j++)
 				fail_unless(search_and_remove(fast_mems[j], naive_mums));
 
 			fail_unless(naive_mums->next == NULL);
 
+			free_bit_vector(vectors[0]);
+			free_bit_vector(vectors[1]);
+			free(vectors);
 			free(strings[0]);
 			free(strings[1]);
 			free(results);

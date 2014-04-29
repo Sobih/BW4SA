@@ -160,11 +160,6 @@ void search_mems(iterator_state* state, void* results) {
 						trip->pos2 = l;
 						trip->length = node1->length;
 						result->length++;
-						//check if triplet-list is full, expand by 10 if it is
-						if (result->allocated_length == result->length) {
-							result->allocated_length += 10;
-							result->data = realloc(result->data, result->allocated_length * sizeof(triplet));
-						}
 					}
 				}
 			}
@@ -190,7 +185,8 @@ void print_mems(char* string, mem_results* results, iterator_state* state) {
 				trip.pos1, trip.pos2, trip.length);
 	}
 
-	map_mem_triplets_to_string(mems, &state->bwts[0], &state->bwts[1], results->length, mem_make_bit_vectors(results, state));
+	bit_vector** vectors = mem_make_bit_vectors(results, state);
+	map_mem_triplets_to_string(mems, &state->bwts[0], &state->bwts[1], results->length, vectors);
 
 	for (i = 0; i < results->length; i++) {
 		triplet trip = mems[i];
@@ -201,6 +197,10 @@ void print_mems(char* string, mem_results* results, iterator_state* state) {
 		printf("The substring itself: %s \n", subs);
 		printf("\n\n");
 	}
+
+	free_bit_vector(vectors[0]);
+	free_bit_vector(vectors[1]);
+	free(vectors);
 }
 
 bit_vector** mem_make_bit_vectors(mem_results* results, iterator_state* state) {

@@ -114,7 +114,7 @@ void ui()
 		char** strings = malloc(2 * sizeof(char*));
 		strings[0] = input;
 		strings[1] = input2;
-		parameter_struct* params = initialize_for_mums(strings, 1000);
+		parameter_struct* params = initialize_for_mums(strings, 0);
 		iterator_state* state = iterate(params);
 		mum_results* results = (mum_results*) params->ret_data;
 		triplet* nodes = results->data;
@@ -131,10 +131,11 @@ void ui()
 	} else if (choice == 9) {
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
-		parameter_struct* params = initialize_for_max_repeats(input);
+		parameter_struct* params = initialize_for_max_repeats(input, 0);
 		iterator_state* state = iterate(params);
 		max_repeat_results* results = (max_repeat_results*) params->ret_data;
 		//maximals_print_nodes(input);
+
 		print_maximal_repeat_substrings(input, results, state);
 		//compare_quick_sort()
 	} else if (choice == 11) {
@@ -145,7 +146,7 @@ void ui()
 		char** strings = malloc(2 * sizeof(char*));
 		strings[0] = input;
 		strings[1] = input2;
-		parameter_struct* params = initialize_for_mems(strings, 1000);
+		parameter_struct* params = initialize_for_mems(strings, 0);
 		iterator_state* state = iterate(params);
 		mem_results* results = (mem_results*) params->ret_data;
 		triplet* nodes = results->data;

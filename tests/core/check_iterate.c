@@ -258,6 +258,7 @@ START_TEST(test_iterate_randomized_small_alphabet)
 		state = initialize_iterator(strings, 1);
 		single_iterate(state, &check_substrings_callback, 0);
 		free_iterator_state(state);
+		free(bwt->nodes[0].string);
 		free_wavelet_tree(bwt);
 		free(strings[0]);
 
@@ -291,6 +292,7 @@ START_TEST(test_iterate_randomized_big_alphabet)
 		state = initialize_iterator(strings, 1);
 		single_iterate(state, &check_substrings_callback, 0);
 		free_iterator_state(state);
+		free(bwt->nodes[0].string);
 		free_wavelet_tree(bwt);
 		free(strings[0]);
 
@@ -323,6 +325,7 @@ START_TEST(test_iterate_randomized_one_long_string)
 	iterator_state* state = initialize_iterator(strings, 1);
 	single_iterate(state, &check_substrings_callback, 0);
 	free_iterator_state(state);
+	free(bwt->nodes[0].string);
 	free_wavelet_tree(bwt);
 	free(strings[0]);
 	free(strings);
@@ -378,6 +381,8 @@ START_TEST(test_double_iterate_randomized)
 		state = initialize_iterator(strings, 2);
 		double_iterate(state, &check_doubles_callback, 0);
 		free_iterator_state(state);
+		free(bwt1->nodes[0].string);
+		free(bwt2->nodes[0].string);
 		free_wavelet_tree(bwt1);
 		free_wavelet_tree(bwt2);
 		free(strings[0]);
@@ -425,6 +430,8 @@ START_TEST(test_double_iterate_randomized_long_alphabet)
 		state = initialize_iterator(strings, 2);
 		double_iterate(state, &check_doubles_callback, 0);
 		free_iterator_state(state);
+		free(bwt1->nodes[0].string);
+		free(bwt2->nodes[0].string);
 		free_wavelet_tree(bwt1);
 		free_wavelet_tree(bwt2);
 		free(strings[0]);

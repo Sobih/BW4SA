@@ -378,8 +378,8 @@ void free_parameter_struct(parameter_struct* params) {
 	switch (params->iterate_type) {
 	case MUM: //do the same as for MEM
 	case MEM:
-		free(params->strings[0]);
-		free(params->strings[1]);
+		//free(params->strings[0]);
+		//free(params->strings[1]);
 		break;
 	case DOT_TREE: //do the same as for MAX_REPEATS
 	case MAX_REPEATS: //do the same as default
@@ -393,7 +393,9 @@ void free_parameter_struct(parameter_struct* params) {
 
 void free_iterator_state(iterator_state* state) {
 	for (int i = 0; i < state->num_strings; ++i) {
+		free(state->bwts[i].nodes[0].string);
 		free_wavelet_tree_internals(&state->bwts[i]);
+		free(state->reverse_bwts[i].nodes[0].string);
 		free_wavelet_tree_internals(&state->reverse_bwts[i]);
 		free(state->stacks[i].array);
 		free(state->runs_vectors[i].vector);
@@ -408,12 +410,16 @@ void free_iterator_state(iterator_state* state) {
 	free(state->prev);
 	free(state->alpha_datas);
 	free(state->c_arrays);
-	free(state->common_alphabet);
 	free(state->stacks);
 	free(state->runs_vectors);
 	free(state->reverse_runs_vectors);
 	free(state->bwts);
 	free(state->reverse_bwts);
+
+	if (state->common_alphabet != 0) {
+		free(state->common_alphabet->alphabet);
+		free(state->common_alphabet);
+	}
 
 	free(state);
 }
@@ -433,7 +439,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 		state = initialize_iterator(parameters->strings, 2);
 		state->threshold = parameters->threshold;
 
-		parameters->ret_data = double_iterate(state, parameters->callback, parameters->ret_data);
+		/*parameters->ret_data = */double_iterate(state, parameters->callback, parameters->ret_data);
 
 		//free all resources
 		/*free_wavelet_tree(&state->bwts[0]);
@@ -469,7 +475,7 @@ iterator_state* iterate(parameter_struct* parameters) {
 		//initialize iterator state for using single iterate
 		state = initialize_iterator(parameters->strings, 1);
 		state->threshold = parameters->threshold;
-		parameters->ret_data = single_iterate(state, parameters->callback, parameters->ret_data);
+		/*parameters->ret_data = */single_iterate(state, parameters->callback, parameters->ret_data);
 
 		//free all resources
 		/*free_wavelet_tree(state->bwts);

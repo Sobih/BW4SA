@@ -126,6 +126,9 @@ mapped_pair* update_position_in_triplets(wavelet_tree* bwt, int nodes_length,
 		memcpy(inter, target, sizeof(interval));
 	}
 
+	free(inter);
+	free(target);
+
 	return pairs;
 }
 
@@ -156,7 +159,7 @@ void map_mum_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
 	for (int j = 0; j < nodes_length; j++) {
 		nodes[j].pos2 = pairs2[j].orig_pos;
 	}
-	free(vecs);
+
 	free(pairs1);
 	free(pairs2);
 }
@@ -224,7 +227,6 @@ void map_mem_triplets_to_string(triplet* nodes, wavelet_tree* bwt1,
 		}
 	}
 
-	free(vecs);
 	free(pairs1);
 	free(pairs2);
 }
