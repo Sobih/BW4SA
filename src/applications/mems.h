@@ -28,6 +28,19 @@ typedef struct mem_results {
 	void* params;
 } mem_results;
 
+/**
+ * @brief	An initialization function that creates a parameter struct that
+ * 			instructs iterate to search for maximal exact matches.
+ * @param	strings		An array of pointers to strings that are to be
+ * 						iterated over.
+ * @param	max_number_mems
+ * 						Number of slots of memory allocated for triplets. This number has
+ * 						to be at least as large as expected number of MEMs.
+ * @return				An initialized parameter struct ready to be passed
+ * 						to iterate.
+ * @author	Max Sandberg (REXiator), Topi Paavilainen
+ * @bug		No known bugs.
+ */
 struct parameter_struct* initialize_for_mems(char** strings, int max_number_mems);
 
 /**
