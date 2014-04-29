@@ -1,0 +1,170 @@
+\hypertarget{substring__stack_8c}{\section{src/core/substring\-\_\-stack.c \-File \-Reference}
+\label{substring__stack_8c}\index{src/core/substring\-\_\-stack.\-c@{src/core/substring\-\_\-stack.\-c}}
+}
+
+
+\-Implementation of the substring stack.  
+
+
+{\ttfamily \#include \char`\"{}substring\-\_\-stack.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/structs.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{substring__stack_8h_structsubstring__stack}{substring\-\_\-stack} $\ast$ \hyperlink{substring__stack_8c_a49a8186326f87a8b50b5767de60520b1}{create\-\_\-stack} (int initial\-\_\-size)
+\begin{DoxyCompactList}\small\item\em \-Creates an empty stack with given initial size. \end{DoxyCompactList}\item 
+void \hyperlink{substring__stack_8c_abf54044f739b429150323ed4a0173be4}{double\-\_\-size} (\hyperlink{substring__stack_8h_structsubstring__stack}{substring\-\_\-stack} $\ast$stack)
+\begin{DoxyCompactList}\small\item\em \-A function that doubles the size of given stack. \end{DoxyCompactList}\item 
+void \hyperlink{substring__stack_8c_a8c983cc86da57e1e65e5ba2ee2fd5302}{push} (\hyperlink{substring__stack_8h_structsubstring__stack}{substring\-\_\-stack} $\ast$stack, \hyperlink{structs_8h_structsubstring}{substring} $\ast$substr)
+\begin{DoxyCompactList}\small\item\em \-Pushes given element onto given stack. \end{DoxyCompactList}\item 
+\hyperlink{structs_8h_structsubstring}{substring} $\ast$ \hyperlink{substring__stack_8c_a160991b8af694c046eb64c0410c1664b}{pop} (\hyperlink{substring__stack_8h_structsubstring__stack}{substring\-\_\-stack} $\ast$stack)
+\begin{DoxyCompactList}\small\item\em \-Pops and removes the top-\/most element from a stack. \end{DoxyCompactList}\item 
+void \hyperlink{substring__stack_8c_a9a81803fddcd0ba3e17b1ae60fc33cb9}{free\-\_\-stack} (\hyperlink{substring__stack_8h_structsubstring__stack}{substring\-\_\-stack} $\ast$stack)
+\begin{DoxyCompactList}\small\item\em \-Frees an entire stack structure and all data connected to it. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the substring stack. \begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000092}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{substring__stack_8c_a49a8186326f87a8b50b5767de60520b1}{\index{substring\-\_\-stack.\-c@{substring\-\_\-stack.\-c}!create\-\_\-stack@{create\-\_\-stack}}
+\index{create\-\_\-stack@{create\-\_\-stack}!substring_stack.c@{substring\-\_\-stack.\-c}}
+\subsubsection[{create\-\_\-stack}]{\setlength{\rightskip}{0pt plus 5cm}{\bf substring\-\_\-stack}$\ast$ {\bf create\-\_\-stack} (
+\begin{DoxyParamCaption}
+\item[{int}]{initial\-\_\-size}
+\end{DoxyParamCaption}
+)}}\label{substring__stack_8c_a49a8186326f87a8b50b5767de60520b1}
+
+
+\-Creates an empty stack with given initial size. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em initial\-\_\-size} & \-Initial stack size. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Pointer to the new empty stack. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000096}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by initialize\-\_\-iterator().
+
+\hypertarget{substring__stack_8c_abf54044f739b429150323ed4a0173be4}{\index{substring\-\_\-stack.\-c@{substring\-\_\-stack.\-c}!double\-\_\-size@{double\-\_\-size}}
+\index{double\-\_\-size@{double\-\_\-size}!substring_stack.c@{substring\-\_\-stack.\-c}}
+\subsubsection[{double\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf double\-\_\-size} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring\-\_\-stack} $\ast$}]{stack}
+\end{DoxyParamCaption}
+)}}\label{substring__stack_8c_abf54044f739b429150323ed4a0173be4}
+
+
+\-A function that doubles the size of given stack. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em stack} & \-The stack whose size is to be doubled. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000093}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by push().
+
+\hypertarget{substring__stack_8c_a9a81803fddcd0ba3e17b1ae60fc33cb9}{\index{substring\-\_\-stack.\-c@{substring\-\_\-stack.\-c}!free\-\_\-stack@{free\-\_\-stack}}
+\index{free\-\_\-stack@{free\-\_\-stack}!substring_stack.c@{substring\-\_\-stack.\-c}}
+\subsubsection[{free\-\_\-stack}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-stack} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring\-\_\-stack} $\ast$}]{stack}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{substring__stack_8c_a9a81803fddcd0ba3e17b1ae60fc33cb9}
+
+
+\-Frees an entire stack structure and all data connected to it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em stack} & \-The stack to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000099}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{substring__stack_8c_a160991b8af694c046eb64c0410c1664b}{\index{substring\-\_\-stack.\-c@{substring\-\_\-stack.\-c}!pop@{pop}}
+\index{pop@{pop}!substring_stack.c@{substring\-\_\-stack.\-c}}
+\subsubsection[{pop}]{\setlength{\rightskip}{0pt plus 5cm}{\bf substring}$\ast$ {\bf pop} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring\-\_\-stack} $\ast$}]{stack}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{substring__stack_8c_a160991b8af694c046eb64c0410c1664b}
+
+
+\-Pops and removes the top-\/most element from a stack. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em stack} & \-The stack from which the top-\/most element is to be popped. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A pointer to the popped substring. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000098}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by double\-\_\-iterate(), and single\-\_\-iterate().
+
+\hypertarget{substring__stack_8c_a8c983cc86da57e1e65e5ba2ee2fd5302}{\index{substring\-\_\-stack.\-c@{substring\-\_\-stack.\-c}!push@{push}}
+\index{push@{push}!substring_stack.c@{substring\-\_\-stack.\-c}}
+\subsubsection[{push}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf push} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring\-\_\-stack} $\ast$}]{stack, }
+\item[{struct {\bf substring} $\ast$}]{substr}
+\end{DoxyParamCaption}
+)}}\label{substring__stack_8c_a8c983cc86da57e1e65e5ba2ee2fd5302}
+
+
+\-Pushes given element onto given stack. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em stack} & \-The stack onto which the substring should be pushed. \\
+\hline
+{\em substr} & \-The substring to be pushed onto the stack. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000097}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References double\-\_\-size().
+
+
+
+\-Referenced by double\-\_\-iterate(), and single\-\_\-iterate().
+

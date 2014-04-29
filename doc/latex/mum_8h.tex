@@ -1,0 +1,259 @@
+\hypertarget{mum_8h}{\section{src/applications/mum.h \-File \-Reference}
+\label{mum_8h}\index{src/applications/mum.\-h@{src/applications/mum.\-h}}
+}
+
+
+\-A collection of functions for manipulating maximal unique matches (\-M\-U\-Ms) found during iteration.  
+
+
+{\ttfamily \#include \char`\"{}../utils/structs.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{mum_8h_structmum__results}{mum\-\_\-results}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the results of an iteration when finding maximal unique matches.  \hyperlink{mum_8h_structmum__results}{\-More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{mum_8h_structmum__results}{mum\-\_\-results} \hyperlink{mum_8h_af43347900953f32a70b823428b769d69}{mum\-\_\-results}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the results of an iteration when finding maximal unique matches. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$ \hyperlink{mum_8h_a5dc2e8534293e8d9094161e1b8ae0780}{initialize\-\_\-for\-\_\-mums} (char $\ast$$\ast$strings, int threshold)
+\begin{DoxyCompactList}\small\item\em \-An initialization function that creates a parameter struct that instructs iterate to search for maximal unique matches. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8h_a6ce073313d8a36431998e9de07b52dfa}{search\-\_\-mums} (struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results)
+\begin{DoxyCompactList}\small\item\em \-Callback function given to double\-\_\-iterate that determines if a substring is a \-M\-U\-M. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8h_a821796f9168b9cf406e15e3ae3a1400e}{print\-\_\-mums} (char $\ast$string, \hyperlink{mum_8h_structmum__results}{mum\-\_\-results} $\ast$results, struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Prints the indexes of the \-M\-U\-M in both strings, as well as the substring itself, to stdout. \end{DoxyCompactList}\item 
+void \hyperlink{mum_8h_a72d0917143edf037f8be7550676387c0}{mum\-\_\-print\-\_\-bit\-\_\-vectors} (char $\ast$string1, char $\ast$string2, \hyperlink{mum_8h_structmum__results}{mum\-\_\-results} $\ast$results, struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Prints the bit vectors of the strings which show where \-M\-U\-Ms occur to stdout. \end{DoxyCompactList}\item 
+struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$ \hyperlink{mum_8h_a0a658ab5696bca868e70e852b6db21fd}{mum\-\_\-make\-\_\-bit\-\_\-vectors} (\hyperlink{mum_8h_structmum__results}{mum\-\_\-results} $\ast$results, struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Creates a list of two bit vectors based on the given strings, where marked bits correspond to starting indexes of \-M\-U\-M's inside the strings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of functions for manipulating maximal unique matches (\-M\-U\-Ms) found during iteration. \begin{DoxySeeAlso}{\-See also}
+\hyperlink{iterate_8h}{iterate.\-h} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000050}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{mum\-\_\-results@{mum\-\_\-results}}\label{structmum__results}
+\hypertarget{mum_8h_structmum__results}{}
+\subsubsection{struct mum\-\_\-results}
+\-A structure for storing the results of an iteration when finding maximal unique matches. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000051}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{mum_8h_a8dbed945afa5f1bb4d26ca3485ec2ed0}{unsigned int}\label{mum_8h_a8dbed945afa5f1bb4d26ca3485ec2ed0}
+&
+allocated\-\_\-length&
+\\
+\hline
+
+\hypertarget{mum_8h_a0cdb1485a5f3c7a40dcb1d5632e81cd0}{\hyperlink{structs_8h_structtriplet}{triplet} $\ast$}\label{mum_8h_a0cdb1485a5f3c7a40dcb1d5632e81cd0}
+&
+data&
+\\
+\hline
+
+\hypertarget{mum_8h_ab7cce38ab31ea76820806b3c79db3867}{unsigned int}\label{mum_8h_ab7cce38ab31ea76820806b3c79db3867}
+&
+length&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{mum_8h_af43347900953f32a70b823428b769d69}{\index{mum.\-h@{mum.\-h}!mum\-\_\-results@{mum\-\_\-results}}
+\index{mum\-\_\-results@{mum\-\_\-results}!mum.h@{mum.\-h}}
+\subsubsection[{mum\-\_\-results}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf mum\-\_\-results}  {\bf mum\-\_\-results}}}\label{mum_8h_af43347900953f32a70b823428b769d69}
+
+
+\-A structure for storing the results of an iteration when finding maximal unique matches. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000051}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{mum_8h_a5dc2e8534293e8d9094161e1b8ae0780}{\index{mum.\-h@{mum.\-h}!initialize\-\_\-for\-\_\-mums@{initialize\-\_\-for\-\_\-mums}}
+\index{initialize\-\_\-for\-\_\-mums@{initialize\-\_\-for\-\_\-mums}!mum.h@{mum.\-h}}
+\subsubsection[{initialize\-\_\-for\-\_\-mums}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf parameter\-\_\-struct}$\ast$ {\bf initialize\-\_\-for\-\_\-mums} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{int}]{threshold}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{mum_8h_a5dc2e8534293e8d9094161e1b8ae0780}
+
+
+\-An initialization function that creates a parameter struct that instructs iterate to search for maximal unique matches. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-An array of pointers to strings that are to be iterated over. \\
+\hline
+{\em max\-\_\-number\-\_\-mums} & number of slots of memory allocated for triplets. \-This number has to be at least as large as expected number of \-M\-U\-Ms. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An initialized parameter struct ready to be passed to iterate. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator), \-Topi \-Paavilainen 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000052}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References search\-\_\-mums().
+
+\hypertarget{mum_8h_a0a658ab5696bca868e70e852b6db21fd}{\index{mum.\-h@{mum.\-h}!mum\-\_\-make\-\_\-bit\-\_\-vectors@{mum\-\_\-make\-\_\-bit\-\_\-vectors}}
+\index{mum\-\_\-make\-\_\-bit\-\_\-vectors@{mum\-\_\-make\-\_\-bit\-\_\-vectors}!mum.h@{mum.\-h}}
+\subsubsection[{mum\-\_\-make\-\_\-bit\-\_\-vectors}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf bit\-\_\-vector}$\ast$$\ast$ {\bf mum\-\_\-make\-\_\-bit\-\_\-vectors} (
+\begin{DoxyParamCaption}
+\item[{{\bf mum\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{mum_8h_a0a658ab5696bca868e70e852b6db21fd}
+
+
+\-Creates a list of two bit vectors based on the given strings, where marked bits correspond to starting indexes of \-M\-U\-M's inside the strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em results} & \-The results of an iteration over a set of strings. \\
+\hline
+{\em state} & \-Internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Bit vectors with starts of \-M\-U\-Ms marked. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000056}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, init\-\_\-bit\-\_\-vector(), and bit\-\_\-vector\-::mark\-\_\-bit.
+
+
+
+\-Referenced by mum\-\_\-print\-\_\-bit\-\_\-vectors(), and print\-\_\-mums().
+
+\hypertarget{mum_8h_a72d0917143edf037f8be7550676387c0}{\index{mum.\-h@{mum.\-h}!mum\-\_\-print\-\_\-bit\-\_\-vectors@{mum\-\_\-print\-\_\-bit\-\_\-vectors}}
+\index{mum\-\_\-print\-\_\-bit\-\_\-vectors@{mum\-\_\-print\-\_\-bit\-\_\-vectors}!mum.h@{mum.\-h}}
+\subsubsection[{mum\-\_\-print\-\_\-bit\-\_\-vectors}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf mum\-\_\-print\-\_\-bit\-\_\-vectors} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string1, }
+\item[{char $\ast$}]{string2, }
+\item[{{\bf mum\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{mum_8h_a72d0917143edf037f8be7550676387c0}
+
+
+\-Prints the bit vectors of the strings which show where \-M\-U\-Ms occur to stdout. 
+
+\-Every time a \-M\-U\-M is found, the \-B\-W\-T index of the \-M\-U\-M is marked on both strings' bit vectors.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string1} & \-The first string for which a bit vector is to be printed. \\
+\hline
+{\em string2} & \-The first string for which a bit vector is to be printed. \\
+\hline
+{\em results} & \-The results of the iteration over the two strings. \\
+\hline
+{\em state} & \-Internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000055}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References mum\-\_\-make\-\_\-bit\-\_\-vectors(), and print\-\_\-bit\-\_\-vector\-\_\-with\-\_\-string().
+
+\hypertarget{mum_8h_a821796f9168b9cf406e15e3ae3a1400e}{\index{mum.\-h@{mum.\-h}!print\-\_\-mums@{print\-\_\-mums}}
+\index{print\-\_\-mums@{print\-\_\-mums}!mum.h@{mum.\-h}}
+\subsubsection[{print\-\_\-mums}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-mums} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{{\bf mum\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{mum_8h_a821796f9168b9cf406e15e3ae3a1400e}
+
+
+\-Prints the indexes of the \-M\-U\-M in both strings, as well as the substring itself, to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string that is to be searched inside the \-M\-U\-M. \\
+\hline
+{\em results} & \-Results of the iteration over a set of strings. \\
+\hline
+{\em state} & \-The internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000054}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string(), mum\-\_\-make\-\_\-bit\-\_\-vectors(), and substring\-\_\-from\-\_\-string().
+
+\hypertarget{mum_8h_a6ce073313d8a36431998e9de07b52dfa}{\index{mum.\-h@{mum.\-h}!search\-\_\-mums@{search\-\_\-mums}}
+\index{search\-\_\-mums@{search\-\_\-mums}!mum.h@{mum.\-h}}
+\subsubsection[{search\-\_\-mums}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf search\-\_\-mums} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void $\ast$}]{results}
+\end{DoxyParamCaption}
+)}}\label{mum_8h_a6ce073313d8a36431998e9de07b52dfa}
+
+
+\-Callback function given to double\-\_\-iterate that determines if a substring is a \-M\-U\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal state of the iterator. \\
+\hline
+{\em results} & \-A pointer to a region of memory containing the previous results of this callback function. \-Can safely be cast to {\ttfamily \hyperlink{mum_8h_structmum__results}{mum\-\_\-results}} if iterate was initialized using {\ttfamily \hyperlink{mum_8c_a23ee7d8c86001e107bb2edf0d90219fe}{initialize\-\_\-for\-\_\-mums()}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000053}{\-Bug}]\-Doesn't differentiate between the \$-\/characters. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, wavelet\-\_\-tree\-::char\-\_\-at, iterator\-\_\-state\-::current, iterator\-\_\-state\-::reverse\-\_\-bwts, and iterator\-\_\-state\-::threshold.
+
+
+
+\-Referenced by initialize\-\_\-for\-\_\-mums().
+

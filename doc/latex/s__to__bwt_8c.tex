@@ -1,0 +1,61 @@
+\hypertarget{s__to__bwt_8c}{\section{src/core/s\-\_\-to\-\_\-bwt.c \-File \-Reference}
+\label{s__to__bwt_8c}\index{src/core/s\-\_\-to\-\_\-bwt.\-c@{src/core/s\-\_\-to\-\_\-bwt.\-c}}
+}
+
+
+\-Implementation of the function for creating a \-B\-W\-T from a c-\/string.  
+
+
+{\ttfamily \#include \char`\"{}s\-\_\-to\-\_\-bwt.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/wavelet\-\_\-tree.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../../libs/\-D\-B\-W\-T/dbwt.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$ \hyperlink{s__to__bwt_8c_ad658413a6d2253fd27e54f3ffeb2e21a}{s\-\_\-to\-\_\-bwt} (uchar $\ast$string)
+\begin{DoxyCompactList}\small\item\em \-Performs \-Burrows-\/\-Wheeler transform on the given string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the function for creating a \-B\-W\-T from a c-\/string. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000089}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{s__to__bwt_8c_ad658413a6d2253fd27e54f3ffeb2e21a}{\index{s\-\_\-to\-\_\-bwt.\-c@{s\-\_\-to\-\_\-bwt.\-c}!s\-\_\-to\-\_\-bwt@{s\-\_\-to\-\_\-bwt}}
+\index{s\-\_\-to\-\_\-bwt@{s\-\_\-to\-\_\-bwt}!s_to_bwt.c@{s\-\_\-to\-\_\-bwt.\-c}}
+\subsubsection[{s\-\_\-to\-\_\-bwt}]{\setlength{\rightskip}{0pt plus 5cm}{\bf wavelet\-\_\-tree}$\ast$ {\bf s\-\_\-to\-\_\-bwt} (
+\begin{DoxyParamCaption}
+\item[{uchar $\ast$}]{string}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{s__to__bwt_8c_ad658413a6d2253fd27e54f3ffeb2e21a}
+
+
+\-Performs \-Burrows-\/\-Wheeler transform on the given string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string on which the \-Burrows-\/\-Wheeler transform is applied. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The \-B\-W\-T of the string, represented as a wavelet tree. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000091}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References create\-\_\-wavelet\-\_\-tree().
+
+
+
+\-Referenced by draw\-\_\-suffix\-\_\-tree(), initialize\-\_\-iterator(), and reverse\-\_\-bwt().
+

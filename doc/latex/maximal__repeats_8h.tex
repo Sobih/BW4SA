@@ -1,0 +1,269 @@
+\hypertarget{maximal__repeats_8h}{\section{src/applications/maximal\-\_\-repeats.h \-File \-Reference}
+\label{maximal__repeats_8h}\index{src/applications/maximal\-\_\-repeats.\-h@{src/applications/maximal\-\_\-repeats.\-h}}
+}
+
+
+\-A collection of functions for manipulating maximal repeat substrings.  
+
+
+{\ttfamily \#include \char`\"{}../utils/structs.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node}
+\begin{DoxyCompactList}\small\item\em \-A simple struct for storing data on a maximal repeat substring.  \hyperlink{maximal__repeats_8h_structmax__repeat__node}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{maximal__repeats_8h_structmax__repeat__results}{max\-\_\-repeat\-\_\-results}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing the results of the callback function given to iterate.  \hyperlink{maximal__repeats_8h_structmax__repeat__results}{\-More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node} \hyperlink{maximal__repeats_8h_a9c057e8f2457de002fbf804c77dc32e4}{max\-\_\-repeat\-\_\-node}
+\begin{DoxyCompactList}\small\item\em \-A simple struct for storing data on a maximal repeat substring. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{maximal__repeats_8h_structmax__repeat__results}{max\-\_\-repeat\-\_\-results} \hyperlink{maximal__repeats_8h_a8a3af6019ac70e6fe589487185e9aa48}{max\-\_\-repeat\-\_\-results}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing the results of the callback function given to iterate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$ \hyperlink{maximal__repeats_8h_a16af217ecd83eaca3877fe491efb7392}{initialize\-\_\-for\-\_\-max\-\_\-repeats} (char $\ast$string, int threshold)
+\begin{DoxyCompactList}\small\item\em \-An initialization function that creates a parameter struct that instructs iterate to search for maximal repeats. \end{DoxyCompactList}\item 
+void \hyperlink{maximal__repeats_8h_a7042ff4bcd69219b0468ab9bd744e565}{search\-\_\-maximal\-\_\-repeats} (struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results)
+\begin{DoxyCompactList}\small\item\em \-The function given as callback to iterate for finding maximal repeats. \end{DoxyCompactList}\item 
+void \hyperlink{maximal__repeats_8h_a2239575067d090f560d31de888b5d762}{print\-\_\-maximal\-\_\-repeat\-\_\-substrings} (char $\ast$string, \hyperlink{maximal__repeats_8h_structmax__repeat__results}{max\-\_\-repeat\-\_\-results} $\ast$results, struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Prints the substring the interval represents. \end{DoxyCompactList}\item 
+struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$ \hyperlink{maximal__repeats_8h_abe03f9e01ff1e33d4fe4ac5eeb7c02e8}{max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector} (\hyperlink{maximal__repeats_8h_structmax__repeat__results}{max\-\_\-repeat\-\_\-results} $\ast$results, struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Creates a bit vectors based on the given string, where marked bits correspond to starting indexes of maximal repeats inside the string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of functions for manipulating maximal repeat substrings. \begin{DoxySeeAlso}{\-See also}
+\hyperlink{iterate_8h}{iterate.\-h} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000033}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{max\-\_\-repeat\-\_\-node@{max\-\_\-repeat\-\_\-node}}\label{structmax__repeat__node}
+\hypertarget{maximal__repeats_8h_structmax__repeat__node}{}
+\subsubsection{struct max\-\_\-repeat\-\_\-node}
+\-A simple struct for storing data on a maximal repeat substring. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000034}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{maximal__repeats_8h_a1432d37604eb1dd8c0d7880357e2c170}{int}\label{maximal__repeats_8h_a1432d37604eb1dd8c0d7880357e2c170}
+&
+length&
+\\
+\hline
+
+\hypertarget{maximal__repeats_8h_a26abb8a4d2d962166edc53f6747195fe}{\hyperlink{structs_8h_structinterval}{interval}}\label{maximal__repeats_8h_a26abb8a4d2d962166edc53f6747195fe}
+&
+normal&
+\\
+\hline
+
+\end{DoxyFields}
+\index{max\-\_\-repeat\-\_\-results@{max\-\_\-repeat\-\_\-results}}\label{structmax__repeat__results}
+\hypertarget{maximal__repeats_8h_structmax__repeat__results}{}
+\subsubsection{struct max\-\_\-repeat\-\_\-results}
+\-A struct for storing the results of the callback function given to iterate. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000035}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{maximal__repeats_8h_af61130c4f64d058f4c1d1cfa7ddefa24}{unsigned int}\label{maximal__repeats_8h_af61130c4f64d058f4c1d1cfa7ddefa24}
+&
+allocated\-\_\-length&
+\\
+\hline
+
+\hypertarget{maximal__repeats_8h_aa687bd202954c9ef1f9feda12ddc86d2}{\hyperlink{maximal__repeats_8h_structmax__repeat__node}{max\-\_\-repeat\-\_\-node} $\ast$}\label{maximal__repeats_8h_aa687bd202954c9ef1f9feda12ddc86d2}
+&
+data&
+\\
+\hline
+
+\hypertarget{maximal__repeats_8h_acf0cb9b006e5c5a4ae84c7825860ea35}{unsigned int}\label{maximal__repeats_8h_acf0cb9b006e5c5a4ae84c7825860ea35}
+&
+length&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{maximal__repeats_8h_a9c057e8f2457de002fbf804c77dc32e4}{\index{maximal\-\_\-repeats.\-h@{maximal\-\_\-repeats.\-h}!max\-\_\-repeat\-\_\-node@{max\-\_\-repeat\-\_\-node}}
+\index{max\-\_\-repeat\-\_\-node@{max\-\_\-repeat\-\_\-node}!maximal_repeats.h@{maximal\-\_\-repeats.\-h}}
+\subsubsection[{max\-\_\-repeat\-\_\-node}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf max\-\_\-repeat\-\_\-node}  {\bf max\-\_\-repeat\-\_\-node}}}\label{maximal__repeats_8h_a9c057e8f2457de002fbf804c77dc32e4}
+
+
+\-A simple struct for storing data on a maximal repeat substring. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000034}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{maximal__repeats_8h_a8a3af6019ac70e6fe589487185e9aa48}{\index{maximal\-\_\-repeats.\-h@{maximal\-\_\-repeats.\-h}!max\-\_\-repeat\-\_\-results@{max\-\_\-repeat\-\_\-results}}
+\index{max\-\_\-repeat\-\_\-results@{max\-\_\-repeat\-\_\-results}!maximal_repeats.h@{maximal\-\_\-repeats.\-h}}
+\subsubsection[{max\-\_\-repeat\-\_\-results}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf max\-\_\-repeat\-\_\-results}  {\bf max\-\_\-repeat\-\_\-results}}}\label{maximal__repeats_8h_a8a3af6019ac70e6fe589487185e9aa48}
+
+
+\-A struct for storing the results of the callback function given to iterate. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000035}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{maximal__repeats_8h_a16af217ecd83eaca3877fe491efb7392}{\index{maximal\-\_\-repeats.\-h@{maximal\-\_\-repeats.\-h}!initialize\-\_\-for\-\_\-max\-\_\-repeats@{initialize\-\_\-for\-\_\-max\-\_\-repeats}}
+\index{initialize\-\_\-for\-\_\-max\-\_\-repeats@{initialize\-\_\-for\-\_\-max\-\_\-repeats}!maximal_repeats.h@{maximal\-\_\-repeats.\-h}}
+\subsubsection[{initialize\-\_\-for\-\_\-max\-\_\-repeats}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf parameter\-\_\-struct}$\ast$ {\bf initialize\-\_\-for\-\_\-max\-\_\-repeats} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{int}]{threshold}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{maximal__repeats_8h_a16af217ecd83eaca3877fe491efb7392}
+
+
+\-An initialization function that creates a parameter struct that instructs iterate to search for maximal repeats. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string that should be iterated over. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An initialized parameter struct ready to be passed to iterate. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+iterate.\-h\-::parameter\-\_\-struct 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000036}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References search\-\_\-maximal\-\_\-repeats().
+
+\hypertarget{maximal__repeats_8h_abe03f9e01ff1e33d4fe4ac5eeb7c02e8}{\index{maximal\-\_\-repeats.\-h@{maximal\-\_\-repeats.\-h}!max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector@{max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector}}
+\index{max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector@{max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector}!maximal_repeats.h@{maximal\-\_\-repeats.\-h}}
+\subsubsection[{max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf bit\-\_\-vector}$\ast$ {\bf max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{{\bf max\-\_\-repeat\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{maximal__repeats_8h_abe03f9e01ff1e33d4fe4ac5eeb7c02e8}
+
+
+\-Creates a bit vectors based on the given string, where marked bits correspond to starting indexes of maximal repeats inside the string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em results} & \-The results of an iteration over a set of strings. \\
+\hline
+{\em state} & \-Internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Bit vectors with starts of \-Maximal repeats marked. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000039}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, init\-\_\-bit\-\_\-vector(), and bit\-\_\-vector\-::mark\-\_\-bit.
+
+
+
+\-Referenced by print\-\_\-maximal\-\_\-repeat\-\_\-substrings().
+
+\hypertarget{maximal__repeats_8h_a2239575067d090f560d31de888b5d762}{\index{maximal\-\_\-repeats.\-h@{maximal\-\_\-repeats.\-h}!print\-\_\-maximal\-\_\-repeat\-\_\-substrings@{print\-\_\-maximal\-\_\-repeat\-\_\-substrings}}
+\index{print\-\_\-maximal\-\_\-repeat\-\_\-substrings@{print\-\_\-maximal\-\_\-repeat\-\_\-substrings}!maximal_repeats.h@{maximal\-\_\-repeats.\-h}}
+\subsubsection[{print\-\_\-maximal\-\_\-repeat\-\_\-substrings}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-maximal\-\_\-repeat\-\_\-substrings} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{{\bf max\-\_\-repeat\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{maximal__repeats_8h_a2239575067d090f560d31de888b5d762}
+
+
+\-Prints the substring the interval represents. 
+
+\-First uses the mapper-\/function {\ttfamily \hyperlink{mapper_8c_af64bb40830b3d417933e2c2463f34739}{map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string()}} and then prints the substring based on the mapped index to stdout.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The original c-\/string. \\
+\hline
+{\em results} & \-Results of iterating over the c-\/string to find maximal repeats. \\
+\hline
+{\em state} & \-The internal state of the iterator performing the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000038}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string(), and max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector().
+
+\hypertarget{maximal__repeats_8h_a7042ff4bcd69219b0468ab9bd744e565}{\index{maximal\-\_\-repeats.\-h@{maximal\-\_\-repeats.\-h}!search\-\_\-maximal\-\_\-repeats@{search\-\_\-maximal\-\_\-repeats}}
+\index{search\-\_\-maximal\-\_\-repeats@{search\-\_\-maximal\-\_\-repeats}!maximal_repeats.h@{maximal\-\_\-repeats.\-h}}
+\subsubsection[{search\-\_\-maximal\-\_\-repeats}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf search\-\_\-maximal\-\_\-repeats} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void $\ast$}]{results}
+\end{DoxyParamCaption}
+)}}\label{maximal__repeats_8h_a7042ff4bcd69219b0468ab9bd744e565}
+
+
+\-The function given as callback to iterate for finding maximal repeats. 
+
+\-Determines if a node is a maximal repeat and adds it to a list.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal state of the iterator. \\
+\hline
+{\em results} & \-A pointer to a region of memory where previous results for this function can be found. \-Can safely be cast to {\ttfamily \hyperlink{maximal__repeats_8h_structmax__repeat__results}{max\-\_\-repeat\-\_\-results}} if iterate was initialized using {\ttfamily \hyperlink{maximal__repeats_8c_adfa4a6bccb21aa65557c85d4f208d50e}{initialize\-\_\-for\-\_\-max\-\_\-repeats()}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{maximal__repeats_8h_a16af217ecd83eaca3877fe491efb7392}{initialize\-\_\-for\-\_\-max\-\_\-repeats} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000037}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::current, is\-\_\-interval\-\_\-left\-\_\-maximal(), iterator\-\_\-state\-::runs\-\_\-vectors, and iterator\-\_\-state\-::threshold.
+
+
+
+\-Referenced by initialize\-\_\-for\-\_\-max\-\_\-repeats().
+

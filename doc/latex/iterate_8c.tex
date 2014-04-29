@@ -1,0 +1,322 @@
+\hypertarget{iterate_8c}{\section{src/core/iterate.c \-File \-Reference}
+\label{iterate_8c}\index{src/core/iterate.\-c@{src/core/iterate.\-c}}
+}
+
+
+\-Implementation of the core of the library.  
+
+
+{\ttfamily \#include \char`\"{}iterate.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}backward\-\_\-search.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}rbwt.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}c\-\_\-array.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}substring\-\_\-stack.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}s\-\_\-to\-\_\-bwt.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../../include/utils.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{iterate_8c_ab60581fea88abe240865e5a1cb2ba2c3}{\#define {\bfseries \-E\-N\-D\-\_\-\-S\-T\-R\-I\-N\-G}~'\$'}\label{iterate_8c_ab60581fea88abe240865e5a1cb2ba2c3}
+
+\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{iterate_8c_addc888659efb76968ad6c88441299305}{is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$runs, \hyperlink{structs_8h_structinterval}{interval} $\ast$inter)
+\begin{DoxyCompactList}\small\item\em \-A function that determines if given interval in given reverse \-B\-W\-T is right maximal. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{iterate_8c_a8c45e9889c1ecdfd92bfd521c839fe66}{single\-\_\-iterate} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void($\ast$callback)(\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results), void $\ast$result)
+\begin{DoxyCompactList}\small\item\em \-A function for iterating through right maximal substrings of a string. \end{DoxyCompactList}\item 
+\hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$ \hyperlink{iterate_8c_ac30c572b17d61dcaf73bd8e325942c21}{combine\-\_\-alphabets\-\_\-intersection} (\hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$alpha\-\_\-data1, \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$alpha\-\_\-data2, \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$common\-\_\-alphabet\-\_\-data)
+\begin{DoxyCompactList}\small\item\em \-Combines the intersection of the two alphabets into one common alphabet. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{iterate_8c_a9c0e60a22bdd79bdf9aca03ab2b4020f}{double\-\_\-iterate} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void($\ast$callback)(\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results), void $\ast$result)
+\begin{DoxyCompactList}\small\item\em \-A function for simultaneously iterating over two strings. \end{DoxyCompactList}\item 
+\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$ \hyperlink{iterate_8c_a3481b468bb4a26753556b566b13203b5}{initialize\-\_\-iterator} (char $\ast$$\ast$strings, unsigned int num\-\_\-strings)
+\begin{DoxyCompactList}\small\item\em \-Initializes the iterator's internal state. \end{DoxyCompactList}\item 
+void \hyperlink{iterate_8c_a9a360967469717d14a26d1422a70237a}{free\-\_\-parameter\-\_\-struct} (\hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$params)
+\begin{DoxyCompactList}\small\item\em \-Frees a {\ttfamily \hyperlink{structparameter__struct}{parameter\-\_\-struct}}-\/structure and all it's resources, except for the return data. \end{DoxyCompactList}\item 
+void \hyperlink{iterate_8c_a0bf99401563663d6262e19f10c1b14de}{free\-\_\-iterator\-\_\-state} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Frees an {\ttfamily \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}}-\/structure and all it's resources. \end{DoxyCompactList}\item 
+\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$ \hyperlink{iterate_8c_a0ef2cb9daaabd1e0611f1f660ddab817}{iterate} (\hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$parameters)
+\begin{DoxyCompactList}\small\item\em \-The main iteration function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the core of the library. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator), \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000075}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{iterate_8c_ac30c572b17d61dcaf73bd8e325942c21}{\index{iterate.\-c@{iterate.\-c}!combine\-\_\-alphabets\-\_\-intersection@{combine\-\_\-alphabets\-\_\-intersection}}
+\index{combine\-\_\-alphabets\-\_\-intersection@{combine\-\_\-alphabets\-\_\-intersection}!iterate.c@{iterate.\-c}}
+\subsubsection[{combine\-\_\-alphabets\-\_\-intersection}]{\setlength{\rightskip}{0pt plus 5cm}{\bf alphabet\-\_\-data}$\ast$ {\bf combine\-\_\-alphabets\-\_\-intersection} (
+\begin{DoxyParamCaption}
+\item[{{\bf alphabet\-\_\-data} $\ast$}]{alpha\-\_\-data1, }
+\item[{{\bf alphabet\-\_\-data} $\ast$}]{alpha\-\_\-data2, }
+\item[{{\bf alphabet\-\_\-data} $\ast$}]{common\-\_\-alphabet\-\_\-data}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_ac30c572b17d61dcaf73bd8e325942c21}
+
+
+\-Combines the intersection of the two alphabets into one common alphabet. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em alpha\-\_\-data1} & \-The data for the first alphabet. \\
+\hline
+{\em alpha\-\_\-data2} & \-The data for the second alphabet. \\
+\hline
+{\em common\-\_\-alphabet} & \-The c-\/string where the result should be stored. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The intersection of the combined alphabets. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000077}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by double\-\_\-iterate().
+
+\hypertarget{iterate_8c_a9c0e60a22bdd79bdf9aca03ab2b4020f}{\index{iterate.\-c@{iterate.\-c}!double\-\_\-iterate@{double\-\_\-iterate}}
+\index{double\-\_\-iterate@{double\-\_\-iterate}!iterate.c@{iterate.\-c}}
+\subsubsection[{double\-\_\-iterate}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf double\-\_\-iterate} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void($\ast$)({\bf iterator\-\_\-state} $\ast$state, void $\ast$results)}]{callback, }
+\item[{void $\ast$}]{result}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_a9c0e60a22bdd79bdf9aca03ab2b4020f}
+
+
+\-A function for simultaneously iterating over two strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal variables used by the iteration function. \\
+\hline
+{\em callback} & \-The callback function to be called whenever matching substrings inside both strings are found to be right maximal. \\
+\hline
+{\em result} & \-A pointer to a region of memory where the callback-\/function can store its results. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns a pointer to the results of the iteration process. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{iterate_8h_a0ef2cb9daaabd1e0611f1f660ddab817}{iterate} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000084}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, backward\-\_\-search\-\_\-interval(), iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, combine\-\_\-alphabets\-\_\-intersection(), iterator\-\_\-state\-::common\-\_\-alphabet, create\-\_\-alphabet\-\_\-interval(), create\-\_\-c\-\_\-array(), create\-\_\-substring(), iterator\-\_\-state\-::current, iterator\-\_\-state\-::current\-\_\-extension, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, iterator\-\_\-state\-::normals, pop(), iterator\-\_\-state\-::prev, push(), iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::stacks, and update\-\_\-reverse\-\_\-interval().
+
+
+
+\-Referenced by iterate().
+
+\hypertarget{iterate_8c_a0bf99401563663d6262e19f10c1b14de}{\index{iterate.\-c@{iterate.\-c}!free\-\_\-iterator\-\_\-state@{free\-\_\-iterator\-\_\-state}}
+\index{free\-\_\-iterator\-\_\-state@{free\-\_\-iterator\-\_\-state}!iterate.c@{iterate.\-c}}
+\subsubsection[{free\-\_\-iterator\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-iterator\-\_\-state} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_a0bf99401563663d6262e19f10c1b14de}
+
+
+\-Frees an {\ttfamily \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}}-\/structure and all it's resources. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The structure to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000080}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, iterator\-\_\-state\-::common\-\_\-alphabet, iterator\-\_\-state\-::current, free\-\_\-wavelet\-\_\-tree\-\_\-internals(), iterator\-\_\-state\-::normals, iterator\-\_\-state\-::num\-\_\-strings, iterator\-\_\-state\-::prev, iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::runs\-\_\-vectors, and iterator\-\_\-state\-::stacks.
+
+\hypertarget{iterate_8c_a9a360967469717d14a26d1422a70237a}{\index{iterate.\-c@{iterate.\-c}!free\-\_\-parameter\-\_\-struct@{free\-\_\-parameter\-\_\-struct}}
+\index{free\-\_\-parameter\-\_\-struct@{free\-\_\-parameter\-\_\-struct}!iterate.c@{iterate.\-c}}
+\subsubsection[{free\-\_\-parameter\-\_\-struct}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-parameter\-\_\-struct} (
+\begin{DoxyParamCaption}
+\item[{{\bf parameter\-\_\-struct} $\ast$}]{params}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_a9a360967469717d14a26d1422a70237a}
+
+
+\-Frees a {\ttfamily \hyperlink{structparameter__struct}{parameter\-\_\-struct}}-\/structure and all it's resources, except for the return data. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em params} & \-The structure to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000081}{\-Bug}]\-Throws errors if strings have not been allocated on the heap. \end{DoxyRefDesc}
+\hypertarget{iterate_8c_a3481b468bb4a26753556b566b13203b5}{\index{iterate.\-c@{iterate.\-c}!initialize\-\_\-iterator@{initialize\-\_\-iterator}}
+\index{initialize\-\_\-iterator@{initialize\-\_\-iterator}!iterate.c@{iterate.\-c}}
+\subsubsection[{initialize\-\_\-iterator}]{\setlength{\rightskip}{0pt plus 5cm}{\bf iterator\-\_\-state}$\ast$ {\bf initialize\-\_\-iterator} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{unsigned int}]{num\-\_\-strings}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_a3481b468bb4a26753556b566b13203b5}
+
+
+\-Initializes the iterator's internal state. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-A list of pointers to strings that are to be iterated over. \\
+\hline
+{\em num\-\_\-strings} & \-The number of strings inside the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An initialized {\ttfamily \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}}-\/pointer. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000079}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, iterator\-\_\-state\-::common\-\_\-alphabet, create\-\_\-stack(), iterator\-\_\-state\-::current, wavelet\-\_\-tree\-::get\-\_\-alphabet\-\_\-length, iterator\-\_\-state\-::normals, iterator\-\_\-state\-::num\-\_\-strings, iterator\-\_\-state\-::prev, reverse\-\_\-bwt(), iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::runs\-\_\-vectors, s\-\_\-to\-\_\-bwt(), and iterator\-\_\-state\-::stacks.
+
+
+
+\-Referenced by iterate().
+
+\hypertarget{iterate_8c_addc888659efb76968ad6c88441299305}{\index{iterate.\-c@{iterate.\-c}!is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal@{is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal}}
+\index{is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal@{is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal}!iterate.c@{iterate.\-c}}
+\subsubsection[{is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{runs, }
+\item[{{\bf interval} $\ast$}]{inter}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_addc888659efb76968ad6c88441299305}
+
+
+\-A function that determines if given interval in given reverse \-B\-W\-T is right maximal. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em runs} & \-Runs-\/vector of a reverse \-B\-W\-T. \\
+\hline
+{\em inter} & \-The interval that is to be checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+{\ttfamily 1} if the interval is right maximal, {\ttfamily 0} otherwise. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000076}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References bit\-\_\-vector\-::rank.
+
+
+
+\-Referenced by single\-\_\-iterate().
+
+\hypertarget{iterate_8c_a0ef2cb9daaabd1e0611f1f660ddab817}{\index{iterate.\-c@{iterate.\-c}!iterate@{iterate}}
+\index{iterate@{iterate}!iterate.c@{iterate.\-c}}
+\subsubsection[{iterate}]{\setlength{\rightskip}{0pt plus 5cm}{\bf iterator\-\_\-state}$\ast$ {\bf iterate} (
+\begin{DoxyParamCaption}
+\item[{{\bf parameter\-\_\-struct} $\ast$}]{parameters}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_a0ef2cb9daaabd1e0611f1f660ddab817}
+
+
+\-The main iteration function. 
+
+\-Determines what kind of iterate-\/function to call based on the parameters sent to it. \-Should always be initialized using one of the initialization-\/functions found in any of the files in the {\ttfamily applications}-\/folder.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em parameters} & \-The parameters used to determine what kind of iteration to perform. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The internal state of the iterator after the iteration is done. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000082}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References double\-\_\-iterate(), initialize\-\_\-iterator(), single\-\_\-iterate(), and iterator\-\_\-state\-::threshold.
+
+
+
+\-Referenced by draw\-\_\-suffix\-\_\-tree().
+
+\hypertarget{iterate_8c_a8c45e9889c1ecdfd92bfd521c839fe66}{\index{iterate.\-c@{iterate.\-c}!single\-\_\-iterate@{single\-\_\-iterate}}
+\index{single\-\_\-iterate@{single\-\_\-iterate}!iterate.c@{iterate.\-c}}
+\subsubsection[{single\-\_\-iterate}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf single\-\_\-iterate} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void($\ast$)({\bf iterator\-\_\-state} $\ast$state, void $\ast$results)}]{callback, }
+\item[{void $\ast$}]{result}
+\end{DoxyParamCaption}
+)}}\label{iterate_8c_a8c45e9889c1ecdfd92bfd521c839fe66}
+
+
+\-A function for iterating through right maximal substrings of a string. 
+
+\-Creates a \-B\-W\-T of a string and iterates through substrings of it. \-If the substring is right maximal, the callback function given as parameter will be called on the substring.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal variables used by the iteration function. \\
+\hline
+{\em callback} & \-Function pointer to a callback function that is to be called on each right maximal substring. \\
+\hline
+{\em result} & \-A pointer to a region of memory where the callback-\/function can store its results. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns a pointer to the results of the iteration process. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000083}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, backward\-\_\-search\-\_\-interval(), iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, create\-\_\-alphabet\-\_\-interval(), create\-\_\-c\-\_\-array(), create\-\_\-substring(), iterator\-\_\-state\-::current, iterator\-\_\-state\-::current\-\_\-extension, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal(), iterator\-\_\-state\-::normals, pop(), iterator\-\_\-state\-::prev, push(), reverse\-\_\-bwt(), iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::stacks, and update\-\_\-reverse\-\_\-interval().
+
+
+
+\-Referenced by iterate().
+

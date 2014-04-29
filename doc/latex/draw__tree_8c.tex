@@ -1,0 +1,551 @@
+\hypertarget{draw__tree_8c}{\section{src/applications/draw\-\_\-tree.c \-File \-Reference}
+\label{draw__tree_8c}\index{src/applications/draw\-\_\-tree.\-c@{src/applications/draw\-\_\-tree.\-c}}
+}
+
+
+\-Implementation of dot-\/tree drawing functions.  
+
+
+{\ttfamily \#include \char`\"{}draw\-\_\-tree.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}map\-\_\-bwt\-\_\-to\-\_\-s.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/iterate.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/c\-\_\-array.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/backward\-\_\-search.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/s\-\_\-to\-\_\-bwt.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../utils/bit\-\_\-vector.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../../include/utils.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stddef.\-h$>$}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing a suffix tree node and its data.  \hyperlink{draw__tree_8c_structi__node}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{draw__tree_8c_structtree__results}{tree\-\_\-results}
+\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node} \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing a suffix tree node and its data. \end{DoxyCompactList}\item 
+\hypertarget{draw__tree_8c_a4c9190f5683b69dd9e87e954aea94386}{typedef struct \hyperlink{draw__tree_8c_structtree__results}{tree\-\_\-results} {\bfseries tree\-\_\-results}}\label{draw__tree_8c_a4c9190f5683b69dd9e87e954aea94386}
+
+\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{draw__tree_8c_a65fa1dc7e2d884450a38a5a8fe67a2b9}{is\-\_\-child} (\hyperlink{structs_8h_structsubstring}{substring} $\ast$parent, \hyperlink{structs_8h_structsubstring}{substring} $\ast$child)
+\begin{DoxyCompactList}\small\item\em \-A function for checking if a substring is a substring of another substring. \end{DoxyCompactList}\item 
+int \hyperlink{draw__tree_8c_af42cfb3ba4c4b3d2a13b48955e5d896d}{substring\-\_\-and\-\_\-node\-\_\-equal} (\hyperlink{structs_8h_structsubstring}{substring} $\ast$substr, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node)
+\begin{DoxyCompactList}\small\item\em \-A simple function that checks if a substring is the same as one stored in a node. \end{DoxyCompactList}\item 
+\hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$ \hyperlink{draw__tree_8c_a3f27aa589c60b7c6a07facd496516b66}{find\-\_\-node\-\_\-by\-\_\-substring} (\hyperlink{structs_8h_structsubstring}{substring} $\ast$substr, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$root)
+\begin{DoxyCompactList}\small\item\em \-A function for finding a node inside the tree based on a substring. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_ac3c645d0042d90e4abc7b7e0cdc037da}{collect\-\_\-internal\-\_\-nodes} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results)
+\begin{DoxyCompactList}\small\item\em \-Inserts a new node into the dot tree as a callback-\/function to iterate. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_a974f122da1bdd0c0c0c0b3ddcff5e919}{print\-\_\-node\-\_\-label\-\_\-to\-\_\-file} (\-F\-I\-L\-E $\ast$f, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node)
+\begin{DoxyCompactList}\small\item\em \-Prints a label of a node to a file. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_abec3309f4655efb9257fd4a6e6d0b840}{print\-\_\-arcs} (\-F\-I\-L\-E $\ast$f, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node)
+\begin{DoxyCompactList}\small\item\em \-Prints the outgoing arcs of a node to a file. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_aee08f3b14c4aab55d35c98da283fab81}{print\-\_\-arcs\-\_\-recursively} (\-F\-I\-L\-E $\ast$f, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node)
+\begin{DoxyCompactList}\small\item\em \-A function for printing the arcs of an entire suffix tree to a file recursively. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_ac089eaf6138d53eb4d14ba8f80b039d3}{print\-\_\-leaves\-\_\-recursively} (\-F\-I\-L\-E $\ast$f, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node, int $\ast$suffix\-\_\-array, char $\ast$orig\-\_\-string, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$leaf\-\_\-vec)
+\begin{DoxyCompactList}\small\item\em \-A function for printing leaf nodes of a suffix tree to a file recursively. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_a22bd117d5851da9f59c161e3cd0d2644}{print\-\_\-weiner\-\_\-links} (\hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node, \-F\-I\-L\-E $\ast$f)
+\begin{DoxyCompactList}\small\item\em \-Prints the \-Weiner-\/links of a node to a file. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_ab92c829a17eb2009916e24c2748f0d8a}{print\-\_\-weiner\-\_\-links\-\_\-recursively} (\-F\-I\-L\-E $\ast$f, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$node)
+\begin{DoxyCompactList}\small\item\em \-Prints all the \-Weiner-\/links of a suffix tree to a file recursively. \end{DoxyCompactList}\item 
+void \hyperlink{draw__tree_8c_a9cfa4fca67a62acee3cf1820592e84aa}{print\-\_\-tree\-\_\-to\-\_\-file} (char $\ast$filename, int $\ast$suffix\-\_\-array, char $\ast$orig\-\_\-string, \hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$root)
+\begin{DoxyCompactList}\small\item\em \-Prints a suffix tree in dot-\/format to a file. \end{DoxyCompactList}\item 
+\hypertarget{draw__tree_8c_a2d23f10f388fda7f107b5ce13006441b}{\hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$ {\bfseries initialize\-\_\-for\-\_\-tree\-\_\-drawing} (char $\ast$$\ast$strings)}\label{draw__tree_8c_a2d23f10f388fda7f107b5ce13006441b}
+
+\item 
+void \hyperlink{draw__tree_8c_ad7157b2c81e9f0c8a0af5a8c5d65303c}{draw\-\_\-suffix\-\_\-tree} (char $\ast$string, char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em \-Writes a suffix tree of the given string in dot format to a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of dot-\/tree drawing functions. \begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000006}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{i\-\_\-node@{i\-\_\-node}}\label{structi__node}
+\hypertarget{draw__tree_8c_structi__node}{}
+\subsubsection{struct i\-\_\-node}
+\-A struct for storing a suffix tree node and its data. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000007}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{draw__tree_8c_a42228bfe443c3f30816c110afd170bfa}{char}\label{draw__tree_8c_a42228bfe443c3f30816c110afd170bfa}
+&
+c&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_a2b8dccb791cd7f23c248790db4cdbcf0}{struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node} $\ast$}\label{draw__tree_8c_a2b8dccb791cd7f23c248790db4cdbcf0}
+&
+first\-\_\-child&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_ad971d03bbc7569b1b42f4da6f2ffdc19}{int}\label{draw__tree_8c_ad971d03bbc7569b1b42f4da6f2ffdc19}
+&
+id&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_a94054ecae7d5704ba635ac5fd0274d11}{struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node} $\ast$}\label{draw__tree_8c_a94054ecae7d5704ba635ac5fd0274d11}
+&
+next\-\_\-sibling&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_ae10669edb7ce4a1e9f8df659c48d42f0}{struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node} $\ast$}\label{draw__tree_8c_ae10669edb7ce4a1e9f8df659c48d42f0}
+&
+parent&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_a66235d7363b78d38c8c0596e08930417}{struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node} $\ast$}\label{draw__tree_8c_a66235d7363b78d38c8c0596e08930417}
+&
+previous\-\_\-sibling&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_a95c1596f8768f026a8b4caed14ecef00}{\hyperlink{structs_8h_structsubstring}{substring} $\ast$}\label{draw__tree_8c_a95c1596f8768f026a8b4caed14ecef00}
+&
+substr&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_aa270d1096d055ec3a51aeda220360d12}{struct \hyperlink{draw__tree_8c_structi__node}{i\-\_\-node} $\ast$}\label{draw__tree_8c_aa270d1096d055ec3a51aeda220360d12}
+&
+weiner\-\_\-node&
+\\
+\hline
+
+\end{DoxyFields}
+\index{tree\-\_\-results@{tree\-\_\-results}}\label{structtree__results}
+\hypertarget{draw__tree_8c_structtree__results}{}
+\subsubsection{struct tree\-\_\-results}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{draw__tree_8c_aec0b5d7a8516899852b41bcf61f4299f}{int}\label{draw__tree_8c_aec0b5d7a8516899852b41bcf61f4299f}
+&
+node\-\_\-index&
+\\
+\hline
+
+\hypertarget{draw__tree_8c_a85d0cca5ec8fab809b5d34bd7de7671b}{\hyperlink{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{internal\-\_\-node} $\ast$}\label{draw__tree_8c_a85d0cca5ec8fab809b5d34bd7de7671b}
+&
+root&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!internal\-\_\-node@{internal\-\_\-node}}
+\index{internal\-\_\-node@{internal\-\_\-node}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{internal\-\_\-node}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf i\-\_\-node}  {\bf internal\-\_\-node}}}\label{draw__tree_8c_a743bcca2ec348869ab7a29ccd941382b}
+
+
+\-A struct for storing a suffix tree node and its data. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000007}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{draw__tree_8c_ac3c645d0042d90e4abc7b7e0cdc037da}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!collect\-\_\-internal\-\_\-nodes@{collect\-\_\-internal\-\_\-nodes}}
+\index{collect\-\_\-internal\-\_\-nodes@{collect\-\_\-internal\-\_\-nodes}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{collect\-\_\-internal\-\_\-nodes}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf collect\-\_\-internal\-\_\-nodes} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void $\ast$}]{results}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_ac3c645d0042d90e4abc7b7e0cdc037da}
+
+
+\-Inserts a new node into the dot tree as a callback-\/function to iterate. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal state of the iterator. \\
+\hline
+{\em results} & \-A pointer to a region of memory containing any previous results stored by this callback (not used in this function). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000011}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::current, iterator\-\_\-state\-::current\-\_\-extension, find\-\_\-node\-\_\-by\-\_\-substring(), is\-\_\-child(), and iterator\-\_\-state\-::prev.
+
+\hypertarget{draw__tree_8c_ad7157b2c81e9f0c8a0af5a8c5d65303c}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!draw\-\_\-suffix\-\_\-tree@{draw\-\_\-suffix\-\_\-tree}}
+\index{draw\-\_\-suffix\-\_\-tree@{draw\-\_\-suffix\-\_\-tree}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{draw\-\_\-suffix\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf draw\-\_\-suffix\-\_\-tree} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{char $\ast$}]{filename}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_ad7157b2c81e9f0c8a0af5a8c5d65303c}
+
+
+\-Writes a suffix tree of the given string in dot format to a file. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string to be written. \\
+\hline
+{\em filename} & \-The path to the file to be written to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000020}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References free\-\_\-wavelet\-\_\-tree(), iterate(), map\-\_\-create\-\_\-suffix\-\_\-array\-\_\-from\-\_\-bwt(), print\-\_\-tree\-\_\-to\-\_\-file(), and s\-\_\-to\-\_\-bwt().
+
+\hypertarget{draw__tree_8c_a3f27aa589c60b7c6a07facd496516b66}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!find\-\_\-node\-\_\-by\-\_\-substring@{find\-\_\-node\-\_\-by\-\_\-substring}}
+\index{find\-\_\-node\-\_\-by\-\_\-substring@{find\-\_\-node\-\_\-by\-\_\-substring}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{find\-\_\-node\-\_\-by\-\_\-substring}]{\setlength{\rightskip}{0pt plus 5cm}{\bf internal\-\_\-node}$\ast$ {\bf find\-\_\-node\-\_\-by\-\_\-substring} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring} $\ast$}]{substr, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{root}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_a3f27aa589c60b7c6a07facd496516b66}
+
+
+\-A function for finding a node inside the tree based on a substring. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em substr} & \-The substring to be searched for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns the node containing the substring, or {\ttfamily \-N\-U\-L\-L} if no node matching the substring could be found. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000010}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References is\-\_\-child(), and substring\-\_\-and\-\_\-node\-\_\-equal().
+
+
+
+\-Referenced by collect\-\_\-internal\-\_\-nodes().
+
+\hypertarget{draw__tree_8c_a65fa1dc7e2d884450a38a5a8fe67a2b9}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!is\-\_\-child@{is\-\_\-child}}
+\index{is\-\_\-child@{is\-\_\-child}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{is\-\_\-child}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf is\-\_\-child} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring} $\ast$}]{parent, }
+\item[{{\bf substring} $\ast$}]{child}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_a65fa1dc7e2d884450a38a5a8fe67a2b9}
+
+
+\-A function for checking if a substring is a substring of another substring. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em parent} & \-The suspected parent of the other substring. \\
+\hline
+{\em child} & \-The suspected child of the other substring. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns {\ttfamily 1} if {\ttfamily child} is inside (in other words a child) of {\ttfamily parent}, otherwise returns {\ttfamily 0}. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000008}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by collect\-\_\-internal\-\_\-nodes(), and find\-\_\-node\-\_\-by\-\_\-substring().
+
+\hypertarget{draw__tree_8c_abec3309f4655efb9257fd4a6e6d0b840}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-arcs@{print\-\_\-arcs}}
+\index{print\-\_\-arcs@{print\-\_\-arcs}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-arcs}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-arcs} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{f, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_abec3309f4655efb9257fd4a6e6d0b840}
+
+
+\-Prints the outgoing arcs of a node to a file. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The file to be printed to. \\
+\hline
+{\em node} & \-The node to be printed to a file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000013}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References print\-\_\-node\-\_\-label\-\_\-to\-\_\-file().
+
+
+
+\-Referenced by print\-\_\-arcs\-\_\-recursively().
+
+\hypertarget{draw__tree_8c_aee08f3b14c4aab55d35c98da283fab81}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-arcs\-\_\-recursively@{print\-\_\-arcs\-\_\-recursively}}
+\index{print\-\_\-arcs\-\_\-recursively@{print\-\_\-arcs\-\_\-recursively}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-arcs\-\_\-recursively}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-arcs\-\_\-recursively} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{f, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_aee08f3b14c4aab55d35c98da283fab81}
+
+
+\-A function for printing the arcs of an entire suffix tree to a file recursively. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The file to be printed to. \\
+\hline
+{\em node} & \-The root of the tree to be printed to a file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000014}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References print\-\_\-arcs().
+
+
+
+\-Referenced by print\-\_\-tree\-\_\-to\-\_\-file().
+
+\hypertarget{draw__tree_8c_ac089eaf6138d53eb4d14ba8f80b039d3}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-leaves\-\_\-recursively@{print\-\_\-leaves\-\_\-recursively}}
+\index{print\-\_\-leaves\-\_\-recursively@{print\-\_\-leaves\-\_\-recursively}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-leaves\-\_\-recursively}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-leaves\-\_\-recursively} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{f, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{node, }
+\item[{int $\ast$}]{suffix\-\_\-array, }
+\item[{char $\ast$}]{orig\-\_\-string, }
+\item[{{\bf bit\-\_\-vector} $\ast$}]{leaf\-\_\-vec}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_ac089eaf6138d53eb4d14ba8f80b039d3}
+
+
+\-A function for printing leaf nodes of a suffix tree to a file recursively. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The file to be printed to. \\
+\hline
+{\em node} & \-A node that is to be checked if its a leaf node. \\
+\hline
+{\em suffix\-\_\-array} & \-A suffix array for creating a substring. \\
+\hline
+{\em orig\-\_\-string} & \-The entire original string that the tree was created of as a character sequence. \\
+\hline
+{\em leaf\-\_\-vec} & \-A bit vector for checking which characters of the original string should be printed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000015}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked, and bit\-\_\-vector\-::mark\-\_\-bit.
+
+
+
+\-Referenced by print\-\_\-tree\-\_\-to\-\_\-file().
+
+\hypertarget{draw__tree_8c_a974f122da1bdd0c0c0c0b3ddcff5e919}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-node\-\_\-label\-\_\-to\-\_\-file@{print\-\_\-node\-\_\-label\-\_\-to\-\_\-file}}
+\index{print\-\_\-node\-\_\-label\-\_\-to\-\_\-file@{print\-\_\-node\-\_\-label\-\_\-to\-\_\-file}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-node\-\_\-label\-\_\-to\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-node\-\_\-label\-\_\-to\-\_\-file} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{f, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_a974f122da1bdd0c0c0c0b3ddcff5e919}
+
+
+\-Prints a label of a node to a file. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The file to be printed to. \\
+\hline
+{\em node} & \-The node to be printed to a file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000012}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by print\-\_\-arcs().
+
+\hypertarget{draw__tree_8c_a9cfa4fca67a62acee3cf1820592e84aa}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-tree\-\_\-to\-\_\-file@{print\-\_\-tree\-\_\-to\-\_\-file}}
+\index{print\-\_\-tree\-\_\-to\-\_\-file@{print\-\_\-tree\-\_\-to\-\_\-file}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-tree\-\_\-to\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-tree\-\_\-to\-\_\-file} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{filename, }
+\item[{int $\ast$}]{suffix\-\_\-array, }
+\item[{char $\ast$}]{orig\-\_\-string, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{root}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_a9cfa4fca67a62acee3cf1820592e84aa}
+
+
+\-Prints a suffix tree in dot-\/format to a file. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em filename} & \-The path to the file to be printed to. \\
+\hline
+{\em suffix\-\_\-array} & \-The suffix array of the suffix tree. \\
+\hline
+{\em orig\-\_\-string} & \-The original string used for creating the suffix tree. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000018}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References init\-\_\-bit\-\_\-vector(), print\-\_\-arcs\-\_\-recursively(), print\-\_\-leaves\-\_\-recursively(), and print\-\_\-weiner\-\_\-links\-\_\-recursively().
+
+
+
+\-Referenced by draw\-\_\-suffix\-\_\-tree().
+
+\hypertarget{draw__tree_8c_a22bd117d5851da9f59c161e3cd0d2644}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-weiner\-\_\-links@{print\-\_\-weiner\-\_\-links}}
+\index{print\-\_\-weiner\-\_\-links@{print\-\_\-weiner\-\_\-links}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-weiner\-\_\-links}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-weiner\-\_\-links} (
+\begin{DoxyParamCaption}
+\item[{{\bf internal\-\_\-node} $\ast$}]{node, }
+\item[{\-F\-I\-L\-E $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_a22bd117d5851da9f59c161e3cd0d2644}
+
+
+\-Prints the \-Weiner-\/links of a node to a file. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em node} & \-The node whose \-Weiner-\/links are to be printed. \\
+\hline
+{\em f} & \-The file to be printed to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000016}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by print\-\_\-weiner\-\_\-links\-\_\-recursively().
+
+\hypertarget{draw__tree_8c_ab92c829a17eb2009916e24c2748f0d8a}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!print\-\_\-weiner\-\_\-links\-\_\-recursively@{print\-\_\-weiner\-\_\-links\-\_\-recursively}}
+\index{print\-\_\-weiner\-\_\-links\-\_\-recursively@{print\-\_\-weiner\-\_\-links\-\_\-recursively}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{print\-\_\-weiner\-\_\-links\-\_\-recursively}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-weiner\-\_\-links\-\_\-recursively} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{f, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_ab92c829a17eb2009916e24c2748f0d8a}
+
+
+\-Prints all the \-Weiner-\/links of a suffix tree to a file recursively. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The file to be printed to. \\
+\hline
+{\em node} & \-The root of the tree to be printed to a file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000017}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References print\-\_\-weiner\-\_\-links().
+
+
+
+\-Referenced by print\-\_\-tree\-\_\-to\-\_\-file().
+
+\hypertarget{draw__tree_8c_af42cfb3ba4c4b3d2a13b48955e5d896d}{\index{draw\-\_\-tree.\-c@{draw\-\_\-tree.\-c}!substring\-\_\-and\-\_\-node\-\_\-equal@{substring\-\_\-and\-\_\-node\-\_\-equal}}
+\index{substring\-\_\-and\-\_\-node\-\_\-equal@{substring\-\_\-and\-\_\-node\-\_\-equal}!draw_tree.c@{draw\-\_\-tree.\-c}}
+\subsubsection[{substring\-\_\-and\-\_\-node\-\_\-equal}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf substring\-\_\-and\-\_\-node\-\_\-equal} (
+\begin{DoxyParamCaption}
+\item[{{\bf substring} $\ast$}]{substr, }
+\item[{{\bf internal\-\_\-node} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}}\label{draw__tree_8c_af42cfb3ba4c4b3d2a13b48955e5d896d}
+
+
+\-A simple function that checks if a substring is the same as one stored in a node. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em substr} & \-The substring to be compared to the one stored in a node. \\
+\hline
+{\em node} & \-The node storing a substring to be compared to the other substring. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns {\ttfamily 1} if the substrings are equals, {\ttfamily 0} otherwise. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000009}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by find\-\_\-node\-\_\-by\-\_\-substring().
+

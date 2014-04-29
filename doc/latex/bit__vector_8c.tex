@@ -1,0 +1,274 @@
+\hypertarget{bit__vector_8c}{\section{src/utils/bit\-\_\-vector.c \-File \-Reference}
+\label{bit__vector_8c}\index{src/utils/bit\-\_\-vector.\-c@{src/utils/bit\-\_\-vector.\-c}}
+}
+
+
+\-Implementation of the bit vector structure.  
+
+
+{\ttfamily \#include \char`\"{}bit\-\_\-vector.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}utils.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$ \hyperlink{bit__vector_8c_a08c553a4d24655844dfcfd91ca696f00}{mark\-\_\-bit\-\_\-vector\-\_\-bit} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int pos)
+\begin{DoxyCompactList}\small\item\em \-A function for marking a specific bit in a bit vector. \end{DoxyCompactList}\item 
+\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$ \hyperlink{bit__vector_8c_a4657829e1fc49e613c2dfc46f65bf957}{unmark\-\_\-bit\-\_\-vector\-\_\-bit} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int pos)
+\begin{DoxyCompactList}\small\item\em \-A function for unmarking a bit inside a bitvector. \end{DoxyCompactList}\item 
+int \hyperlink{bit__vector_8c_a696f59784251c85f373ac97a658e99d7}{is\-\_\-bit\-\_\-marked} (const \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int pos)
+\begin{DoxyCompactList}\small\item\em \-A function for checking if a bit is flagged. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{bit__vector_8c_ae893f3799e1df83e38b953733bb31017}{rank\-\_\-query} (const \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int start, unsigned int end)
+\begin{DoxyCompactList}\small\item\em \-A simple rank-\/implementation. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{bit__vector_8c_a0bc1b46bdd9d63439ed7c7c44f6ef865}{get\-\_\-bit\-\_\-vector\-\_\-length} (const \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector)
+\begin{DoxyCompactList}\small\item\em \-Returns the length of the bit vector, i.\-e. the number of bits in it. \end{DoxyCompactList}\item 
+\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$ \hyperlink{bit__vector_8c_a586a9d4e8a08b59193ec8f29ef8f16aa}{init\-\_\-bit\-\_\-vector} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int nbits)
+\begin{DoxyCompactList}\small\item\em \-Initializes the bit vector given as a parameter to a size of nbits. \end{DoxyCompactList}\item 
+void \hyperlink{bit__vector_8c_a4492ed6d1f03410d605f9605ac09fe77}{free\-\_\-bit\-\_\-vector} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector)
+\begin{DoxyCompactList}\small\item\em \-Frees the bit vector and all its internal variables. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the bit vector structure. \begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000100}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{bit__vector_8c_a4492ed6d1f03410d605f9605ac09fe77}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!free\-\_\-bit\-\_\-vector@{free\-\_\-bit\-\_\-vector}}
+\index{free\-\_\-bit\-\_\-vector@{free\-\_\-bit\-\_\-vector}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{free\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_a4492ed6d1f03410d605f9605ac09fe77}
+
+
+\-Frees the bit vector and all its internal variables. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector that is to be destroyed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000109}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by print\-\_\-mems().
+
+\hypertarget{bit__vector_8c_a0bc1b46bdd9d63439ed7c7c44f6ef865}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!get\-\_\-bit\-\_\-vector\-\_\-length@{get\-\_\-bit\-\_\-vector\-\_\-length}}
+\index{get\-\_\-bit\-\_\-vector\-\_\-length@{get\-\_\-bit\-\_\-vector\-\_\-length}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{get\-\_\-bit\-\_\-vector\-\_\-length}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int {\bf get\-\_\-bit\-\_\-vector\-\_\-length} (
+\begin{DoxyParamCaption}
+\item[{const {\bf bit\-\_\-vector} $\ast$}]{vector}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_a0bc1b46bdd9d63439ed7c7c44f6ef865}
+
+
+\-Returns the length of the bit vector, i.\-e. the number of bits in it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector whose length is to be checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The length of the bit vector, or the number of bits in it. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000105}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by init\-\_\-bit\-\_\-vector().
+
+\hypertarget{bit__vector_8c_a586a9d4e8a08b59193ec8f29ef8f16aa}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!init\-\_\-bit\-\_\-vector@{init\-\_\-bit\-\_\-vector}}
+\index{init\-\_\-bit\-\_\-vector@{init\-\_\-bit\-\_\-vector}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{init\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bit\-\_\-vector}$\ast$ {\bf init\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector, }
+\item[{unsigned int}]{nbits}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_a586a9d4e8a08b59193ec8f29ef8f16aa}
+
+
+\-Initializes the bit vector given as a parameter to a size of nbits. 
+
+\-Initializes the bit vector given as a parameter to a size of nbits. \-Returns \-N\-U\-L\-L if the vector given is \-N\-U\-L\-L, nbits is 0 or the necessary space can't be successfully allocated.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector that is to be initialized. \\
+\hline
+{\em nbits} & \-The amount of bits that should be allocated to the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The initialized vector, or \-N\-U\-L\-L if any error occurred. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000108}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References get\-\_\-bit\-\_\-vector\-\_\-length(), bit\-\_\-vector\-::get\-\_\-length, bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked, is\-\_\-bit\-\_\-marked(), bit\-\_\-vector\-::mark\-\_\-bit, mark\-\_\-bit\-\_\-vector\-\_\-bit(), bit\-\_\-vector\-::rank, rank\-\_\-query(), bit\-\_\-vector\-::unmark\-\_\-bit, and unmark\-\_\-bit\-\_\-vector\-\_\-bit().
+
+
+
+\-Referenced by create\-\_\-bit\-\_\-vector(), max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector(), mem\-\_\-make\-\_\-bit\-\_\-vectors(), mum\-\_\-make\-\_\-bit\-\_\-vectors(), and print\-\_\-tree\-\_\-to\-\_\-file().
+
+\hypertarget{bit__vector_8c_a696f59784251c85f373ac97a658e99d7}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!is\-\_\-bit\-\_\-marked@{is\-\_\-bit\-\_\-marked}}
+\index{is\-\_\-bit\-\_\-marked@{is\-\_\-bit\-\_\-marked}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{is\-\_\-bit\-\_\-marked}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf is\-\_\-bit\-\_\-marked} (
+\begin{DoxyParamCaption}
+\item[{const {\bf bit\-\_\-vector} $\ast$}]{vector, }
+\item[{unsigned int}]{pos}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_a696f59784251c85f373ac97a658e99d7}
+
+
+\-A function for checking if a bit is flagged. 
+
+\-This function checks if the bit at position pos is set in the vector supplied as parameter. \-It returns 1 if the bit is flagged, and 0 if the bit is not flagged or if pos is out of range.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector that is to be checked. \\
+\hline
+{\em pos} & \-The position of the bit inside the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+1 if the bit is found, 0 if it is not or if any internal errors occur. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000103}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by init\-\_\-bit\-\_\-vector().
+
+\hypertarget{bit__vector_8c_a08c553a4d24655844dfcfd91ca696f00}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!mark\-\_\-bit\-\_\-vector\-\_\-bit@{mark\-\_\-bit\-\_\-vector\-\_\-bit}}
+\index{mark\-\_\-bit\-\_\-vector\-\_\-bit@{mark\-\_\-bit\-\_\-vector\-\_\-bit}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{mark\-\_\-bit\-\_\-vector\-\_\-bit}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bit\-\_\-vector}$\ast$ {\bf mark\-\_\-bit\-\_\-vector\-\_\-bit} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector, }
+\item[{unsigned int}]{pos}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_a08c553a4d24655844dfcfd91ca696f00}
+
+
+\-A function for marking a specific bit in a bit vector. 
+
+\-This function marks a bit at position pos in the vector supplied as parameter. \-It is pointed to by every bit vector struct for easy access. \-The algorithm returns \-N\-U\-L\-L if the vector is \-N\-U\-L\-L or if pos is larger than the amount of bits stored in the vector.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The bit vector in which the bit to be manipulated lies. \\
+\hline
+{\em pos} & \-The position of the bit inside the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The same vector supplied as parameter, or \-N\-U\-L\-L if any internal conflicts occur. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{bit__vector_8c_a4657829e1fc49e613c2dfc46f65bf957}{unmark\-\_\-bit\-\_\-vector\-\_\-bit} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000101}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by init\-\_\-bit\-\_\-vector().
+
+\hypertarget{bit__vector_8c_ae893f3799e1df83e38b953733bb31017}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!rank\-\_\-query@{rank\-\_\-query}}
+\index{rank\-\_\-query@{rank\-\_\-query}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{rank\-\_\-query}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int {\bf rank\-\_\-query} (
+\begin{DoxyParamCaption}
+\item[{const {\bf bit\-\_\-vector} $\ast$}]{vector, }
+\item[{unsigned int}]{start, }
+\item[{unsigned int}]{end}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_ae893f3799e1df83e38b953733bb31017}
+
+
+\-A simple rank-\/implementation. 
+
+\-This function returns the number of marked bits in the vector up to and including the position pos.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector that bits are going to be calculated for. \\
+\hline
+{\em end} & \-The position after which the count should stop. \\
+\hline
+{\em start} & \-The position where the count should start. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The number of marked bits from start up to and including end. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000104}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References bit\-\_\-vector\-::get\-\_\-length, and bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked.
+
+
+
+\-Referenced by init\-\_\-bit\-\_\-vector().
+
+\hypertarget{bit__vector_8c_a4657829e1fc49e613c2dfc46f65bf957}{\index{bit\-\_\-vector.\-c@{bit\-\_\-vector.\-c}!unmark\-\_\-bit\-\_\-vector\-\_\-bit@{unmark\-\_\-bit\-\_\-vector\-\_\-bit}}
+\index{unmark\-\_\-bit\-\_\-vector\-\_\-bit@{unmark\-\_\-bit\-\_\-vector\-\_\-bit}!bit_vector.c@{bit\-\_\-vector.\-c}}
+\subsubsection[{unmark\-\_\-bit\-\_\-vector\-\_\-bit}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bit\-\_\-vector}$\ast$ {\bf unmark\-\_\-bit\-\_\-vector\-\_\-bit} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector, }
+\item[{unsigned int}]{pos}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8c_a4657829e1fc49e613c2dfc46f65bf957}
+
+
+\-A function for unmarking a bit inside a bitvector. 
+
+\-This function unmarks a bit at position pos in the vector supplied as parameter. \-It is pointed to by every bit vector struct for easy access. \-The algorithm returns \-N\-U\-L\-L if the vector is \-N\-U\-L\-L or if pos is larger than the amount of bits stored in the vector.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The bit vector in which the bit to be manipulated lies. \\
+\hline
+{\em pos} & \-The position of the bit inside the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The same vector supplied as parameter, or \-N\-U\-L\-L if any internal conflicts occur. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{bit__vector_8c_a08c553a4d24655844dfcfd91ca696f00}{mark\-\_\-bit\-\_\-vector\-\_\-bit} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000102}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by init\-\_\-bit\-\_\-vector().
+

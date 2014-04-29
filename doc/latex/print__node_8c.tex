@@ -1,0 +1,56 @@
+\hypertarget{print__node_8c}{\section{src/utils/print\-\_\-node.c \-File \-Reference}
+\label{print__node_8c}\index{src/utils/print\-\_\-node.\-c@{src/utils/print\-\_\-node.\-c}}
+}
+
+
+\-Implementation of the printing of substrings.  
+
+
+{\ttfamily \#include \char`\"{}print\-\_\-node.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}structs.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/iterate.\-h\char`\"{}}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{print__node_8c_a92eeb50fcb28c3968bea19d1000d8555}{print\-\_\-node} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results)
+\begin{DoxyCompactList}\small\item\em \-Prints all the information about a substring in a readable form to stdout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the printing of substrings. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000115}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{print__node_8c_a92eeb50fcb28c3968bea19d1000d8555}{\index{print\-\_\-node.\-c@{print\-\_\-node.\-c}!print\-\_\-node@{print\-\_\-node}}
+\index{print\-\_\-node@{print\-\_\-node}!print_node.c@{print\-\_\-node.\-c}}
+\subsubsection[{print\-\_\-node}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-node} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void $\ast$}]{results}
+\end{DoxyParamCaption}
+)}}\label{print__node_8c_a92eeb50fcb28c3968bea19d1000d8555}
+
+
+\-Prints all the information about a substring in a readable form to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-Internal state of the iterator where the current node is pulled from \\
+\hline
+{\em results} & \-Not used, just there to conform to callback \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000117}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::current.
+

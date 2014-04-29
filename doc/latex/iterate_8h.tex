@@ -1,0 +1,402 @@
+\hypertarget{iterate_8h}{\section{src/core/iterate.h \-File \-Reference}
+\label{iterate_8h}\index{src/core/iterate.\-h@{src/core/iterate.\-h}}
+}
+
+
+\-The core of the entire library.  
+
+
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the internal state of an iterator.  \hyperlink{iterate_8h_structiterator__state}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{structparameter__struct}{parameter\-\_\-struct}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing the parameters given to iterate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{iterate_8h_ac6378e0720273ae75dc2128b515070c6}{\#define {\bfseries \-M\-A\-X\-\_\-\-R\-E\-P\-E\-A\-T\-S}~0}\label{iterate_8h_ac6378e0720273ae75dc2128b515070c6}
+
+\item 
+\hypertarget{iterate_8h_a2353d7b1e562741da1658235fa897e9a}{\#define {\bfseries \-M\-U\-M}~1}\label{iterate_8h_a2353d7b1e562741da1658235fa897e9a}
+
+\item 
+\hypertarget{iterate_8h_a249f4b957c983020b02c6c6376c47c6a}{\#define {\bfseries \-M\-E\-M}~2}\label{iterate_8h_a249f4b957c983020b02c6c6376c47c6a}
+
+\item 
+\hypertarget{iterate_8h_a2f9bd56792b893ea48fe2a67e79373f6}{\#define {\bfseries \-D\-O\-T\-\_\-\-T\-R\-E\-E}~3}\label{iterate_8h_a2f9bd56792b893ea48fe2a67e79373f6}
+
+\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned int \hyperlink{iterate_8h_a99b1f8da2b2ff87bdf337fbf9353840f}{iterate\-\_\-t}
+\begin{DoxyCompactList}\small\item\em \-Unsigned int typedefed as the type of iterate that is to be performed. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} \hyperlink{iterate_8h_a663187581b43a43a8fbe25c51946c86e}{iterator\-\_\-state}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the internal state of an iterator. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structparameter__struct}{parameter\-\_\-struct} \hyperlink{iterate_8h_ac2a79885777a7bed81db5c88204bcb96}{parameter\-\_\-struct}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing the parameters given to iterate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$ \hyperlink{iterate_8h_a3481b468bb4a26753556b566b13203b5}{initialize\-\_\-iterator} (char $\ast$$\ast$strings, unsigned int num\-\_\-strings)
+\begin{DoxyCompactList}\small\item\em \-Initializes the iterator's internal state. \end{DoxyCompactList}\item 
+void \hyperlink{iterate_8h_a0bf99401563663d6262e19f10c1b14de}{free\-\_\-iterator\-\_\-state} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Frees an {\ttfamily \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}}-\/structure and all it's resources. \end{DoxyCompactList}\item 
+void \hyperlink{iterate_8h_a9a360967469717d14a26d1422a70237a}{free\-\_\-parameter\-\_\-struct} (\hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$params)
+\begin{DoxyCompactList}\small\item\em \-Frees a {\ttfamily \hyperlink{structparameter__struct}{parameter\-\_\-struct}}-\/structure and all it's resources, except for the return data. \end{DoxyCompactList}\item 
+\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$ \hyperlink{iterate_8h_a0ef2cb9daaabd1e0611f1f660ddab817}{iterate} (\hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$parameters)
+\begin{DoxyCompactList}\small\item\em \-The main iteration function. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{iterate_8h_a8c45e9889c1ecdfd92bfd521c839fe66}{single\-\_\-iterate} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void($\ast$callback)(\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results), void $\ast$result)
+\begin{DoxyCompactList}\small\item\em \-A function for iterating through right maximal substrings of a string. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{iterate_8h_a9c0e60a22bdd79bdf9aca03ab2b4020f}{double\-\_\-iterate} (\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void($\ast$callback)(\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results), void $\ast$result)
+\begin{DoxyCompactList}\small\item\em \-A function for simultaneously iterating over two strings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-The core of the entire library. \-This file contains all functions for iterating through strings and collecting data on the strings.
+
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator), \-Paula \-Lehtola 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000078}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{iterator\-\_\-state@{iterator\-\_\-state}}\label{structiterator__state}
+\hypertarget{iterate_8h_structiterator__state}{}
+\subsubsection{struct iterator\-\_\-state}
+\-A structure for storing the internal state of an iterator. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{iterate_8h_a62134c0cfe627f136216001745236199}{struct \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$}\label{iterate_8h_a62134c0cfe627f136216001745236199}
+&
+alpha\-\_\-datas&
+\-Current alphabets over intervals inside the \-B\-W\-T's. \\
+\hline
+
+\hypertarget{iterate_8h_ae93602696e1b785669dbbbe3fe8778ef}{struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$}\label{iterate_8h_ae93602696e1b785669dbbbe3fe8778ef}
+&
+bwts&
+\-All \-B\-W\-T's used by this iterator. \\
+\hline
+
+\hypertarget{iterate_8h_a2cefcb0658991d8683ea85bc846e61df}{unsigned int $\ast$$\ast$}\label{iterate_8h_a2cefcb0658991d8683ea85bc846e61df}
+&
+c\-\_\-arrays&
+\-All the c-\/arrays used by the iterator in this iteration. \\
+\hline
+
+\hypertarget{iterate_8h_a4c18c6a70fe62919cc834b4b7eda9f3e}{struct \hyperlink{c__array_8h_structalphabet__data}{alphabet\-\_\-data} $\ast$}\label{iterate_8h_a4c18c6a70fe62919cc834b4b7eda9f3e}
+&
+common\-\_\-alphabet&
+\-The common alphabet shared by all strings. {\ttfamily \-N\-U\-L\-L} if only one string. \\
+\hline
+
+\hypertarget{iterate_8h_a8f819953113f56c2b45b16f32d21014f}{struct \hyperlink{structs_8h_structsubstring}{substring} $\ast$}\label{iterate_8h_a8f819953113f56c2b45b16f32d21014f}
+&
+current&
+\-All the substrings that have been found in this iteration step. \\
+\hline
+
+\hypertarget{iterate_8h_a8c45283c00fb06437749488679144d00}{char}\label{iterate_8h_a8c45283c00fb06437749488679144d00}
+&
+current\-\_\-extension&
+\-The current extension character in the iteration process. \\
+\hline
+
+\hypertarget{iterate_8h_a6db31e74c13b5c177f04577927223a72}{struct \hyperlink{structs_8h_structinterval}{interval} $\ast$}\label{iterate_8h_a6db31e74c13b5c177f04577927223a72}
+&
+normals&
+\-All the intervals on the \-B\-W\-T's that are used in this iteration by the iterator. \\
+\hline
+
+\hypertarget{iterate_8h_af7f9a6e94685a0540363827b4444d595}{unsigned int}\label{iterate_8h_af7f9a6e94685a0540363827b4444d595}
+&
+num\-\_\-strings&
+\-The number of strings that the iterator is iterating over. \\
+\hline
+
+\hypertarget{iterate_8h_af44664d6d40543d4161e6d28d0c5abb8}{struct \hyperlink{structs_8h_structsubstring}{substring} $\ast$}\label{iterate_8h_af44664d6d40543d4161e6d28d0c5abb8}
+&
+prev&
+\-All the substrings that have been found in the previous iteration step. \\
+\hline
+
+\hypertarget{iterate_8h_a528ed308dc315b3b721115eadc49a07d}{struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$}\label{iterate_8h_a528ed308dc315b3b721115eadc49a07d}
+&
+reverse\-\_\-bwts&
+\-All \-B\-W\-T's of the reversed strings used by this iterator. \\
+\hline
+
+\hypertarget{iterate_8h_a395cac0700704c8ee768a15a4a44063d}{struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$}\label{iterate_8h_a395cac0700704c8ee768a15a4a44063d}
+&
+reverse\-\_\-runs\-\_\-vectors&
+\-All runs vectors of the reverse strings used by this iterator. \\
+\hline
+
+\hypertarget{iterate_8h_a54a0da44928c2adb2295550447b9d12a}{struct \hyperlink{structs_8h_structinterval}{interval} $\ast$}\label{iterate_8h_a54a0da44928c2adb2295550447b9d12a}
+&
+reverses&
+\-All the intervals on the reverse \-B\-W\-T's that are used in this iteration by the iterator. \\
+\hline
+
+\hypertarget{iterate_8h_a63190650d3e7dd77c6418604fd15ff2a}{struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$}\label{iterate_8h_a63190650d3e7dd77c6418604fd15ff2a}
+&
+runs\-\_\-vectors&
+\-All runs vectors used by this iterator. \\
+\hline
+
+\hypertarget{iterate_8h_a728c1813b0f1ef6e1f3b43388945adb2}{struct \hyperlink{substring__stack_8h_structsubstring__stack}{substring\-\_\-stack} $\ast$}\label{iterate_8h_a728c1813b0f1ef6e1f3b43388945adb2}
+&
+stacks&
+\-All substring stacks used by this iterator. \\
+\hline
+
+\hypertarget{iterate_8h_a7f2ff717fe9ef1928c440bac9a6deb10}{int}\label{iterate_8h_a7f2ff717fe9ef1928c440bac9a6deb10}
+&
+threshold&
+\-Length of the shortest string the callback function will process. \\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{iterate_8h_a99b1f8da2b2ff87bdf337fbf9353840f}{\index{iterate.\-h@{iterate.\-h}!iterate\-\_\-t@{iterate\-\_\-t}}
+\index{iterate\-\_\-t@{iterate\-\_\-t}!iterate.h@{iterate.\-h}}
+\subsubsection[{iterate\-\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned int {\bf iterate\-\_\-t}}}\label{iterate_8h_a99b1f8da2b2ff87bdf337fbf9353840f}
+
+
+\-Unsigned int typedefed as the type of iterate that is to be performed. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\hypertarget{iterate_8h_a663187581b43a43a8fbe25c51946c86e}{\index{iterate.\-h@{iterate.\-h}!iterator\-\_\-state@{iterator\-\_\-state}}
+\index{iterator\-\_\-state@{iterator\-\_\-state}!iterate.h@{iterate.\-h}}
+\subsubsection[{iterator\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf iterator\-\_\-state}  {\bf iterator\-\_\-state}}}\label{iterate_8h_a663187581b43a43a8fbe25c51946c86e}
+
+
+\-A structure for storing the internal state of an iterator. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\hypertarget{iterate_8h_ac2a79885777a7bed81db5c88204bcb96}{\index{iterate.\-h@{iterate.\-h}!parameter\-\_\-struct@{parameter\-\_\-struct}}
+\index{parameter\-\_\-struct@{parameter\-\_\-struct}!iterate.h@{iterate.\-h}}
+\subsubsection[{parameter\-\_\-struct}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf parameter\-\_\-struct}  {\bf parameter\-\_\-struct}}}\label{iterate_8h_ac2a79885777a7bed81db5c88204bcb96}
+
+
+\-A struct for storing the parameters given to iterate. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{iterate_8h_a9c0e60a22bdd79bdf9aca03ab2b4020f}{\index{iterate.\-h@{iterate.\-h}!double\-\_\-iterate@{double\-\_\-iterate}}
+\index{double\-\_\-iterate@{double\-\_\-iterate}!iterate.h@{iterate.\-h}}
+\subsubsection[{double\-\_\-iterate}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf double\-\_\-iterate} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void($\ast$)({\bf iterator\-\_\-state} $\ast$state, void $\ast$results)}]{callback, }
+\item[{void $\ast$}]{result}
+\end{DoxyParamCaption}
+)}}\label{iterate_8h_a9c0e60a22bdd79bdf9aca03ab2b4020f}
+
+
+\-A function for simultaneously iterating over two strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal variables used by the iteration function. \\
+\hline
+{\em callback} & \-The callback function to be called whenever matching substrings inside both strings are found to be right maximal. \\
+\hline
+{\em result} & \-A pointer to a region of memory where the callback-\/function can store its results. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns a pointer to the results of the iteration process. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{iterate_8h_a0ef2cb9daaabd1e0611f1f660ddab817}{iterate} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000084}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, backward\-\_\-search\-\_\-interval(), iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, combine\-\_\-alphabets\-\_\-intersection(), iterator\-\_\-state\-::common\-\_\-alphabet, create\-\_\-alphabet\-\_\-interval(), create\-\_\-c\-\_\-array(), create\-\_\-substring(), iterator\-\_\-state\-::current, iterator\-\_\-state\-::current\-\_\-extension, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, iterator\-\_\-state\-::normals, pop(), iterator\-\_\-state\-::prev, push(), iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::stacks, and update\-\_\-reverse\-\_\-interval().
+
+
+
+\-Referenced by iterate().
+
+\hypertarget{iterate_8h_a0bf99401563663d6262e19f10c1b14de}{\index{iterate.\-h@{iterate.\-h}!free\-\_\-iterator\-\_\-state@{free\-\_\-iterator\-\_\-state}}
+\index{free\-\_\-iterator\-\_\-state@{free\-\_\-iterator\-\_\-state}!iterate.h@{iterate.\-h}}
+\subsubsection[{free\-\_\-iterator\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-iterator\-\_\-state} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{iterate_8h_a0bf99401563663d6262e19f10c1b14de}
+
+
+\-Frees an {\ttfamily \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}}-\/structure and all it's resources. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The structure to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000080}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, iterator\-\_\-state\-::common\-\_\-alphabet, iterator\-\_\-state\-::current, free\-\_\-wavelet\-\_\-tree\-\_\-internals(), iterator\-\_\-state\-::normals, iterator\-\_\-state\-::num\-\_\-strings, iterator\-\_\-state\-::prev, iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::runs\-\_\-vectors, and iterator\-\_\-state\-::stacks.
+
+\hypertarget{iterate_8h_a9a360967469717d14a26d1422a70237a}{\index{iterate.\-h@{iterate.\-h}!free\-\_\-parameter\-\_\-struct@{free\-\_\-parameter\-\_\-struct}}
+\index{free\-\_\-parameter\-\_\-struct@{free\-\_\-parameter\-\_\-struct}!iterate.h@{iterate.\-h}}
+\subsubsection[{free\-\_\-parameter\-\_\-struct}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-parameter\-\_\-struct} (
+\begin{DoxyParamCaption}
+\item[{{\bf parameter\-\_\-struct} $\ast$}]{params}
+\end{DoxyParamCaption}
+)}}\label{iterate_8h_a9a360967469717d14a26d1422a70237a}
+
+
+\-Frees a {\ttfamily \hyperlink{structparameter__struct}{parameter\-\_\-struct}}-\/structure and all it's resources, except for the return data. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em params} & \-The structure to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000081}{\-Bug}]\-Throws errors if strings have not been allocated on the heap. \end{DoxyRefDesc}
+\hypertarget{iterate_8h_a3481b468bb4a26753556b566b13203b5}{\index{iterate.\-h@{iterate.\-h}!initialize\-\_\-iterator@{initialize\-\_\-iterator}}
+\index{initialize\-\_\-iterator@{initialize\-\_\-iterator}!iterate.h@{iterate.\-h}}
+\subsubsection[{initialize\-\_\-iterator}]{\setlength{\rightskip}{0pt plus 5cm}{\bf iterator\-\_\-state}$\ast$ {\bf initialize\-\_\-iterator} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{unsigned int}]{num\-\_\-strings}
+\end{DoxyParamCaption}
+)}}\label{iterate_8h_a3481b468bb4a26753556b566b13203b5}
+
+
+\-Initializes the iterator's internal state. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-A list of pointers to strings that are to be iterated over. \\
+\hline
+{\em num\-\_\-strings} & \-The number of strings inside the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An initialized {\ttfamily \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state}}-\/pointer. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000079}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, iterator\-\_\-state\-::common\-\_\-alphabet, create\-\_\-stack(), iterator\-\_\-state\-::current, wavelet\-\_\-tree\-::get\-\_\-alphabet\-\_\-length, iterator\-\_\-state\-::normals, iterator\-\_\-state\-::num\-\_\-strings, iterator\-\_\-state\-::prev, reverse\-\_\-bwt(), iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::runs\-\_\-vectors, s\-\_\-to\-\_\-bwt(), and iterator\-\_\-state\-::stacks.
+
+
+
+\-Referenced by iterate().
+
+\hypertarget{iterate_8h_a0ef2cb9daaabd1e0611f1f660ddab817}{\index{iterate.\-h@{iterate.\-h}!iterate@{iterate}}
+\index{iterate@{iterate}!iterate.h@{iterate.\-h}}
+\subsubsection[{iterate}]{\setlength{\rightskip}{0pt plus 5cm}{\bf iterator\-\_\-state}$\ast$ {\bf iterate} (
+\begin{DoxyParamCaption}
+\item[{{\bf parameter\-\_\-struct} $\ast$}]{parameters}
+\end{DoxyParamCaption}
+)}}\label{iterate_8h_a0ef2cb9daaabd1e0611f1f660ddab817}
+
+
+\-The main iteration function. 
+
+\-Determines what kind of iterate-\/function to call based on the parameters sent to it. \-Should always be initialized using one of the initialization-\/functions found in any of the files in the {\ttfamily applications}-\/folder.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em parameters} & \-The parameters used to determine what kind of iteration to perform. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The internal state of the iterator after the iteration is done. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000082}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References double\-\_\-iterate(), initialize\-\_\-iterator(), single\-\_\-iterate(), and iterator\-\_\-state\-::threshold.
+
+
+
+\-Referenced by draw\-\_\-suffix\-\_\-tree().
+
+\hypertarget{iterate_8h_a8c45e9889c1ecdfd92bfd521c839fe66}{\index{iterate.\-h@{iterate.\-h}!single\-\_\-iterate@{single\-\_\-iterate}}
+\index{single\-\_\-iterate@{single\-\_\-iterate}!iterate.h@{iterate.\-h}}
+\subsubsection[{single\-\_\-iterate}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf single\-\_\-iterate} (
+\begin{DoxyParamCaption}
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void($\ast$)({\bf iterator\-\_\-state} $\ast$state, void $\ast$results)}]{callback, }
+\item[{void $\ast$}]{result}
+\end{DoxyParamCaption}
+)}}\label{iterate_8h_a8c45e9889c1ecdfd92bfd521c839fe66}
+
+
+\-A function for iterating through right maximal substrings of a string. 
+
+\-Creates a \-B\-W\-T of a string and iterates through substrings of it. \-If the substring is right maximal, the callback function given as parameter will be called on the substring.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal variables used by the iteration function. \\
+\hline
+{\em callback} & \-Function pointer to a callback function that is to be called on each right maximal substring. \\
+\hline
+{\em result} & \-A pointer to a region of memory where the callback-\/function can store its results. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns a pointer to the results of the iteration process. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000083}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::alpha\-\_\-datas, backward\-\_\-search\-\_\-interval(), iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::c\-\_\-arrays, create\-\_\-alphabet\-\_\-interval(), create\-\_\-c\-\_\-array(), create\-\_\-substring(), iterator\-\_\-state\-::current, iterator\-\_\-state\-::current\-\_\-extension, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, is\-\_\-reverse\-\_\-interval\-\_\-right\-\_\-maximal(), iterator\-\_\-state\-::normals, pop(), iterator\-\_\-state\-::prev, push(), reverse\-\_\-bwt(), iterator\-\_\-state\-::reverse\-\_\-bwts, iterator\-\_\-state\-::reverse\-\_\-runs\-\_\-vectors, iterator\-\_\-state\-::reverses, iterator\-\_\-state\-::stacks, and update\-\_\-reverse\-\_\-interval().
+
+
+
+\-Referenced by iterate().
+

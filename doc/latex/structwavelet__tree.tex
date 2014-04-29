@@ -1,0 +1,179 @@
+\hypertarget{structwavelet__tree}{\section{wavelet\-\_\-tree \-Struct \-Reference}
+\label{structwavelet__tree}\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}}
+}
+
+
+\-A struct for storing a wavelet tree.  
+
+
+
+
+{\ttfamily \#include $<$wavelet\-\_\-tree.\-h$>$}
+
+\subsection*{\-Data \-Fields}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int($\ast$ \hyperlink{structwavelet__tree_aa66e703dce8676f909c1a461c40b5abf}{get\-\_\-num\-\_\-bits} )(const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em \-Returns the number of bits used by the bit vector of the root node (= length of the string from which the tree was created). \end{DoxyCompactList}\item 
+unsigned int($\ast$ \hyperlink{structwavelet__tree_a1905ffea2dc3815d49561237b4f8488a}{get\-\_\-alphabet\-\_\-length} )(const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em \-Returns the length of the alphabet used by the root node. \end{DoxyCompactList}\item 
+char $\ast$($\ast$ \hyperlink{structwavelet__tree_a739eef1c9eb98267d0fdc75ba05d99b7}{get\-\_\-alphabet} )(const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em \-Returns the alphabet used by the root node. \end{DoxyCompactList}\item 
+int($\ast$ \hyperlink{structwavelet__tree_ad578b3f750505527bcb0e9778cb26030}{rank} )(const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree, char c, int start, int end)
+\begin{DoxyCompactList}\small\item\em \-Counts the number of occurrences of a character inside an interval of the string used to create the tree. \end{DoxyCompactList}\item 
+char($\ast$ \hyperlink{structwavelet__tree_a96869ef02d34b2f00e2eeec474bd79f8}{char\-\_\-at} )(const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree, int index)
+\begin{DoxyCompactList}\small\item\em \-Returns the character at index {\ttfamily index} inside the original string. \end{DoxyCompactList}\item 
+\hypertarget{structwavelet__tree_af6bed513f8bae6746dc5d9a587643d7a}{unsigned int {\bfseries num\-\_\-nodes}}\label{structwavelet__tree_af6bed513f8bae6746dc5d9a587643d7a}
+
+\item 
+\hypertarget{structwavelet__tree_af162c661f591e1f5083ef04d3fb8c46c}{\hyperlink{wavelet__tree_8h_structwavelet__node}{wavelet\-\_\-node} $\ast$ {\bfseries nodes}}\label{structwavelet__tree_af162c661f591e1f5083ef04d3fb8c46c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A struct for storing a wavelet tree. 
+
+\-This structure stores all the nodes of a wavelet tree, as well as function pointers to operations possible on the tree. \-Such operations include length of the root node, rank and char at.
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000154}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{structwavelet__tree_a96869ef02d34b2f00e2eeec474bd79f8}{\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}!char\-\_\-at@{char\-\_\-at}}
+\index{char\-\_\-at@{char\-\_\-at}!wavelet_tree@{wavelet\-\_\-tree}}
+\subsubsection[{char\-\_\-at}]{\setlength{\rightskip}{0pt plus 5cm}char($\ast$ {\bf wavelet\-\_\-tree\-::char\-\_\-at})(const struct {\bf wavelet\-\_\-tree} $\ast$tree, int index)}}\label{structwavelet__tree_a96869ef02d34b2f00e2eeec474bd79f8}
+
+
+\-Returns the character at index {\ttfamily index} inside the original string. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The wavelet tree for which the character should be determined. \\
+\hline
+{\em index} & \-The index of the character to be determined. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The character at index {\ttfamily index} inside the tree, or {\ttfamily \-N\-U\-L\-L} if index $>$ length of string or index $<$ 0. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000162}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree(), map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string(), search\-\_\-mums(), and update\-\_\-position\-\_\-in\-\_\-triplets().
+
+\hypertarget{structwavelet__tree_a739eef1c9eb98267d0fdc75ba05d99b7}{\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}!get\-\_\-alphabet@{get\-\_\-alphabet}}
+\index{get\-\_\-alphabet@{get\-\_\-alphabet}!wavelet_tree@{wavelet\-\_\-tree}}
+\subsubsection[{get\-\_\-alphabet}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$($\ast$ {\bf wavelet\-\_\-tree\-::get\-\_\-alphabet})(const struct {\bf wavelet\-\_\-tree} $\ast$tree)}}\label{structwavelet__tree_a739eef1c9eb98267d0fdc75ba05d99b7}
+
+
+\-Returns the alphabet used by the root node. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The tree whose alphabet is to be returned. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The alphabet used by the root node of the tree. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000160}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree().
+
+\hypertarget{structwavelet__tree_a1905ffea2dc3815d49561237b4f8488a}{\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}!get\-\_\-alphabet\-\_\-length@{get\-\_\-alphabet\-\_\-length}}
+\index{get\-\_\-alphabet\-\_\-length@{get\-\_\-alphabet\-\_\-length}!wavelet_tree@{wavelet\-\_\-tree}}
+\subsubsection[{get\-\_\-alphabet\-\_\-length}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int($\ast$ {\bf wavelet\-\_\-tree\-::get\-\_\-alphabet\-\_\-length})(const struct {\bf wavelet\-\_\-tree} $\ast$tree)}}\label{structwavelet__tree_a1905ffea2dc3815d49561237b4f8488a}
+
+
+\-Returns the length of the alphabet used by the root node. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The tree for which the alphabet length should be determined. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The length of the alphabet. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000159}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree(), initialize\-\_\-iterator(), and list\-\_\-mem\-\_\-candidates().
+
+\hypertarget{structwavelet__tree_aa66e703dce8676f909c1a461c40b5abf}{\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}!get\-\_\-num\-\_\-bits@{get\-\_\-num\-\_\-bits}}
+\index{get\-\_\-num\-\_\-bits@{get\-\_\-num\-\_\-bits}!wavelet_tree@{wavelet\-\_\-tree}}
+\subsubsection[{get\-\_\-num\-\_\-bits}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int($\ast$ {\bf wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits})(const struct {\bf wavelet\-\_\-tree} $\ast$tree)}}\label{structwavelet__tree_aa66e703dce8676f909c1a461c40b5abf}
+
+
+\-Returns the number of bits used by the bit vector of the root node (= length of the string from which the tree was created). 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The tree for which the length should be determined. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns the length of the original string. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000158}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree(), double\-\_\-iterate(), map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string(), map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string(), map\-\_\-mum\-\_\-triplets\-\_\-to\-\_\-string(), max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector(), mem\-\_\-make\-\_\-bit\-\_\-vectors(), mum\-\_\-make\-\_\-bit\-\_\-vectors(), single\-\_\-iterate(), update\-\_\-position\-\_\-in\-\_\-triplets(), wavelet\-\_\-root\-\_\-char\-\_\-at(), and wavelet\-\_\-root\-\_\-rank\-\_\-query().
+
+\hypertarget{structwavelet__tree_ad578b3f750505527bcb0e9778cb26030}{\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}!rank@{rank}}
+\index{rank@{rank}!wavelet_tree@{wavelet\-\_\-tree}}
+\subsubsection[{rank}]{\setlength{\rightskip}{0pt plus 5cm}int($\ast$ {\bf wavelet\-\_\-tree\-::rank})(const struct {\bf wavelet\-\_\-tree} $\ast$tree, char c, int start, int end)}}\label{structwavelet__tree_ad578b3f750505527bcb0e9778cb26030}
+
+
+\-Counts the number of occurrences of a character inside an interval of the string used to create the tree. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The tree for which the count should be done. \\
+\hline
+{\em c} & \-The character to be counted. \\
+\hline
+{\em start} & \-The starting index of the count. \\
+\hline
+{\em end} & \-The ending index of the count. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The number of occurrences of character {\ttfamily c} between indices start and end inside the wavelet tree. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000161}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree().
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/utils/\hyperlink{wavelet__tree_8h}{wavelet\-\_\-tree.\-h}\end{DoxyCompactItemize}

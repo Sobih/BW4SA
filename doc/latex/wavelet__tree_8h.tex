@@ -1,0 +1,217 @@
+\hypertarget{wavelet__tree_8h}{\section{src/utils/wavelet\-\_\-tree.h \-File \-Reference}
+\label{wavelet__tree_8h}\index{src/utils/wavelet\-\_\-tree.\-h@{src/utils/wavelet\-\_\-tree.\-h}}
+}
+
+
+\-An implementation of a standard wavelet tree-\/structure.  
+
+
+{\ttfamily \#include \char`\"{}bit\-\_\-vector.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{wavelet__tree_8h_structwavelet__node}{wavelet\-\_\-node}
+\begin{DoxyCompactList}\small\item\em \-A simple struct for storing a node of a wavelet tree.  \hyperlink{wavelet__tree_8h_structwavelet__node}{\-More...}\end{DoxyCompactList}\item 
+struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing a wavelet tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{wavelet__tree_8h_structwavelet__node}{wavelet\-\_\-node} \hyperlink{wavelet__tree_8h_aa816b028f50a303fe18b57222b6adcd4}{wavelet\-\_\-node}
+\begin{DoxyCompactList}\small\item\em \-A simple struct for storing a node of a wavelet tree. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} \hyperlink{wavelet__tree_8h_ad4a6cad8eade6534de9c27dfd1a08422}{wavelet\-\_\-tree}
+\begin{DoxyCompactList}\small\item\em \-A struct for storing a wavelet tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$ \hyperlink{wavelet__tree_8h_aab889ddd1b3f199d71afbe5b5b6a11ee}{create\-\_\-wavelet\-\_\-tree} (const char $\ast$string)
+\begin{DoxyCompactList}\small\item\em \-An algorithm that creates a wavelet tree from a string. \end{DoxyCompactList}\item 
+void \hyperlink{wavelet__tree_8h_a9c13c241eb5cc6cd13afda56b1d77713}{free\-\_\-wavelet\-\_\-tree\-\_\-internals} (\hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em \-A function for freeing the internal variables used by a wavelet tree without freeing the tree itself. \end{DoxyCompactList}\item 
+void \hyperlink{wavelet__tree_8h_a5f51f4862a9d800d517cc03b6423bb9f}{free\-\_\-wavelet\-\_\-tree} (\hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em \-Frees the memory used by an entire wavelet tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-An implementation of a standard wavelet tree-\/structure. \-This file contains the implementation of a standard wavelet tree-\/ structure. \-A wavelet tree allows for better compression of strings and better performance on rank-\/queries, and thus much improved performance for the program overall.
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000152}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{wavelet\-\_\-node@{wavelet\-\_\-node}}\label{structwavelet__node}
+\hypertarget{wavelet__tree_8h_structwavelet__node}{}
+\subsubsection{struct wavelet\-\_\-node}
+\-A simple struct for storing a node of a wavelet tree. 
+
+\-This struct stores all the necessary data of a node inside a wavelet tree, including the bit vector, the alphabet used and locations of its children (if any).
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000153}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{wavelet__tree_8h_a6334d18fcf0e1d8d7dbe7fd26e78b802}{char $\ast$}\label{wavelet__tree_8h_a6334d18fcf0e1d8d7dbe7fd26e78b802}
+&
+alphabet&
+\\
+\hline
+
+\hypertarget{wavelet__tree_8h_a858b0e99e9c82e82aa15976560390cef}{unsigned int}\label{wavelet__tree_8h_a858b0e99e9c82e82aa15976560390cef}
+&
+alphabet\-\_\-length&
+\\
+\hline
+
+\hypertarget{wavelet__tree_8h_a3fa1e0adaee05aff32f782edbb6aae47}{unsigned int}\label{wavelet__tree_8h_a3fa1e0adaee05aff32f782edbb6aae47}
+&
+children&
+\\
+\hline
+
+\hypertarget{wavelet__tree_8h_a4eb0d080077b3623cb8cb5f70b8efe30}{char $\ast$}\label{wavelet__tree_8h_a4eb0d080077b3623cb8cb5f70b8efe30}
+&
+string&
+\\
+\hline
+
+\hypertarget{wavelet__tree_8h_a68a7c16771c3f6f4f6f2fc81275a7add}{\hyperlink{structbit__vector}{bit\-\_\-vector}}\label{wavelet__tree_8h_a68a7c16771c3f6f4f6f2fc81275a7add}
+&
+vector&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{wavelet__tree_8h_aa816b028f50a303fe18b57222b6adcd4}{\index{wavelet\-\_\-tree.\-h@{wavelet\-\_\-tree.\-h}!wavelet\-\_\-node@{wavelet\-\_\-node}}
+\index{wavelet\-\_\-node@{wavelet\-\_\-node}!wavelet_tree.h@{wavelet\-\_\-tree.\-h}}
+\subsubsection[{wavelet\-\_\-node}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf wavelet\-\_\-node}  {\bf wavelet\-\_\-node}}}\label{wavelet__tree_8h_aa816b028f50a303fe18b57222b6adcd4}
+
+
+\-A simple struct for storing a node of a wavelet tree. 
+
+\-This struct stores all the necessary data of a node inside a wavelet tree, including the bit vector, the alphabet used and locations of its children (if any).
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000153}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{wavelet__tree_8h_ad4a6cad8eade6534de9c27dfd1a08422}{\index{wavelet\-\_\-tree.\-h@{wavelet\-\_\-tree.\-h}!wavelet\-\_\-tree@{wavelet\-\_\-tree}}
+\index{wavelet\-\_\-tree@{wavelet\-\_\-tree}!wavelet_tree.h@{wavelet\-\_\-tree.\-h}}
+\subsubsection[{wavelet\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf wavelet\-\_\-tree}  {\bf wavelet\-\_\-tree}}}\label{wavelet__tree_8h_ad4a6cad8eade6534de9c27dfd1a08422}
+
+
+\-A struct for storing a wavelet tree. 
+
+\-This structure stores all the nodes of a wavelet tree, as well as function pointers to operations possible on the tree. \-Such operations include length of the root node, rank and char at.
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000154}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{wavelet__tree_8h_aab889ddd1b3f199d71afbe5b5b6a11ee}{\index{wavelet\-\_\-tree.\-h@{wavelet\-\_\-tree.\-h}!create\-\_\-wavelet\-\_\-tree@{create\-\_\-wavelet\-\_\-tree}}
+\index{create\-\_\-wavelet\-\_\-tree@{create\-\_\-wavelet\-\_\-tree}!wavelet_tree.h@{wavelet\-\_\-tree.\-h}}
+\subsubsection[{create\-\_\-wavelet\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}{\bf wavelet\-\_\-tree}$\ast$ {\bf create\-\_\-wavelet\-\_\-tree} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{wavelet__tree_8h_aab889ddd1b3f199d71afbe5b5b6a11ee}
+
+
+\-An algorithm that creates a wavelet tree from a string. 
+
+\-This algorithm recursively creates a wavelet tree from the string supplied as parameter.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string of characters from which a wavelet tree is to be constructed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A structure containing the wavelet tree, or \-N\-U\-L\-L if the string is uninitialized. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000155}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References wavelet\-\_\-tree\-::char\-\_\-at, create\-\_\-children(), determine\-\_\-alphabet(), wavelet\-\_\-tree\-::get\-\_\-alphabet, wavelet\-\_\-tree\-::get\-\_\-alphabet\-\_\-length, get\-\_\-alphabet\-\_\-length\-\_\-tree(), get\-\_\-alphabet\-\_\-tree(), wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, get\-\_\-num\-\_\-bits\-\_\-tree(), init\-\_\-node(), quick\-\_\-sort(), wavelet\-\_\-tree\-::rank, wavelet\-\_\-root\-\_\-char\-\_\-at(), and wavelet\-\_\-root\-\_\-rank\-\_\-query().
+
+
+
+\-Referenced by s\-\_\-to\-\_\-bwt().
+
+\hypertarget{wavelet__tree_8h_a5f51f4862a9d800d517cc03b6423bb9f}{\index{wavelet\-\_\-tree.\-h@{wavelet\-\_\-tree.\-h}!free\-\_\-wavelet\-\_\-tree@{free\-\_\-wavelet\-\_\-tree}}
+\index{free\-\_\-wavelet\-\_\-tree@{free\-\_\-wavelet\-\_\-tree}!wavelet_tree.h@{wavelet\-\_\-tree.\-h}}
+\subsubsection[{free\-\_\-wavelet\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-wavelet\-\_\-tree} (
+\begin{DoxyParamCaption}
+\item[{{\bf wavelet\-\_\-tree} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}}\label{wavelet__tree_8h_a5f51f4862a9d800d517cc03b6423bb9f}
+
+
+\-Frees the memory used by an entire wavelet tree. 
+
+\-This algorithm frees an entire wavelet tree. \-It also frees the alphabet used by the wavelet tree, but leaves the original string from which the tree was created intact.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The wavelet tree to be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000157}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References free\-\_\-wavelet\-\_\-tree\-\_\-internals().
+
+
+
+\-Referenced by draw\-\_\-suffix\-\_\-tree().
+
+\hypertarget{wavelet__tree_8h_a9c13c241eb5cc6cd13afda56b1d77713}{\index{wavelet\-\_\-tree.\-h@{wavelet\-\_\-tree.\-h}!free\-\_\-wavelet\-\_\-tree\-\_\-internals@{free\-\_\-wavelet\-\_\-tree\-\_\-internals}}
+\index{free\-\_\-wavelet\-\_\-tree\-\_\-internals@{free\-\_\-wavelet\-\_\-tree\-\_\-internals}!wavelet_tree.h@{wavelet\-\_\-tree.\-h}}
+\subsubsection[{free\-\_\-wavelet\-\_\-tree\-\_\-internals}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-wavelet\-\_\-tree\-\_\-internals} (
+\begin{DoxyParamCaption}
+\item[{{\bf wavelet\-\_\-tree} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}}\label{wavelet__tree_8h_a9c13c241eb5cc6cd13afda56b1d77713}
+
+
+\-A function for freeing the internal variables used by a wavelet tree without freeing the tree itself. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The tree whose internals should be freed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000156}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References free\-\_\-subtree().
+
+
+
+\-Referenced by free\-\_\-iterator\-\_\-state(), and free\-\_\-wavelet\-\_\-tree().
+

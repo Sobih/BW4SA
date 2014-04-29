@@ -1,0 +1,122 @@
+\hypertarget{bit__vector_8h}{\section{src/utils/bit\-\_\-vector.h \-File \-Reference}
+\label{bit__vector_8h}\index{src/utils/bit\-\_\-vector.\-h@{src/utils/bit\-\_\-vector.\-h}}
+}
+
+
+\-An array structure for storing strings compressed into integers.  
+
+
+{\ttfamily \#include $<$limits.\-h$>$}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structbit__vector}{bit\-\_\-vector}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the bit vector and its manipulation-\/functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{bit__vector_8h_af07b5175fb8244fc1bdd27f9012243fa}{\#define {\bfseries \-B\-I\-T\-S\-\_\-\-P\-E\-R\-\_\-\-I\-N\-T}~(sizeof(unsigned int) $\ast$ 8)}\label{bit__vector_8h_af07b5175fb8244fc1bdd27f9012243fa}
+
+\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structbit__vector}{bit\-\_\-vector} \hyperlink{bit__vector_8h_a7ce8ce860c9d1360e1c8a18ad5e1382f}{bit\-\_\-vector}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the bit vector and its manipulation-\/functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$ \hyperlink{bit__vector_8h_a586a9d4e8a08b59193ec8f29ef8f16aa}{init\-\_\-bit\-\_\-vector} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector, unsigned int nbits)
+\begin{DoxyCompactList}\small\item\em \-Initializes the bit vector given as a parameter to a size of nbits. \end{DoxyCompactList}\item 
+void \hyperlink{bit__vector_8h_a4492ed6d1f03410d605f9605ac09fe77}{free\-\_\-bit\-\_\-vector} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector)
+\begin{DoxyCompactList}\small\item\em \-Frees the bit vector and all its internal variables. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-An array structure for storing strings compressed into integers. \-This contains functions for creating, modifying and manipulating vector-\/like constructs that are intended for storing strings of text as compressed integers.
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000106}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{bit__vector_8h_a7ce8ce860c9d1360e1c8a18ad5e1382f}{\index{bit\-\_\-vector.\-h@{bit\-\_\-vector.\-h}!bit\-\_\-vector@{bit\-\_\-vector}}
+\index{bit\-\_\-vector@{bit\-\_\-vector}!bit_vector.h@{bit\-\_\-vector.\-h}}
+\subsubsection[{bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf bit\-\_\-vector}  {\bf bit\-\_\-vector}}}\label{bit__vector_8h_a7ce8ce860c9d1360e1c8a18ad5e1382f}
+
+
+\-A structure for storing the bit vector and its manipulation-\/functions. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000107}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{bit__vector_8h_a4492ed6d1f03410d605f9605ac09fe77}{\index{bit\-\_\-vector.\-h@{bit\-\_\-vector.\-h}!free\-\_\-bit\-\_\-vector@{free\-\_\-bit\-\_\-vector}}
+\index{free\-\_\-bit\-\_\-vector@{free\-\_\-bit\-\_\-vector}!bit_vector.h@{bit\-\_\-vector.\-h}}
+\subsubsection[{free\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf free\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8h_a4492ed6d1f03410d605f9605ac09fe77}
+
+
+\-Frees the bit vector and all its internal variables. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector that is to be destroyed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000109}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by print\-\_\-mems().
+
+\hypertarget{bit__vector_8h_a586a9d4e8a08b59193ec8f29ef8f16aa}{\index{bit\-\_\-vector.\-h@{bit\-\_\-vector.\-h}!init\-\_\-bit\-\_\-vector@{init\-\_\-bit\-\_\-vector}}
+\index{init\-\_\-bit\-\_\-vector@{init\-\_\-bit\-\_\-vector}!bit_vector.h@{bit\-\_\-vector.\-h}}
+\subsubsection[{init\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bit\-\_\-vector}$\ast$ {\bf init\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{{\bf bit\-\_\-vector} $\ast$}]{vector, }
+\item[{unsigned int}]{nbits}
+\end{DoxyParamCaption}
+)}}\label{bit__vector_8h_a586a9d4e8a08b59193ec8f29ef8f16aa}
+
+
+\-Initializes the bit vector given as a parameter to a size of nbits. 
+
+\-Initializes the bit vector given as a parameter to a size of nbits. \-Returns \-N\-U\-L\-L if the vector given is \-N\-U\-L\-L, nbits is 0 or the necessary space can't be successfully allocated.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The vector that is to be initialized. \\
+\hline
+{\em nbits} & \-The amount of bits that should be allocated to the vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The initialized vector, or \-N\-U\-L\-L if any error occurred. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000108}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References get\-\_\-bit\-\_\-vector\-\_\-length(), bit\-\_\-vector\-::get\-\_\-length, bit\-\_\-vector\-::is\-\_\-bit\-\_\-marked, is\-\_\-bit\-\_\-marked(), bit\-\_\-vector\-::mark\-\_\-bit, mark\-\_\-bit\-\_\-vector\-\_\-bit(), bit\-\_\-vector\-::rank, rank\-\_\-query(), bit\-\_\-vector\-::unmark\-\_\-bit, and unmark\-\_\-bit\-\_\-vector\-\_\-bit().
+
+
+
+\-Referenced by create\-\_\-bit\-\_\-vector(), max\-\_\-repeat\-\_\-make\-\_\-bit\-\_\-vector(), mem\-\_\-make\-\_\-bit\-\_\-vectors(), mum\-\_\-make\-\_\-bit\-\_\-vectors(), and print\-\_\-tree\-\_\-to\-\_\-file().
+

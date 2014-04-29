@@ -1,0 +1,105 @@
+\hypertarget{backward__search_8h}{\section{src/core/backward\-\_\-search.h \-File \-Reference}
+\label{backward__search_8h}\index{src/core/backward\-\_\-search.\-h@{src/core/backward\-\_\-search.\-h}}
+}
+
+
+\-Contains functions for performing backward searches on strings in wavelet tree-\/form.  
+
+
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structs_8h_structinterval}{interval} $\ast$ \hyperlink{backward__search_8h_a70764142a9aeeb3e45ada13378424cd9}{backward\-\_\-search} (const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$string, struct \hyperlink{structs_8h_structinterval}{interval} $\ast$target)
+\begin{DoxyCompactList}\small\item\em \-A function for finding the interval of given string in given \-B\-W\-T. \end{DoxyCompactList}\item 
+struct \hyperlink{structs_8h_structinterval}{interval} $\ast$ \hyperlink{backward__search_8h_a1acbeeee99226b9fc2d1db95fa4cc9c3}{backward\-\_\-search\-\_\-interval} (const struct \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$bwt, const struct \hyperlink{structs_8h_structinterval}{interval} $\ast$inter, char c, struct \hyperlink{structs_8h_structinterval}{interval} $\ast$target)
+\begin{DoxyCompactList}\small\item\em \-Finds the interval of a given letter of an interval in a \-B\-W\-T. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Contains functions for performing backward searches on strings in wavelet tree-\/form. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000064}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{backward__search_8h_a70764142a9aeeb3e45ada13378424cd9}{\index{backward\-\_\-search.\-h@{backward\-\_\-search.\-h}!backward\-\_\-search@{backward\-\_\-search}}
+\index{backward\-\_\-search@{backward\-\_\-search}!backward_search.h@{backward\-\_\-search.\-h}}
+\subsubsection[{backward\-\_\-search}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf interval}$\ast$ {\bf backward\-\_\-search} (
+\begin{DoxyParamCaption}
+\item[{const struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt, }
+\item[{const struct {\bf wavelet\-\_\-tree} $\ast$}]{string, }
+\item[{struct {\bf interval} $\ast$}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{backward__search_8h_a70764142a9aeeb3e45ada13378424cd9}
+
+
+\-A function for finding the interval of given string in given \-B\-W\-T. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em bwt} & \-B\-W\-T of the string to be looked up, given in wavelet tree-\/ form.$\ast$ \\
+\hline
+{\em string} & \-The string to be searched inside the \-B\-W\-T, given in wavelet tree-\/form. \\
+\hline
+{\em target} & \-The interval-\/structure where the results should be stored. \-If \-N\-U\-L\-L, a new interval-\/structure will be allocated and returned. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The interval of the searched string inside the \-B\-W\-T, or \-N\-U\-L\-L if it can't be found. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{wavelet__tree_8h}{wavelet\-\_\-tree.\-h} 
+
+structs.\-h\-::interval 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000065}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\hypertarget{backward__search_8h_a1acbeeee99226b9fc2d1db95fa4cc9c3}{\index{backward\-\_\-search.\-h@{backward\-\_\-search.\-h}!backward\-\_\-search\-\_\-interval@{backward\-\_\-search\-\_\-interval}}
+\index{backward\-\_\-search\-\_\-interval@{backward\-\_\-search\-\_\-interval}!backward_search.h@{backward\-\_\-search.\-h}}
+\subsubsection[{backward\-\_\-search\-\_\-interval}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf interval}$\ast$ {\bf backward\-\_\-search\-\_\-interval} (
+\begin{DoxyParamCaption}
+\item[{const struct {\bf wavelet\-\_\-tree} $\ast$}]{bwt, }
+\item[{const struct {\bf interval} $\ast$}]{inter, }
+\item[{char}]{c, }
+\item[{struct {\bf interval} $\ast$}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{backward__search_8h_a1acbeeee99226b9fc2d1db95fa4cc9c3}
+
+
+\-Finds the interval of a given letter of an interval in a \-B\-W\-T. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em bwt} & \-B\-W\-T of a string, given in wavelet tree-\/form. \\
+\hline
+{\em inter} & \-Interval to be searched inside \-B\-W\-T. \\
+\hline
+{\em c} & \-Character to be looked for inside the interval. \\
+\hline
+{\em target} & \-The interval-\/structure where the results should be stored. \-If \-N\-U\-L\-L, a new interval-\/structure will be allocated and returned. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The interval of the searched character inside the \-B\-W\-T, or \-N\-U\-L\-L if it can't be found. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{backward__search_8h_a70764142a9aeeb3e45ada13378424cd9}{backward\-\_\-search} 
+
+\hyperlink{wavelet__tree_8h}{wavelet\-\_\-tree.\-h} 
+
+structs.\-h\-::interval 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000066}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by double\-\_\-iterate(), list\-\_\-mem\-\_\-candidates(), map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string(), single\-\_\-iterate(), and update\-\_\-position\-\_\-in\-\_\-triplets().
+

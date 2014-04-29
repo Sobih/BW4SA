@@ -1,0 +1,587 @@
+\hypertarget{utils_8c}{\section{src/utils/utils.c \-File \-Reference}
+\label{utils_8c}\index{src/utils/utils.\-c@{src/utils/utils.\-c}}
+}
+
+
+\-Implementation of the utility-\/algorithms.  
+
+
+{\ttfamily \#include \char`\"{}utils.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}bit\-\_\-vector.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}wavelet\-\_\-tree.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}structs.\-h\char`\"{}}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{utils_8c_a36d4ba81ab10c7a9b4194ebe0e2a00f4}{swap} (void $\ast$arr, unsigned int entry\-\_\-size, int i, int j, void $\ast$swap\-\_\-area)
+\begin{DoxyCompactList}\small\item\em \-Simple swap-\/function. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_af5362063bd6105ef24819f90d7db5cf2}{quicksort} (void $\ast$arr, unsigned int entry\-\_\-size, unsigned int a, unsigned int b, void $\ast$swap\-\_\-area)
+\begin{DoxyCompactList}\small\item\em \-The implementation of the quicksort-\/algorithm. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_a4b344a67ac94d676c163c0bce050a4d7}{quick\-\_\-sort} (void $\ast$arr, unsigned int arr\-\_\-size, unsigned int entry\-\_\-size)
+\begin{DoxyCompactList}\small\item\em \-Standard generic quicksort-\/implementation. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_a5fe3c49575a89d896f447854ac127a30}{print\-\_\-bits} (unsigned int mask)
+\begin{DoxyCompactList}\small\item\em \-Prints the bits of an unsigned integer to stdout. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_a3663372351689c18e74b18ec1b43229b}{string\-\_\-swap} (char $\ast$$\ast$a, char $\ast$$\ast$b)
+\begin{DoxyCompactList}\small\item\em \-Simple swap-\/function. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_a90bfef8e4ea6bd77818b7a9e3ee6605e}{string\-\_\-quicksort} (char $\ast$$\ast$strings, unsigned int a, unsigned int b)
+\begin{DoxyCompactList}\small\item\em \-Quicksort for an array of strings. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_ab814b36efef6905c8a49b041c8baf3ed}{string\-\_\-quick\-\_\-sort} (char $\ast$$\ast$strings, unsigned int arr\-\_\-size)
+\begin{DoxyCompactList}\small\item\em \-Quicksort for an array of strings. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{utils_8c_ad73b9e1214ba189b383a04fa6b964028}{determine\-\_\-alphabet} (const char $\ast$string)
+\begin{DoxyCompactList}\small\item\em \-Determines the alphabet used by a string. \end{DoxyCompactList}\item 
+int \hyperlink{utils_8c_a448fa999eada43a374620e2d8bf8d990}{binary\-\_\-search} (const void $\ast$arr, const void $\ast$key, unsigned int entry\-\_\-size, int max, int min)
+\begin{DoxyCompactList}\small\item\em \-A generic implementation of a standard binary search-\/algorithm. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_afdbbdf93b0f9f20e6ebddbb4b2a6adc5}{print\-\_\-bit\-\_\-vector} (\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$vector)
+\begin{DoxyCompactList}\small\item\em \-A simple function that prints a bit vector and its contents to stdout. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_aa1a3404ac0e15c6112bd7dc37e50a510}{print\-\_\-wavelet\-\_\-node} (\hyperlink{wavelet__tree_8h_structwavelet__node}{wavelet\-\_\-node} $\ast$node)
+\begin{DoxyCompactList}\small\item\em \-A simple function that prints a node in a wavelet tree to stdout. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8c_a3415d236727f8766d00f99eca106ee9a}{print\-\_\-wavelet\-\_\-tree} (\hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$tree)
+\begin{DoxyCompactList}\small\item\em \-Prints an entire wavelet tree to stdout. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{utils_8c_a236064eee4d45d2c926391459e2c5cb7}{substring\-\_\-from\-\_\-string} (char $\ast$string, int position, int length)
+\begin{DoxyCompactList}\small\item\em \-Returns a substring of a string starting at {\ttfamily position} with length {\ttfamily length}. \end{DoxyCompactList}\item 
+\hypertarget{utils_8c_a58de15f53e711e2e5d6015b52cfbcffe}{\hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$ {\bfseries create\-\_\-runs\-\_\-vector} (const \hyperlink{structwavelet__tree}{wavelet\-\_\-tree} $\ast$string, \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$target)}\label{utils_8c_a58de15f53e711e2e5d6015b52cfbcffe}
+
+\item 
+\hyperlink{structs_8h_structsubstring}{substring} $\ast$ \hyperlink{utils_8c_a27d41be5b93df87f1dde7180aac3af12}{create\-\_\-substring} (\hyperlink{structs_8h_structinterval}{interval} $\ast$normal, \hyperlink{structs_8h_structinterval}{interval} $\ast$reverse, int length, \hyperlink{structs_8h_structsubstring}{substring} $\ast$target)
+\begin{DoxyCompactList}\small\item\em \-Creates a substring struct from interval and length. \end{DoxyCompactList}\item 
+\hyperlink{structs_8h_structinterval}{interval} $\ast$ \hyperlink{utils_8c_ac950f3323b3e2a5cca0abaa656f23c38}{update\-\_\-reverse\-\_\-interval} (\hyperlink{structs_8h_structinterval}{interval} $\ast$inter, \hyperlink{structs_8h_structinterval}{interval} $\ast$normal, const char $\ast$alphabet, unsigned int alphabet\-\_\-length, const int $\ast$c\-\_\-array, const char c, \hyperlink{structs_8h_structinterval}{interval} $\ast$target)
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of the utility-\/algorithms. \begin{DoxySeeAlso}{\-See also}
+utils.\-h 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000122}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{utils_8c_a448fa999eada43a374620e2d8bf8d990}{\index{utils.\-c@{utils.\-c}!binary\-\_\-search@{binary\-\_\-search}}
+\index{binary\-\_\-search@{binary\-\_\-search}!utils.c@{utils.\-c}}
+\subsubsection[{binary\-\_\-search}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf binary\-\_\-search} (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{arr, }
+\item[{const void $\ast$}]{key, }
+\item[{unsigned int}]{entry\-\_\-size, }
+\item[{int}]{max, }
+\item[{int}]{min}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a448fa999eada43a374620e2d8bf8d990}
+
+
+\-A generic implementation of a standard binary search-\/algorithm. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arr} & \-A pointer to an array of any type upon which the search is to be done. \\
+\hline
+{\em key} & \-A pointer to a value that is to be found inside the array. \\
+\hline
+{\em entry\-\_\-size} & \-The size of the type of the key. \\
+\hline
+{\em max} & \-The maximum index that is to be searched. \\
+\hline
+{\em min} & \-The minimum index that is to be searched. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns the index of the key inside the array, or -\/1 if the array doesn't contain the key. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000132}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-bit\-\_\-vector(), update\-\_\-reverse\-\_\-interval(), wavelet\-\_\-rank\-\_\-query(), and wavelet\-\_\-root\-\_\-rank\-\_\-query().
+
+\hypertarget{utils_8c_a27d41be5b93df87f1dde7180aac3af12}{\index{utils.\-c@{utils.\-c}!create\-\_\-substring@{create\-\_\-substring}}
+\index{create\-\_\-substring@{create\-\_\-substring}!utils.c@{utils.\-c}}
+\subsubsection[{create\-\_\-substring}]{\setlength{\rightskip}{0pt plus 5cm}{\bf substring}$\ast$ {\bf create\-\_\-substring} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf interval} $\ast$}]{normal, }
+\item[{struct {\bf interval} $\ast$}]{reverse, }
+\item[{int}]{length, }
+\item[{struct {\bf substring} $\ast$}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{utils_8c_a27d41be5b93df87f1dde7180aac3af12}
+
+
+\-Creates a substring struct from interval and length. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em interval} & in normal \-B\-W\-T \\
+\hline
+{\em interval} & in the \-B\-W\-T of the reverse of the string \\
+\hline
+{\em length} & of substring\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+pointer to a new substring struct 
+\end{DoxyReturn}
+
+
+\-Referenced by double\-\_\-iterate(), list\-\_\-mem\-\_\-candidates(), and single\-\_\-iterate().
+
+\hypertarget{utils_8c_ad73b9e1214ba189b383a04fa6b964028}{\index{utils.\-c@{utils.\-c}!determine\-\_\-alphabet@{determine\-\_\-alphabet}}
+\index{determine\-\_\-alphabet@{determine\-\_\-alphabet}!utils.c@{utils.\-c}}
+\subsubsection[{determine\-\_\-alphabet}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf determine\-\_\-alphabet} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_ad73b9e1214ba189b383a04fa6b964028}
+
+
+\-Determines the alphabet used by a string. 
+
+\-Determines the alphabet used by a string. \-The alphabet of a string is defined as the characters used in the string, including all special characters.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string from which the alphabet should be deduced. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The alphabet used by the string. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000131}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree().
+
+\hypertarget{utils_8c_afdbbdf93b0f9f20e6ebddbb4b2a6adc5}{\index{utils.\-c@{utils.\-c}!print\-\_\-bit\-\_\-vector@{print\-\_\-bit\-\_\-vector}}
+\index{print\-\_\-bit\-\_\-vector@{print\-\_\-bit\-\_\-vector}!utils.c@{utils.\-c}}
+\subsubsection[{print\-\_\-bit\-\_\-vector}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-bit\-\_\-vector} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf bit\-\_\-vector} $\ast$}]{vector}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_afdbbdf93b0f9f20e6ebddbb4b2a6adc5}
+
+
+\-A simple function that prints a bit vector and its contents to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em vector} & \-The bit vector that is to be printed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{bit__vector_8h}{bit\-\_\-vector.\-h} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000134}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References bit\-\_\-vector\-::get\-\_\-length, and print\-\_\-bits().
+
+
+
+\-Referenced by print\-\_\-wavelet\-\_\-node().
+
+\hypertarget{utils_8c_a5fe3c49575a89d896f447854ac127a30}{\index{utils.\-c@{utils.\-c}!print\-\_\-bits@{print\-\_\-bits}}
+\index{print\-\_\-bits@{print\-\_\-bits}!utils.c@{utils.\-c}}
+\subsubsection[{print\-\_\-bits}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-bits} (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{mask}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a5fe3c49575a89d896f447854ac127a30}
+
+
+\-Prints the bits of an unsigned integer to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em mask} & \-The unsigned integer whose bits are to be printed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000133}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by print\-\_\-bit\-\_\-vector().
+
+\hypertarget{utils_8c_aa1a3404ac0e15c6112bd7dc37e50a510}{\index{utils.\-c@{utils.\-c}!print\-\_\-wavelet\-\_\-node@{print\-\_\-wavelet\-\_\-node}}
+\index{print\-\_\-wavelet\-\_\-node@{print\-\_\-wavelet\-\_\-node}!utils.c@{utils.\-c}}
+\subsubsection[{print\-\_\-wavelet\-\_\-node}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-wavelet\-\_\-node} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf wavelet\-\_\-node} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_aa1a3404ac0e15c6112bd7dc37e50a510}
+
+
+\-A simple function that prints a node in a wavelet tree to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em node} & \-The node that is to be printed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{wavelet__tree_8h}{wavelet\-\_\-tree.\-h} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000135}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References print\-\_\-bit\-\_\-vector().
+
+
+
+\-Referenced by print\-\_\-wavelet\-\_\-tree().
+
+\hypertarget{utils_8c_a3415d236727f8766d00f99eca106ee9a}{\index{utils.\-c@{utils.\-c}!print\-\_\-wavelet\-\_\-tree@{print\-\_\-wavelet\-\_\-tree}}
+\index{print\-\_\-wavelet\-\_\-tree@{print\-\_\-wavelet\-\_\-tree}!utils.c@{utils.\-c}}
+\subsubsection[{print\-\_\-wavelet\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-wavelet\-\_\-tree} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf wavelet\-\_\-tree} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a3415d236727f8766d00f99eca106ee9a}
+
+
+\-Prints an entire wavelet tree to stdout. 
+
+\-Prints the contents of an entire wavelet tree, printing one level of depth at a time.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em tree} & \-The wavelet tree to be printed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{wavelet__tree_8h}{wavelet\-\_\-tree.\-h} 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000136}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References print\-\_\-wavelet\-\_\-node().
+
+\hypertarget{utils_8c_a4b344a67ac94d676c163c0bce050a4d7}{\index{utils.\-c@{utils.\-c}!quick\-\_\-sort@{quick\-\_\-sort}}
+\index{quick\-\_\-sort@{quick\-\_\-sort}!utils.c@{utils.\-c}}
+\subsubsection[{quick\-\_\-sort}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf quick\-\_\-sort} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arr, }
+\item[{unsigned int}]{arr\-\_\-size, }
+\item[{unsigned int}]{entry\-\_\-size}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a4b344a67ac94d676c163c0bce050a4d7}
+
+
+\-Standard generic quicksort-\/implementation. 
+
+\-This is a standard quicksort-\/algorithm that can be used for any data-\/type. \-It sorts the contents of an array in ascending order.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arr} & \-Pointer to the array to be sorted. \\
+\hline
+{\em arr\-\_\-size} & \-Size of the array to be sorted. \\
+\hline
+{\em entry\-\_\-size} & \-Size of the individual entries in the array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Returns the sorted array. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000129}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References quicksort().
+
+
+
+\-Referenced by create\-\_\-wavelet\-\_\-tree(), and map\-\_\-maximal\-\_\-repeats\-\_\-to\-\_\-string().
+
+\hypertarget{utils_8c_af5362063bd6105ef24819f90d7db5cf2}{\index{utils.\-c@{utils.\-c}!quicksort@{quicksort}}
+\index{quicksort@{quicksort}!utils.c@{utils.\-c}}
+\subsubsection[{quicksort}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf quicksort} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arr, }
+\item[{unsigned int}]{entry\-\_\-size, }
+\item[{unsigned int}]{a, }
+\item[{unsigned int}]{b, }
+\item[{void $\ast$}]{swap\-\_\-area}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_af5362063bd6105ef24819f90d7db5cf2}
+
+
+\-The implementation of the quicksort-\/algorithm. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arr} & \-Pointer to the array that is to be sorted. \\
+\hline
+{\em entry\-\_\-size} & \-Size of the individual entries in the array. \\
+\hline
+{\em a} & \-Index to the first entry to be sorted. \\
+\hline
+{\em b} & \-Index to the last entry to be sorted. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+utils.\-h\-::quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000124}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References swap().
+
+
+
+\-Referenced by quick\-\_\-sort().
+
+\hypertarget{utils_8c_ab814b36efef6905c8a49b041c8baf3ed}{\index{utils.\-c@{utils.\-c}!string\-\_\-quick\-\_\-sort@{string\-\_\-quick\-\_\-sort}}
+\index{string\-\_\-quick\-\_\-sort@{string\-\_\-quick\-\_\-sort}!utils.c@{utils.\-c}}
+\subsubsection[{string\-\_\-quick\-\_\-sort}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf string\-\_\-quick\-\_\-sort} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{unsigned int}]{arr\-\_\-size}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_ab814b36efef6905c8a49b041c8baf3ed}
+
+
+\-Quicksort for an array of strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-An array of pointers to strings. \\
+\hline
+{\em arr\-\_\-size} & \-Size of the array to be sorted. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+utils.\-h\-::quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000130}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References string\-\_\-quicksort().
+
+
+
+\-Referenced by distinct\-\_\-substrings().
+
+\hypertarget{utils_8c_a90bfef8e4ea6bd77818b7a9e3ee6605e}{\index{utils.\-c@{utils.\-c}!string\-\_\-quicksort@{string\-\_\-quicksort}}
+\index{string\-\_\-quicksort@{string\-\_\-quicksort}!utils.c@{utils.\-c}}
+\subsubsection[{string\-\_\-quicksort}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf string\-\_\-quicksort} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{unsigned int}]{a, }
+\item[{unsigned int}]{b}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a90bfef8e4ea6bd77818b7a9e3ee6605e}
+
+
+\-Quicksort for an array of strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-Array of pointers to strings. \\
+\hline
+{\em a} & \-Index of the first entry to be sorted. \\
+\hline
+{\em b} & index of the last entry to be sorted. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+utils.\-h\-::quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000126}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References string\-\_\-swap().
+
+
+
+\-Referenced by string\-\_\-quick\-\_\-sort().
+
+\hypertarget{utils_8c_a3663372351689c18e74b18ec1b43229b}{\index{utils.\-c@{utils.\-c}!string\-\_\-swap@{string\-\_\-swap}}
+\index{string\-\_\-swap@{string\-\_\-swap}!utils.c@{utils.\-c}}
+\subsubsection[{string\-\_\-swap}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf string\-\_\-swap} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{a, }
+\item[{char $\ast$$\ast$}]{b}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a3663372351689c18e74b18ec1b43229b}
+
+
+\-Simple swap-\/function. 
+
+\-Swaps the position of two strings in an array.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em a} & \-Pointer to a pointer to a string to be swapped. \\
+\hline
+{\em b} & \-Pointer to a pointer to another string to be swapped. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+utils.\-h\-::string\-\_\-quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Paula \-Lehtola, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000125}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by string\-\_\-quicksort().
+
+\hypertarget{utils_8c_a236064eee4d45d2c926391459e2c5cb7}{\index{utils.\-c@{utils.\-c}!substring\-\_\-from\-\_\-string@{substring\-\_\-from\-\_\-string}}
+\index{substring\-\_\-from\-\_\-string@{substring\-\_\-from\-\_\-string}!utils.c@{utils.\-c}}
+\subsubsection[{substring\-\_\-from\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf substring\-\_\-from\-\_\-string} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{int}]{position, }
+\item[{int}]{length}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a236064eee4d45d2c926391459e2c5cb7}
+
+
+\-Returns a substring of a string starting at {\ttfamily position} with length {\ttfamily length}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The whole string. \\
+\hline
+{\em position} & \-Starting position of the substring. \\
+\hline
+{\em length} & \-Length of the substring. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A substring of the string supplied as parameter. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000137}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by print\-\_\-mems(), and print\-\_\-mums().
+
+\hypertarget{utils_8c_a36d4ba81ab10c7a9b4194ebe0e2a00f4}{\index{utils.\-c@{utils.\-c}!swap@{swap}}
+\index{swap@{swap}!utils.c@{utils.\-c}}
+\subsubsection[{swap}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf swap} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arr, }
+\item[{unsigned int}]{entry\-\_\-size, }
+\item[{int}]{i, }
+\item[{int}]{j, }
+\item[{void $\ast$}]{swap\-\_\-area}
+\end{DoxyParamCaption}
+)}}\label{utils_8c_a36d4ba81ab10c7a9b4194ebe0e2a00f4}
+
+
+\-Simple swap-\/function. 
+
+\-Swaps the position of two entries in an array.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arr} & \-Pointer to the array is to be manipulated. \\
+\hline
+{\em entry\-\_\-size} & \-Size of the entries that are to be swapped. \\
+\hline
+{\em i} & \-Index of the first entry. \\
+\hline
+{\em j} & \-Index of the second entry. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{\-See also}
+utils.\-h\-::quick\-\_\-sort 
+\end{DoxySeeAlso}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000123}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-Referenced by quicksort().
+
+\hypertarget{utils_8c_ac950f3323b3e2a5cca0abaa656f23c38}{\index{utils.\-c@{utils.\-c}!update\-\_\-reverse\-\_\-interval@{update\-\_\-reverse\-\_\-interval}}
+\index{update\-\_\-reverse\-\_\-interval@{update\-\_\-reverse\-\_\-interval}!utils.c@{utils.\-c}}
+\subsubsection[{update\-\_\-reverse\-\_\-interval}]{\setlength{\rightskip}{0pt plus 5cm}{\bf interval}$\ast$ {\bf update\-\_\-reverse\-\_\-interval} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf interval} $\ast$}]{inter, }
+\item[{struct {\bf interval} $\ast$}]{normal, }
+\item[{const char $\ast$}]{alphabet, }
+\item[{unsigned int}]{alphabet\-\_\-length, }
+\item[{const int $\ast$}]{c\-\_\-array, }
+\item[{const char}]{c, }
+\item[{struct {\bf interval} $\ast$}]{target}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{utils_8c_ac950f3323b3e2a5cca0abaa656f23c38}
+\-Updates the interval in the \-B\-W\-T of the reverse of the string 
+\begin{DoxyParams}{\-Parameters}
+{\em inter} & interval of the mother node \\
+\hline
+{\em normal} & updated \-B\-W\-T interval in this node \\
+\hline
+{\em alphabet} & alphabet of the interval \\
+\hline
+{\em alphabet\-\_\-length} & length of the alphabet in the interval \\
+\hline
+{\em c\-\_\-array} & \-C array of the interval \\
+\hline
+{\em c} & extension character \\
+\hline
+{\em target} & \-A interval where the results should be stored. \-If {\ttfamily \-N\-U\-L\-L}, a new interval will be created and returned. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+a new updated \-Interval struct in the \-B\-W\-T of the reverse of the string 
+\end{DoxyReturn}
+
+
+\-References binary\-\_\-search().
+
+
+
+\-Referenced by double\-\_\-iterate(), list\-\_\-mem\-\_\-candidates(), and single\-\_\-iterate().
+

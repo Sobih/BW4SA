@@ -1,0 +1,225 @@
+\hypertarget{mems_8h}{\section{src/applications/mems.h \-File \-Reference}
+\label{mems_8h}\index{src/applications/mems.\-h@{src/applications/mems.\-h}}
+}
+
+
+\-A collection of functions for finding \-Maximal \-Exact \-Matches (=\-M\-E\-Ms) using iterate.  
+
+
+{\ttfamily \#include \char`\"{}../utils/structs.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}../core/iterate.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{mems_8h_structmem__results}{mem\-\_\-results}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the results of an iteration when finding maximal exact matches.  \hyperlink{mems_8h_structmem__results}{\-More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{mems_8h_structmem__results}{mem\-\_\-results} \hyperlink{mems_8h_a0a0f1608a85c8a53f3c8da5d0eb174d5}{mem\-\_\-results}
+\begin{DoxyCompactList}\small\item\em \-A structure for storing the results of an iteration when finding maximal exact matches. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structparameter__struct}{parameter\-\_\-struct} $\ast$ \hyperlink{mems_8h_a3fb3b2781a8c5451b3b0d197ea0023e3}{initialize\-\_\-for\-\_\-mems} (char $\ast$$\ast$strings, int max\-\_\-number\-\_\-mems)
+\begin{DoxyCompactList}\small\item\em \-An initialization function that creates a parameter struct that instructs iterate to search for maximal exact matches. \end{DoxyCompactList}\item 
+void \hyperlink{mems_8h_a8057dbb8f2c4bc598ddcb110c2501c6f}{search\-\_\-mems} (struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state, void $\ast$results)
+\begin{DoxyCompactList}\small\item\em \-Callback function given to double\-\_\-iterate that determines if a substring is a \-M\-E\-M (\-Maximal \-Exact \-Match) \end{DoxyCompactList}\item 
+void \hyperlink{mems_8h_aa577ad91d787ce3223697f5d7ec0cc87}{print\-\_\-mems} (char $\ast$string, \hyperlink{mems_8h_structmem__results}{mem\-\_\-results} $\ast$results, \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Prints the indexes of the \-M\-E\-M in both strings, as well as the substring itself, to stdout. \end{DoxyCompactList}\item 
+struct \hyperlink{structbit__vector}{bit\-\_\-vector} $\ast$$\ast$ \hyperlink{mems_8h_a3066fc029226a3cfe3bd67eb86e69379}{mem\-\_\-make\-\_\-bit\-\_\-vectors} (\hyperlink{mems_8h_structmem__results}{mem\-\_\-results} $\ast$results, struct \hyperlink{iterate_8h_structiterator__state}{iterator\-\_\-state} $\ast$state)
+\begin{DoxyCompactList}\small\item\em \-Creates a list of two bit vectors based on the given strings, where marked bits correspond to starting indexes of \-M\-E\-M's inside the strings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A collection of functions for finding \-Maximal \-Exact \-Matches (=\-M\-E\-Ms) using iterate. \begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000042}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Data \-Structure \-Documentation}
+\index{mem\-\_\-results@{mem\-\_\-results}}\label{structmem__results}
+\hypertarget{mems_8h_structmem__results}{}
+\subsubsection{struct mem\-\_\-results}
+\-A structure for storing the results of an iteration when finding maximal exact matches. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000043}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+\begin{DoxyFields}{\-Data Fields}
+\hypertarget{mems_8h_a1d85048111a985d5047bf8a9f6c15403}{unsigned int}\label{mems_8h_a1d85048111a985d5047bf8a9f6c15403}
+&
+allocated\-\_\-length&
+\\
+\hline
+
+\hypertarget{mems_8h_af5eb557fd0b2bf35b1bdf65451f82a80}{\hyperlink{structs_8h_structtriplet}{triplet} $\ast$}\label{mems_8h_af5eb557fd0b2bf35b1bdf65451f82a80}
+&
+data&
+\\
+\hline
+
+\hypertarget{mems_8h_ac2b522ba848f96dd797da6851e3e1479}{unsigned int}\label{mems_8h_ac2b522ba848f96dd797da6851e3e1479}
+&
+length&
+\\
+\hline
+
+\hypertarget{mems_8h_ab0548d1ae2975a62079adaeae1f56c74}{void $\ast$}\label{mems_8h_ab0548d1ae2975a62079adaeae1f56c74}
+&
+params&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{mems_8h_a0a0f1608a85c8a53f3c8da5d0eb174d5}{\index{mems.\-h@{mems.\-h}!mem\-\_\-results@{mem\-\_\-results}}
+\index{mem\-\_\-results@{mem\-\_\-results}!mems.h@{mems.\-h}}
+\subsubsection[{mem\-\_\-results}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf mem\-\_\-results}  {\bf mem\-\_\-results}}}\label{mems_8h_a0a0f1608a85c8a53f3c8da5d0eb174d5}
+
+
+\-A structure for storing the results of an iteration when finding maximal exact matches. 
+
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000043}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{mems_8h_a3fb3b2781a8c5451b3b0d197ea0023e3}{\index{mems.\-h@{mems.\-h}!initialize\-\_\-for\-\_\-mems@{initialize\-\_\-for\-\_\-mems}}
+\index{initialize\-\_\-for\-\_\-mems@{initialize\-\_\-for\-\_\-mems}!mems.h@{mems.\-h}}
+\subsubsection[{initialize\-\_\-for\-\_\-mems}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf parameter\-\_\-struct}$\ast$ {\bf initialize\-\_\-for\-\_\-mems} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{strings, }
+\item[{int}]{max\-\_\-number\-\_\-mems}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{mems_8h_a3fb3b2781a8c5451b3b0d197ea0023e3}
+
+
+\-An initialization function that creates a parameter struct that instructs iterate to search for maximal exact matches. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em strings} & \-An array of pointers to strings that are to be iterated over. \\
+\hline
+{\em max\-\_\-number\-\_\-mems} & \-Number of slots of memory allocated for triplets. \-This number has to be at least as large as expected number of \-M\-E\-Ms. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An initialized parameter struct ready to be passed to iterate. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Max \-Sandberg (\-R\-E\-Xiator), \-Topi \-Paavilainen 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000044}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References search\-\_\-mems().
+
+\hypertarget{mems_8h_a3066fc029226a3cfe3bd67eb86e69379}{\index{mems.\-h@{mems.\-h}!mem\-\_\-make\-\_\-bit\-\_\-vectors@{mem\-\_\-make\-\_\-bit\-\_\-vectors}}
+\index{mem\-\_\-make\-\_\-bit\-\_\-vectors@{mem\-\_\-make\-\_\-bit\-\_\-vectors}!mems.h@{mems.\-h}}
+\subsubsection[{mem\-\_\-make\-\_\-bit\-\_\-vectors}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf bit\-\_\-vector}$\ast$$\ast$ {\bf mem\-\_\-make\-\_\-bit\-\_\-vectors} (
+\begin{DoxyParamCaption}
+\item[{{\bf mem\-\_\-results} $\ast$}]{results, }
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read\mbox{]}}}}\label{mems_8h_a3066fc029226a3cfe3bd67eb86e69379}
+
+
+\-Creates a list of two bit vectors based on the given strings, where marked bits correspond to starting indexes of \-M\-E\-M's inside the strings. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em results} & \-The results of an iteration over a set of strings. \\
+\hline
+{\em state} & \-Internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Bit vectors with starts of \-M\-E\-Ms marked. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000047}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, wavelet\-\_\-tree\-::get\-\_\-num\-\_\-bits, init\-\_\-bit\-\_\-vector(), and bit\-\_\-vector\-::mark\-\_\-bit.
+
+
+
+\-Referenced by print\-\_\-mems().
+
+\hypertarget{mems_8h_aa577ad91d787ce3223697f5d7ec0cc87}{\index{mems.\-h@{mems.\-h}!print\-\_\-mems@{print\-\_\-mems}}
+\index{print\-\_\-mems@{print\-\_\-mems}!mems.h@{mems.\-h}}
+\subsubsection[{print\-\_\-mems}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf print\-\_\-mems} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{{\bf mem\-\_\-results} $\ast$}]{results, }
+\item[{{\bf iterator\-\_\-state} $\ast$}]{state}
+\end{DoxyParamCaption}
+)}}\label{mems_8h_aa577ad91d787ce3223697f5d7ec0cc87}
+
+
+\-Prints the indexes of the \-M\-E\-M in both strings, as well as the substring itself, to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em string} & \-The string that is to be searched inside the \-M\-E\-M. \\
+\hline
+{\em results} & \-Results of the iteration over a set of strings. \\
+\hline
+{\em state} & \-The internal state of the iterator that performed the search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000046}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, free\-\_\-bit\-\_\-vector(), map\-\_\-mem\-\_\-triplets\-\_\-to\-\_\-string(), mem\-\_\-make\-\_\-bit\-\_\-vectors(), and substring\-\_\-from\-\_\-string().
+
+\hypertarget{mems_8h_a8057dbb8f2c4bc598ddcb110c2501c6f}{\index{mems.\-h@{mems.\-h}!search\-\_\-mems@{search\-\_\-mems}}
+\index{search\-\_\-mems@{search\-\_\-mems}!mems.h@{mems.\-h}}
+\subsubsection[{search\-\_\-mems}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf search\-\_\-mems} (
+\begin{DoxyParamCaption}
+\item[{struct {\bf iterator\-\_\-state} $\ast$}]{state, }
+\item[{void $\ast$}]{results}
+\end{DoxyParamCaption}
+)}}\label{mems_8h_a8057dbb8f2c4bc598ddcb110c2501c6f}
+
+
+\-Callback function given to double\-\_\-iterate that determines if a substring is a \-M\-E\-M (\-Maximal \-Exact \-Match) 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em state} & \-The internal state of the iterator. \\
+\hline
+{\em results} & \-A pointer to a region of memory containing the previous results of this callback function. \-Can safely be cast to {\ttfamily \hyperlink{mems_8h_structmem__results}{mem\-\_\-results}} if iterate was initialized using {\ttfamily \hyperlink{mems_8c_a2c557d097ef24c6f1bd8c4c498546c8c}{initialize\-\_\-for\-\_\-mems()}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{\-Author}
+\-Lassi \-Vapaakallio, \-Topi \-Paavilainen, \-Max \-Sandberg (\-R\-E\-Xiator) 
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000045}{\-Bug}]\-No known bugs. \end{DoxyRefDesc}
+
+
+\-References iterator\-\_\-state\-::bwts, iterator\-\_\-state\-::current, list\-\_\-mem\-\_\-candidates(), iterator\-\_\-state\-::reverse\-\_\-bwts, and iterator\-\_\-state\-::threshold.
+
+
+
+\-Referenced by initialize\-\_\-for\-\_\-mems().
+
