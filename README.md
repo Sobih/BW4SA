@@ -1,12 +1,13 @@
-Glfbabot-BWT
+BW4SA
 ============
 
 Generic library for biosequence analysis based on the Burrows-Wheeler transform
 
-Definition of Done:
-
-	Analyzed, Designed, Programmed, Tested, Tests automated,
-	Documented and Integrated into the rest of the software.
+Contributors: 
+*  Topi Paavilainen
+*  Paula Lehtola
+*  Max Sandberg
+*  Lassi Vapaakallio
 
 Project Structure:
 
@@ -27,3 +28,5 @@ Project Structure:
 	\MAKEFILE --> makefile script for building the project
 	\README   --> introductory document (might refer to doc\README)
 	\INSTALL  --> Installation document (might refer to doc\INSTALL)
+
+A simple text-based UI for testing purposes can be found in an applications folder. The gcc command for compiling the UI is located in os/uigcc.txt and can be run from the project root with a command ./src/main.o. The DOT tree feature is not yet implemented in the UI.
