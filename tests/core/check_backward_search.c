@@ -7,6 +7,7 @@
 
 #include "../../src/core/backward_search.h"
 #include "../../src/core/s_to_bwt.h"
+#include "../../src/core/c_array.h"
 #include "../../src/utils/structs.h"
 #include "../../src/utils/wavelet_tree.h"
 #include "../../src/utils/utils.h"
@@ -229,13 +230,15 @@ START_TEST(test_interval_search_ra)
 	inter->j = 5;
 
 	wavelet_tree* tree = create_wavelet_tree("ard$rcaaaabb");
+	unsigned int* c_array = create_c_array(tree, 0, 0, 0, 0);
 
-	interval* result = backward_search_interval(tree, inter, 'r', 0);
+	interval* result = backward_search_interval(tree, inter, 'r', c_array, 0);
 
 	ck_assert_int_eq(10, result->i);
     ck_assert_int_eq(11, result->j);
 
     free_wavelet_tree(tree);
+    free(c_array);
     free(result);
     free(inter);
 }
@@ -248,13 +251,15 @@ START_TEST(test_interval_search_da)
 	inter->j = 5;
 
 	wavelet_tree* tree = create_wavelet_tree("ard$rcaaaabb");
+	unsigned int* c_array = create_c_array(tree, 0, 0, 0, 0);
 
-	interval* result = backward_search_interval(tree, inter, 'd', 0);
+	interval* result = backward_search_interval(tree, inter, 'd', c_array, 0);
 
 	ck_assert_int_eq(9, result->i);
     ck_assert_int_eq(9, result->j);
 
     free_wavelet_tree(tree);
+    free(c_array);
     free(result);
     free(inter);
 }
@@ -267,13 +272,15 @@ START_TEST(test_interval_search_bra)
 	inter->j = 11;
 
 	wavelet_tree* tree = create_wavelet_tree("ard$rcaaaabb");
+	unsigned int* c_array = create_c_array(tree, 0, 0, 0, 0);
 
-	interval* result = backward_search_interval(tree, inter, 'b', 0);
+	interval* result = backward_search_interval(tree, inter, 'b', c_array, 0);
 
 	ck_assert_int_eq(6, result->i);
     ck_assert_int_eq(7, result->j);
 
     free_wavelet_tree(tree);
+    free(c_array);
     free(result);
     free(inter);
 }
@@ -286,13 +293,15 @@ START_TEST(test_interval_search_tt)
 	inter->j = 9;
 
 	wavelet_tree* tree = create_wavelet_tree("ivh$ttttaai");
+	unsigned int* c_array = create_c_array(tree, 0, 0, 0, 0);
 
-	interval* result = backward_search_interval(tree, inter, 't', 0);
+	interval* result = backward_search_interval(tree, inter, 't', c_array, 0);
 
 	ck_assert_int_eq(8, result->i);
     ck_assert_int_eq(9, result->j);
 
     free_wavelet_tree(tree);
+    free(c_array);
     free(result);
     free(inter);
 }
@@ -305,13 +314,15 @@ START_TEST(test_interval_search_ha)
 	inter->j = 2;
 
 	wavelet_tree* tree = create_wavelet_tree("ivh$ttttaai");
+	unsigned int* c_array = create_c_array(tree, 0, 0, 0, 0);
 
-	interval* result = backward_search_interval(tree, inter, 'h', 0);
+	interval* result = backward_search_interval(tree, inter, 'h', c_array, 0);
 
 	ck_assert_int_eq(3, result->i);
     ck_assert_int_eq(3, result->j);
 
     free_wavelet_tree(tree);
+    free(c_array);
     free(result);
     free(inter);
 }
@@ -323,12 +334,14 @@ START_TEST(test_interval_search_not_found) {
 	inter->j = 8;
 
 	wavelet_tree* tree = create_wavelet_tree("ivh$ttttaai");
+	unsigned int* c_array = create_c_array(tree, 0, 0, 0, 0);
 
-	interval* result = backward_search_interval(tree, inter, 'k', 0);
+	interval* result = backward_search_interval(tree, inter, 'k', c_array, 0);
 
 	ck_assert(result == NULL);
 
 	free_wavelet_tree(tree);
+	free(c_array);
 	free(result);
 	free(inter);
 }
@@ -341,6 +354,7 @@ START_TEST (test_interval_search_random) {
 	char* string = malloc(length * sizeof(char)), *bwt = malloc((length + 2) * sizeof(char));
 	interval* inter = malloc(sizeof(interval)), *complex = malloc(sizeof(interval)), *naive;
 	wavelet_tree* tree;
+	unsigned int* c_array;
 
 	int run_counter = 1;
 
@@ -362,9 +376,11 @@ START_TEST (test_interval_search_random) {
 		inter->i = start;
 		inter->j = end;
 
+		c_array = create_c_array(tree, 0, 0, 0, 0);
+
 		for (int j = 0; j < tree->get_num_bits(tree); ++j) {
 			naive = backward_search_interval_naive(bwt, inter, bwt[j]);
-			complex = backward_search_interval(tree, inter, bwt[j], complex);
+			complex = backward_search_interval(tree, inter, bwt[j], c_array, complex);
 
 			if (complex == NULL || naive == NULL) {
 				ck_assert(complex == naive);
@@ -378,6 +394,7 @@ START_TEST (test_interval_search_random) {
 		}
 
 		free_wavelet_tree(tree);
+		free(c_array);
 	}
 
 	free(inter);
