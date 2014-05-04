@@ -43,6 +43,8 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 
 	int bwt_length = bwt->get_num_bits(bwt), i;
 
+	unsigned int* whole_c_array = create_c_array(bwt, 0, 0, 0, 0);
+
 	//Initialize first intervals. In the start both intervals are the whole bwt
 	normal->i = 0;
 	normal->j = bwt_length - 1;
@@ -75,7 +77,7 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 			state->current_extension = alpha_data->alphabet[i];
 
 			normal = backward_search_interval(bwt, &substr->normal,
-					state->current_extension, normal);
+					state->current_extension, whole_c_array, normal);
 
 			//printf("Updated normal interval\n");
 
@@ -122,6 +124,7 @@ void* single_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 		//printf("New substring popped\n");
 	}
 
+	free(whole_c_array);
 	free(substr);
 
 	return result;
@@ -187,6 +190,9 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 
 	int bwt_length1 = bwt1->get_num_bits(bwt1), bwt_length2 = bwt2->get_num_bits(bwt2), i;
 
+	unsigned int* whole_c_array1 = create_c_array(bwt1, 0, 0, 0, 0);
+	unsigned int* whole_c_array2 = create_c_array(bwt2, 0, 0, 0, 0);
+
 	//Initialize first intervals. In the start both intervals are the whole bwt
 	normal1->i = 0;
 	normal1->j = bwt_length1 - 1;
@@ -229,14 +235,14 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 			//print_node(substring1->normal);
 			//printf("letter added to the left: %c \n", common_alphabet[i]);
 			normal1 = backward_search_interval(bwt1, &substring1->normal,
-					state->current_extension, normal1);
+					state->current_extension, whole_c_array1, normal1);
 
 			if (normal1 == NULL)
 				continue;
 
 			//print_node(substring2->normal);
 			normal2 = backward_search_interval(bwt2, &substring2->normal,
-					state->current_extension, normal2);
+					state->current_extension, whole_c_array2, normal2);
 
 			if (normal2 == NULL)
 				continue;
@@ -284,6 +290,9 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 		substring2 = create_substring(&temp->normal, &temp->reverse,
 				temp->length, substring2);
 	}
+
+	free(whole_c_array1);
+	free(whole_c_array2);
 
 	free(substring1);
 	free(substring2);

@@ -11,6 +11,7 @@
 #include "triplet_sorter.h"
 #include "../../include/utils.h"
 #include "../core/backward_search.h"
+#include "../core/c_array.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -46,6 +47,8 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes,
 	inter->i = 0;
 	inter->j = 0;
 
+	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
+
 	int i = 0;
 	for (k = 0; k < n; k++) {
 		if (bit_vec->is_bit_marked(bit_vec, inter->i)) {
@@ -54,7 +57,7 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes,
 			i++;
 		}
 		target = backward_search_interval(bwt, inter,
-				bwt->char_at(bwt, inter->i), target);
+				bwt->char_at(bwt, inter->i), c_array, target);
 		memcpy(inter, target, sizeof(interval));
 	}
 
@@ -87,6 +90,7 @@ max_repeat_with_indexes* map_maximal_repeats_to_string(max_repeat_node* nodes,
 		quick_sort(list, max_indexes[j].interval_size, sizeof(unsigned int));
 		max_indexes[j].indexes = list;
 	}
+	free(c_array);
 	free(inter);
 	free(target);
 	/*free(pairs);*/
@@ -114,6 +118,8 @@ mapped_pair* update_position_in_triplets(wavelet_tree* bwt, int nodes_length,
 	inter->i = 0;
 	inter->j = 0;
 
+	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
+
 	int k;
 	for (k = 0; k < n; k++) {
 		if (bit_vec->is_bit_marked(bit_vec, inter->i)) {
@@ -122,7 +128,7 @@ mapped_pair* update_position_in_triplets(wavelet_tree* bwt, int nodes_length,
 			i++;
 		}
 		target = backward_search_interval(bwt, inter,
-				bwt->char_at(bwt, inter->i), target);
+				bwt->char_at(bwt, inter->i), c_array, target);
 		memcpy(inter, target, sizeof(interval));
 	}
 

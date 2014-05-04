@@ -83,12 +83,14 @@ int list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
 
 	unsigned int* c_array_left = create_c_array(bwt, &node->normal, 0, 0, 0);
 	unsigned int* c_array_right = malloc((bwt->get_alphabet_length(bwt) + 1) * sizeof(unsigned int));
+	unsigned int* whole_c_array_left = create_c_array(bwt, 0, 0, 0, 0);
+	unsigned int* whole_c_array_right = create_c_array(rbwt, 0, 0, 0, 0);
 
 	int index = 0;
 
 	for (int i = 0; i < alphabet_length; i++) {
 		normal_left = backward_search_interval(bwt, &node->normal,
-				alpha_data_left->alphabet[i], normal_left);
+				alpha_data_left->alphabet[i], whole_c_array_left, normal_left);
 		reverse_left = update_reverse_interval(&node->reverse, normal_left,
 				alpha_data_left->alphabet, alphabet_length, c_array_left,
 				alpha_data_left->alphabet[i], reverse_left);
@@ -100,7 +102,7 @@ int list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
 			candidate = &mem_candidates[index];
 
 			reverse_right = backward_search_interval(rbwt, reverse_left,
-					alpha_data_right->alphabet[j], reverse_right);
+					alpha_data_right->alphabet[j], whole_c_array_right, reverse_right);
 			normal_right = update_reverse_interval(normal_left, reverse_right,
 					alpha_data_right->alphabet, alpha_data_right->length,
 					c_array_right, alpha_data_right->alphabet[j], normal_right);
@@ -119,6 +121,8 @@ int list_mem_candidates(substring* node, wavelet_tree* bwt, wavelet_tree* rbwt,
 
 	free(c_array_left);
 	free(c_array_right);
+	free(whole_c_array_right);
+	free(whole_c_array_left);
 
 	return index;
 }
