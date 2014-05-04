@@ -16,7 +16,7 @@
 
 void print_choices()
 {
-	printf("Welcome to the Glfbabot-BWT program!\n");
+	printf("Welcome to the BW4SA program!\n");
 	printf("Operations:\n");
 	printf("1 Print right maximal nodes\n");
 	printf("2 Make a BWT\n");
