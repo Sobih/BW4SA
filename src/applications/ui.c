@@ -64,22 +64,75 @@ void print_runs_vector(bit_vector* runs, int len)
 
 }
 
+char* read_from_file(const char* path) {
+	FILE *f = fopen(path, "r");
+
+	int length = 0, allocated_length = MAX_INPUT_STRING_LENGTH;
+	char* read = malloc(sizeof(char) * allocated_length);
+	char current;
+
+	while (1) {
+		if (ferror(f)) {
+			printf("An error occurred during reading! Exiting...\n");
+			fclose(f);
+			exit(1);
+		}
+
+		if (feof(f)) {
+			read[length - 2] = 0;
+			break;
+		}
+
+		read[length] = fgetc(f);
+		length++;
+
+		if (length >= allocated_length) {
+			allocated_length += MAX_INPUT_STRING_LENGTH;
+			read = realloc(read, allocated_length * sizeof(char));
+		}
+	}
+
+	fclose(f);
+
+	read = realloc(read, (length - 1) * sizeof(char));
+
+	return read;
+}
 
 void ui()
 {
-	int choice, len = 0;
-	char* input = malloc(sizeof(char)*MAX_INPUT_STRING_LENGTH);
-	char* res = malloc(sizeof(char));
+	int choice, read, len = 0;
+	char* input, *res = malloc(sizeof(char));
 	int* array = calloc(20, sizeof(int)); 
 	
 	print_choices();
 	
-	printf("Write the number of the operation you want to do:\n");
+	printf("Write the number of the operation you want to perform:\n");
 	scanf("%d", &choice);
 	
-	printf("Give the input string: (max size %d) ", MAX_INPUT_STRING_LENGTH);
-	print_instructions(choice);
-	scanf("%s", input);
+	printf("Do you wish for the input string to be read from a file?\n");
+	printf("1. Yes\n2. No\n");
+	scanf("%d", &read);
+
+	if (read == 1) {
+		printf("Please enter path to input file: ");
+		char* path = malloc(sizeof(char) * MAX_INPUT_STRING_LENGTH);
+		scanf("%s", path);
+
+		input = read_from_file(path);
+		printf("Input: %s\n", input);
+	}
+	else if (read == 2) {
+		printf("Give the input string: (max size %d): ", MAX_INPUT_STRING_LENGTH);
+		print_instructions(choice);
+		input = malloc(sizeof(char) * MAX_INPUT_STRING_LENGTH);
+		scanf("%s", input);
+	}
+	else {
+		printf("Not a valid choice! Exiting...\n");
+		return;
+	}
+
 	wavelet_tree* root = create_wavelet_tree(input);
 	wavelet_tree* res_root;
 
