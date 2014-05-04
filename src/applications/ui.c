@@ -145,17 +145,24 @@ void ui()
 		free(strings);
 	} else if (choice == 2) {
 		res_root = s_to_bwt(input);
-		print_wavelet_tree(res_root);
+		for (int i = 0; i < res_root->get_num_bits(res_root); ++i)
+			printf("%c", res_root->char_at(res_root, i));
+
+		printf("\n");
 	} else if (choice == 3) {
 		res = bwt_to_s(root);
 		printf("%s\n", res);
 	} else if (choice == 4) {
 		res_root = reverse_bwt(input);
-		print_wavelet_tree(res_root);
+		for (int i = 0; i < res_root->get_num_bits(res_root); ++i)
+			printf("%c", res_root->char_at(res_root, i));
+
+		printf("\n");
 	} else if (choice == 5) {
 		array = create_c_array(root,0,0,0,0);
 		int len = strlen(determine_alphabet(input));
 		print_int_array(array, len);
+		printf("\n");
 	} else if (choice == 6) {
 		bit_vector* runs = create_runs_vector(root,0);
 		print_runs_vector(runs, strlen(input)+1);
