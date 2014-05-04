@@ -53,15 +53,16 @@ interval* backward_search(const wavelet_tree* bwt, const wavelet_tree* string, i
 }
 
 interval* backward_search_interval(const wavelet_tree* bwt, const interval* inter, char c,
-		interval* target) {
-	unsigned int* c_array = create_c_array(bwt, 0, 0, 0, 0);
+		unsigned int* c_array, interval* target) {
+
+	if (c_array == 0)
+		c_array = create_c_array(bwt, 0, 0, 0, 0);
+
 	char* alphabet = bwt->get_alphabet(bwt);
 
 	int index = binary_search(alphabet, &c, sizeof(char), bwt->get_alphabet_length(bwt) - 1, 0);
 	int i = c_array[index] + bwt->rank(bwt, c, 0, inter->i - 1);
 	int j = i + bwt->rank(bwt, c, inter->i, inter->j) - 1;
-
-	free(c_array);
 
 	if (i > j) return NULL;
 

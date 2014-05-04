@@ -47,6 +47,6 @@ struct interval* backward_search(const struct wavelet_tree* bwt, const struct wa
  * @bug		No known bugs.
  */
 struct interval* backward_search_interval(const struct wavelet_tree* bwt, const struct interval* inter, char c,
-		struct interval* target);
+		unsigned int* c_array, struct interval* target);
 
 #endif /* BACKWARD_SEARCH_H_ */
