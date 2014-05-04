@@ -1,6 +1,7 @@
 #include "ui.h"
 #include "distinct_substrings.h"
 #include "triplet_sorter.h"
+#include "draw_tree.h"
 #include "../core/s_to_bwt.h"
 #include "../core/bwt_to_s.h"
 #include "../core/rbwt.h"
@@ -127,7 +128,11 @@ void ui()
 		free_iterator_state(state);
 
 	} else if (choice == 8) {
-		printf("Not supported yet\n");
+		printf("Please enter a name for the output file: ");
+		char* input2 = malloc(sizeof(char) * MAX_INPUT_STRING_LENGTH);
+		scanf("%s", input2);
+
+		draw_suffix_tree(input, input2);
 	} else if (choice == 9) {
 		printf("%d\n", distinct_substrings(input));
 	} else if (choice == 10) {
