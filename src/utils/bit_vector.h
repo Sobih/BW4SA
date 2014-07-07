@@ -17,6 +17,7 @@
 #include <limits.h>
 
 #define BITS_PER_INT	(sizeof(unsigned int) * 8)
+#define BLOCK_SIZE 256 // In bits. Must be divisible by BITS_PER_INT
 
 /**
  * @brief	A structure for storing the bit vector and its
@@ -26,8 +27,11 @@
  */
 typedef struct bit_vector {
 	unsigned int* vector;
+	unsigned int* rank_precalc;
 	unsigned int length;
 	unsigned int filler_bits;
+
+	struct bit_vector* (*compute_rank_support)(struct bit_vector* vector);
 
 	/**
 	 * @brief	Function pointer to a function that flags the bit at position <code>pos</code>
@@ -108,5 +112,8 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits);
  * @bug		No known bugs.
  */
 void free_bit_vector(bit_vector* vector);
+
+
+int hamming_weight(int v);
 
 #endif /* BIT_VECTOR_H_ */

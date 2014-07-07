@@ -336,7 +336,7 @@ bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
 	for (int i = 1; i < length; i++)
 		if (string->char_at(string, i - 1) != string->char_at(string, i))
 			target->mark_bit(target, i);
-
+	target->compute_rank_support(target);
 	return target;
 }
 

@@ -249,7 +249,7 @@ bit_vector* create_bit_vector(bit_vector* vector, const char* string, const char
 		if (index >= 0 && index < alphabet_length)
 			vector->mark_bit(vector, i);
 	}
-
+	vector->compute_rank_support(vector);
 	return vector;
 }
 

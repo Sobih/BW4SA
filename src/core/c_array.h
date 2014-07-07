@@ -31,7 +31,7 @@ typedef struct alphabet_data {
  * 							be generated.
  * @param	inter			An interval of the substring from which the c-array should
  * 							be generated. If <code>NULL</code>, the entire string is used.
- * @param	alphabet		The alphabet used by the string. If <code>NULL</code>, the alphabet
+ * @param	alphabet		    The alphabet used by the string. If <code>NULL</code>, the alphabet
  * 							of the wavelet tree is used.
  * @param	alphabet_length	Length of the alphabet supplied as parameter. If the alphabet
  * 							is <code>NULL</code>, this parameter will be disregarded.

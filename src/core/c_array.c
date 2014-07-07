@@ -61,27 +61,26 @@ alphabet_data* create_alphabet_interval(const interval* inter, const wavelet_tre
 	if (inter == 0 || string == 0 || inter->i > inter->j)
 		return 0;
 
-	int length = inter->j - inter->i + 1, counter = 0;
-	char* alphabet = malloc((length + 1) * sizeof(char)), current;
+	char* whole_alphabet = string->get_alphabet(string);
+	unsigned int whole_alphabet_length = string->get_alphabet_length(string);
+	char* new_alphabet = malloc(sizeof(char)*(whole_alphabet_length+1)); // +1 for the null terminator
 
 	if (target == 0)
 		target = malloc(sizeof(alphabet_data));
 	else
 		free(target->alphabet);
 
-	for (int i = inter->i; i <= inter->j; ++i) {
-		current = string->char_at(string, i);
-
-		if (binary_search(alphabet, &current, sizeof(char), counter - 1, 0) < 0) {
-			alphabet[counter] = current;
-			counter++;
-			quick_sort(alphabet, counter, sizeof(char));
+	/* Find the characters that are present in the interval */
+	int nChars = 0;
+	for(int i = 0; i < whole_alphabet_length; i++) {
+		if(string->rank(string, whole_alphabet[i], inter->i, inter->j) > 0){
+			new_alphabet[nChars] = whole_alphabet[i];
+			nChars++;
 		}
 	}
-
-	alphabet[counter] = 0;
-	target->length = counter;
-	target->alphabet = alphabet;
+	new_alphabet[nChars] = 0;
+	target->length = nChars;
+	target->alphabet = new_alphabet;
 
 	return target;
 }

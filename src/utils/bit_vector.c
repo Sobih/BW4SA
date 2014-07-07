@@ -8,6 +8,34 @@
 #include "bit_vector.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
+// http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel
+// WARNING: works only for 32 bit integers
+int hamming_weight(int v){
+	v = v - ((v >> 1) & 0x55555555);                    // reuse input as temporary
+	v = (v & 0x33333333) + ((v >> 2) & 0x33333333);     // temp
+	return ((v + (v >> 4) & 0xF0F0F0F) * 0x1010101) >> 24; // count
+}
+
+bit_vector* compute_rank_support(bit_vector* vector){
+	//printf("Precalcing\n");
+	free(vector->rank_precalc); // Free previous precalc if any
+	unsigned int n_blocks = vector->get_length(vector)/BLOCK_SIZE;
+	unsigned int words_per_block = BLOCK_SIZE/BITS_PER_INT;
+	//printf("n_blocks words_per_block %d %d\n", n_blocks, words_per_block);
+	vector->rank_precalc = malloc(sizeof(int) * n_blocks);
+	for(unsigned int block_idx = 0; block_idx < n_blocks; block_idx++){
+		vector->rank_precalc[block_idx] = block_idx == 0 ? 0 : vector->rank_precalc[block_idx-1];
+		unsigned int  block_start = block_idx*words_per_block;
+		for(unsigned int word_idx = block_start; word_idx < block_start + words_per_block; word_idx++){
+			//printf("Precalc: %d\n",hamming_weight((vector->vector)[word_idx]));
+			vector->rank_precalc[block_idx] += hamming_weight((vector->vector)[word_idx]);
+		}
+	}
+	return vector;
+}
 
 /**
  * @brief	A function for marking a specific bit in a bit vector.
@@ -90,6 +118,38 @@ int is_bit_marked(const bit_vector* vector, unsigned int pos) {
 	return (vector->vector[i] & correct_val) == correct_val ? 1 : 0;
 }
 
+unsigned int max(unsigned int a, unsigned int b){
+	return a > b ? a : b;
+}
+
+unsigned int rank_using_precalc(const bit_vector* vector, unsigned int pos){
+	/*if(pos == 108724){
+		printf("Precalc array:\n");
+		for(int i = 0; i < vector->get_length(vector)/BLOCK_SIZE; i++)
+			printf("%d ", vector->rank_precalc[i]);
+		printf("\n");
+	}*/
+	unsigned int rank = 0;
+	unsigned int block_idx = pos / BLOCK_SIZE;
+	unsigned int pos_word_idx = pos / BITS_PER_INT;
+	if(block_idx != 0){
+		rank += vector->rank_precalc[block_idx-1];
+	}
+
+	unsigned int words_per_block = BLOCK_SIZE/BITS_PER_INT;
+	unsigned int block_start = block_idx*words_per_block;
+	for(unsigned int word_idx = block_start; word_idx < pos_word_idx; word_idx++){
+		rank += hamming_weight((vector->vector)[word_idx]);
+	}
+	unsigned int last_word_leftover = (pos % BITS_PER_INT) + 1;
+	unsigned int last_word = (vector->vector)[pos_word_idx];
+	//printf("block_idx, pos_word_idx, words_per_block, block_start, last_word_leftover, last_word: %d %d %d %d %d %d\n", block_idx, pos_word_idx, words_per_block, block_start, last_word_leftover, last_word);
+	for(unsigned int i = 0; i < last_word_leftover; i++){
+		rank += (last_word & (1 << i)) != 0 ? 1 : 0;
+	}
+	return rank;
+}
+
 /**
  * @brief	A simple rank-implementation.
  *
@@ -111,16 +171,38 @@ unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned i
 		return 0;
 
 	if (end >= vec_length)
+		//printf("End too big : %d\n", end);
 		end = vec_length - 1;
+		//printf("New end: %d\n", end);
 
 	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
 
+	if(!vector->rank_precalc){ // Use the naive method
+		printf("No precalc!\n");
+		for (int i = start; i <= end; ++i)
+			if (vec->is_bit_marked(vec, i))
+				count++;
+		return count;
+	}
+
+	/* debug */
+	/*unsigned int naive = 0;
 	for (int i = start; i <= end; ++i)
 		if (vec->is_bit_marked(vec, i))
-			count++;
+			naive++;
+	unsigned int precalc = 0;
+	if(start == 0) precalc = rank_using_precalc(vector,end);
+	else precalc = rank_using_precalc(vector,end) - rank_using_precalc(vector,start-1);
+	//printf("start end vec_length naive precalc %d %d %d %d %d\n", start, end, vec_length, naive, precalc);
+	//fflush(stdout);
+	assert(naive == precalc); */
+	/* end debug */
 
-	return count;
+	/*else{*/
+		if(start == 0) return rank_using_precalc(vector,end);
+		else return rank_using_precalc(vector,end) - rank_using_precalc(vector,start-1);
+	/*}*/
 }
 
 /**
@@ -144,6 +226,8 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 	//init variables
 	vector->length = (nbits + BITS_PER_INT - 1) / BITS_PER_INT;
 	vector->filler_bits = vector->length * BITS_PER_INT - nbits;
+	vector->rank_precalc = 0; // NULL
+	vector->compute_rank_support = &compute_rank_support;
 	vector->mark_bit = &mark_bit_vector_bit;
 	vector->unmark_bit = &unmark_bit_vector_bit;
 	vector->is_bit_marked = &is_bit_marked;
@@ -160,4 +244,5 @@ bit_vector* init_bit_vector(bit_vector* vector, unsigned int nbits) {
 void free_bit_vector(bit_vector* vector) {
 	free(vector->vector);
 	free(vector);
+	free(vector->rank_precalc);
 }
