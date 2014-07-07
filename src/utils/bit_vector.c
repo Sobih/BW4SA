@@ -20,11 +20,9 @@ int hamming_weight(int v){
 }
 
 bit_vector* compute_rank_support(bit_vector* vector){
-	//printf("Precalcing\n");
 	free(vector->rank_precalc); // Free previous precalc if any
 	unsigned int n_blocks = vector->get_length(vector)/BLOCK_SIZE;
 	unsigned int words_per_block = BLOCK_SIZE/BITS_PER_INT;
-	//printf("n_blocks words_per_block %d %d\n", n_blocks, words_per_block);
 	vector->rank_precalc = malloc(sizeof(int) * n_blocks);
 	for(unsigned int block_idx = 0; block_idx < n_blocks; block_idx++){
 		vector->rank_precalc[block_idx] = block_idx == 0 ? 0 : vector->rank_precalc[block_idx-1];
@@ -123,12 +121,6 @@ unsigned int max(unsigned int a, unsigned int b){
 }
 
 unsigned int rank_using_precalc(const bit_vector* vector, unsigned int pos){
-	/*if(pos == 108724){
-		printf("Precalc array:\n");
-		for(int i = 0; i < vector->get_length(vector)/BLOCK_SIZE; i++)
-			printf("%d ", vector->rank_precalc[i]);
-		printf("\n");
-	}*/
 	unsigned int rank = 0;
 	unsigned int block_idx = pos / BLOCK_SIZE;
 	unsigned int pos_word_idx = pos / BITS_PER_INT;
@@ -171,9 +163,7 @@ unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned i
 		return 0;
 
 	if (end >= vec_length)
-		//printf("End too big : %d\n", end);
 		end = vec_length - 1;
-		//printf("New end: %d\n", end);
 
 	bit_vector* vec = (bit_vector*) vector;
 	unsigned int count = 0;
@@ -186,23 +176,9 @@ unsigned int rank_query(const bit_vector* vector, unsigned int start, unsigned i
 		return count;
 	}
 
-	/* debug */
-	/*unsigned int naive = 0;
-	for (int i = start; i <= end; ++i)
-		if (vec->is_bit_marked(vec, i))
-			naive++;
-	unsigned int precalc = 0;
-	if(start == 0) precalc = rank_using_precalc(vector,end);
-	else precalc = rank_using_precalc(vector,end) - rank_using_precalc(vector,start-1);
-	//printf("start end vec_length naive precalc %d %d %d %d %d\n", start, end, vec_length, naive, precalc);
-	//fflush(stdout);
-	assert(naive == precalc); */
-	/* end debug */
 
-	/*else{*/
-		if(start == 0) return rank_using_precalc(vector,end);
-		else return rank_using_precalc(vector,end) - rank_using_precalc(vector,start-1);
-	/*}*/
+	if(start == 0) return rank_using_precalc(vector,end);
+	else return rank_using_precalc(vector,end) - rank_using_precalc(vector,start-1);
 }
 
 /**
