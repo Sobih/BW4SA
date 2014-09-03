@@ -175,6 +175,9 @@ iterator_state* iterate(parameter_struct* parameters);
 void* single_iterate(iterator_state* state, void (*callback)(iterator_state* state, void* results),
 		void* result);
 
+
+void* single_iterate_test(iterator_state* state, void (*callback)(iterator_state* state, void* results),
+		void* result, int kmerLength);
 /**
  * @brief	A function for simultaneously iterating over two strings.
  * @param	state		The internal variables used by the iteration function.

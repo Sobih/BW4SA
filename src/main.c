@@ -6,9 +6,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "applications/ui.h"
+#include "applications/new_ui.h"
 
-int main(void) {
-	ui();
+int main(int argc, char** argv) {
+	new_ui(argc, argv);
 	return 0;
 }
