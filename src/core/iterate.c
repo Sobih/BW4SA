@@ -19,6 +19,8 @@
 
 #define END_STRING '$'
 
+
+
 /**
  * @brief 	A function that determines if given interval in given reverse BWT is right maximal.
  * @param 	runs	Runs-vector of a reverse BWT.
@@ -521,6 +523,7 @@ iterator_state* initialize_iterator(char** strings, unsigned int num_strings) {
 	state->current = malloc(num_strings * sizeof(substring));
 	state->prev = malloc(num_strings * sizeof(substring));
 	state->c_arrays = malloc(num_strings * sizeof(unsigned int*));
+	state->all_alphapet=malloc(num_strings*sizeof(alphabet_data));
 
 	unsigned int common_alpha_length = 1;
 

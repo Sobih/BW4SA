@@ -15,6 +15,9 @@
 #include <stdlib.h>
 #include <limits.h>
 
+
+static const NUM_OF_CHARS=128;
+
 unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, const char* alphabet,
 		unsigned int alphabet_length, unsigned int* target) {
 	if (string == 0)
@@ -83,4 +86,15 @@ alphabet_data* create_alphabet_interval(const interval* inter, const wavelet_tre
 	target->alphabet = new_alphabet;
 
 	return target;
+}
+
+
+alphabet_data* create_all_alphabet_vector(alphabet_data* current_alphabet){
+	alphabet_data* all_alphabet=malloc(sizeof(alphabet_data));
+	all_alphabet->alphabet=malloc((NUM_OF_CHARS/sizeof(char))+1);
+	all_alphabet->alphabet=0;
+	for(int i=0;i<current_alphabet->length;i++){
+
+	}
+	return all_alphabet;
 }

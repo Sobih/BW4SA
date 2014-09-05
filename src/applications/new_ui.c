@@ -42,10 +42,13 @@ void new_ui(int argc, char** argv){
 		char** strings = malloc(sizeof(char*));
 		strings[0] = input1;
 		strings[1] = input2;
+		printf("Kmer Length= %i\n",kmerlen);
+		printf("Sequence 1 Length= %i , sequence is %s\n",strlen(input1), input1);
+		printf("Sequence 2 Length= %i , sequence is %s\n",strlen(input2), input2);
 		clock_t tStart=clock();
 		iterator_state* state =initialize_iterator(strings,2);
 		state->threshold =0;
-		kmer_kernel* kernel=initialize_kmer_kernel(sizeof(input1), sizeof(input2),kmerlen);
+		kmer_kernel* kernel=initialize_kmer_kernel(strlen(input1), strlen(input2),kmerlen);
 		double_iterate_test(state, &update_kmer_kernel, kernel);
 		compute_kmer_kernel(kernel);
 		clock_t tEnd=clock();
@@ -66,10 +69,10 @@ char* readFile(char* fileName){
 		 return 0;
 	}
 	fseek(file, 0, SEEK_END);
-	long fsize = ftell(file);
+	long fsize = ftell(file)-1;
 	printf("Sequence Length= %i\n",fsize);
 	fseek(file, 0, SEEK_SET);
-	char* input= malloc(fsize + 1);
+	char* input= malloc(fsize+1);
 	fread(input, fsize, 1, file);
 	fclose(file);
 	return input;

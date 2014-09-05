@@ -99,6 +99,12 @@ typedef struct iterator_state {
 	 * @brief	Length of the shortest string the callback function will process
 	 */
 	int threshold;
+
+	/**
+	 * A 128 bit vector represents the ASCII letters.
+	 */
+	struct alphabet_data* all_alphapet;
+
 } iterator_state;
 
 /**

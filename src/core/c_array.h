@@ -61,4 +61,8 @@ unsigned int* create_c_array(const struct wavelet_tree* string, const struct int
 alphabet_data* create_alphabet_interval(const struct interval* inter, const struct wavelet_tree* string,
 		alphabet_data* target);
 
+
+alphabet_data* create_all_alphabet_vector(alphabet_data* current_alphabet);
+
 #endif
+
