@@ -12,5 +12,5 @@
 int main(int argc, char** argv) {
 	new_ui(argc, argv);
 //	ui();
-	return 0; 
+	return 0;
 }
