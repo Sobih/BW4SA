@@ -18,7 +18,7 @@ wavelet_tree* s_to_bwt (uchar* string) {
 	d = realloc(d, (n + 2) * sizeof(uchar));
 	d[last] = '$';
 	d[n + 1] = 0;
-
+//	printf("The bwt is: %s\n",d);
 	return create_wavelet_tree(d);
 }
 

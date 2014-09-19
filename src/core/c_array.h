@@ -21,6 +21,14 @@ typedef struct alphabet_data {
 	unsigned int length;
 } alphabet_data;
 
+
+
+typedef struct alphabet_bit_vector {
+	int* bit_vector;
+	unsigned int length;
+} alphabet_bit_vector;
+
+
 /**
  * @brief	Generates array C of given string in wavelet tree form.
  *
@@ -62,7 +70,11 @@ alphabet_data* create_alphabet_interval(const struct interval* inter, const stru
 		alphabet_data* target);
 
 
-alphabet_data* create_all_alphabet_vector(alphabet_data* current_alphabet);
+alphabet_bit_vector* initialize_alphabet_bit_vector();
+alphabet_bit_vector* mark_alphabet_bits(alphabet_data* alphabet, alphabet_bit_vector* alpha_bit_vector);
+alphabet_bit_vector* mark_alphabet_bit(char c, alphabet_bit_vector* alpha_bit_vector);
+alphabet_bit_vector* unmark_alphabet_bit(char c, alphabet_bit_vector* alpha_bit_vector);
+int get_alphabet_bit(char c, alphabet_bit_vector* alpha_bit_vector);
 
 #endif
 

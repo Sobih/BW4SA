@@ -7,15 +7,20 @@
  */
 
 #include "iterate.h"
-#include "backward_search.h"
-#include "rbwt.h"
-#include "c_array.h"
-#include "substring_stack.h"
-#include "s_to_bwt.h"
-#include "../../include/utils.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+
+#include "../utils/bit_vector.h"
+#include "../utils/structs.h"
+#include "../utils/utils.h"
+#include "../utils/wavelet_tree.h"
+#include "backward_search.h"
+#include "c_array.h"
+#include "rbwt.h"
+#include "s_to_bwt.h"
+#include "substring_stack.h"
 
 #define END_STRING '$'
 
@@ -269,6 +274,78 @@ alphabet_data* combine_alphabets_intersection(alphabet_data* alpha_data1,
 
 	return common_alphabet_data;
 }
+
+alphabet_data* combine_alphabets_union(alphabet_data* alpha_data1,
+		alphabet_data* alpha_data2, alphabet_data* union_alphabet_data) {
+	char* union_alphabet = union_alphabet_data->alphabet;
+	int union_idx=0;
+	int index1 = 0;
+	if(alpha_data1==0 && alpha_data2==0){
+		// DO nothing
+	}
+	else if(alpha_data1==0){
+		if(alpha_data2->alphabet[index1]==END_STRING)
+			index1 ++;
+		for (int i=index1 ;i<alpha_data2->length;i++){
+			union_alphabet[union_idx] = alpha_data2->alphabet[i];
+			union_idx++;
+		}
+//		union_idx=alpha_data2->length;
+	}
+	else if(alpha_data2==0){
+		if(alpha_data1->alphabet[index1]==END_STRING)
+			index1++;
+		for (int i=index1;i<alpha_data1->length;i++){
+			union_alphabet[i] = alpha_data1->alphabet[i];
+			union_idx++;
+		}
+//		union_idx=alpha_data1->length;
+	}
+	else{
+		char* alphabet1 = alpha_data1->alphabet;
+		char* alphabet2 = alpha_data2->alphabet;
+
+		int index2 = 0;
+		if (alphabet1[index1] == END_STRING) {
+			index1++;
+		}
+		if (alphabet2[index2] == END_STRING) {
+			index2++;
+		}
+		char c1,c2;
+		while(1){
+			if(index1 >= alpha_data1->length && index2 >= alpha_data2->length)
+				break;
+			if(index1 >= alpha_data1->length)
+				c1=127;
+			else{
+				c1=alphabet1[index1];
+			}
+			if(index2 >= alpha_data2->length)
+				c2=127;
+			else{
+				c2=alphabet2[index2];
+			}
+			if(c1==c2){
+				union_alphabet[union_idx] = c1;
+				index1++;
+				index2++;
+			}else if(c1<c2){
+				union_alphabet[union_idx] = c1;
+				index1++;
+			}else if(c2<c1){
+				union_alphabet[union_idx] = c2;
+				index2++;
+			}
+			union_idx++;
+		}
+	}
+	union_alphabet[union_idx] = '\0';
+	union_alphabet_data->alphabet = union_alphabet;
+	union_alphabet_data->length = union_idx;
+	return union_alphabet_data;
+}
+
 void* double_iterate(iterator_state* state, void (*callback)(iterator_state* state, void* results),
 		void* result) {
 
@@ -399,10 +476,12 @@ void* double_iterate_test(iterator_state* state, void (*callback)(iterator_state
 	interval* normal1 = &state->normals[0], *normal2 = &state->normals[1];
 	interval* reverse1 = &state->reverses[0], *reverse2 = &state->reverses[1];
 	alphabet_data* alpha_data1 = &state->alpha_datas[0], *alpha_data2 = &state->alpha_datas[1];
-	alphabet_data* common_alphabet = state->common_alphabet;
+//	alphabet_data* common_alphabet = state->common_alphabet;
+	alphabet_data* union_alphabet = state->union_alphabet;
 	kmer_kernel* kernel =(kmer_kernel*)result;
 	int bwt_length1 = bwt1->get_num_bits(bwt1), bwt_length2 = bwt2->get_num_bits(bwt2), i;
-
+	alphabet_bit_vector* alpha_bit_vector1=&state->alpha_bit_vectors[0];
+	alphabet_bit_vector* alpha_bit_vector2=&state->alpha_bit_vectors[1];
 	//Initialize first intervals. In the start both intervals are the whole bwt
 	normal1->i = 0;
 	normal1->j = bwt_length1 - 1;
@@ -422,7 +501,8 @@ void* double_iterate_test(iterator_state* state, void (*callback)(iterator_state
 			reverse2, 0, 0);
 
 	substring* temp;
-
+	int counter=0;
+	int right_max=0;
 	while (1) {
 		//if size of the interval is 1, it cannot be a right-maximal string
 		//if(substring->normal->i == substring->normal->j) continue;
@@ -432,79 +512,98 @@ void* double_iterate_test(iterator_state* state, void (*callback)(iterator_state
 				alpha_data1);
 		alpha_data2 = create_alphabet_interval(&substring2->normal, bwt2,
 				alpha_data2);
+		if(alpha_data1==0 && alpha_data2==0)
+			continue;
+		alpha_bit_vector1=mark_alphabet_bits(alpha_data1,alpha_bit_vector1);
+		alpha_bit_vector2=mark_alphabet_bits(alpha_data2,alpha_bit_vector2);
 
-		c_array1 = create_c_array(bwt1, &substring1->normal, 0, 0, c_array1);
-		c_array2 = create_c_array(bwt2, &substring2->normal, 0, 0, c_array2);
-
-		common_alphabet = combine_alphabets_intersection(alpha_data1,
-				alpha_data2, common_alphabet);
-
-		for (i = 0; i < common_alphabet->length; i++) {
-			state->current_extension = common_alphabet->alphabet[i];
-
+		union_alphabet=combine_alphabets_union(alpha_data1,
+						alpha_data2, union_alphabet);
+//		printf("Union alphabet size= %i, alphabet=%s \n", union_alphabet->length,union_alphabet->alphabet);
+		for (i = 0; i < union_alphabet->length; i++) {
+			counter++;
+			right_max=0;
+			state->current_extension = union_alphabet->alphabet[i];
 			//print_node(substring1->normal);
 			//printf("letter added to the left: %c \n", common_alphabet[i]);
-			normal1 = backward_search_interval(bwt1, &substring1->normal,
-					state->current_extension, normal1);
 
-			if (normal1 == NULL)
-				continue;
+			if(get_alphabet_bit(state->current_extension,alpha_bit_vector1)==1){
+				c_array1 = create_c_array(bwt1, &substring1->normal, 0, 0, c_array1);
+				normal1 = backward_search_interval(bwt1, &substring1->normal, state->current_extension, normal1);
+				reverse1 = update_reverse_interval(&substring1->reverse, normal1,
+									alpha_data1->alphabet, alpha_data1->length, c_array1,
+									state->current_extension, reverse1);
+				new_substring1 = create_substring(normal1, reverse1,
+									substring1->length + 1, new_substring1);
+//				create_substring(&new_substring1->normal, &new_substring1->reverse,
+//									new_substring1->length, &state->prev[0]);
 
-			//print_node(substring2->normal);
-			normal2 = backward_search_interval(bwt2, &substring2->normal,
-					state->current_extension, normal2);
+			}else{
+				new_substring1= create_dummy_substring(new_substring1);
+			}
 
-			if (normal2 == NULL)
-				continue;
+			if(get_alphabet_bit(state->current_extension,alpha_bit_vector2)==1){
+				c_array2 = create_c_array(bwt2, &substring2->normal, 0, 0, c_array2);
+				normal2 = backward_search_interval(bwt2, &substring2->normal,state->current_extension, normal2);
+				reverse2 = update_reverse_interval(&substring2->reverse, normal2,
+									alpha_data2->alphabet, alpha_data2->length, c_array2,
+									state->current_extension, reverse2);
+				new_substring2 = create_substring(normal2, reverse2,
+									substring2->length + 1, new_substring2);
+//				create_substring(&new_substring2->normal, &new_substring2->reverse,
+//									new_substring2->length, &state->prev[1]);
 
-			reverse1 = update_reverse_interval(&substring1->reverse, normal1,
-					alpha_data1->alphabet, alpha_data1->length, c_array1,
-					state->current_extension, reverse1);
+			}else{
+				new_substring2= create_dummy_substring(new_substring2);
 
-			reverse2 = update_reverse_interval(&substring2->reverse, normal2,
-					alpha_data2->alphabet, alpha_data2->length, c_array2,
-					state->current_extension, reverse2);
+			}
 
-			new_substring1 = create_substring(normal1, reverse1,
-					substring1->length + 1, new_substring1);
+//			printf("Current Left extension is %c Depth= %i\n", state->current_extension, new_substring1->length );
+//			printf("New intervals: [%i , %i ] [%i , %i ]\n", new_substring1->normal.i, new_substring1->normal.j, new_substring1->reverse.i, new_substring1->reverse.j);
+//			printf("New intervals: [%i , %i ] [%i , %i ]\n", new_substring2->normal.i, new_substring2->normal.j, new_substring2->reverse.i, new_substring2->reverse.j);
 
-			new_substring2 = create_substring(normal2, reverse2,
-					substring2->length + 1, new_substring2);
-
-			// callback function pointers
-			if(new_substring1->length>=kernel->kmer_len)
+			if((new_substring1->normal.j != -1 && is_reverse_interval_right_maximal(rev_runs1,reverse1))||
+					(new_substring2->normal.j != -1 && is_reverse_interval_right_maximal(rev_runs2,reverse2))){
+				push(stack1, new_substring1);
+				push(stack2, new_substring2);
+//				printf("Right Maximal\n");
+				right_max=1;
+			}else{
+				alphabet_data* temp_alphabet1=create_alphabet_interval(&new_substring1->reverse, rev_bwt1, 0);
+				alphabet_data* temp_alphabet2=create_alphabet_interval(&new_substring2->reverse, rev_bwt2, 0);
+				if (temp_alphabet1!=0 && temp_alphabet2!=0 &&
+						(temp_alphabet1->alphabet[0]!= temp_alphabet2->alphabet[0] || (temp_alphabet1->alphabet[0]== temp_alphabet2->alphabet[0] && temp_alphabet2->alphabet[0] ==END_STRING))){
+					push(stack1, new_substring1);
+					push(stack2, new_substring2);
+//					printf("Ends with $\n");
+					right_max=1;
+				}
+			}
+			if(right_max==1 && (new_substring1->length>=kernel->kmer_len || new_substring2->length >= kernel->kmer_len)){
+				create_substring(&new_substring1->normal, &new_substring1->reverse,new_substring1->length, &state->prev[0]);
+				create_substring(&new_substring2->normal, &new_substring2->reverse,new_substring2->length, &state->prev[1]);
+//				printf("String is right maximal\n");
 				callback(state, result);
-
-			push(stack1, new_substring1);
-			push(stack2, new_substring2);
-
-			create_substring(&new_substring1->normal, &new_substring1->reverse,
-					new_substring1->length, &state->prev[0]);
-
-			create_substring(&new_substring2->normal, &new_substring2->reverse,
-					new_substring2->length, &state->prev[1]);
+			}
 		}
 
 		temp = pop(stack1);
-
 		if (temp == NULL)
 			break;
-
 		substring1 = create_substring(&temp->normal, &temp->reverse,
 				temp->length, substring1);
 
-		temp = pop(stack2);
 
+		temp = pop(stack2);
 		if (temp == NULL)
 			break;
-
 		substring2 = create_substring(&temp->normal, &temp->reverse,
 				temp->length, substring2);
 	}
 
 	free(substring1);
 	free(substring2);
-
+	printf("Number of calls %i\n", counter);
 	return result;
 }
 
@@ -523,7 +622,7 @@ iterator_state* initialize_iterator(char** strings, unsigned int num_strings) {
 	state->current = malloc(num_strings * sizeof(substring));
 	state->prev = malloc(num_strings * sizeof(substring));
 	state->c_arrays = malloc(num_strings * sizeof(unsigned int*));
-	state->all_alphapet=malloc(num_strings*sizeof(alphabet_data));
+	state->alpha_bit_vectors=malloc(num_strings*sizeof(alphabet_bit_vector));
 
 	unsigned int common_alpha_length = 1;
 
@@ -563,9 +662,13 @@ iterator_state* initialize_iterator(char** strings, unsigned int num_strings) {
 	if (num_strings > 1) {
 		state->common_alphabet = malloc(sizeof(alphabet_data));
 		state->common_alphabet->alphabet = malloc(common_alpha_length * sizeof(char));
+		state->union_alphabet = malloc(sizeof(alphabet_data));
+		state->union_alphabet->alphabet = malloc(common_alpha_length * sizeof(char));
 	}
-	else
+	else{
 		state->common_alphabet = 0;
+		state->union_alphabet = 0;
+	}
 
 	/*printf("State initialized:\n");
 	printf("\tNum strings: %u\n", state->num_strings);

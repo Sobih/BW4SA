@@ -6,17 +6,21 @@
  */
 
 #include "c_array.h"
-#include "backward_search.h"
-#include "../utils/utils.h"
-#include "../utils/structs.h"
-#include "../utils/wavelet_tree.h"
-#include <string.h>
+
+//#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
+//#include <string.h>
+
+#include "../utils/structs.h"
+//#include "../utils/utils.h"
+#include "../utils/wavelet_tree.h"
+//#include "backward_search.h"
 
 
-static const NUM_OF_CHARS=128;
+static const short int BITS_SIZE=8;
+static const short int NUM_OF_CHARS=128;
+
 
 unsigned int* create_c_array(const wavelet_tree* string, const interval* inter, const char* alphabet,
 		unsigned int alphabet_length, unsigned int* target) {
@@ -89,12 +93,64 @@ alphabet_data* create_alphabet_interval(const interval* inter, const wavelet_tre
 }
 
 
-alphabet_data* create_all_alphabet_vector(alphabet_data* current_alphabet){
-	alphabet_data* all_alphabet=malloc(sizeof(alphabet_data));
-	all_alphabet->alphabet=malloc((NUM_OF_CHARS/sizeof(char))+1);
-	all_alphabet->alphabet=0;
-	for(int i=0;i<current_alphabet->length;i++){
-
+void reinitialize_alphabet_bit_vector(alphabet_bit_vector* alpha_bit_vector){
+	for(int i=0;i<alpha_bit_vector->length;i++){
+		alpha_bit_vector->bit_vector[i]=0;
 	}
-	return all_alphabet;
+}
+alphabet_bit_vector* initialize_alphabet_bit_vector(alphabet_bit_vector* alpha_bit_vector){
+	if(alpha_bit_vector==0)
+		alpha_bit_vector=malloc(sizeof(alphabet_bit_vector));
+	alpha_bit_vector->length=NUM_OF_CHARS/(sizeof(int)*BITS_SIZE);
+	int* bit_vector=malloc(alpha_bit_vector->length);
+	for(int i=0;i<alpha_bit_vector->length;i++){
+		bit_vector[i]=0;
+	}
+	alpha_bit_vector->bit_vector=bit_vector;
+	return alpha_bit_vector;
+}
+
+alphabet_bit_vector* mark_alphabet_bits(alphabet_data* alphabet, alphabet_bit_vector* alpha_bit_vector){
+	if(alpha_bit_vector->length==0)
+		alpha_bit_vector=initialize_alphabet_bit_vector(alpha_bit_vector);
+	else
+		reinitialize_alphabet_bit_vector(alpha_bit_vector);
+	if(alphabet==0)
+		return alpha_bit_vector;
+	short int INT_BITS=sizeof(int)*BITS_SIZE;
+	int idx=0;
+	int shift=0;
+	char c=0;
+	for(int i=0;i< alphabet->length;i++){
+		c=alphabet->alphabet[i];
+		idx=(c-1)/INT_BITS;
+		shift=(c-1)%INT_BITS;
+		alpha_bit_vector->bit_vector[idx] = (1 << shift)|alpha_bit_vector->bit_vector[idx] ;
+	}
+//	printf("mark_alphabet_bits Done\n");
+//	printBinary(alpha_bit_vector->bit_vector, alpha_bit_vector->length);
+	return alpha_bit_vector;
+}
+
+alphabet_bit_vector* mark_alphabet_bit(char c, alphabet_bit_vector* alpha_bit_vector){
+	short int INT_BITS=sizeof(int)*BITS_SIZE;
+	int idx=(c-1)/INT_BITS;
+	int shift=(c-1)%INT_BITS;
+	alpha_bit_vector->bit_vector[idx] = (1 << shift)|alpha_bit_vector->bit_vector[idx] ;
+	return alpha_bit_vector;
+}
+
+alphabet_bit_vector* unmark_alphabet_bit(char c, alphabet_bit_vector* alpha_bit_vector){
+	short int INT_BITS=sizeof(int)*BITS_SIZE;
+	int idx=(c-1)/INT_BITS;
+	int shift=(c-1)%INT_BITS;
+	alpha_bit_vector->bit_vector[idx] = (~(1 << shift))&alpha_bit_vector->bit_vector[idx] ;
+	return alpha_bit_vector;
+}
+
+int get_alphabet_bit(char c, alphabet_bit_vector* alpha_bit_vector){
+	short int INT_BITS=sizeof(int)*BITS_SIZE;
+	int idx=(c-1)/INT_BITS;
+	int shift=(c-1)%INT_BITS;
+	return (alpha_bit_vector->bit_vector[idx] >> shift) & 1 ;
 }

@@ -45,12 +45,12 @@ typedef struct triplet {
 } triplet;
 
 typedef struct kmer_kernel {
-	int n;
-	int ds;
-	int dt;
+	long int n;
+	long int ds;
+	long int dt;
 	unsigned int kmer_len;
 	double cosine;
-	unsigned int calling_counter;
+	unsigned long int calling_counter;
 } kmer_kernel;
 
 #endif /* STRUCTS_H_ */

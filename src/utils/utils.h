@@ -185,4 +185,9 @@ struct interval* update_reverse_interval(struct interval* inter, struct interval
 		const char* alphabet, unsigned int alphabet_length, const int* c_array,
 		const char c, struct interval* target);
 
+
+struct substring* create_dummy_substring(struct substring* target);
+
+
+void printBinary(unsigned int* input, int length);
 #endif /* UTILITIES_H_ */

@@ -43,8 +43,8 @@ void new_ui(int argc, char** argv){
 		strings[0] = input1;
 		strings[1] = input2;
 		printf("Kmer Length= %i\n",kmerlen);
-		printf("Sequence 1 Length= %i , sequence is %s\n",strlen(input1), input1);
-		printf("Sequence 2 Length= %i , sequence is %s\n",strlen(input2), input2);
+//		printf("Sequence 1 Length= %i , sequence is %s\n",strlen(input1), input1);
+//		printf("Sequence 2 Length= %i , sequence is %s\n",strlen(input2), input2);
 		clock_t tStart=clock();
 		iterator_state* state =initialize_iterator(strings,2);
 		state->threshold =0;
@@ -68,12 +68,14 @@ char* readFile(char* fileName){
 		 printf( "Could not open file\n" );
 		 return 0;
 	}
-	fseek(file, 0, SEEK_END);
+	fseeko(file, 0, SEEK_END);
 	long fsize = ftell(file)-1;
-	printf("Sequence Length= %i\n",fsize);
-	fseek(file, 0, SEEK_SET);
-	char* input= malloc(fsize+1);
+	fseeko(file, 0, SEEK_SET);
+	char* input= malloc(fsize);
 	fread(input, fsize, 1, file);
+//	input[fsize]='\0';
 	fclose(file);
+//	printf("Seqeunce is: %s\n",input);
+	printf("Sequence Length=%i   C[0]=%c   C[end]=%c\n",strlen(input),input[0],input[strlen(input)-1]);
 	return input;
 }

@@ -103,7 +103,9 @@ typedef struct iterator_state {
 	/**
 	 * A 128 bit vector represents the ASCII letters.
 	 */
-	struct alphabet_data* all_alphapet;
+	struct alphabet_bit_vector* alpha_bit_vectors;
+
+	struct alphabet_data* union_alphabet;
 
 } iterator_state;
 

@@ -340,6 +340,21 @@ bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
 	return target;
 }
 
+
+substring* create_dummy_substring(substring* target) {
+	if (target == 0)
+		target = malloc(sizeof(substring));
+
+	target->normal.i = 0;
+	target->normal.j = -1;
+
+	target->reverse.i = 0;
+	target->reverse.j = -1;
+	target->length = 0;
+
+	return target;
+}
+
 substring* create_substring(interval* normal, interval* reverse, int length,
 		substring* target) {
 	if (target == 0)
@@ -369,7 +384,9 @@ interval* update_reverse_interval(interval* inter, interval* normal,
 	int index_in_c_array = binary_search(alphabet, &c, sizeof(char),
 			alphabet_length, 0);
 	int char_index = c_array[index_in_c_array];
+
 	target->i = inter->i + char_index;
+//	printf("Char=%c , Index in C_array=%i ,value=%i  ,FWD interval=[%i,%i]\n", c,index_in_c_array, char_index,inter->i ,inter->j );
 
 	//length of the reverse interval is same as length of the normal interval
 	int normal_j = normal->j;
@@ -378,4 +395,25 @@ interval* update_reverse_interval(interval* inter, interval* normal,
 	int new_j = target->i + (normal_j - normal_i);
 	target->j = new_j;
 	return target;
+}
+
+
+void printBinary(unsigned int* input, int length){
+	int INT_BITS=sizeof(int)*8;
+	if(length==0)
+			return ;
+	int size=length*INT_BITS;
+	unsigned char* binary=malloc(size+1);
+	int i=0;
+	int shift=INT_BITS;
+	for(i=0;i<length;i++){
+		int j=0;
+		int c=input[i];
+		for(j=0;j<INT_BITS;j++){
+			int binaryIdx=(i*INT_BITS)+j;
+			binary[binaryIdx]=((c>>shift++%INT_BITS)&1)==1 ?'1':'0';
+		}
+	}
+	binary[size]='\0';
+	printf("Binary is %s\n",binary);
 }
