@@ -27,6 +27,7 @@ typedef struct interval
  */
 typedef struct substring
 {
+	char* string;
 	interval normal;
 	interval reverse;
 	int length;
@@ -44,6 +45,16 @@ typedef struct triplet {
 	unsigned int length;
 } triplet;
 
+
+
+typedef struct generalized_st_node_freq {
+	int s_freq;
+	int t_freq;
+	int s_children_freq_sum;
+	int t_children_freq_sum;
+	int s_t_children_freq_sum;
+} generalized_st_node_freq;
+
 typedef struct kmer_kernel {
 	long int n;
 	long int ds;
@@ -51,6 +62,19 @@ typedef struct kmer_kernel {
 	unsigned int kmer_len;
 	double cosine;
 	unsigned long int calling_counter;
+	generalized_st_node_freq* gst_node_freq;
 } kmer_kernel;
 
+
+typedef struct kmer_freq_matrix {
+	int** freq_matrix;
+	short unsigned int max_freq; // row length
+	short unsigned int max_kmer_length; // column length
+
+} kmer_freq_matrix;
+
+typedef struct kullback_leibler_vector{
+	double* vector;
+	int length;
+}kullback_leibler_vector;
 #endif /* STRUCTS_H_ */

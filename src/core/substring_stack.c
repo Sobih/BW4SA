@@ -42,6 +42,7 @@ void push(substring_stack* stack, substring* substr)
 	current->length = substr->length;
 	current->normal = substr->normal;
 	current->reverse = substr->reverse;
+	current->string = substr->string;
 	stack->array_ptr++;
 }
 

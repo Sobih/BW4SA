@@ -39,6 +39,14 @@ int is_reverse_interval_right_maximal(bit_vector* runs,
 	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
 }
 
+/**
+ * is_reverse_interval_right_maximal and is_interval_left_maximal functions should be replaced by one function
+ */
+int is_interval_maximal(bit_vector* runs,
+		interval* inter) {
+	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
+}
+
 void* single_iterate_test(iterator_state* state, void (*callback)(iterator_state* state, void* results),
 		void* result, int kmersLength) {
 	wavelet_tree* bwt = &state->bwts[0], *reverse_bwt = &state->reverse_bwts[0];

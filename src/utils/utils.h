@@ -190,4 +190,11 @@ struct substring* create_dummy_substring(struct substring* target);
 
 
 void printBinary(unsigned int* input, int length);
+
+
+/*
+ * Faster implementation for updating the reverse interval.
+ */
+struct interval* create_reverse_interval(struct interval* current_reverse, struct interval* current_normal,
+		const unsigned int* c_array, int index_in_c_array, struct interval* target);
 #endif /* UTILITIES_H_ */

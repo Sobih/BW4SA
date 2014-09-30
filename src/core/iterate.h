@@ -201,4 +201,6 @@ void* single_iterate_test(iterator_state* state, void (*callback)(iterator_state
 void* double_iterate(iterator_state* state, void (*callback)(iterator_state* state, void* results),
 		void* result);
 
+int is_interval_maximal(struct bit_vector* runs, struct interval* inter);
+
 #endif
