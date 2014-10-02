@@ -373,13 +373,13 @@ substring* create_substring(interval* normal, interval* reverse, int length,
 
 	return target;
 }
-interval* create_reverse_interval(interval* current_reverse, interval* current_normal, const unsigned int* c_array,
+interval* create_reverse_interval(interval* current_reverse, interval* new_normal, const unsigned int* c_array,
 		int index_in_c_array, interval* target) {
 	if (target == 0)
 		target = malloc(sizeof(interval));
 	int char_index = c_array[index_in_c_array];
 	target->i = current_reverse->i + char_index;
-	target->j = target->i + (current_normal->j - current_normal->i);
+	target->j = target->i + (new_normal->j - new_normal->i);
 	return target;
 }
 

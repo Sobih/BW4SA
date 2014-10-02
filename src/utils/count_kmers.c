@@ -268,9 +268,13 @@ kullback_leibler_vector* init_kullback_leibler_vector(int max_kmer){
 	return kl_vector;
 }
 
-void createString(substring* source, substring* target, char extension){
-	if(target==0)
+substring* createString(substring* source, substring* target, char extension){
+	if(target==0){
 		target=malloc(sizeof(substring));
+	}
+	else{
+		//free(target->string);
+	}
 	target->string=malloc(source->length+2);
 	target->string[0]=extension;
 	if(source->length>0){
@@ -279,6 +283,7 @@ void createString(substring* source, substring* target, char extension){
 	}
 	target->string[source->length+1]='\0';
 	printf("new substring: %s\n",target->string);
+	return target;
 }
 
 kullback_leibler_vector* compute_kl_divergence(iterator_state* state, int max_kmer){
@@ -294,25 +299,23 @@ kullback_leibler_vector* compute_kl_divergence(iterator_state* state, int max_km
 	reverse->i = 0;
 	reverse->j = bwt_length - 1;
 	//create starting substring
-	substring* substr = create_substring(normal, reverse, 0, 0);
-	substring* temp, *mid_substring=0, *mid_left_substring;
-	int max_length=max_kmer-2;
+	substring* temp = create_substring(normal, reverse, 0, 0);
+	substring* mid_substring=0, *mid_left_substring=0;
 	int freq_w,freq_w1,freq_w2, freq_w3;
 	char* whole_alphabet = bwt->get_alphabet(bwt);
 	unsigned int whole_alphabet_length = bwt->get_alphabet_length(bwt);
 	unsigned int* c_array = malloc((whole_alphabet_length + 1) * sizeof(unsigned int));
 	c_array[0]=0;
-	c_array[1]=0;
 	int kl_vector_idx=0;
 	int left_max=0;
-	for (i = 1; i < whole_alphabet_length; i++) {
-		freq_w1=bwt->rank(bwt, whole_alphabet[i], substr->normal.i, substr->normal.j); //  F(W[1..l-1])
+	for (i = 0; i < whole_alphabet_length; i++) {
+		freq_w1=bwt->rank(bwt, whole_alphabet[i], temp->normal.i, temp->normal.j); //  F(W[1..l-1])
 		c_array[i+1]=freq_w1+c_array[i];
-		if(freq_w1>0){
-			normal = backward_search_interval(bwt, &substr->normal,whole_alphabet[i], normal);
-			reverse = create_reverse_interval(&substr->reverse, normal,c_array, i, reverse);
-			createString(substr, mid_substring, whole_alphabet[i] );
-			mid_substring= create_substring(normal, reverse, substr->length + 1,mid_substring);
+		if(freq_w1>0 && whole_alphabet[i]!=END_STRING){
+			normal = backward_search_interval(bwt, &temp->normal,whole_alphabet[i], normal);
+			reverse = create_reverse_interval(&temp->reverse, normal,c_array, i, reverse);
+			mid_substring=createString(temp, mid_substring, whole_alphabet[i] );
+			mid_substring= create_substring(normal, reverse, temp->length + 1,mid_substring);
 			push(stack, mid_substring);
 		}
 	}
@@ -328,26 +331,26 @@ kullback_leibler_vector* compute_kl_divergence(iterator_state* state, int max_km
 			if(is_interval_maximal(runs, &mid_substring->normal)){
 				left_max=1;
 			}
-			for (i = 1; i < whole_alphabet_length; i++) {
+			for (i = 0; i < whole_alphabet_length; i++) {
 				freq_w1=bwt->rank(bwt, whole_alphabet[i], mid_substring->normal.i, mid_substring->normal.j); //  F(W[1..l-1])
 				c_array[i+1]=freq_w1+c_array[i];
-				if(freq_w1>0){
+				if(freq_w1>0 && whole_alphabet[i]!=END_STRING){
 					normal = backward_search_interval(bwt, &mid_substring->normal,whole_alphabet[i], normal);
 					reverse = create_reverse_interval(&mid_substring->reverse, normal,c_array, i, reverse);
-					createString(mid_substring, mid_left_substring, whole_alphabet[i] );
+					mid_left_substring=createString(mid_substring, mid_left_substring, whole_alphabet[i] );
 					mid_left_substring= create_substring(normal, reverse, mid_substring->length + 1,mid_left_substring);
 					push(stack, mid_left_substring);
 					if(left_max){
 						kl_vector_idx=mid_substring->length-1;
-						for(int j = 1; j < whole_alphabet_length; j++) {
+						for(int j = 0; j < whole_alphabet_length; j++) {
 							freq_w=reverse_bwt->rank(reverse_bwt, whole_alphabet[j], mid_left_substring->reverse.i, mid_left_substring->reverse.j); // F(W[1..l])
-							if(freq_w> 0){
+							if(freq_w> 0 && whole_alphabet[j]!=END_STRING){
 								freq_w3=reverse_bwt->rank(reverse_bwt, whole_alphabet[j], mid_substring->reverse.i, mid_substring->reverse.j);//F(W[2..l])
 								kl_vector->vector[kl_vector_idx]=kl_vector->vector[kl_vector_idx]+(freq_w* log((double)(freq_w*freq_w2)/((double)(freq_w1*freq_w3))));
-								printf("Left extension=%c , right extension=%c\n",whole_alphabet[i],whole_alphabet[j]);
-								printf("String is %s %c\n",mid_left_substring->string, whole_alphabet[j]);
+								//printf("Left extension=%c , right extension=%c\n",whole_alphabet[i],whole_alphabet[j]);
+								printf("String is %s%c\n",mid_left_substring->string, whole_alphabet[j]);
 								printf("F(W[1..l])=%i, F(W[2..l-1])=%i, F(W[1..l-1])=%i, F(W[2..l])=%i\n",freq_w,freq_w2,freq_w1,freq_w3);
-								printf("kl[%i]=%f\n",kl_vector_idx,kl_vector->vector[kl_vector_idx]);
+								//printf("kl[%i]=%f\n",kl_vector_idx,kl_vector->vector[kl_vector_idx]);
 							}
 						}
 					}
@@ -355,7 +358,9 @@ kullback_leibler_vector* compute_kl_divergence(iterator_state* state, int max_km
 			}
 		}
 	}
-	free(substr);
+	free(temp);
+	free(mid_substring);
+	free(mid_left_substring);
 	return kl_vector;
 }
 void print_kl_divergence(kullback_leibler_vector* kl_vector){
