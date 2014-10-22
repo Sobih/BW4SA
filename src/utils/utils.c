@@ -342,8 +342,10 @@ bit_vector* create_runs_vector(const wavelet_tree* string, bit_vector* target) {
 
 
 substring* create_dummy_substring(substring* target) {
-	if (target == 0)
+	if (target == 0){
 		target = malloc(sizeof(substring));
+		target->string=malloc(2);
+	}
 
 	target->normal.i = 0;
 	target->normal.j = -1;
@@ -351,7 +353,9 @@ substring* create_dummy_substring(substring* target) {
 	target->reverse.i = 0;
 	target->reverse.j = -1;
 	target->length = 0;
-
+//	target->string[0]='_';
+//	target->string[1]='\0';
+	target->string[0]='\0';
 	return target;
 }
 

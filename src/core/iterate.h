@@ -203,4 +203,7 @@ void* double_iterate(iterator_state* state, void (*callback)(iterator_state* sta
 
 int is_interval_maximal(struct bit_vector* runs, struct interval* inter);
 
+
+struct alphabet_data* get_alphabets_union(int alpha_data1_length, char* alpha_data1, int alpha_data2_length, char* alpha_data2);
+
 #endif

@@ -56,9 +56,9 @@ typedef struct generalized_st_node_freq {
 } generalized_st_node_freq;
 
 typedef struct kmer_kernel {
-	long int n;
-	long int ds;
-	long int dt;
+	double n;
+	double ds;
+	double dt;
 	unsigned int kmer_len;
 	double cosine;
 	unsigned long int calling_counter;
@@ -77,4 +77,6 @@ typedef struct kullback_leibler_vector{
 	double* vector;
 	int length;
 }kullback_leibler_vector;
+
+
 #endif /* STRUCTS_H_ */

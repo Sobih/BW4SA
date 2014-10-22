@@ -37,7 +37,6 @@ void push(substring_stack* stack, substring* substr)
 {
 	if(stack->array_size == stack->array_ptr)
 		double_size(stack);
-
 	substring* current = &stack->array[stack->array_ptr];
 	current->length = substr->length;
 	current->normal = substr->normal;
@@ -49,7 +48,6 @@ void push(substring_stack* stack, substring* substr)
 substring* pop(substring_stack* stack)
 {
 	if(stack->array_ptr == 0) return NULL;
-	
 	substring* substr = &stack->array[stack->array_ptr - 1];
 	stack->array_ptr--;
 	return substr;

@@ -16,7 +16,7 @@ void print_new_choices()
 
 void new_ui(int argc, char** argv){
 	int command=atoi(argv[1]);
-	if(command==1){ // Number of distinct K-mers
+	if(command==1){ // kmer complexity (Number of distinct K-mers)
 		int kmerlen=atoi(argv[2]);
 		char *input=readFile(argv[3]);
 		char** strings = malloc(sizeof(char*));
@@ -31,7 +31,7 @@ void new_ui(int argc, char** argv){
 		printf("The running time is %.2f Seconds. \n",((double)(tEnd - tStart)/(CLOCKS_PER_SEC)));
 		free_iterator_state(state);
 		free(strings);
-	}else if(command==2){
+	}else if(command==2){ //kmer kernel (cosine similarity for k)
 		int kmerlen=atoi(argv[2]);
 		char *input1= readFile(argv[3]);
 		if(input1==0)
@@ -56,7 +56,7 @@ void new_ui(int argc, char** argv){
 		free_iterator_state(state);
 		free(strings);
 		free(kernel);
-	}else if(command==3){ // Total number of distinct mers
+	}else if(command==3){ // Substring complexity(Total number of distinct mers)
 		char *input=readFile(argv[2]);
 		char** strings = malloc(sizeof(char*));
 		strings[0] = input;
@@ -70,7 +70,7 @@ void new_ui(int argc, char** argv){
 		printf("The running time is %.2f Seconds. \n",((double)(tEnd - tStart)/(CLOCKS_PER_SEC)));
 		free_iterator_state(state);
 		free(strings);
-	}else if(command==4){
+	}else if(command==4){ // Substring kernel (cosine similarity for all k)
 		char *input1= readFile(argv[2]);
 		if(input1==0)
 			return;
@@ -93,7 +93,7 @@ void new_ui(int argc, char** argv){
 		free_iterator_state(state);
 		free(strings);
 		free(kernel);
-	}else if(command==5){
+	}else if(command==5){ // kmers freq matrix
 		char *input=readFile(argv[2]);
 		int max_freq=atoi(argv[3]);
 		int max_kmer=atoi(argv[4]);
@@ -110,7 +110,7 @@ void new_ui(int argc, char** argv){
 		printf("The running time is %.2f Seconds. \n",((double)(tEnd - tStart)/(CLOCKS_PER_SEC)));
 		free_iterator_state(state);
 		free(strings);
-	}else if(command==6){
+	}else if(command==6){// KL divergence
 		char *input=readFile(argv[2]);
 		int max_kmer=atoi(argv[3]);
 		char** strings = malloc(sizeof(char*));
@@ -124,6 +124,28 @@ void new_ui(int argc, char** argv){
 		printf("The running time is %.2f Seconds. \n",((double)(tEnd - tStart)/(CLOCKS_PER_SEC)));
 		free_iterator_state(state);
 		free(strings);
+	}else if(command==7){// Substring kernel with markovian correction (cosine similarity for all k)
+		char *input1= readFile(argv[2]);
+		if(input1==0)
+			return;
+		char *input2= readFile(argv[3]);
+		if(input2==0)
+			return;
+		char** strings = malloc(sizeof(char*));
+		strings[0] = input1;
+		strings[1] = input2;
+//		printf("Sequence 1 Length= %i , sequence is %s\n",strlen(input1), input1);
+//		printf("Sequence 2 Length= %i , sequence is %s\n",strlen(input2), input2);
+		clock_t tStart=clock();
+		iterator_state* state =initialize_iterator(strings,2);
+		state->threshold =0;
+		kmer_kernel* kernel=initialize_kmer_kernel(-1,-1,0);
+		kernel=update_markovian_substring_kernel(state,kernel);
+		clock_t tEnd=clock();
+		printf("The running time is %.2f Seconds. \n",((double)(tEnd - tStart)/(CLOCKS_PER_SEC)));
+		free_iterator_state(state);
+		free(strings);
+		free(kernel);
 	}
 	else{
 		printf("Unknown Command.\n");

@@ -42,4 +42,7 @@ void update_substring_kernel(struct iterator_state* state, void* results);
 double compute_kmer_kernel(struct kmer_kernel* kernel);
 struct kullback_leibler_vector* compute_kl_divergence(struct iterator_state* state, int max_kmer);
 void print_kl_divergence(kullback_leibler_vector* kl_vector);
+void* update_markovian_substring_kernel(struct iterator_state* state, void* results);
+struct bwt_interval_alphabets* init_bwt_interval_alphabets(char* alphabet, int num_of_alphabets,struct bwt_interval_alphabets* interval_alphabets);
+struct bwt_interval_alphabets** merge_bwt_interval_alphabets(struct bwt_interval_alphabets* bwt1_interval_alphabets, struct bwt_interval_alphabets* bwt2_interval_alphabets, struct bwt_interval_alphabets** bwt_interval_alphabets_array);
 #endif /* COUNT_KMERS_H_ */

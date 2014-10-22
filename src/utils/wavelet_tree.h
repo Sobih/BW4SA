@@ -34,6 +34,13 @@ typedef struct wavelet_node {
 	unsigned int children[2];
 } wavelet_node;
 
+
+typedef struct bwt_interval_alphabets{
+	char* alphabets_vector;
+	int* alphabets_freq;
+	int length;
+}bwt_interval_alphabets;
+
 /**
  * @brief	A struct for storing a wavelet tree.
  *
@@ -103,6 +110,9 @@ typedef struct wavelet_tree {
 
 	unsigned int num_nodes;
 	wavelet_node* nodes;
+
+	bwt_interval_alphabets* (*get_interval_alphabets) (const struct wavelet_tree* tree, unsigned int curr_node, int start, int end,
+			bwt_interval_alphabets* interval_alphabets, int start_in_alphabet_array, int end_in_alphabet_array);
 } wavelet_tree;
 
 /**

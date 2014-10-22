@@ -364,6 +364,59 @@ int create_children(wavelet_tree* tree, unsigned int curr_node, unsigned int nex
 		return next;
 	}
 }
+bwt_interval_alphabets* get_interval_alphabets(const wavelet_tree* tree, unsigned int curr_node, int start, int end, bwt_interval_alphabets* interval_alphabets, int start_in_alphabet_array, int end_in_alphabet_array){
+//	printf("get_interval_alphabets Starts\n");
+	if (start > end)
+		return 0;
+//	printf("Interval[%i,%i]   Alphabet start=%i end=%i\n",start,end,start_in_alphabet_array,end_in_alphabet_array);
+	wavelet_node* node = &tree->nodes[curr_node];
+
+	int rank_till_start=0;
+	if(start!=0)
+		rank_till_start=node->vector.rank(&node->vector, 0, start-1);
+	int rank_till_end=node->vector.rank(&node->vector, 0, end);
+	int interval_size=end-start+1;
+	int new_start=rank_till_start;
+	int new_end = rank_till_end-1;
+	int freq=rank_till_end-rank_till_start;
+//	printf("Rank till start=%i ,Rank till end=%i ,freq=%i  , interval_size=%i\n",rank_till_start,rank_till_end,freq,interval_size);
+	if (node->children[0] <= 0){ // Has no more children.
+		if(freq==0){
+			interval_alphabets->alphabets_freq[start_in_alphabet_array+1]=interval_size;
+		}else if(freq==interval_size){
+			interval_alphabets->alphabets_freq[start_in_alphabet_array]=interval_size;
+		}else{
+			interval_alphabets->alphabets_freq[start_in_alphabet_array]=freq;
+			interval_alphabets->alphabets_freq[start_in_alphabet_array+1]=interval_size - freq;
+		}
+		for(int i=0;i<interval_alphabets->length;i++){
+//			printf("Char:%c, Freq:%i\n", interval_alphabets->alphabets_vector[i], interval_alphabets->alphabets_freq[i]);
+		}
+//		printf("*********************************************\n");
+		return interval_alphabets;
+	}
+
+//	int half_length = (node->alphabet_length / 2) - 1;
+	//determine rank
+
+	int left_length=(node->alphabet_length / 2);
+	int right_length=node->alphabet_length-left_length;
+//	printf("node->alphabet_length=%i  left_length=%i   right_length=%i\n",node->alphabet_length,left_length, right_length);
+	if(freq==interval_size){
+		// Only left
+//		printf("ONLY LEFT\n");
+		get_interval_alphabets(tree, node->children[0], new_start, new_end, interval_alphabets, start_in_alphabet_array, start_in_alphabet_array+left_length-1);
+	}else if(freq==0){
+		// Only right
+//		printf("ONLY RIGHT\n");
+		get_interval_alphabets(tree, node->children[1], start-rank_till_start, end-rank_till_end, interval_alphabets, end_in_alphabet_array-right_length+1, end_in_alphabet_array);
+	}else{
+//		printf("LEFT RIGHT\n");
+		get_interval_alphabets(tree, node->children[0], new_start, new_end, interval_alphabets, start_in_alphabet_array, start_in_alphabet_array+left_length-1);//Left
+		get_interval_alphabets(tree, node->children[1], start-rank_till_start, end-rank_till_end, interval_alphabets, end_in_alphabet_array-right_length+1, end_in_alphabet_array);//Right
+	}
+	return interval_alphabets;
+}
 
 wavelet_tree* create_wavelet_tree(const char* string) {
 	if (string == 0)
@@ -383,6 +436,7 @@ wavelet_tree* create_wavelet_tree(const char* string) {
 	tree->get_alphabet_length = &get_alphabet_length_tree;
 	tree->get_alphabet = &get_alphabet_tree;
 	tree->rank = &wavelet_root_rank_query;
+	tree->get_interval_alphabets=&get_interval_alphabets;
 
 	//init root and populate tree
 	init_node(&tree->nodes[0], string, alphabet, alphabet_length);
@@ -445,3 +499,5 @@ void free_wavelet_tree(wavelet_tree* tree) {
 	free_wavelet_tree_internals(tree);
 	free(tree);
 }
+
+

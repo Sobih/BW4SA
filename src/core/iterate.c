@@ -40,10 +40,12 @@ int is_reverse_interval_right_maximal(bit_vector* runs,
 }
 
 /**
- * is_reverse_interval_right_maximal and is_interval_left_maximal functions should be replaced by one function
+ * is_reverse_interval_right_maximal functions should be replaced by this function.
  */
 int is_interval_maximal(bit_vector* runs,
 		interval* inter) {
+	if(inter->i > inter->j)
+		return 0;
 	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
 }
 
@@ -281,6 +283,41 @@ alphabet_data* combine_alphabets_intersection(alphabet_data* alpha_data1,
 	common_alphabet_data->length = common_index;
 
 	return common_alphabet_data;
+}
+alphabet_data* get_alphabets_union(int alpha_data1_length, char* alpha_data1, int alpha_data2_length, char* alpha_data2){
+	alphabet_data* alphabet=malloc(sizeof(alphabet_data));
+	int index1=0, index2=0, union_idx=0;
+	char c1,c2;
+	char* union_alphabet=malloc(alpha_data1_length+alpha_data2_length+1);
+	while(1){
+		if(index1 >= alpha_data1_length && index2 >= alpha_data2_length)
+			break;
+		if(index1 >= alpha_data1_length)
+			c1=127;
+		else{
+			c1=alpha_data1[index1];
+		}
+		if(index2 >= alpha_data2_length)
+			c2=127;
+		else{
+			c2=alpha_data2[index2];
+		}
+		if(c1==c2){
+			union_alphabet[union_idx] = c1;
+			index1++;
+			index2++;
+		}else if(c1<c2){
+			union_alphabet[union_idx] = c1;
+			index1++;
+		}else if(c2<c1){
+			union_alphabet[union_idx] = c2;
+			index2++;
+		}
+		union_idx++;
+	}
+	alphabet->length=union_idx;
+	alphabet->alphabet=union_alphabet;
+	return alphabet;
 }
 
 alphabet_data* combine_alphabets_union(alphabet_data* alpha_data1,
