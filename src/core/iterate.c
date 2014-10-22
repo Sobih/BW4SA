@@ -41,7 +41,7 @@ int is_reverse_interval_right_maximal(bit_vector* runs,
 
 /**
  * is_reverse_interval_right_maximal functions should be replaced by this function.
- */
+ */ 
 int is_interval_maximal(bit_vector* runs,
 		interval* inter) {
 	if(inter->i > inter->j)
