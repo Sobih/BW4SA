@@ -47,7 +47,7 @@ int is_interval_maximal(bit_vector* runs,
 	if(inter->i > inter->j)
 		return 0;
 	return runs->rank(runs, (inter->i) + 1, inter->j) > 0 ? 1 : 0;
-}
+} 
 
 void* single_iterate_test(iterator_state* state, void (*callback)(iterator_state* state, void* results),
 		void* result, int kmersLength) {
