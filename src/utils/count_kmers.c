@@ -380,7 +380,7 @@ substring* update_substring_interval(wavelet_tree* bwt, substring* current_subst
 		target = malloc(sizeof(substring));
 	backward_search_interval(bwt, &current_substring->normal,c, &target->normal);
 	create_reverse_interval(&current_substring->reverse, &target->normal,c_array, c_array_idx, &target->reverse);
-//	target=createString(current_substring, target, c);
+	target=createString(current_substring, target, c);
 	target->length=current_substring->length + 1;
 //	printf("New intervals are: [%i,%i]   [%i,%i]\n",target->normal.i,target->normal.j,target->reverse.i,target->reverse.j);
 //	printf("update_substring_interval End\n");
@@ -405,10 +405,10 @@ void update_markovian_freq(wavelet_tree* bwt, substring* mid_left_substring,  su
 		freq_w[1]=mid_right_merged_alphabets->alphabets_freq[i];//F(W[2..l])
 		if(freq_w[1]> 0 && c!=END_STRING){
 			freq_w[0]=w_merged_alphabets->alphabets_freq[i]; // F(W[1..l])
-//			if(freq_w[0]==0)
-//				printf("Got Zero");
 			word_prob[i]=((double)(freq_w[0]*freq_w[2])/(double)(freq_w[1]*freq_w[3]))-1;
 			(*kernelD)+=pow(word_prob[i],2);
+//			printf("F[%s%c]=%i , F[%s]=%i, F[%s]=%i , F[%s%c]=%i , D=%f\n", mid_left_substring->string,c, freq_w[0],
+//					mid_substring->string, freq_w[2], mid_left_substring->string, freq_w[1], mid_substring->string,c, freq_w[3], (*kernelD));
 		}else{
 			word_prob[i]=0;
 		}
@@ -443,7 +443,11 @@ void* update_markovian_substring_kernel(iterator_state* state, void* results){
 	reverse2->j = bwt2->get_num_bits(bwt2) - 1;
 	//create starting substring
 	substring* temp1 = create_substring(normal1, reverse1, 0, 0);
+	temp1->string=malloc(1);
+	temp1->string='\0';
 	substring* temp2 = create_substring(normal2, reverse2, 0, 0);
+	temp2->string=malloc(1);
+	temp2->string='\0';
 
 	alphabet_data* union_alphabet=get_alphabets_union(bwt1->get_alphabet_length(bwt1), bwt1->get_alphabet(bwt1),
 			bwt2->get_alphabet_length(bwt2), bwt2->get_alphabet(bwt2));
@@ -573,7 +577,7 @@ void* update_markovian_substring_kernel(iterator_state* state, void* results){
 			}
 			for(int i=0;i<w1_mid_left_merged_alphabets->length;i++){
 
-				freq_w1[3]=0, freq_w1[3]=0;
+				freq_w1[3]=0, freq_w2[3]=0;
 				c=w1_mid_left_merged_alphabets->alphabets_vector[i];
 //				printf("Hello 3 %c\n",c);
 //				printf("Current Left Extension: %c\n",c);

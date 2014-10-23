@@ -353,9 +353,9 @@ substring* create_dummy_substring(substring* target) {
 	target->reverse.i = 0;
 	target->reverse.j = -1;
 	target->length = 0;
-//	target->string[0]='_';
-//	target->string[1]='\0';
-	target->string[0]='\0';
+	target->string[0]='_';
+	target->string[1]='\0';
+//	target->string[0]='\0';
 	return target;
 }
 
